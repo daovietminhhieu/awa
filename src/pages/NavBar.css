@@ -1,0 +1,151 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: linear-gradient(0deg,#FFFFFF, #81C784, #2E7D32);
+
+    color: white;
+    gap: 12px;
+}
+    
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .logo-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.4);
+  }
+  
+  .navbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-left .logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .navbar-right nav button,
+  .navbar-right nav a {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.9rem;
+    margin-left: 15px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  
+  .navbar-right nav a:hover {
+    opacity: 0.8;
+  }
+
+  .nav-items {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-loggedIn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.profile-icon:hover {
+  transform: scale(1.3); /* phóng to 130% khi hover */
+  color: #ffd700;        /* đổi màu vàng khi hover (nếu thích) */
+}
+.profile-icon.active {
+  transform: scale(1.3); /* giữ to sau khi click */
+  color: #ffd700;        /* giữ màu khác (ví dụ đỏ) */
+}
+.profile-icon {
+    cursor: pointer;
+    color: white;      /* ép màu chữ (currentColor) */
+    fill: currentColor; /* ép màu fill */
+    stroke: currentColor; /* ép màu stroke */
+}
+  
+  /* Search */
+  .search { display: flex; align-items: center; }
+  .search-icon { cursor: pointer; margin-top: 4px;}
+  .search-box { display: flex; align-items: center; gap: 6px; }
+  .search-input {
+    height: 28px;
+    width: 220px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    outline: none;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 0 8px;
+  }
+  .search-close {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 2px;
+    height: 28px;
+    padding: 0 8px;
+    cursor: pointer;
+  }
+  
+  .search-container {
+    position: relative;
+  }
+  
+  .search-form {
+    position: relative;
+  }
+  
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .search-result-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    color: #333;
+  }
+  
+  .search-result-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+
+  
+  
+  @media (max-width: 480px) { .navbar { max-width: 420px; margin: 0 auto; } }
+  
+  @media (max-width: 480px) {
+    .search-input { width: 140px; }
+    .stat-pill { display: none; }
+  }
+  

@@ -1,0 +1,62 @@
+/* Responsive table styling */
+.table-container {
+  overflow-x: auto;
+}
+
+.responsive-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.responsive-table th,
+.responsive-table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.responsive-table th {
+  background-color: #f8f9fa;
+}
+
+
+/* Stacked layout for smaller screens */
+@media (max-width: 768px) {
+  .responsive-table {
+    display: block;
+    width: 100%;       
+  }
+
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tr {
+    display: block;
+    width: 100%;                 /* ✅ ép tr full màn hình */
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    box-sizing: border-box;      /* ✅ tránh overflow */
+    background: #fff;            /* nhìn rõ như card */
+  }
+
+  .responsive-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 8px;
+    width: 100%;                 /* ✅ ép td cũng chiếm hết chiều ngang */
+    box-sizing: border-box;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: capitalize;
+    flex-basis: 40%;
+    margin-right:250px;
+  }
+}

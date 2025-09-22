@@ -1,0 +1,85 @@
+.job-detail {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .job-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  
+  .job-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .tag {
+    background: #f0f0ff;
+    color: #6c5ce7;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  
+  /* Summary info row */
+  .job-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .info-box {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+  }
+  
+  .label {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .value {
+    font-weight: 600;
+  }
+  
+  .action-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .submit-btn {
+    background: linear-gradient(to right, #ff9800, #f44336);
+    border: none;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .jd-link {
+    font-size: 14px;
+    color: #0066cc;
+    text-decoration: underline;
+  }
+  
+  .job-section {
+    margin-bottom: 24px;
+  }
+  
+  .job-section h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .job-section p, .job-section ul {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  

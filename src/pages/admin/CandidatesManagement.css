@@ -1,0 +1,86 @@
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Header bảng */
+.admin-table th {
+  background: linear-gradient(90deg, #2e7d32, #43a047); /* xanh lá */
+  color: white;
+  text-align: left;
+  padding: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Ô dữ liệu */
+.admin-table td {
+  border: 1px solid #e0e0e0;
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* Hàng xen kẽ */
+.admin-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.admin-table tr:hover {
+  background-color: #e8f5e9; /* highlight xanh nhạt */
+}
+
+/* Nút hành động */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+/* Nút Update */
+button {
+  background: #2196f3; /* xanh dương */
+  color: white;
+}
+
+button:hover {
+  background: #1976d2;
+}
+
+/* Nút Remove */
+.remove-btn {
+  background: #ef5350; /* đỏ nhẹ */
+}
+
+.remove-btn:hover {
+  background: #c62828;
+}
+
+/* Loading icon */
+.loading-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid white;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
