@@ -1,5 +1,4 @@
 // ====================== CONFIG ======================
-// Đọc biến môi trường từ .env (React chỉ chấp nhận REACT_APP_*)
 export const API_BASE =
   process.env.REACT_APP_API_BASE || "http://localhost:3000/alowork";
 
@@ -37,9 +36,8 @@ export async function loginUser({ email, password }) {
   });
 
   const data = await res.json();
-  if (!res.ok || !data.success) {
+  if (!res.ok || !data.success)
     throw new Error(data.message || "Login failed");
-  }
 
   const ONE_HOUR_MS = 60 * 60 * 1000;
   const expiresAt = Date.now() + ONE_HOUR_MS;
@@ -61,9 +59,9 @@ export async function registerUser({ name, email, password, role }) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password, role }),
   });
-
   const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || "Register failed");
+  if (!res.ok || !data.success)
+    throw new Error(data.message || "Register failed");
   return data;
 }
 
@@ -109,6 +107,20 @@ export async function addNewProgramm(programm) {
   return await res.json();
 }
 
+export async function restartProgramms() {
+  const res = await fetch(`${API_BASE}/db/programm/restart/all`, {
+    method: "DELETE",
+  });
+  return await res.json();
+}
+
+export async function restartUsers() {
+  const res = await fetch(`${API_BASE}/db/user/restart/all`, {
+    method: "DELETE",
+  });
+  return await res.json();
+}
+
 // ====================== REFERRAL ======================
 export async function requestASharedLink(programmId) {
   const to = "68dd453474c74157fa7bc221";
@@ -134,9 +146,8 @@ export async function updateReferralStatus(referralId, newStatus) {
     method: "PATCH",
     headers: { "Content-Type": "application/json", ...authHeaders() },
   });
-
   const data = await res.json();
-  if (!res.ok) throw new Error(data?.message || "Failed to update referral status");
+  if (!res.ok) throw new Error(data?.message || "Failed to update referral");
   return data;
 }
 
@@ -156,6 +167,14 @@ export async function updateReferralSteps(referralId, newStep, stepNumber) {
   const data = await res.json();
   if (!res.ok) throw new Error(data?.message || "Failed to update step");
   return data;
+}
+
+export async function getLinkFromReferralById(id) {
+  const res = await fetch(`${API_BASE}/user/referrals-link/${id}`, {
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+  if (!res.ok) throw new Error("Failed to get referral link");
+  return await res.json();
 }
 
 // ====================== CANDIDATE ======================
