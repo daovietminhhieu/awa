@@ -58,10 +58,6 @@ export default function ViewProfile() {
     setBasicInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBankInfo((prev) => ({ ...prev, [name]: value }));
-  };
 
   // 💾 Lưu thông tin
   const handleBasicInfoSave = async () => {

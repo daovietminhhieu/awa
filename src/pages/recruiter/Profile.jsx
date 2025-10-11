@@ -54,13 +54,26 @@ export default function ViewProfile() {
     const { name, value } = e.target;
     setBasicInfo((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleInputChange = (e) => {
-    const { name, value, type } = e.target;
+    const { name, value, type, checked } = e.target;
+    let newValue = value;
+
+    // Nếu là checkbox
+    if (type === "checkbox") newValue = checked;
+
+    // Loại bỏ khoảng trắng đầu, cho phép nhập tiếng Việt
+    if (typeof newValue === "string") newValue = newValue.trimStart();
+
+    // Nếu là trường số tài khoản → chỉ cho nhập số
+    if (name === "accountNumber") newValue = newValue.replace(/\D/g, "");
+
     setBankInfo((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? e.target.checked : value.trimStart(),
+      [name]: newValue,
     }));
   };
+
   
 
   const handleBasicInfoSave = async () => {
