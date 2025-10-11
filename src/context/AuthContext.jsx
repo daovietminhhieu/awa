@@ -22,7 +22,6 @@ function readSession() {
 function writeSession(user, token) {
   try {
     const data = { user, token, expiresAt: Date.now() + ONE_HOUR_MS };
-    console.log("[Write Session]: ", data);
     sessionStorage.setItem(LS_SESSION, JSON.stringify(data));
   } catch {}
 }

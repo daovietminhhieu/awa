@@ -1,6 +1,11 @@
-export const API_BASE = 'http://localhost:3000/alowork';
+// ====================== CONFIG ======================
+// Đọc biến môi trường từ .env (React chỉ chấp nhận REACT_APP_*)
+export const API_BASE =
+  process.env.REACT_APP_API_BASE || "http://localhost:3000/alowork";
 
-// Lấy toàn bộ session (user + token) từ sessionStorage
+console.log("🌐 Using API base:", API_BASE);
+
+// ====================== SESSION HANDLING ======================
 function getSession() {
   try {
     const raw = sessionStorage.getItem("authSession");
@@ -10,388 +15,214 @@ function getSession() {
   }
 }
 
-// Lấy user hiện tại (không bao gồm token)
 export function getCurrentUser() {
   return getSession()?.user || null;
 }
 
-// Lấy token JWT hiện tại
 export function getToken() {
   return getSession()?.token || null;
 }
 
-// Tạo headers authorization nếu có token
 export function authHeaders() {
   const token = getToken();
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// Đăng nhập và lưu session
+// ====================== AUTH ======================
 export async function loginUser({ email, password }) {
   const res = await fetch(`${API_BASE}/db/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
 
   const data = await res.json();
-
   if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Login failed');
+    throw new Error(data.message || "Login failed");
   }
 
-  // Lưu toàn bộ session (user + token)
-  try {
-    const ONE_HOUR_MS = 60 * 60 * 1000;
-    const expiresAt = Date.now() + ONE_HOUR_MS;
-    sessionStorage.setItem("authSession", JSON.stringify({ user: data.data, token: data.token, expiresAt }));
-  } catch {}
+  const ONE_HOUR_MS = 60 * 60 * 1000;
+  const expiresAt = Date.now() + ONE_HOUR_MS;
+  sessionStorage.setItem(
+    "authSession",
+    JSON.stringify({ user: data.data, token: data.token, expiresAt })
+  );
 
   return data;
 }
 
-// Đăng xuất (xóa session)
 export function logoutUser() {
   sessionStorage.removeItem("authSession");
 }
 
-// Đăng ký
 export async function registerUser({ name, email, password, role }) {
   const res = await fetch(`${API_BASE}/db/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password, role }),
   });
 
   const data = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error(data.message || 'Register failed');
-  }
-
+  if (!res.ok || !data.success) throw new Error(data.message || "Register failed");
   return data;
 }
 
-// Lấy danh sách chương trình (programm)
+// ====================== PROGRAMM ======================
 export async function getProgrammsList() {
-  const res = await fetch(`${API_BASE}/db/programm`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch programms list');
-  }
-  const data = await res.json();
-  return data;
+  const res = await fetch(`${API_BASE}/db/programm`);
+  if (!res.ok) throw new Error("Failed to fetch programms list");
+  return await res.json();
 }
 
-
-// Lấy thông tin programm bằng id
 export async function getProgrammById(id) {
-  const res = await fetch(`${API_BASE}/db/programm/${id}`, {
-    method: 'GET',
-    headers: {'Content-Type': 'application/json'}
-  });
-  if (!res.ok) {
-    throw new Error('Failed to fetch programms by id');
-  }
-  const data = await res.json();
-  return data;
+  const res = await fetch(`${API_BASE}/db/programm/${id}`);
+  if (!res.ok) throw new Error("Failed to fetch programm by id");
+  return await res.json();
 }
 
-// Request shared link to admin
+export async function deleteProgrammsById(id) {
+  const res = await fetch(`${API_BASE}/user/programm/delete/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+  if (!res.ok) throw new Error("Failed to delete programm");
+  return await res.json();
+}
+
+export async function editProgrammsById(id, updates) {
+  const res = await fetch(`${API_BASE}/user/programm/edit/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(updates),
+  });
+  if (!res.ok) throw new Error("Failed to edit programm");
+  return await res.json();
+}
+
+export async function addNewProgramm(programm) {
+  const res = await fetch(`${API_BASE}/user/programm/new`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(programm),
+  });
+  if (!res.ok) throw new Error("Failed to add new programm");
+  return await res.json();
+}
+
+// ====================== REFERRAL ======================
 export async function requestASharedLink(programmId) {
-  const to = '68dd453474c74157fa7bc221';
-
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
+  const to = "68dd453474c74157fa7bc221";
   const res = await fetch(`${API_BASE}/user/referrals-request`, {
-    method: 'POST',
-    headers,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({ admin: to, programm: programmId }),
   });
-
-  if (!res.ok) {
-    const text = await res.text();
-    console.error('Request failed:', res.status, text);
-    throw new Error('Failed to request shared link to admin');
-  }
-
-  const data = await res.json();
-  return data;
+  if (!res.ok) throw new Error("Failed to request shared link");
+  return await res.json();
 }
 
-// Lấy list referral
 export async function getReferralsList() {
-
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
   const res = await fetch(`${API_BASE}/user/my-referrals`, {
-    method: 'GET',
-    headers,
-  })
-  
-  if (!res.ok) {
-    throw new Error('Failed to get referrals list');
-  }
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+  if (!res.ok) throw new Error("Failed to get referrals list");
+  return await res.json();
+}
+
+export async function updateReferralStatus(referralId, newStatus) {
+  const res = await fetch(`${API_BASE}/user/referrals/${referralId}/${newStatus}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
 
   const data = await res.json();
+  if (!res.ok) throw new Error(data?.message || "Failed to update referral status");
   return data;
 }
 
-// Cập nhật referral status
-export async function updateReferralStatus(referralId, newStatus) {
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
-  try {
-    const res = await fetch(`${API_BASE}/user/referrals/${referralId}/${newStatus}`, {
-      method: 'PATCH',
-      headers,
-      body: JSON.stringify({})
-    });
-
-    console.log(res);
-    const data = await res.json(); // luôn parse JSON (kể cả khi lỗi)
-    console.log(data);
-    if (!res.ok) {
-      // Nếu server trả message rõ ràng
-      const errorMessage = data?.message || 'Cập nhật trạng thái thất bại';
-      throw new Error(errorMessage);
-    }
-
-    return data;
-
-  } catch (err) {
-    console.error("❌ API Error:", err.message);
-    throw err; // ném lại để component xử lý (alert/toast)
-  }
-}
-
-
-// Cập nhật referral steps
 export async function updateReferralSteps(referralId, newStep, stepNumber) {
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-  console.log(headers);
+  const headers = { "Content-Type": "application/json", ...authHeaders() };
   let endpoint;
+
   if (newStep === "completed" || newStep === "rejected") {
-    // Admin step approval/rejection
     endpoint = `${API_BASE}/user/referrals/${referralId}/steps/${stepNumber}/${newStep}`;
   } else if (newStep === "in_review") {
-    // Recruiter requests review
     endpoint = `${API_BASE}/user/referrals/${referralId}/steps/${stepNumber}/request`;
   } else {
     throw new Error(`Unsupported step update action: ${newStep}`);
   }
 
-  const res = await fetch(endpoint, {
-    method: 'PATCH',
-    headers,
-    body: JSON.stringify({}),
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    console.error('Step update failed:', text);
-    throw new Error(`Failed to update step: ${res.status}`);
-  }
-
-  return await res.json();
-}
-
-// Lấy link referral
-export async function getLinkFromReferralById(id) {
-
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
-  const res = await fetch(`${API_BASE}/user/referrals-link/${id}`, {
-    method: 'GET',
-    headers,
-  });
-  if(!res.ok) {
-    throw new Error('Failed get link');
-  }
+  const res = await fetch(endpoint, { method: "PATCH", headers });
   const data = await res.json();
+  if (!res.ok) throw new Error(data?.message || "Failed to update step");
   return data;
 }
 
-export async function deleteProgrammsById(id) {
-
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
-  const res = await fetch(`${API_BASE}/user/programm/delete/${id} `, {
-    method: 'DELETE',
-    headers,  
-  })
-
-  if(!res.ok) {
-    throw new Error('Failed delete programm by id');
-  }
-  const data = await res.json();
-  return data;
-  
-}
-
-export async function editProgrammsById(id, updates) {
-
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
-  const res = await fetch(`${API_BASE}/user/programm/edit/${id}`, {
-    method: 'PATCH',
-    headers,
-    body: JSON.stringify(updates)
-  })
-
-  if(!res.ok) throw new Error('Failed edit Programms');
-  return await res.json();
-}
-
-export async function addNewProgramm(programm) {
-
-  const headers = { 'Content-Type': 'application/json', ...authHeaders() };
-
-  const res = await fetch(`${API_BASE}/user/programm/new`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(programm)
-  })
-
-  if(!res.ok) throw new Error('Failed add new programm');
-
-  return await res.json();
-}
-
+// ====================== CANDIDATE ======================
 export async function loadProgrammForCandidateExternSystemById(id) {
-  const res = await fetch(`${API_BASE}/db/programm/c/${id}`, {
-    method: 'GET',
-  });
+  const res = await fetch(`${API_BASE}/db/programm/c/${id}`);
   const data = await res.json();
-  if (!res.ok) {
-    const errorMessage = data?.message || 'Load programm from referral id failed';
-    throw new Error(errorMessage);
-  }
+  if (!res.ok) throw new Error(data?.message || "Failed to load programm");
   return data;
 }
 
 export async function sendFilledInformationsForm(id, form) {
-  try {
-    const response = await fetch(`${API_BASE}/db/programm/c/${id}/fill`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // <-- QUAN TRỌNG
-      },
-      body: JSON.stringify(form),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok || !result.success) {
-      console.warn("Fill form failed:", result?.message);
-    }
-
-    return result;
-  } catch (error) {
-    console.error("Submission error:", error);
-    throw new Error("Failed to submit application form");
-  }
+  const res = await fetch(`${API_BASE}/db/programm/c/${id}/fill`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(form),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data?.message || "Failed to submit form");
+  return data;
 }
 
+// ====================== SAVED PROGRAMMS ======================
 export async function getSavedProgramms() {
-  try {
-    const headers = {'Content-Type': 'application/json', ...authHeaders()};
-
-    const response = await fetch(`${API_BASE}/user/saved-programms`, {
-      method: "GET",
-      headers,
-    })
-
-    if(!response.ok) console.warn("Get saved programms response is not ok");
-    return await response.json();
-
-  } catch(err) {
-    throw new Error("Failed to get saved programms", err);
-  }
+  const res = await fetch(`${API_BASE}/user/saved-programms`, {
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+  return await res.json();
 }
 
 export async function saveProgrammById(progId) {
-  try {
-    const headers = {'Content-Type': 'application/json', ...authHeaders()};
-
-    const response = await fetch(`${API_BASE}/user/save-programm`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ programmId: progId }),
-    })
-
-    if(!response.ok) console.warn("Save programm response is not ok");
-    return await response.json();
-
-  } catch(err) {
-    throw new Error("Failed to save programm id " + progId);
-  }
+  const res = await fetch(`${API_BASE}/user/save-programm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ programmId: progId }),
+  });
+  return await res.json();
 }
 
 export async function unsaveProgrammById(progId) {
-  try {
-    const headers = {'Content-Type': 'application/json', ...authHeaders()};
-
-    const response = await fetch(`${API_BASE}/user/unsave-programm`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ programmId: progId }),
-    })
-
-    if(!response.ok) console.warn("Save programm response is not ok");
-    console.log("Successfully unsave programm");
-    return await response.json();
-
-  } catch(err) {
-    throw new Error("Failed to save programm id " + progId);
-  }
+  const res = await fetch(`${API_BASE}/user/unsave-programm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ programmId: progId }),
+  });
+  return await res.json();
 }
 
+// ====================== POTENTIALS ======================
 export async function getPotentialsList(isAdmin) {
-  try {
-    const headers = {'Content-Type': 'application/json', ...authHeaders()};
-    let endpoint = ""
-    
-    if(isAdmin) endpoint = `${API_BASE}/user/potentials`;
-    else endpoint = `${API_BASE}/user/my-potentials`;
+  const endpoint = isAdmin
+    ? `${API_BASE}/user/potentials`
+    : `${API_BASE}/user/my-potentials`;
 
-    const response = await fetch(endpoint, {
-      method: 'GET',
-      headers
-    })
-
-    if(!response.ok) console.warn("Get potentials list response is not ok");
-    return await response.json();
-  } catch(err) {
-    throw new Error("Failed to get potentials list "+ err);
-  }
+  const res = await fetch(endpoint, {
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+  return await res.json();
 }
 
 export async function pauseOrunpauseProgramm(id, action) {
-  try {
-    const headers = {
-      "Content-Type": "application/json",
-      ...authHeaders(),
-    };
-
-    const response = await fetch(`${API_BASE}/user/pause-unpause-programm`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ id, action }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      throw new Error(data.message || "Pause/unpause failed");
-    }
-
-    return data; // ✅ { success: true, data: { id, is_active } }
-  } catch (err) {
-    console.error("pauseOrunpauseProgramm error:", err);
-    throw new Error("Failed to do pause/unpause action");
-  }
+  const res = await fetch(`${API_BASE}/user/pause-unpause-programm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ id, action }),
+  });
+  const data = await res.json();
+  if (!res.ok || !data.success)
+    throw new Error(data.message || "Pause/unpause failed");
+  return data;
 }
-
