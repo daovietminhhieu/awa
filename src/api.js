@@ -245,3 +245,56 @@ export async function pauseOrunpauseProgramm(id, action) {
     throw new Error(data.message || "Pause/unpause failed");
   return data;
 }
+
+
+export async function updateBasicInfo(data) {
+  try {
+    const headers = {
+      "Content-Type":"application/json",
+      ...authHeaders(),
+    };
+
+    const response = await fetch(`${API_BASE}/user/myprofile`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(data)
+    })
+
+    const result = await response.json();
+
+    if(!response.ok || !result.success) {
+      throw new Error(result.message || "Update profile failed");
+    }
+
+    return result;
+  } catch (err) {
+    console.error("❌ Update profile failed:", err.response?.data || err.message);
+    throw err.response?.data || err;
+  }
+}
+
+
+export async function getMyProfile() {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    };
+
+    const response = await fetch(`${API_BASE}/user/myprofile`, {
+      method: "GET",
+      headers,
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to fetch profile");
+    }
+
+    return result; // { success: true, message: "...", data: { user } }
+  } catch (err) {
+    console.error("❌ getMyProfile failed:", err.message);
+    throw err;
+  }
+}

@@ -6,6 +6,9 @@ const AuthContext = createContext();
 const LS_SESSION = "authSession"; // stored in sessionStorage to isolate per tab
 const ONE_HOUR_MS = 60 * 60 * 1000;
 
+// =========================
+// 🔹 Helpers
+// =========================
 function readSession() {
   try {
     const raw = sessionStorage.getItem(LS_SESSION);
@@ -32,6 +35,9 @@ function clearSession() {
   } catch {}
 }
 
+// =========================
+// 🔹 Auth Provider
+// =========================
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [authReady, setAuthReady] = useState(false);
@@ -61,23 +67,58 @@ export function AuthProvider({ children }) {
     return () => clearInterval(interval);
   }, [user, navigate]);
 
+  // =========================
+  // 🔹 LOGIN
+  // =========================
   const login = (nextUser, token) => {
     setUser(nextUser);
     writeSession(nextUser, token);
-  
+
     if (nextUser.role === "admin") navigate("/admin/overview");
     else if (nextUser.role === "recruiter") navigate("/recruiter/programmsview");
     else if (nextUser.role === "candidate") navigate("/candidate/home");
     else navigate("/home");
   };
 
+  // =========================
+  // 🔹 LOGOUT
+  // =========================
   const logout = () => {
     setUser(null);
     clearSession();
     navigate("/login");
   };
 
-  const value = useMemo(() => ({ user, authReady, login, logout, setUser }), [user, authReady]);
+  // =========================
+  // 🔹 UPDATE SESSION  ✅ NEW
+  // =========================
+  const updateSession = (updatedUser, newToken = null) => {
+    try {
+      const existing = readSession();
+      const tokenToUse = newToken || existing?.token;
+      if (!tokenToUse) {
+        console.warn("⚠️ No token available to update session");
+        return;
+      }
+
+      // cập nhật state và sessionStorage
+      const newSession = {
+        user: updatedUser,
+        token: tokenToUse,
+        expiresAt: Date.now() + ONE_HOUR_MS,
+      };
+
+      sessionStorage.setItem(LS_SESSION, JSON.stringify(newSession));
+      setUser(updatedUser);
+    } catch (err) {
+      console.error("❌ Failed to update session:", err);
+    }
+  };
+
+  const value = useMemo(
+    () => ({ user, authReady, login, logout, setUser, updateSession }),
+    [user, authReady]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
