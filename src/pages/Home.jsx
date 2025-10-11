@@ -12,18 +12,21 @@ import { SuccessStories, WhyChoose, Partner, TipsAndEventsSection, BecomeCollabo
 export default function HomePage() {
   
   return (
-    <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
+    <>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px" }}>
 
 
-      <TopProgramme /> 
-      <WhyChoose />  
-      <Divider />
-      <SuccessStories />  
-      <TipsAndEventsSection />
-      <Partner /> 
-      <AutoSlider logos={partners} />
-      <BecomeCollaborator />  {/* Thêm mục CTV vào đây */}
-      <Footer />
-    </div>
+        <TopProgramme /> 
+        <WhyChoose />  
+        <Divider />
+        <SuccessStories />  
+        <TipsAndEventsSection />
+        <Partner /> 
+        <AutoSlider logos={partners} />
+        <BecomeCollaborator />  {/* Thêm mục CTV vào đây */}
+      
+      </div>
+     <Footer />
+    </>
   );
 }

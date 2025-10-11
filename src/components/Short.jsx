@@ -11,10 +11,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-
 export function SuccessStories() {
   const navigate = useNavigate();
   const { t } = useI18n();
@@ -151,26 +147,36 @@ export function WhyChoose() {
     </section>
   );
 }
-
 export function Partner() {
   const { t } = useI18n();
   const navigate = useNavigate();
 
   const handleContactClick = () => {
     navigate("/collabor");
-  }
+  };
 
   return (
-    <section className="partner-sections">
-      <div className="partner-content">
-        <h2 className="partner-title">{t('short.partners.title')}</h2>
-        <p className="partner-desc">{t('short.partners.become_collaborator_desc')}</p>
-       
+    <section className="partner-section">
+      <div className="partner-inner">
+        <h2 className="partner-title">
+          {t("short.partners.title")}
+        </h2>
+
+        <p className="partner-desc">
+          {t("short.partners.become_collaborator_desc")}
+        </p>
+
+        <button
+          onClick={handleContactClick}
+          className="partner-cta-btn"
+        >
+          {t("short.partners.contact_now") || "Contact now"}
+        </button>
       </div>
-      <button onClick={handleContactClick} className="partner-cta-btn">{t('short.partners.contact_now') || 'Contact now'}</button>
     </section>
   );
 }
+
 
 import Footer from "./Footer";
 export function PartnerDetail() {
@@ -375,9 +381,11 @@ export function BecomeCollaborator() {
         border: "1px solid #ddd",
         borderRadius: "8px",
         textAlign: "center",
+        background:"linear-gradient(135deg, #e3f2fd, #f9fbff)",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
       }}
     >
-      <h2 className="section-title">{t('short.become_collaborator.title')}</h2>
+      <h2 className="section-becomecollab-title">{t('short.become_collaborator.title')}</h2>
       <p>{t('short.become_collaborator.description')}</p>
       <button
         onClick={handleRegisterClick}
@@ -386,7 +394,7 @@ export function BecomeCollaborator() {
           margin: "20px 20px",
           fontSize: "16px",
           cursor: "pointer",
-          color: "white",
+          color: "#fff",
           border: "none",
           borderRadius: "5px",
         }}
