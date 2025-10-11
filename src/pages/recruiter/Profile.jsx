@@ -54,11 +54,14 @@ export default function ViewProfile() {
     const { name, value } = e.target;
     setBasicInfo((prev) => ({ ...prev, [name]: value }));
   };
-
-  const handleBankChange = (e) => {
-    const { name, value } = e.target;
-    setBankInfo((prev) => ({ ...prev, [name]: value }));
+  const handleInputChange = (e) => {
+    const { name, value, type } = e.target;
+    setBankInfo((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? e.target.checked : value.trimStart(),
+    }));
   };
+  
 
   const handleBasicInfoSave = async () => {
     try {
