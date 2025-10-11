@@ -207,6 +207,7 @@ export default function AdminProgrammsList({
                   onClick={async () => {
                     if (window.confirm(t('admin.programms.card.delete_confirm') || "Delete this program?"))
                       await deleteProgrammsById(p._id);
+                      alert(t('admin.programms.card.delete_message'));
                   }}
                 >
                   {t('admin.programms.card.delete') || 'Delete'}

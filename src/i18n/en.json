@@ -318,6 +318,7 @@
                 "unsave":"Unsave",
                 "edit":"Edit",
                 "delete_confirm":"Delete this program?",
+                "delete_message":"Refresh the page to update new programms list",
                 "delete":"Delete"
             },
             "messages": {

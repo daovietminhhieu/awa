@@ -317,7 +317,8 @@
             "unsave":"Bỏ lưu",
             "edit":"Chỉnh sửa",
             "delete":"Xóa",
-            "delete_confirm":"Bạn có chắc chắn muốn xóa chương trình này không?"
+            "delete_confirm":"Bạn có chắc chắn muốn xóa chương trình này không?",
+            "delete_message":"Tải lại trang (F5) để cập nhật lại danh sách chương trình mới"
         },
         "messages": {
           "added_success": "✅ Thêm chương trình mới thành công",
