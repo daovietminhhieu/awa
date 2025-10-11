@@ -201,7 +201,7 @@ export default function ViewProfile() {
         </div>
 
         {/* Bank Account Information, nếu role = recruiter */}
-        {user.role === "recruiter" && (
+        {false & user.role === "recruiter" && (
           <div className="info-section">
             <h3>
               <FaCreditCard className="section-icon" />{" "}
