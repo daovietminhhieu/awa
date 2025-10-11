@@ -13,6 +13,7 @@ import FilterSearch from "../../components/FilterSearch";
 import "./ProgrammsManagement.css";
 import { useI18n } from "../../i18n";
 
+
 // ------------------- AddProgramForm -------------------
 export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
   const { t } = useI18n();
@@ -42,14 +43,17 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
     <div className="edit-modal">
       <div className="edit-form">
         <button className="close-btn" onClick={onClose}>×</button>
-        <h2>{t("admin.programms.edit.add_title") || "Add New Programm"}</h2>
+        <h2>{t("admin.programms.edit.add_title") || "Add New Program"}</h2>
+
         <form onSubmit={handleSubmit}>
+          {/* 🧩 Step 1: Basic Info */}
           {step === 1 && (
             <>
               <h3>{t("admin.programms.edit.basic_info") || "Basic Info"}</h3>
-              {["title", "university", "company", "type", "degrees", "level", "duration"].map((field) => (
+
+              {["title", "company", "type", "degrees", "duration", "land"].map((field) => (
                 <label key={field}>
-                  {t(`admin.programms.edit.new.${field}`)}:{" "}
+                  {t(`admin.programms.edit.new.${field}`)}:
                   <input
                     name={field}
                     value={formData[field]}
@@ -58,18 +62,60 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   />
                 </label>
               ))}
+
+              <label>
+                {t("admin.programms.edit.new.logoL") || "Logo URL:"}
+                <input
+                  name="logoL"
+                  value={formData.logoL}
+                  onChange={handleChange}
+                  placeholder="https://example.com/logo.png"
+                />
+              </label>
+
+              <label>
+                {t("admin.programms.edit.new.bonus") || "Bonus:"}
+                <input
+                  name="bonus"
+                  value={formData.bonus}
+                  onChange={handleChange}
+                  type="text"
+                />
+              </label>
+
+              <label>
+                {t("admin.programms.edit.new.vacancies") || "Vacancies:"}
+                <input
+                  name="vacancies"
+                  value={formData.vacancies}
+                  onChange={handleChange}
+                  type="text"
+                />
+              </label>
+
+              <label>
+                {t("admin.programms.edit.new.hired") || "Hired:"}
+                <input
+                  name="hired"
+                  value={formData.hired}
+                  onChange={handleChange}
+                  type="text"
+                />
+              </label>
+
               <button type="button" onClick={() => setStep(2)}>
                 {t("admin.programms.edit.next") || "Next →"}
               </button>
             </>
           )}
 
+          {/* 🧩 Step 2: Requirements */}
           {step === 2 && (
             <>
               <h3>{t("admin.programms.edit.requirements") || "Requirements"}</h3>
               {["age", "health", "education", "certificate"].map((f) => (
                 <label key={f}>
-                  {t(`admin.programms.edit.new.${f}`)}:{" "}
+                  {t(`admin.programms.edit.new.${f}`)}:
                   <input
                     name={`requirement.${f}`}
                     value={formData.requirement[f]}
@@ -77,9 +123,10 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   />
                 </label>
               ))}
+
               <div className="form-buttons">
                 <button type="button" onClick={() => setStep(1)}>
-                  {t("admin.programms.edit.back") || "← Back"}
+                  ← {t("admin.programms.edit.back") || "Back"}
                 </button>
                 <button type="button" onClick={() => setStep(3)}>
                   {t("admin.programms.edit.next") || "Next →"}
@@ -88,29 +135,34 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
             </>
           )}
 
+          {/* 🧩 Step 3: Details */}
           {step === 3 && (
             <>
               <h3>{t("admin.programms.edit.details") || "Details"}</h3>
+
               <label>
-                {t("admin.programms.edit.new.overview") || "Overview:"}
+                {t("admin.programms.edit.new.details_overview") || "Overview:"}
                 <textarea
                   name="details.overview"
                   value={formData.details.overview}
                   onChange={handleChange}
                 />
               </label>
+
               <label>
-                {t("admin.programms.edit.new.other") || "Other:"}
+                {t("admin.programms.edit.new.details_other") || "Other:"}
                 <textarea
                   name="details.other"
                   value={formData.details.other}
                   onChange={handleChange}
                 />
               </label>
+
               <label>
                 {t("admin.programms.edit.new.fee") || "Fee:"}
                 <input name="fee" value={formData.fee} onChange={handleChange} />
               </label>
+
               <label>
                 {t("admin.programms.edit.new.expected_salary") || "Expected Salary:"}
                 <input
@@ -119,6 +171,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   onChange={handleChange}
                 />
               </label>
+
               <label>
                 {t("admin.programms.edit.new.deadline") || "Deadline:"}
                 <input
@@ -128,27 +181,48 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   onChange={handleChange}
                 />
               </label>
+
+              <label>
+                {t("admin.programms.edit.new.public_day") || "Public Day:"}
+                <input
+                  type="date"
+                  name="public_day"
+                  value={formData.public_day}
+                  onChange={handleChange}
+                />
+              </label>
+
               <label>
                 {t("admin.programms.edit.new.type_category") || "Type Category:"}
                 <select
                   name="type_category"
                   value={formData.type_category}
                   onChange={handleChange}
+                  required
                 >
-                  <option value="job">
-                    {t("admin.programms.edit.new.type_job") || "Job"}
-                  </option>
-                  <option value="studium">
-                    {t("admin.programms.edit.new.type_studium") || "Studium"}
-                  </option>
+                  <option value="job">{t("admin.programms.edit.new.type_job") || "Job"}</option>
+                  <option value="studium">{t("admin.programms.edit.new.type_studium") || "Studium"}</option>
                 </select>
               </label>
+
+              <label>
+                {t("admin.programms.edit.new.is_active") || "Is Active:"}
+                <select
+                  name="is_active"
+                  value={formData.is_active}
+                  onChange={handleChange}
+                >
+                  <option value="true">{t("admin.programms.edit.new.active")}</option>
+                  <option value="false">{t("admin.programms.edit.new.inactive")}</option>
+                </select>
+              </label>
+
               <div className="form-buttons">
                 <button type="button" onClick={() => setStep(2)}>
-                  {t("admin.programms.edit.back") || "← Back"}
+                  ← {t("admin.programms.edit.back") || "Back"}
                 </button>
                 <button type="submit">
-                  {t("admin.programms.edit.create") || "✅ Create"}
+                  ✅ {t("admin.programms.edit.create") || "Create"}
                 </button>
                 <button type="button" onClick={onClose}>
                   {t("admin.programms.edit.cancel") || "Cancel"}
@@ -161,6 +235,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
     </div>
   );
 }
+
 
 // ------------------- ProgrammsManagement -------------------
 export default function ProgrammsManagement() {
@@ -312,20 +387,26 @@ export default function ProgrammsManagement() {
               onClose={() => setShowAddForm(false)}
               defaultValues={{
                 title: "",
-                university: "",
                 company: "",
+                logoL: "",
                 type: "",
                 degrees: "",
-                level: "",
                 duration: "",
-                requirement: { age: "", health: "", education: "", certificate: "" },
-                details: { overview: "", other: "" },
+                land: "",
                 fee: "",
                 expected_salary: "",
                 deadline: "",
+                bonus: "",
+                vacancies: "",
+                hired: "",
+                requirement: { age: "", health: "", education: "", certificate: "" },
+                details: { overview: "", other: "" },
+                is_active: "true",
                 type_category: "job",
+                public_day: "",
               }}
             />
+
           )}
         </div>
       )}

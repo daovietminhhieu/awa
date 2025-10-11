@@ -251,6 +251,10 @@
                 "degrees":"Bằng cấp yêu cầu", 
                 "level":"Trình độ", 
                 "duration":"Thời gian",
+                "land":"Quốc gia",
+                "bonus":"Thưởng",
+                "vacancies":"Số lượng",
+                "hired":"Đã tuyển",
                 "age": "Tuổi", 
                 "health": "Tình trạng sức khỏe", 
                 "education": "Trình độ học vấn", 
@@ -261,7 +265,10 @@
                 "expected_salary":"Mức lương kỳ vọng",
                 "deadline":"Hạn nộp",
                 "type_job": "Xuất khẩu lao động",
-                "type_studium": "Du học"
+                "type_studium": "Du học",
+                "is_active":"Đang hoạt động",
+                "active": "Có",
+                "inactive":"Không"
             },
             "basic_info":"Thông tin cơ bản",
             "details_title":"Chi tiết chương trình",
@@ -311,6 +318,10 @@
             "edit":"Chỉnh sửa",
             "delete":"Xóa",
             "delete_confirm":"Bạn có chắc chắn muốn xóa chương trình này không?"
+        },
+        "messages": {
+          "added_success": "✅ Thêm chương trình mới thành công",
+          "added_failed": "❌ Thêm chương trình mới không thành công"
         },
         "alert":{
             "updated_success":"Chương trình đã được cập nhật thành công."

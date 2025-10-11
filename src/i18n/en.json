@@ -257,6 +257,10 @@
                     "degrees":"Degrees", 
                     "level":"Level", 
                     "duration":"Duration",
+                    "land":"Land",
+                    "bonus":"Bonus",
+                    "vacancies":"Vacancies",
+                    "hired":"Hired",
                     "age": "Age", 
                     "health": "Health", 
                     "education": "Education", 
@@ -267,7 +271,10 @@
                     "expected_salary":"Expected Salary",
                     "deadline":"Deadline",
                     "type_job": "Job",
-                    "type_studium": "Studium"
+                    "type_studium": "Studium",
+                    "is_active":"Is Active",
+                    "active":"yes",
+                    "inactive": "no"
                 },
                 "basic_info": "Basic Info",
                 "details_title": "Recruitment Details",
@@ -312,6 +319,10 @@
                 "edit":"Edit",
                 "delete_confirm":"Delete this program?",
                 "delete":"Delete"
+            },
+            "messages": {
+                "added_success": "✅ Added successfully",
+                "added_failed": "❌ Failed to add program"
             },
             "alert": {"updated_success":"Updated successfully!"},
         "form": {"course":"Course","title":"Title","university":"University","country":"Country","level":"Level","duration":"Duration","fee":"Fee","bonus":"Bonus","reward":"Reward","vacancies":"Vacancies","requirement":"Requirement","status_active":"Active","status_inactive":"Inactive"}
