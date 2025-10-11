@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import './Navbar.css';
+import './NavBar.css';
 import { useI18n } from "../i18n";
 
 import { FaSearch, FaSignInAlt, FaSignOutAlt, FaRegBookmark, FaUserPlus, FaUser, FaBars, FaTimes } from "react-icons/fa";
