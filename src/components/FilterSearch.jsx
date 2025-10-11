@@ -38,11 +38,18 @@ export default function FilterSearch({ programms = [], onSelectProgramm, onFilte
         <div className="filter-first">
           <div className="filter-item">
             <label>{t('filter.type_label')}</label>
-            <select name="type_category" value={filters.type_category} onChange={handleFilterChange}><option value="">{t('filter.all')}</option><option value="job">Job</option><option value="studium">Studium</option></select>
+            <select name="type_category" value={filters.type_category} onChange={handleFilterChange}>
+              <option value="">{t('filter.all')}</option>
+              <option value="job">{t('admin.programms.edit.new.type_job')}</option>
+              <option value="studium">{t('admin.programms.edit.new.type_studium')}</option>
+            </select>
           </div>
           <div className="filter-item">
             <label>{t('filter.country_label')}</label>
-            <select name="land" value={filters.land} onChange={handleFilterChange}><option value="">{t('filter.all')}</option>{uniqueLands.map((l) => <option key={l} value={l}>{l}</option>)}</select>
+            <select name="land" value={filters.land} onChange={handleFilterChange}>
+              <option value="">{t('filter.all')}</option>
+              {uniqueLands.map((l) => <option key={l} value={l}>{l}</option>)}
+            </select>
           </div>
           <div className="filter-item">
             <label>{t('filter.deadline_label')}</label>
@@ -50,7 +57,10 @@ export default function FilterSearch({ programms = [], onSelectProgramm, onFilte
           </div>
           <div className="filter-item">
             <label>{t('filter.degree_label')}</label>
-            <select name="degrees" value={filters.degrees} onChange={handleFilterChange}><option value="">{t('filter.all')}</option>{uniqueDegrees.map((d) => <option key={d} value={d}>{d}</option>)}</select>
+            <select name="degrees" value={filters.degrees} onChange={handleFilterChange}>
+              <option value="">{t('filter.all')}</option>
+              {uniqueDegrees.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
           </div>
         </div>
         <div className="filter-second">

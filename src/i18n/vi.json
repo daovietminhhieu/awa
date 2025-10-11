@@ -6,6 +6,9 @@
     "close": "Đóng"
   },
   "short": {
+    "review_title": "Đánh giá nổi bật",
+    "hide":"ẩn",
+    "more":"thêm",
     "topprogramm": {
         "title":"Chương trình nổi bật",
         "list": [
@@ -157,6 +160,9 @@
     "signup": "Đăng ký",
     "logout": "Đăng xuất",
     "search_placeholder": "Tìm kiếm chương trình...",
+    "search_result": "",
+    "search_title": "Tìm kiếm",
+    "search_button":"tìm kiếm",
     "notifications": "Thông báo"
   },
   "auth": {
@@ -348,7 +354,7 @@
     },
     "profile": {
         "title": "Hồ sơ quản trị viên",
-        "edit": "Chỉnh sửa hồ sơ",
+        "edit_profile": "Chỉnh sửa hồ sơ",
         "info": "Thông tin cá nhân",
         "name": "Tên",
         "email": "Email",
@@ -415,7 +421,7 @@
         "cv": "CV",
         "linkedin": "LinkedIn",
         "portfolio": "Hồ sơ năng lực",
-        "time": "Thời gian ứng tuyển",
+        "time": "Hoàn thành lúc",
         "statusvalue": {
             "completed": "Đã hoàn thành",
             "notcompleted": "Chưa hoàn thành"
@@ -426,7 +432,7 @@
     "profile": {
         "title": "Hồ sơ nhà tuyển dụng",
         
-        "edit": "Chỉnh sửa hồ sơ",
+        "edit_profile": "Chỉnh sửa hồ sơ",
         "info": "Thông tin cá nhân",
         "name": "Tên",
         "email": "Email",

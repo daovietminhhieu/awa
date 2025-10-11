@@ -1,6 +1,9 @@
 {
     "common": {"not_provided": "Not provided","cancel":"Cancel","save":"Save","close":"Close","hide":"Hide","show":"Show"},
     "short": {
+        "review_title": "Featured Review",
+        "hide":"hide",
+        "more":"more",
         "topprogramm": [
             {
                 "title": "Leadership and Effective Management",
@@ -157,6 +160,9 @@
         "overview":"Overview",
         "programms":"Programms",
         "candidates":"Candidates",
+        "search_result": "",
+        "search_title": "Search",
+        "search_button":"find",
         "login":"Login",
         "signup":"Sign Up",
         "logout":"Logout",
