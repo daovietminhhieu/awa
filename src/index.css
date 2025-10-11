@@ -1,6 +1,17 @@
-body {
-    /*background: linear-gradient(to right, #34e89e, #0f3443);*/
-    /* hoặc vertical */
+:root {
+    /* 🌈 Màu nền gradient (bạn có thể bật cái này khi cần) */
+    /* background: linear-gradient(to right, #34e89e, #0f3443); */
     /* background: linear-gradient(to bottom, #34e89e, #0f3443); */
- 
-}
+  
+    --font-family-base: "Inter", sans-serif;
+    font-family: var(--font-family-base);
+    height: 100%; /* hoặc: min-height: 100vh; nếu muốn chiếm toàn màn hình */
+  }
+  
+  * {
+    box-sizing: border-box; /* 🧱 tránh overflow layout khi padding + width */
+    font-family: var(--font-family-base);
+    margin: 0;
+    padding: 0;
+  }
+  

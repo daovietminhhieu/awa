@@ -1,0 +1,130 @@
+.programm-detail {
+    width: 100%;
+    margin: 20px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    font-family: "Inter", Arial, sans-serif;
+  }
+  
+  /* Header layout */
+  .programm-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Left Info */
+  .programm-info {
+    flex: 3;
+  }
+  
+  .programm-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #222;
+  }
+  
+  .programm-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 25px;
+  }
+  .tag {
+    background: #eef2f7;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+  }
+  
+  /* Summary */
+  .programm-summary {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .info-box {
+    flex: 1;
+    min-width: 180px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    padding: 14px 18px;
+    border-radius: 12px;
+  }
+  .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #777;
+  }
+  .value {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 6px;
+    color: #222;
+  }
+  
+  /* Right Actions */
+  .programm-actions {
+    flex: 1;
+  }
+  .action-card {
+    background: #fff7f3;
+    border: 1px solid #ffd5c2;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .submit-btn {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .jd-link {
+    display: block;
+    margin-top: 12px;
+    font-size: 15px;
+    color: #ff6a3d;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .jd-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Sections */
+  .programm-section {
+    margin-bottom: 30px;
+  }
+  .programm-section h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #333;
+  }
+  .programm-section p,
+  .programm-section li {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #444;
+  }
+  .programm-section ul {
+    list-style: disc;
+    margin-left: 20px;
+  }
+  

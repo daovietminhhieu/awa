@@ -1,0 +1,192 @@
+/* ==============================
+   TOP PROGRAMME SECTION (REWORK)
+   ============================== */
+
+.top-programme-section {
+  max-width: 1100px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 3rem auto;
+  background: #ffffff;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.12);
+  color: #222;
+}
+
+/* Tiêu đề */
+.highlight-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #f57c00; /* Cam chủ đạo AloWorks */
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+
+/* Card tổng */
+.featured-card {
+  background: #f9fbff;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(25, 118, 210, 0.15);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+}
+
+.featured-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(25, 118, 210, 0.25);
+}
+
+/* Body card chứa ảnh + nội dung */
+.card-body {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* Ảnh bên trái */
+.card-body img {
+  width: 320px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.card-body img:hover {
+  transform: scale(1.03);
+}
+
+/* Nội dung bên phải */
+.content-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hàng chứa tiêu đề và đánh giá sao */
+.title-star-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.program-title {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #0d3c61;
+  font-weight: 700;
+}
+
+/* Sao đánh giá */
+.stars {
+  color: #f5b50a;
+  font-size: 1.3rem;
+  user-select: none;
+}
+
+/* Mô tả */
+.description {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 0.5rem;
+}
+
+/* Nút xem thêm */
+.read-more-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.read-more-btn {
+  background: none;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.read-more-btn:hover {
+  text-decoration: underline;
+  color: #0d3c61;
+}
+
+/* Footer review */
+.top-review {
+  padding: 1rem 1.2rem;
+  background: #fff7e6;
+  border-left: 4px solid #f57c00;
+  border-radius: 0 0 12px 12px;
+  font-style: italic;
+  color: #555;
+  box-shadow: inset 0 0 5px rgba(245, 124, 0, 0.2);
+}
+
+.top-review h4 {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+  color: #f57c00;
+}
+
+.top-review blockquote {
+  margin: 0;
+  color: #333;
+}
+
+/* Ẩn mũi tên navigation mặc định Swiper */
+.swiper-button-prev,
+.swiper-button-next {
+  display: none !important;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+
+@media (max-width: 768px) {
+  .top-programme-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .highlight-title {
+    font-size: 1.8rem;
+  }
+
+  .card-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .card-body img {
+    width: 100%;
+    height: auto;
+  }
+
+  .title-star-row {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .read-more-container {
+    justify-content: center;
+  }
+
+  .top-review {
+    border-left: none;
+    border-top: 4px solid #f57c00;
+    border-radius: 0 0 10px 10px;
+  }
+}

@@ -41,12 +41,16 @@ export function NewsSlider({ news }) {
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
+import { useI18n } from "../i18n";
 
+export function AutoSlider({ logos }) {
+    const {t} = useI18n();  
 
-export function PartnerSlider({ logos }) {
     return (
       <section className="partner-section">
-        <h2 className="partner-title">Đối tác</h2>
+        <div>
+          <h1 className="partner-title" >{t('short.partner.title')}</h1>
+        </div>
         <div className="partner-container">
           <Swiper
             modules={[Autoplay]}
@@ -64,6 +68,7 @@ export function PartnerSlider({ logos }) {
               <SwiperSlide key={idx} className="partner-slide">
                 <div className="partner-card">
                   <img src={logo} alt={`Partner ${idx}`} className="partner-logo" />
+              
                 </div>
               </SwiperSlide>
             ))}

@@ -3,7 +3,6 @@
     padding: 2rem;
     max-width: 1000px;
     margin: 0 auto;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   }
   
   .profile-header {
@@ -41,7 +40,7 @@
   }
   
   .btn-edit {
-    background: linear-gradient(135deg, #FFA500, #FF5E62);
+    background: #FFA500;
     color: white;
   }
   
@@ -51,22 +50,22 @@
   }
   
   .btn-save {
-    background: #28a745;
+    background: #FFA500;
     color: white;
   }
   
   .btn-save:hover {
-    background: #218838;
+    background: #FFA500;
     transform: translateY(-2px);
   }
   
   .btn-cancel {
-    background: #dc3545;
+    background: #FFA500;
     color: white;
   }
   
   .btn-cancel:hover {
-    background: #c82333;
+    background: #FFA500;
     transform: translateY(-2px);
   }
   
@@ -147,14 +146,14 @@
   }
   
   .role-badge.CTV {
-    background: #28a745;
+    background: #DC2626;
     color: white;
   }
   
   .credit-amount, .bonus-amount {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #28a745;
+    color: #DC2626;
   }
   
   .account-number {
@@ -168,7 +167,7 @@
   .currency-badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
-    background: #007bff;
+    background: #DC2626;
     color: white;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -212,7 +211,7 @@
   .form-group input:focus,
   .form-group select:focus {
     outline: none;
-    border-color: #FFA500;
+    border-color: #DC2626;
     box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.1);
   }
   

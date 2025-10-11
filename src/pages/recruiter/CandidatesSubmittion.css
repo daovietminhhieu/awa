@@ -1,4 +1,4 @@
-/* Responsive table styling */
+/* Base table styles */
 .table-container {
   overflow-x: auto;
 }
@@ -6,57 +6,77 @@
 .responsive-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: white;
 }
 
 .responsive-table th,
 .responsive-table td {
-  padding: 8px;
+  padding: 12px 16px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
 .responsive-table th {
   background-color: #f8f9fa;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-
-/* Stacked layout for smaller screens */
+/* 🟡 Mobile Styles (Stacked layout) */
 @media (max-width: 768px) {
   .responsive-table {
     display: block;
-    width: 100%;       
+    width: 100%;
   }
 
   .responsive-table thead {
     display: none;
   }
 
+  .responsive-table tbody {
+    display: block;
+    width: 100%;
+  }
+
   .responsive-table tr {
     display: block;
-    width: 100%;                 /* ✅ ép tr full màn hình */
-    margin-bottom: 16px;
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 8px;
-    box-sizing: border-box;      /* ✅ tránh overflow */
-    background: #fff;            /* nhìn rõ như card */
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   .responsive-table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0;
     border-bottom: 1px solid #eee;
-    padding: 8px;
-    width: 100%;                 /* ✅ ép td cũng chiếm hết chiều ngang */
+    width: 100%;
     box-sizing: border-box;
+  }
+
+  .responsive-table td:last-child {
+    border-bottom: none;
   }
 
   .responsive-table td::before {
     content: attr(data-label);
-    font-weight: bold;
-    text-transform: capitalize;
-    flex-basis: 40%;
-    margin-right:250px;
+    font-weight: 600;
+    flex: 1;
+    color: #555;
+    text-align: left;
+    padding-right: 12px;
+  }
+
+  .responsive-table td span,
+  .responsive-table td a,
+  .responsive-table td {
+    flex: 2;
+    text-align: right;
+    color: #333;
+    word-break: break-word;
   }
 }

@@ -1,24 +1,22 @@
 import React from "react";
+import { useI18n } from "../../../../i18n";
 import {CandidateRow, ArchivedRow} from "./Row";
 
 import './Table.css';
 
 export function CandidateTable({ submissions, editedRows, onStatusChange, onBonusChange, onSave, onRemove, loadingRow }) {
+  const { t } = useI18n();
   return (
     <table className="admin-table">
       <thead>
         <tr>
-          <th>Candidate</th>
-          <th>Job</th>
-          <th>CTV</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>CV</th>
-          <th>LinkedIn</th>
-          <th>Portfolio</th>
-          <th>Status</th>
-          <th>Bonus</th>
-          <th>Action</th>
+          <th>{t('admin.candidates.table.candidate') || 'Candidate'}</th>
+          <th>{t('admin.candidates.table.programm') || 'Programm'}</th>
+          <th>{t('admin.candidates.table.referrer') || 'Referrer'}</th>
+          <th>{t('admin.candidates.table.email') || 'Email'}</th>
+          <th>{t('admin.candidates.table.phone') || 'Phone'}</th>
+          <th>{t('admin.candidates.table.cv') || 'CV'}</th>
+          <th>{t('admin.candidates.table.bonus') || 'Bonus'}</th>
         </tr>
       </thead>
       <tbody>
@@ -41,22 +39,20 @@ export function CandidateTable({ submissions, editedRows, onStatusChange, onBonu
 
 
 export function ArchivedTable({ archived }) {
+  const { t } = useI18n();
+
   return (
     <table className="admin-table">
       <thead>
         <tr>
-          <th>Candidate</th>
-          <th>Job</th>
-          <th>CTV</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>CV</th>
-          <th>LinkedIn</th>
-          <th>Portfolio</th>
-          <th>Status</th>
-          <th>Bonus</th>
-          <th>Salary</th>
-          <th>Finalized</th>
+          <th>{t('admin.candidates.table.candidate') || 'Candidate'}</th>
+          <th>{t('admin.candidates.table.programm') || 'Programm'}</th>
+          <th>{t('admin.candidates.table.referrer') || 'CTV'}</th>
+          <th>{t('admin.candidates.table.email') || 'Email'}</th>
+          <th>{t('admin.candidates.table.phone') || 'Phone'}</th>
+          <th>{t('admin.candidates.table.cv') || 'CV'}</th>
+          <th>{t('admin.candidates.table.bonus') || 'Bonus'}</th>
+          <th>{t('admin.candidates.table.finalized') || 'Finalized'}</th>
         </tr>
       </thead>
       <tbody>

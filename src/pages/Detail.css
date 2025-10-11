@@ -1,66 +1,671 @@
-.course-detail {
-    display: flex;
+/* ===========================
+   🎯 LAYOUT TỔNG THỂ
+=========================== */
+.programm-detail { display: flex; flex-direction: column; margin-top: 20px; background: #fafafa; color: #222; font-family: "Inter", sans-serif; }
+.programm-detail-header { display: flex; flex-direction: column; margin: 25px 2rem 0 2rem; }
+.programm-detail-header h1 { margin: 0; font-size: 1.8rem; font-weight: 600; color: #FFA500; }
+
+/* Hiển thị 3 component xếp dọc 1 cột */
+.column-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* khoảng cách giữa các phần */
+  padding: 20px 30px;
+}
+
+/* Đảm bảo mỗi section full width, tách biệt rõ */
+.column-layout > * {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+}
+
+
+/* ===========================
+   🏷️ TAGS / SLIDER TỰ ĐỘNG + MANUAL
+=========================== */
+.programm-tags-slider {
+  display: flex;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 8px 0;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  cursor: grab;
+  user-select: none;
+  -webkit-overflow-scrolling: touch;
+  animation: autoScroll 60s linear infinite;
+}
+.programm-tags-slider::-webkit-scrollbar { display: none; }
+.programm-tags-slider:hover { animation-play-state: paused; }
+
+.tag {
+  flex: 0 0 auto;
+  background: rgba(0,0,0,0.05);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  white-space: nowrap;
+  color: #374151;
+  cursor: default;
+  transition: transform 0.2s ease;
+}
+.tag:hover { transform: scale(1.05); }
+
+.programm-tags-special {
+  display: flex;
+  gap: 5px;
+}
+@keyframes autoScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ===========================
+   PHẦN THÂN, FORM, INFO BOXES...
+=========================== */
+/* giữ nguyên toàn bộ CSS body, sidebar, form... như bản bạn gửi trước */
+
+
+/* ===========================
+   🧱 PHẦN THÂN CHÍNH
+=========================== */
+.programm-body {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem;
+  flex-wrap: wrap;
+}
+
+.programm-main {
+  flex: 3;
+  min-width: 300px;
+}
+
+.programm-sidebar {
+  flex: 1;
+  background: #ffffff;
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  min-width: 250px;
+}
+
+
+/* ===========================
+   📄 FORM ỨNG TUYỂN GỌN NHẸ
+=========================== */
+.apply-form {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid #e5e7eb;
+}
+
+.apply-form label {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 2px;
+  font-size: 0.85rem;
+}
+
+.apply-form input,
+.apply-form textarea {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  background: #f9fafb;
+  transition: border 0.2s ease;
+  width: 50px;
+}
+
+.apply-form input:focus,
+.apply-form textarea:focus {
+  outline: none;
+  border-color: #FFA500;
+  background: #fff;
+}
+
+.apply-form textarea {
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.4;
+  width: 50px;
+}
+
+.apply-form button {
+  background: #FFA500;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background 0.3s;
+}
+
+.apply-form button:hover {
+  background: #FFA500;
+}
+
+.section h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.15rem;
+  color: #FFA500;
+  font-weight: 600;
+}
+
+/* ===========================
+   ⚙️ BOX THÔNG TIN NHANH
+=========================== */
+.programm-info-boxes {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.8rem;
+}
+
+.info-box {
+  flex: 1;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #e5e7eb;
+}
+
+
+/* ===========================
+   🧾 NỘI DUNG CHƯƠNG TRÌNH
+=========================== */
+.programm-main section {
+  margin-bottom: 2rem;
+}
+
+.programm-main h2 {
+  color: #FFA500;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+
+/* ===========================
+   🧭 LỘ TRÌNH CHƯƠNG TRÌNH
+=========================== */
+.journey-detail {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  margin: 2rem auto;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  line-height: 1.6;
+}
+
+.journey-detail h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.8rem;
+  color: #FFA500;
+
+}
+
+.journey-detail section {
+  margin-bottom: 2.2rem;
+}
+
+.journey-detail h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: #FFA500;
+  font-weight: 600;
+}
+
+.journey-detail ol {
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.journey-detail ol li {
+  margin-bottom: 0.4rem;
+  position: relative;
+}
+
+.journey-detail ol li::marker {
+  font-weight: bold;
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.cost-table th,
+.cost-table td {
+  border: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.cost-table th {
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #111827;
+}
+
+.cost-table td {
+  background: #fff;
+}
+
+.journey-detail p {
+  color: #475569;
+  font-style: italic;
+  margin-top: 12px;
+}
+
+.journey-detail ul {
+  list-style-type: "📄 ";
+  padding-left: 1.2rem;
+}
+
+.journey-detail ul li {
+  margin-bottom: 0.3rem;
+  color: #374151;
+}
+
+
+/* ===========================
+   🤝 THÔNG TIN ĐỐI TÁC
+=========================== */
+.partner-programm-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px;
+  margin: 2rem auto;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  color: #1f2937;
+}
+
+.partner-programm-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #FFA500;
+  margin-bottom: 1.5rem;
+}
+
+.partner-card {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.partner-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.partner-details h3 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #111827;
+}
+
+.partner-details p {
+  margin: 6px 0;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.partner-description {
+  background: #f0f9ff;
+  border-left: 4px solid #FFA500;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 2rem;
+}
+
+.partner-description h4 {
+  color: #FFA500;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.partner-reviews-container {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 1.8rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.partner-reviews-container h2 {
+  font-size: 1.2rem;
+  color: #FFA500;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-form textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.review-form select {
+  width: fit-content;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.footer-btn {
+  background: #FFA500;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.footer-btn:hover {
+  background: #FFA500;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .journey-detail, .partner-programm-container {
+    padding: 20px;
+    margin: 1rem;
+  }
+
+  .partner-card {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
-  
-  .course-header {
-    color: black;
-    padding: 2rem;
+
+  .partner-logo {
+    width: 100px;
+    height: 100px;
   }
-  .course-header h1 {
-    margin: 0;
+
+  .partner-details {
+    width: 100%;
   }
-  .course-tags {
-    margin-top: 0.5rem;
+
+  .review-form textarea {
+    font-size: 0.9rem;
   }
-  .tag {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
-    margin-right: 0.5rem;
+}
+
+/* ===========================
+   ⭐ & 💬 KHU VỰC ĐÁNH GIÁ / HỎI ĐÁP
+=========================== */
+.partner-reviews-container {
+  flex: 1.3;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.partner-reviews-container h2 {
+  margin-bottom: 16px;
+  color: #111827;
+}
+
+.review-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.review-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: #fafafa;
+  transition: box-shadow 0.3s;
+}
+
+.review-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.review-rating {
+  color: #facc15;
+  margin-top: 4px;
+}
+
+.review-comment {
+  margin-top: 8px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.review-answer {
+  margin-top: 6px;
+  background: #f0f9ff;
+  padding: 6px 10px;
+  border-left: 3px solid #FFA500;
+  border-radius: 6px;
+  color: #FFA500;
+}
+
+.review-date {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+/* ===========================
+   ✍️ FORM GỬI CÂU HỎI / ĐÁNH GIÁ
+=========================== */
+.review-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-form textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.review-form select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: fit-content;
+}
+
+/* ===========================
+   🧩 FOOTER NÚT HÀNH ĐỘNG
+=========================== */
+.partner-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer-btn {
+  background: #FFA500;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+}
+
+.footer-btn:hover {
+  background: #FFA500;
+  transform: translateY(-1px);
+}
+
+.footer-btn.active {
+  background: #FFA500;
+  color: #fff;
+}
+
+/* ===========================
+   📱 MOBILE OPTIMIZED + TAG SLIDER
+=========================== */
+@media (max-width: 768px) {
+  .programm-detail-header {
+    margin: 1rem 0.5rem;
   }
-  
-  .course-body {
-    display: flex;
-    gap: 2rem;
-    margin: 2rem;
+
+  .programm-detail-header h1 {
+    font-size: 1.4rem;
+    line-height: 1.3;
   }
-  
-  .course-main {
-    flex: 3;
+
+  .programm-body {
+    flex-direction: column;
+    margin: 1rem 0.5rem;
+    gap: 1.5rem;
   }
-  
-  .course-info-boxes {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 2rem;
+
+  .programm-main {
+    width: 100%;
   }
+
+  .programm-info-boxes {
+    flex-direction: column;
+    gap: 12px;
+  }
+
   .info-box {
-    flex: 1;
-    background: #f7f7f7;
-    padding: 1rem;
-    border-radius: 6px;
+    width: 100%;
+    padding: 12px;
+    font-size: 0.9rem;
   }
-  
-  .course-main section {
-    margin-bottom: 2rem;
-  }
-  .course-main h2 {
+
+  .programm-main section h2 {
+    font-size: 1.05rem;
     margin-bottom: 0.5rem;
-    color: #e67e22;
   }
-  
-  .course-sidebar {
-    flex: 1;
-    background: #fafafa;
+
+  .programm-main section ul li {
+    font-size: 0.88rem;
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+
+  .programm-sidebar {
+    width: 100%;
+    min-width: unset;
+    margin-top: 1rem;
     padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
-  
-  .jd-link {
-    display: block;
-    margin: 1rem 0;
-    color: #2980b9;
+
+  .apply-form input,
+  .apply-form textarea {
+    width: 100%;
+    font-size: 0.85rem;
   }
-  
+
+  .apply-form textarea {
+    min-height: 80px;
+  }
+
+  .apply-form button {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 0.9rem;
+  }
+
+  .tab-buttons {
+    flex-direction: column;
+    padding-left: 12px;
+    gap: 6px;
+  }
+
+  .tab-buttons > div {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .partner-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .partner-logo {
+    margin-bottom: 10px;
+  }
+
+  .partner-details {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .partner-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-btn {
+    width: 100%;
+  }
+}

@@ -4,8 +4,10 @@ import Pie from "../../components/plots/Pie";
 
 import "./Overview.css";
 import DigitalClock from "../../components/DigitalClock";
+import { useI18n } from "../../i18n";
 
 export default function Overview() {
+  const { t } = useI18n();
 
     return (
       <div
@@ -29,7 +31,7 @@ export default function Overview() {
               <Applicant />
             </div>
             <div className="card-style">
-              <h2 style={{ textAlign: "center" }}>Tỷ lệ phỏng vấn</h2>
+              <h2 style={{ textAlign: "center" }}>{t('admin.overview.chart_title') || 'Interview Rate'}</h2>
               <Pie />
             </div>
           </div>
@@ -41,25 +43,25 @@ export default function Overview() {
           className="asidebar"
          
         >
-          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Chào Admin,</h2>
+          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>{t('admin.overview.greeting') || 'Hello Admin,'}</h2>
           <hr style={{ margin: "20px 0" }}/>
-          <p><strong>Số dư:</strong> 0$</p>
+          <p><strong>{t('admin.overview.balance_label') || 'Balance:'}</strong> {t('admin.overview.balance_value') || '0$'}</p>
           <hr style={{ margin: "20px 0" }}/>
-          <p><strong>Tổng số ứng viên:</strong> 250</p>
-          <p>Tỷ lệ phỏng vấn: <strong>35%</strong></p>
-          <p>Tỷ lệ trúng tuyển: <strong>12%</strong></p>
-          <p>Hồ sơ tập trung nhiều ở quốc gia: <strong>Đức :D</strong></p>
+          <p><strong>{t('admin.overview.total_candidates_label') || 'Total candidates:'}</strong> {t('admin.overview.total_candidates_value') || '250'}</p>
+          <p>{t('admin.overview.interview_rate_label') || 'Interview rate:'} <strong>{t('admin.overview.interview_rate_value') || '35%'}</strong></p>
+          <p>{t('admin.overview.hire_rate_label') || 'Hire rate:'} <strong>{t('admin.overview.hire_rate_value') || '12%'}</strong></p>
+          <p>{t('admin.overview.concentration_label') || 'Profiles concentrated in country:'} <strong>{t('admin.overview.concentration_value') || 'Germany :D'}</strong></p>
           <hr style={{ margin: "20px 0" }} />
-          <strong style={{marginBottom: 10}}>Thông báo gần đây</strong>
-            <p>Ứng viên A đã được phỏng vấn</p>
-            <p>Ứng viên B mới nộp hồ sơ</p>
-            <p>Ứng viên C từ chối offer</p>
+          <strong style={{marginBottom: 10}}>{t('admin.overview.recent_notifications') || 'Recent notifications'}</strong>
+            <p>{t('admin.overview.notif_1') || 'Candidate A was interviewed'}</p>
+            <p>{t('admin.overview.notif_2') || 'Candidate B submitted a new application'}</p>
+            <p>{t('admin.overview.notif_3') || 'Candidate C declined the offer'}</p>
           <hr style={{ margin: "20px 0" }} />
-          <strong style={{marginBottom: 10}}>Dự báo thời tiết</strong>
-          <p>10:00 Trời mát, 27 độ c</p>
-          <p>11:00 Trời nắng, 31 độ c</p>
-          <p>12:00 Trời nhiều mây, 35 độ c</p>
-          <p>13:00 Trời mưa nhẹ, 30 độ c</p>
+          <strong style={{marginBottom: 10}}>{t('admin.overview.weather_title') || 'Weather Forecast'}</strong>
+          <p>{t('admin.overview.weather_1') || '10:00 Cool, 27°C'}</p>
+          <p>{t('admin.overview.weather_2') || '11:00 Sunny, 31°C'}</p>
+          <p>{t('admin.overview.weather_3') || '12:00 Cloudy, 35°C'}</p>
+          <p>{t('admin.overview.weather_4') || '13:00 Light rain, 30°C'}</p>
           <DigitalClock />
         </div>
 

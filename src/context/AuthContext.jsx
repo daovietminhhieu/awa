@@ -19,9 +19,10 @@ function readSession() {
   }
 }
 
-function writeSession(user) {
+function writeSession(user, token) {
   try {
-    const data = { user, expiresAt: Date.now() + ONE_HOUR_MS };
+    const data = { user, token, expiresAt: Date.now() + ONE_HOUR_MS };
+    console.log("[Write Session]: ", data);
     sessionStorage.setItem(LS_SESSION, JSON.stringify(data));
   } catch {}
 }
@@ -61,12 +62,12 @@ export function AuthProvider({ children }) {
     return () => clearInterval(interval);
   }, [user, navigate]);
 
-  const login = (nextUser) => {
+  const login = (nextUser, token) => {
     setUser(nextUser);
-    writeSession(nextUser);
+    writeSession(nextUser, token);
   
     if (nextUser.role === "admin") navigate("/admin/overview");
-    else if (nextUser.role === "recruiter") navigate("/recruiter/jobsview");
+    else if (nextUser.role === "recruiter") navigate("/recruiter/programmsview");
     else if (nextUser.role === "candidate") navigate("/candidate/home");
     else navigate("/home");
   };

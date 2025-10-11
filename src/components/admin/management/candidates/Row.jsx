@@ -1,47 +1,87 @@
 import React from "react";
+import { useI18n } from "../../../../i18n";
 import StatusSelect from "./StatusSelect";
 import BonusInput from "./BonusInput";
 import ActionButtons from "./ActionButtons";
 
 export function CandidateRow({ sub, edited, onStatusChange, onBonusChange, onSave, onRemove, isLoading }) {
+  const { t } = useI18n();
   return (
     <tr>
-      <td data-label="Candidate">{sub.candidate}</td>
-      <td data-label="Job">{sub.job}</td>
-      <td data-label="CTV">{sub.ctv}</td>
-      <td data-label="Email">{sub.email}</td>
-      <td data-label="Phone">{sub.phone}</td>
-      <td data-label="Cvurl">{sub.cvUrl ? <a href={sub.cvUrl} target="_blank" rel="noopener noreferrer">CV</a> : "-"}</td>
-      <td data-label="Linkedln">{sub.linkedin ? <a href={sub.linkedin}>Link</a> : "-"}</td>
-      <td data-label="Portfolio">{sub.portfolio ? <a href={sub.portfolio}>Link</a> : "-"}</td>
-      <td data-label="Status">
-        <StatusSelect value={edited.status ?? sub.status} onChange={(val) => onStatusChange(sub.id, val)} />
+      <td data-label={t('admin.candidates.table.candidate') || 'Candidate'}>
+        {sub.candidate || sub.candidateInfo?.fullName || "-"}
       </td>
-      <td data-label="Bonus">
-        <BonusInput value={edited.bonus ?? sub.bonus} onChange={(val) => onBonusChange(sub.id, val)} />
+      <td data-label={t('admin.candidates.table.programm') || 'Program'}>
+        {sub.programm?.title || "-"}
       </td>
-      <td data-label="Actions">
-        <ActionButtons sub={sub} onSave={onSave} onRemove={onRemove} isLoading={isLoading} />
+      <td data-label={t('admin.candidates.table.referrer') || 'Referrer'}>
+        {sub.ctv || "-"}
       </td>
+      <td data-label={t('admin.candidates.table.email') || 'Email'}>
+        {sub.email || sub.candidateInfo?.email || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.phone') || 'Phone'}>
+        {sub.phone || sub.candidateInfo?.phone || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.cv') || 'CV'}>
+        {sub.cvUrl || sub.candidateInfo?.resumeFile ? (
+          <a
+            href={sub.cvUrl || sub.candidateInfo?.resumeFile}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CV
+          </a>
+        ) : (
+          "-"
+        )}
+      </td>
+      <td data-label="Bonus">{sub.bonus || "-"}</td>
     </tr>
+
   );
 }
 
 export function ArchivedRow({ sub }) {
+  const { t } = useI18n();
+
   return (
     <tr>
-      <td data-label="Candidate">{sub.candidate}</td>
-      <td data-label="Job">{sub.job}</td>
-      <td data-label="CTV">{sub.ctv}</td>
-      <td data-label="Email">{sub.email}</td>
-      <td data-label="Phone">{sub.phone}</td>
-      <td data-label="Cvurl">{sub.cvUrl ? <a href={sub.cvUrl} target="_blank" rel="noopener noreferrer">CV</a> : "-"}</td>
-      <td data-label="Linkedln">{sub.linkedin ? <a href={sub.linkedin}>Link</a> : "-"}</td>
-      <td data-label="Portfolio">{sub.portfolio ? <a href={sub.portfolio}>Link</a> : "-"}</td>
-      <td data-label="Status">{sub.status}</td>
-      <td data-label="Bonus">${sub.bonus}</td>
-      <td data-label="Salary">{sub.salary}</td>
-      <td data-label="Finalized">{sub.finalizedAt ? new Date(sub.finalizedAt).toLocaleString() : "-"}</td>
+      <td data-label={t('admin.candidates.table.candidate') || 'Candidate'}>
+        {sub.candidate || sub.candidateInfo?.fullName || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.programm') || 'Program'}>
+        {sub.job || sub.programm?.title || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.referrer_short') || 'CTV'}>
+        {sub.ctv || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.email') || 'Email'}>
+        {sub.email || sub.candidateInfo?.email || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.phone') || 'Phone'}>
+        {sub.phone || sub.candidateInfo?.phone || "-"}
+      </td>
+      <td data-label={t('admin.candidates.table.cv') || 'CV'}>
+        {sub.cvUrl || sub.candidateInfo?.resumeFile ? (
+          <a
+            href={sub.cvUrl || sub.candidateInfo?.resumeFile}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            CV
+          </a>
+        ) : (
+          "-"
+        )}
+      </td>
+      <td data-label={t('admin.candidates.table.bonus') || 'Bonus'}>
+        ${sub.bonus || "0"}
+      </td>
+      <td data-label={t('admin.candidates.table.finalized') || 'Finalized'}>
+        {sub.finalizedAt ? new Date(sub.finalizedAt).toLocaleString() : "-"}
+      </td>
     </tr>
+
   );
 }

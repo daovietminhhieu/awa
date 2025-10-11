@@ -1,21 +1,4 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html, body, #root {
-  height: 100%;
-  font-family: "Segoe UI", sans-serif;
-}
-
-.body {
-  background: url("/bg.jpg") no-repeat center center fixed;
-  background-size: cover;
-   
-}
-   
-/* Nền toàn màn hình */
+   /* Nền toàn màn hình */
 .container {
   display: flex;
   justify-content: center;
@@ -42,8 +25,8 @@ html, body, #root {
   padding: 50px 60px;
   border-radius: 24px;
   background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(232, 245, 233, 0.9));
-  border: 3px solid #2E7D32;
-  box-shadow: 10px 10px 0px #A5D6A7;
+  border: 3px solid #e67e22;
+  box-shadow: 10px 10px 0px #e67e22;
   text-align: center;
   margin: 0 auto; 
   opacity: 0;
@@ -72,7 +55,7 @@ html, body, #root {
 
 /* Title */
 .title {
-  color: #2E7D32;
+  color: #e67e22;
   font-size: 1.6rem;
   margin-bottom: 25px;
   text-align: center;
@@ -93,7 +76,7 @@ html, body, #root {
 .label {
   width: 120px;
   font-size: 1rem;
-  color: #2E7D32;
+  color: #e67e22;
   margin-right: 10px;
   text-align: left;
   font-weight: 600;
@@ -108,13 +91,13 @@ html, body, #root {
   width: 100%;
   padding: 12px 40px 12px 35px;
   border-radius: 12px;
-  border: 2px solid #81C784;
+  border: 2px solid #e67e22;
   background: #fff;
   transition: all 0.3s ease;
   font-size: 1rem;
 }
 .input-wrapper input:focus {
-  border-color: #2E7D32;
+  border-color: #e67e22;
   box-shadow: 0 0 10px rgba(46, 125, 50, 0.6);
   outline: none;
 }
@@ -123,7 +106,7 @@ html, body, #root {
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
-  color: #2E7D32;
+  color: #e67e22;
 }
 .toggle-password {
   position: absolute;
@@ -131,7 +114,7 @@ html, body, #root {
   right: 10px;
   transform: translateY(-50%);
   cursor: pointer;
-  color: #43A047;
+  color: #e67e22;
 }
 
 /* Error message + border */
@@ -161,7 +144,7 @@ input.error {
   margin: 0;
 }
 .remember-me label {
-  color: #2E7D32;
+  color: #e67e22;
   font-size: 13px;
   cursor: pointer;
 }
@@ -170,24 +153,22 @@ input.error {
 button {
   border: none;
   border-radius: 12px;
-  background: linear-gradient(135deg, #2E7D32, #81C784);
+  background: #F59E0B;
   color: #fff;
   font-size: 15px;
   font-weight: 700;
-  padding: 14px 35px;
   cursor: pointer;
   transition: transform .2s ease, background .3s ease, box-shadow .3s ease;
-  box-shadow: 4px 4px 0px #A5D6A7;
 }
 button:hover {
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #388E3C, #66BB6A);
-  box-shadow: 6px 6px 0px #81C784;
+  box-shadow: 4px 4px 0px #FBBF24;
 }
 button:disabled {
   opacity: .7;
   cursor: not-allowed;
 }
+
 
 /* Spinner loading */
 .spinner {
@@ -208,7 +189,7 @@ button:disabled {
   display: flex;
   align-items: center;
   text-align: center;
-  color: #2E7D32;
+  color: #e67e22;
   margin: 25px 0;
   font-weight: 600;
 }

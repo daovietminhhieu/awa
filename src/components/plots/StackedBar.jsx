@@ -1,5 +1,6 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { useI18n } from "../../i18n";
 
 const data = [
   { country: "USA", Tech: 120, Finance: 80, Marketing: 50 },
@@ -9,6 +10,8 @@ const data = [
 ];
 
 export default function CountryIndustry() {
+  const {t} = useI18n();
+  
   return (
     <div
       style={{
@@ -21,7 +24,7 @@ export default function CountryIndustry() {
       }}
     >
       <h2 style={{ textAlign: "center", marginBottom: "16px" }}>
-        Ứng viên theo quốc gia & ngành
+        {t('admin.overview.stacked_bar_title') || 'Candidates by Country and Industry'}
       </h2>
 
       {/* Responsive để chart tự co khi card thay đổi */}

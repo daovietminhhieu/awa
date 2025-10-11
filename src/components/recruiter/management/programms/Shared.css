@@ -1,0 +1,158 @@
+/* ===== Layout cơ bản ===== */
+.shared-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: "Inter", sans-serif;
+    color: #333;
+  }
+  
+  .shared-container h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  /* ===== Bảng chính ===== */
+  .shared-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .shared-table th,
+  .shared-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+  }
+  
+  .shared-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #444;
+  }
+  
+  .shared-table tr:hover {
+    background-color: #fafafa;
+  }
+  
+  /* ===== Màu trạng thái ===== */
+  .status {
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  
+  .status.active {
+    color: #2e7d32;
+  }
+  .status.expired {
+    color: #c62828;
+  }
+  .status.pending {
+    color: #ef6c00;
+  }
+
+  
+  .shared-steps li {
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .step-name {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .steps-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* ===== Select actions ===== */
+  .shared-table select {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+  
+  .shared-table select:hover {
+    border-color: #4caf50;
+  }
+  
+  /* ===== Responsive: Mobile view ===== */
+  @media (max-width: 900px) {
+    .shared-table,
+    .shared-table thead,
+    .shared-table tbody,
+    .shared-table th,
+    .shared-table td,
+    .shared-table tr {
+      display: block;
+    }
+  
+    .shared-table thead {
+      display: none;
+    }
+  
+    .shared-table tr {
+      background: #fff;
+      margin-bottom: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 12px;
+    }
+  
+    .shared-table td {
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 0.9rem;
+    }
+  
+    .shared-table td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #444;
+    }
+  
+    .shared-table td select {
+      width: 100%;
+    }
+  
+    .shared-steps li {
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .step-name {
+      width: 100%;
+    }
+
+    .steps-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+
+  }
+  

@@ -4,11 +4,13 @@ import {
   FaEnvelope, FaFacebook, FaLinkedin
 } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
-import { API_BASE } from "../../api";
+import { API_BASE, loginUser } from "../../api";
 import "./Login.css";
+import { useI18n } from "../../i18n";
 
 export default function Login() {
   const { login } = useAuth();
+  const { t } = useI18n();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({ username: "", password: "" });
@@ -47,11 +49,11 @@ export default function Login() {
     let hasError = false;
 
     if (!username) {
-      newErrors.username = "Please enter email";
+      newErrors.username = t('auth.enter_email') || "Please fill email";
       hasError = true;
     }
     if (!password) {
-      newErrors.password = "Please enter password";
+      newErrors.password = t('auth.enter_password') || "Please fill password";
       hasError = true;
     }
 
@@ -64,26 +66,13 @@ export default function Login() {
 
     setLoading(true);
 
-    try {
-      const res = await fetch(`${API_BASE}/db/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: username, password }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setServerMessage(data.message || "Login failed");
-        setShake(true);
-        setTimeout(() => setShake(false), 550);
-      } else {
-        login(data.user); // Để AuthContext xử lý session và redirect
-      }
-
-    } catch (err) {
-      setServerMessage("Cannot connect to server.");
-    }
+  // Login example
+  try {
+    const result = await loginUser({ email: username, password });
+    login(result.data, result.token);
+  } catch (err) {
+    console.error("❌ Lỗi đăng nhập:", err.message);
+  }
 
     setLoading(false);
   };
@@ -96,22 +85,22 @@ export default function Login() {
       <div className={`shake-wrapper ${shake ? "is-shaking" : ""}`}>
         <form className="form" onSubmit={handleSubmit}>
           <div className="title">
-            Welcome back!
+            {t('auth.login.welcome_back')}
             <div style={{ fontSize: "15px", marginTop: "10px", fontWeight: "bold" }}>
-              Login to continue
+              {t('auth.login.login_to_continue')}
             </div>
           </div>
 
           {/* Email */}
           <div className="input-group">
-            <label className="label" htmlFor="username">Email</label>
+            <label className="label" htmlFor="username">{t('auth.login.email_label')}</label>
             <div className="input-wrapper">
               <FaUser className="icon" />
               <input
                 type="text"
                 id="username"
                 name="username"
-                placeholder="Enter email"
+                placeholder={t('auth.login.enter_email')}
                 className={errors.username ? "error" : ""}
               />
             </div>
@@ -120,14 +109,14 @@ export default function Login() {
 
           {/* Password */}
           <div className="input-group">
-            <label className="label" htmlFor="password">Password</label>
+            <label className="label" htmlFor="password">{t('auth.login.password_label')}</label>
             <div className="input-wrapper">
               <FaLock className="icon" />
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
-                placeholder="Enter password"
+                placeholder={t('auth.login.enter_password')}
                 className={errors.password ? "error" : ""}
               />
               <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
@@ -140,7 +129,7 @@ export default function Login() {
           {/* Remember me */}
           <div className="form-options">
             <button type="submit" disabled={loading}>
-              {loading ? <span style={spinnerStyle}></span> : "Login"}
+              {loading ? <span style={spinnerStyle}></span> : t('auth.login.login_button')}
             </button>
           </div>
           <div className="remember-me">
@@ -151,14 +140,14 @@ export default function Login() {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 style={{marginTop:3}}
               />
-              <label htmlFor="remember">Remember password</label>
+              <label htmlFor="remember">{t('auth.login.remember')}</label>
             </div>
           <div style={{ marginTop: "12px", textAlign: "right" }}>
             <span
               style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline" }}
               onClick={() => setShowReset(true)}
             >
-              Forgot password?
+              {t('auth.login.forgot_password')}
             </span>
           </div>
 
@@ -166,8 +155,8 @@ export default function Login() {
           {showReset && (
             <div className="modal-overlay">
               <div className="modal">
-                <h3>Forgot your password?</h3>
-                <p>Enter your email, and we'll send you a new password.</p>
+                <h3>{t('auth.login.reset_title')}</h3>
+                <p>{t('auth.login.reset_instructions')}</p>
                 <input
                   type="email"
                   value={resetEmail}
@@ -176,7 +165,7 @@ export default function Login() {
                   style={{ width: "100%", padding: "8px", margin: "10px 0" }}
                 />
                 <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-                  <button onClick={() => setShowReset(false)} disabled={resetLoading}>Cancel</button>
+                  <button onClick={() => setShowReset(false)} disabled={resetLoading}>{t('auth.login.cancel')}</button>
                   <button
                     onClick={async () => {
                       setResetMessage("");
@@ -190,7 +179,7 @@ export default function Login() {
 
                         const data = await res.json();
                         if (!res.ok) throw new Error(data.message || "Reset failed");
-                        setResetMessage("✔️ A new password has been sent to your email.");
+                        setResetMessage("✔️ Mật khẩu mới đẫkalsmxlkãmlká.");
                       } catch (err) {
                         setResetMessage("❌ " + err.message);
                       }
@@ -198,7 +187,7 @@ export default function Login() {
                     }}
                     disabled={resetLoading}
                   >
-                    {resetLoading ? <span style={spinnerStyle}></span> : "Send"}
+                    {resetLoading ? <span style={spinnerStyle}></span> : t('auth.send')}
                   </button>
                 </div>
                 {resetMessage && <p style={{ marginTop: "10px", color: "#555" }}>{resetMessage}</p>}
@@ -213,14 +202,17 @@ export default function Login() {
             </p>
           )}
 
-          <div className="divider"><span>or</span></div>
-
-          {/* Social login */}
-          <div className="social-login">
-            <button type="button" className="social-btn email"><FaEnvelope /> Email</button>
-            <button type="button" className="social-btn facebook"><FaFacebook /> Facebook</button>
-            <button type="button" className="social-btn linkedin"><FaLinkedin /> LinkedIn</button>
-          </div>
+          {/**
+           * 
+           * Đăng nhập bằng nền tảng thứ 3 
+            <div className="divider"><span>or</span></div>
+            <div className="social-login">
+              <button type="button" className="social-btn email"><FaEnvelope /> Email</button>
+              <button type="button" className="social-btn facebook"><FaFacebook /> Facebook</button>
+              <button type="button" className="social-btn linkedin"><FaLinkedin /> LinkedIn</button>
+            </div>
+           * 
+           */}
         </form>
       </div>
     </div>

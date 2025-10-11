@@ -1,101 +1,44 @@
-import { useParams, useLocation } from "react-router-dom";
-import courses from "../mocks/courses"; // danh sách course mẫu
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getProgrammById } from "../api";
 import "./Detail.css";
+import ProgrammOverview from "../components/ProgrammOverview";
+import ProgrammJourney from "../components/ProgrammJourney";
+import ProgrammPartner from "../components/ProgrammPartner";
+import { useI18n } from "../i18n";
 
-export default function CourseDetail() {
+export default function ProgrammDetail({role}) {
   const { id } = useParams();
-  const location = useLocation();
+  const [programm, setProgramm] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const course =
-    location.state?.course || courses.find((c) => String(c.id) === id);
+  const { t } = useI18n();
+  useEffect(() => {
+    async function fetchProgramm() {
+      try {
+        const res = await getProgrammById(id);
+  if (!res.success) throw new Error(t('programm.detail.not_found'));
+        setProgramm(res.data);
+      } catch (err) {
+        setError(err.message || "Có lỗi xảy ra");
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  if (!course) return <p>❌ Course not found (id: {id})</p>;
+    fetchProgramm();
+  }, [id]);
+
+  if (loading) return <p>{t('programm.detail.loading_programm')}</p>;
+  if (error) return <p style={{ color: "red" }}>❌ {error}</p>;
+  if (!programm) return <p>{t('programm.detail.not_found')}</p>;
 
   return (
-    <div className="course-detail">
-
-      {/* Banner Header */}
-      <div
-        className="course-header"
-      >
-        <h1>{course.title}</h1>
-        <div className="course-tags">
-          <span className="tag">{course.level}</span>
-          <span className="tag">{course.duration}</span>
-          {course.tags?.length > 0 && (
-            course.tags.map((t, i) => (
-              <span key={i} className="tag">{t}</span>
-            ))
-          )}
-        </div>
-        <div className="course-tags" style={{marginTop: 20}}>
-          <span className="tag" style={{width: "fit-content"}}><b>Status:</b> {course.status}</span>
-          <span className="tag" style={{width: "fit-content"}}><b>Deadline:</b> {course.deadline}</span>
-        </div>
-
-        <div className="course-tags" style={{marginTop: 20}}>
-          <span className="tag" style={{width: "fit-content", background:"#ff9800"}}><b>Bonus:</b> {course.bonus}</span>
-          <span className="tag" style={{width: "fit-content", background:"#2196f3"}}><b>Reward:</b> {course.reward}</span>
-          <span className="tag" style={{width: "fit-content", background:"#4caf50"}}><b>Vacancies:</b> {course.vacancies}</span>
-        </div>
+      <div className="programm-detail column-layout">
+        <ProgrammOverview programm={programm} role={role} />
+        <ProgrammJourney programm={programm} />
+        <ProgrammPartner programm={programm} />
       </div>
-
-      <div className="course-body">
-        {/* Nội dung trái */}
-        <div className="course-main">
-          {/* Info boxes */}
-          <div className="course-info-boxes">
-            <div className="info-box">
-              <b>University</b>
-              <p>{course.university}</p>
-            </div>
-            <div className="info-box">
-              <b>Country</b>
-              <p>{course.country}</p>
-            </div>
-            <div className="info-box">
-              <b>Fee</b>
-              <p>{course.fee}</p>
-            </div>
-          </div>
-
-          {/* Sections */}
-          <section>
-            <h2>Course Overview</h2>
-            <p>{course.overview}</p>
-          </section>
-
-          <section>
-            <h2>Requirements</h2>
-            <p>{course.requirement}</p>
-          </section>
-
-         
-
-  
-          <section>
-            <h2>Other Information</h2>
-            {course.other && (
-                <p>{course.other}</p>
-              )}
-            </section>
-        </div>
-
-        {/* Sidebar bên phải */}
-        <aside className="course-sidebar">
-
-          {course.jdFileName && (
-            <a
-              href={course.jdFileName}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="jd-link"
-            >
-              📄 Course Outline
-            </a>
-          )}
-        </aside>
-      </div>
-    </div>
   );
 }

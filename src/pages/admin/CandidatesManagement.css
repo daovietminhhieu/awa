@@ -1,3 +1,8 @@
+.admin-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .admin-table {
   width: 100%;
   border-collapse: collapse;
@@ -5,32 +10,33 @@
   background: white;
   border-radius: 8px;
   overflow: hidden;
+  min-width: 600px;
 }
 
 /* Header bảng */
 .admin-table th {
-  background: linear-gradient(90deg, #2e7d32, #43a047); /* xanh lá */
-  color: white;
+  background-color: #f2f2f2; /* màu cam nhạt */
+  color: #333;
   text-align: left;
   padding: 10px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* Ô dữ liệu */
 .admin-table td {
   border: 1px solid #e0e0e0;
-  padding: 8px;
+  padding: 10px;
   font-size: 14px;
 }
 
 /* Hàng xen kẽ */
 .admin-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #fdf6ed;
 }
 
 .admin-table tr:hover {
-  background-color: #e8f5e9; /* highlight xanh nhạt */
+  background-color: #ffe0b2;
 }
 
 /* Nút hành động */
@@ -46,29 +52,11 @@ button {
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
-  transition: background 0.2s;
-}
-
-/* Nút Update */
-button {
-  background: #2196f3; /* xanh dương */
   color: white;
+  transition: background 0.2s ease;
 }
 
-button:hover {
-  background: #1976d2;
-}
-
-/* Nút Remove */
-.remove-btn {
-  background: #ef5350; /* đỏ nhẹ */
-}
-
-.remove-btn:hover {
-  background: #c62828;
-}
-
-/* Loading icon */
+/* Spinner */
 .loading-spinner {
   width: 14px;
   height: 14px;
@@ -82,5 +70,46 @@ button:hover {
 @keyframes spin {
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* Responsive: Stacked table on mobile */
+@media screen and (max-width: 768px) {
+  .admin-table,
+  .admin-table thead,
+  .admin-table tbody,
+  .admin-table th,
+  .admin-table td,
+  .admin-table tr {
+    display: block;
+  }
+
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table tr {
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ffe0b2;
+    padding-bottom: 12px;
+  }
+
+  .admin-table td {
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+    background: #fffaf3;
+  }
+
+  .admin-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    font-weight: bold;
+    color: #ff9800;
+    white-space: nowrap;
   }
 }

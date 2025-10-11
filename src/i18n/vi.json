@@ -1,0 +1,615 @@
+{
+  "common": {
+    "not_provided": "Không được cung cấp",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "close": "Đóng"
+  },
+  "short": {
+    "topprogramm": {
+        "title":"Chương trình nổi bật",
+        "list": [
+        
+            {
+                "title": "Lãnh đạo và Quản trị Hiệu quả",
+                "image": "https://picsum.photos/seed/leadership/300/200",
+                "description":
+                "Chương trình được thiết kế dành cho các nhà quản lý và lãnh đạo tương lai, giúp bạn phát triển kỹ năng tư duy chiến lược, giao tiếp thuyết phục và ra quyết định hiệu quả. Khóa học cung cấp các tình huống thực tế, mô phỏng doanh nghiệp và công cụ hỗ trợ giúp bạn trở thành người lãnh đạo tự tin, truyền cảm hứng và có khả năng dẫn dắt đội nhóm đạt hiệu suất cao.",
+                "rate": 5,
+                "review": "Khóa học thực sự giúp tôi thay đổi cách nhìn về lãnh đạo và quản trị. Giảng viên tận tâm, ví dụ minh họa sát với thực tế doanh nghiệp."
+            },
+            {
+                "title": "Đổi mới sáng tạo trong kỷ nguyên số",
+                "image": "https://picsum.photos/seed/innovation/300/200",
+                "description":
+                "Khóa học giúp học viên hiểu rõ vai trò của đổi mới sáng tạo trong doanh nghiệp hiện đại. Nội dung tập trung vào các xu hướng công nghệ như AI, Blockchain, Cloud và cách áp dụng chúng để tạo ra giá trị mới. Học viên sẽ được hướng dẫn qua các dự án nhóm và thực hành cùng chuyên gia đến từ các công ty công nghệ hàng đầu.",
+                "rate": 4,
+                "review": "Rất hài lòng với nội dung và cách truyền đạt. Mentor hướng dẫn chi tiết và luôn sẵn sàng hỗ trợ khi gặp khó khăn trong dự án."
+            },
+            {
+                "title": "Phân tích Dữ liệu & Ra quyết định",
+                "image": "https://picsum.photos/seed/dataanalytics/300/200",
+                "description":
+                "Khóa học trang bị kiến thức nền tảng và nâng cao về khoa học dữ liệu, thống kê, và trực quan hóa dữ liệu. Bạn sẽ được học cách khai thác dữ liệu bằng Python, SQL và sử dụng các công cụ như Power BI và Tableau. Sau khóa học, bạn có thể tự tin phân tích, trực quan hóa và đưa ra quyết định dựa trên dữ liệu trong công việc thực tế.",
+                "rate": 5,
+                "review": "Khoá học rất thực tế, giảng viên hướng dẫn kỹ lưỡng, giúp tôi áp dụng được ngay vào dự án nội bộ công ty."
+            },
+            {
+                "title": "Truyền thông & Xây dựng Thương hiệu Cá nhân",
+                "image": "https://picsum.photos/seed/branding/300/200",
+                "description":
+                "Chương trình tập trung vào kỹ năng giao tiếp, viết nội dung, sử dụng mạng xã hội và xây dựng hình ảnh cá nhân chuyên nghiệp. Học viên được hướng dẫn cách định vị bản thân, kể câu chuyện thương hiệu và tạo ảnh hưởng tích cực trong môi trường làm việc cũng như cộng đồng trực tuyến.",
+                "rate": 4,
+                "review": "Giúp tôi tự tin hơn khi chia sẻ kiến thức trên mạng xã hội và nâng cao hình ảnh cá nhân trong lĩnh vực chuyên môn."
+            }
+        ]
+    },
+    "partner": {
+        "title": "Đối tác"
+    },
+    "why_choose": {
+      "title": "Tại sao chọn chúng tôi",
+      "reasons": [
+        {
+          "description": "Miễn phí cho ứng viên: Với cam kết lấy ứng viên làm trung tâm, Alowork.com không thu bất kỳ chi phí nào từ bạn. Nguồn thu đến từ các đối tác"
+        },
+        {
+          "description": "Chương trình được Kiểm Chứng: Các chương trình được đúc kết từ kinh nghiệm thành công thực tế của ứng viên."
+        },
+        {
+          "description": "Mạng Lưới Toàn Cầu: Chạm đến từng cơ hội từ những đối tác hàng đầu, mang lại cho bạn các giá trị nhanh- phù hợp- uy tín."
+        },
+        {
+          "description": "Hỗ Trợ Tận Tâm 24/7: Luôn có chuyên gia đồng hành cùng bạn trên mọi chặng đường, bất cứ lúc nào và ở đâu."
+        }
+      ]
+    },
+    "stories": {
+      "title": "Câu chuyện thành công",
+      "descriptions": [
+        {
+          "name": "Nguyễn Văn A",
+          "description": "Tìm được công việc mơ ước qua Alowork.com, phát triển kỹ năng và mở rộng mối quan hệ."
+        },
+        {
+          "name": "Trần Thị B",
+          "description": "Nhờ Alowork.com, tôi có cơ hội du học và thực tập tại nước ngoài, mở rộng tầm nhìn."
+        },
+        {
+          "name": "Lê Văn C",
+          "description": "Thành công trong chương trình thực tập tại công ty lớn và được đánh giá cao từ nhà tuyển dụng."
+        }
+      ]
+    },
+    "partners": {
+      "title": "Trở thành đối tác của chúng tôi",
+      "become_collaborator_desc": "Hãy Cộng tác cùng Alowork.com để không chỉ gia tăng thu nhập.Chúng tôi mang đến cho bạn một hệ sinh thái để phát triển chuyên môn, mở rộng mạng lưới và tiếp cận những cơ hội độc quyền. alowork.com- nền tảng cung cấp chương trình học tập và việc làm toàn cầu.",
+      "contact_now": "Liên hệ ngay",
+      "detail": {
+        "title": "Liên hệ",
+        "address_label": "Địa chỉ",
+        "email_label": "Email",
+        "phone_label": "Số điện thoại",
+        "address": "Số 30 đường Trần Hữu Dực, Từ Liêm, Hà Nội",
+        "email": "alowork.com@gmail.com",
+        "phone": "+84817777000",
+        "goodbye": "Hợp tác không chỉ là một giao dịch, mà là một hành trình đồng hành cùng nhau."
+      }
+      
+    },
+    "career_guide": "Bí quyết nghề nghiệp",
+    "events": "Sự kiện sắp tới",
+    "event-location": "Địa điểm",
+    "event-date": "Ngày",
+    "tips": [
+      {
+        "id": "tip-1",
+        "title": "Cách viết CV nổi bật",
+        "description": "Hướng dẫn cách trình bày CV ấn tượng để thu hút nhà tuyển dụng.",
+        "image": "https://source.unsplash.com/300x200/?cv,resume"
+      },
+      {
+        "id": "tip-2",
+        "title": "Phỏng vấn thành công",
+        "description": "Mẹo trả lời phỏng vấn tự tin và thuyết phục.",
+        "image": "https://source.unsplash.com/300x200/?interview,job"
+      },
+      {
+        "id": "tip-3",
+        "title": "Kỹ năng mềm quan trọng",
+        "description": "Những kỹ năng mềm cần thiết giúp bạn phát triển sự nghiệp.",
+        "image": "https://source.unsplash.com/300x200/?skills,communication"
+      }
+    ],
+    "events_data": [
+      {
+        "id": "event-1",
+        "title": "Hội thảo định hướng nghề nghiệp 2025",
+        "date": "20/10/2025",
+        "location": "TP. Hồ Chí Minh",
+        "image": "https://source.unsplash.com/300x200/?career,event"
+      },
+      {
+        "id": "event-2",
+        "title": "Workshop viết CV chuyên nghiệp",
+        "date": "10/11/2025",
+        "location": "Hà Nội",
+        "image": "https://source.unsplash.com/300x200/?workshop,resume"
+      }
+    ],
+    "become_collaborator": {
+      "title": "Trở thành cộng tác viên của chúng tôi",
+      "description": "Tham gia cùng chúng tôi để mở rộng phạm vi và phát triển doanh nghiệp hiệu quả.",
+      "register_now": "Đăng ký ngay",
+      "greeting": "Xin chào!",
+      "popup_text": "Bạn có muốn trở thành cộng tác viên không? Nhấn 'Đăng ký ngay' để tham gia!",
+      "close": "Đóng"
+    }
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "profile": "Hồ sơ",
+    "language": "VN",  
+    "overview": "Tổng quan",
+    "programms": "Chương trình",
+    "candidates": "Ứng viên",
+    "login": "Đăng nhập",
+    "signup": "Đăng ký",
+    "logout": "Đăng xuất",
+    "search_placeholder": "Tìm kiếm chương trình...",
+    "notifications": "Thông báo"
+  },
+  "auth": {
+    "login": {
+      "welcome_back": "Chào mừng quay trở lại!",
+      "login_to_continue": "Đăng nhập để tiếp tục",
+      "email_label": "Email",
+      "enter_email": "Nhập email",
+      "password_label": "Mật khẩu",
+      "enter_password": "Nhập mật khẩu",
+      "login_button": "Đăng nhập",
+      "remember": "Ghi nhớ tôi",
+      "forgot_password": "Quên mật khẩu?",
+      "cancel": "Hủy",
+      "reset_title": "Đặt lại mật khẩu",
+      "reset_instructions": "Nhập email để nhận hướng dẫn đặt lại mật khẩu",
+      "reset_success": "✔️ Mật khẩu mới đã được gửi tới email."
+    },
+    "signup": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Tham gia cùng chúng tôi và bắt đầu hành trình",
+      "phone_label": "Số điện thoại",
+      "enter_phone": "Nhập số điện thoại...",
+      "name_label": "Họ và tên",
+      "enter_name": "Nhập họ và tên...",
+      "email_label": "Email",
+      "enter_email": "Nhập email...",
+      "password_label": "Mật khẩu",
+      "enter_password": "Nhập mật khẩu...",
+      "confirm_password_label": "Xác nhận mật khẩu",
+      "enter_confirm_password": "Nhập lại mật khẩu...",
+      "register": "Đăng ký",
+      "have_account": "Đã có tài khoản? Đăng nhập"
+    }
+  },
+  "filter": {
+    "type_label": "Loại chương trình",
+    "country_label": "Quốc gia",
+    "deadline_label": "Hạn nộp",
+    "degree_label": "Bằng cấp",
+    "all": "Tất cả",
+    "apply_filters": "Áp dụng bộ lọc",
+    "search_placeholder": "Tìm theo tiêu đề hoặc công ty..."
+  },
+  "admin": {
+    "overview": {
+      "greeting": "Bảng điều khiển quản trị viên",
+      "title": "Tổng quan hệ thống",
+      "balance_label": "Số dư hiện tại",
+      "balance_value": "$12,300",
+      "total_candidates_label": "Tổng số ứng viên",
+      "total_candidates_value": "324",
+      "interview_rate_label": "Tỉ lệ phỏng vấn",
+      "interview_rate_value": "65%",
+      "hire_rate_label": "Tỉ lệ tuyển dụng",
+      "hire_rate_value": "45%",
+      "concentration_label": "Lĩnh vực tập trung chính",
+      "concentration_value": "Công nghệ thông tin",
+      "recent_notifications": "Thông báo gần đây",
+      "notif_1": "Có ứng viên mới đăng ký hôm nay.",
+      "notif_2": "3 buổi phỏng vấn được lên lịch trong tuần này.",
+      "notif_3": "Một chương trình đang chờ phê duyệt.",
+      "weather_title": "Thời tiết hôm nay",
+      "weather_1": "🌤 Trời quang, 30°C",
+      "weather_2": "💨 Gió nhẹ, 12 km/h",
+      "weather_3": "💧 Độ ẩm: 60%",
+      "weather_4": "🌅 Bình minh: 5:45 sáng",
+      "stacked_bar_chart": "Biểu đồ thanh xếp chồng",
+      "chart_title": "Số lượng ứng tuyển hàng tháng"
+    },
+    "programms": {
+        "tabs":{"my":"Tất cả", "saved":"Đã lưu", "shared":"Đã chia sẻ"},
+        "edit":{
+            "title":"Chỉnh sửa chương trình",
+            "add_title":"Thêm chương trình mới",
+            "next":"Tiếp theo",
+            "back":"Quay lại",
+            "create":"Tạo",
+            "requirements":"Yêu cầu",
+            "details":"Chi tiết",
+            "new": {
+                "title": "Tên chương trình",
+                "university": "Trường đại học", 
+                "company":"Công ty", 
+                "type":"Loại chương trình", 
+                "degrees":"Bằng cấp yêu cầu", 
+                "level":"Trình độ", 
+                "duration":"Thời gian",
+                "age": "Tuổi", 
+                "health": "Tình trạng sức khỏe", 
+                "education": "Trình độ học vấn", 
+                "certificate": "Chứng chỉ",
+                "overview":"Tổng quan",
+                "other":"Khác",
+                "fee":"Phí",
+                "expected_salary":"Mức lương kỳ vọng",
+                "deadline":"Hạn nộp",
+                "type_job": "Xuất khẩu lao động",
+                "type_studium": "Du học"
+            },
+            "basic_info":"Thông tin cơ bản",
+            "details_title":"Chi tiết chương trình",
+            "other_title":"Thông tin khác",
+            "labels": {
+                "title":"Tiêu đề chương trình",
+                "company":"Công ty",
+                "logo":"Logo công ty",
+                "type":"Loại chương trình",
+                "degrees":"Bằng cấp yêu cầu",
+                "duration":"Thời gian",
+                "land": "Quốc gia",
+                "fee":"Phí",
+                "expected_salary":"Mức lương kỳ vọng",
+                "deadline":"Hạn nộp",
+                "vacancies":"Số lượng",
+                "benefits":"Quyền lợi",
+                "review":"Đánh giá",
+                "video":"Video giới thiệu",
+                "bonus":"Thưởng",
+                "public_day":"Ngày đăng"
+            },
+            "save":"Lưu",
+            "cancel":"Hủy"
+        },
+        "pagination":{
+            "page_info": "Trang {{current}} trong {{total}}",
+            "previous": "Trước",
+            "next": "Sau"
+        },
+        "toolbar":{
+            "add_new":"Thêm chương trình mới",
+            "filter":"Bộ lọc",
+            "search_placeholder":"Tìm kiếm chương trình..."
+
+        },
+        "card":{
+            "duration_label":"Thời gian",
+            "deadline_label":"Hạn nộp",
+            "status_label":"Trạng thái",
+            "status_open":"Mở",
+            "status_closed":"Đóng",
+            "bonus_label":"Thưởng",
+            "vacancy_label":"Số lượng",
+            "save":"Lưu",
+            "unsave":"Bỏ lưu",
+            "edit":"Chỉnh sửa",
+            "delete":"Xóa",
+            "delete_confirm":"Bạn có chắc chắn muốn xóa chương trình này không?"
+        },
+        "alert":{
+            "updated_success":"Chương trình đã được cập nhật thành công."
+
+        }
+    },
+    "shared": {
+        "title": "Trạng thái các chương trình đang chia sẻ",
+        "alert": {
+            "status_failed":"Cập nhật trạng thái thất bại. Vui lòng thử lại.",
+            "steps_updated":"Các bước đã được cập nhật thành công.",
+            "update_steps_failed":"Cập nhật các bước thất bại. Vui lòng thử lại.",
+            "status_updated":"Trạng thái đã được cập nhật thành công."
+        },
+        "select_steps_required":"Hãy chọn một bước để thực hiện trạng thái sang tiến hành",
+        "step_label":"Bước {{n}}:",
+        "table": {
+            "programm":"Chương trình",
+            "recruiter":"Nhà tuyển dụng",
+            "candidate":"Ứng viên",
+            "status":"Trạng thái",
+            "bonus":"Thưởng",
+            "expires":"Hết hạn",
+            "steps":"Các bước",
+            "actions":"Hành động"    
+        },
+        "select_placeholder":"Chọn trạng thái",
+        "not_initialized":"Chưa được cung cấp",
+        "group": {
+            "status":"Trạng thái",
+            "steps":"Các bước"
+        },
+        "option": {
+            "approve": "Duyệt",
+            "reject": "Từ chối",
+            "ongoing": "Tiến hành",
+            "mark_completed": "Đánh dấu hoàn thành",
+            "mark_rejected": "Đánh dấu chưa hoàn thành"
+        }
+       
+    },
+    "profile": {
+        "title": "Hồ sơ quản trị viên",
+        "edit": "Chỉnh sửa hồ sơ",
+        "info": "Thông tin cá nhân",
+        "name": "Tên",
+        "email": "Email",
+        "role": "Vai trò",
+        "password": "Mật khẩu",
+        
+        "setname":" Nhập tên",
+        "setemail":" Nhập email",
+        "setnewpassword":" Nhập mật khẩu mới"
+    },
+    "candidates": {
+        "title": "Quản lý ứng viên",
+        "completed_title": "Danh sách hoàn thành",
+        "table": {
+            "candidate":"Ứng viên",
+            "programm":"Chương trình",
+            "referrer":"Người giới thiệu",
+            "email":"Email",
+            "phone":"Số điện thoại",
+            "cv":"CV",
+            "linkedin":"LinkedIn",
+            "portfolio":"Hồ sơ năng lực",
+            "status":"Trạng thái",
+            "bonus":"Thưởng",
+            "salary":"Mức lương kỳ vọng",
+            "finalized":"Đã hoàn tất",
+            "time":"Thời gian ứng tuyển",
+            "statusvalue": {"completed":"Hoàn thành","notcompleted":"Chưa hoàn thành"}
+    }
+}
+  },
+  "recruiter": {
+    "programms": {
+      "tabs": {
+        "all": "Tất cả",
+        "saved": "Đã lưu",
+        "shared": "Đã chia sẻ"
+      },
+      "duration": "Thời gian",
+      "status": "Trạng thái",
+      "deadline": "Hạn nộp",
+      "bonus": "Thưởng",
+      "vacancies": "Số lượng",
+      "save": "Lưu",
+      "unsave": "Bỏ lưu",
+      "share": "Chia sẻ",
+      "pagination": {
+                "page_info": "Trang {{current}} trong {{total}}",
+                "previous": "Trước",
+                "next": "Sau"
+            }
+    },
+    "candidates": {
+      "tracking": "Danh sách ứng viên",
+      "completed": "Danh sách hoàn thành",
+      "table": {
+        "candidate": "Ứng cử viên",
+        "programm": "Chương trình",
+        "expected_salary": "Mức lương kỳ vọng",
+        "status": "Trạng thái",
+        "bonus": "Thưởng",
+        "email": "Email",
+        "phone": "Điện thoại",
+        "cv": "CV",
+        "linkedin": "LinkedIn",
+        "portfolio": "Hồ sơ năng lực",
+        "time": "Thời gian ứng tuyển",
+        "statusvalue": {
+            "completed": "Đã hoàn thành",
+            "notcompleted": "Chưa hoàn thành"
+        }
+        
+      }
+    },
+    "profile": {
+        "title": "Hồ sơ nhà tuyển dụng",
+        
+        "edit": "Chỉnh sửa hồ sơ",
+        "info": "Thông tin cá nhân",
+        "name": "Tên",
+        "email": "Email",
+        "role": "Vai trò",
+        "password": "Mật khẩu",
+        
+        "setname":" Nhập tên",
+        "setemail":" Nhập email",
+        "setnewpassword":" Nhập mật khẩu mới",
+        
+        "bank_info_title": "Thông tin ngân hàng",
+        "accountHolderName": "Tên chủ tài khoản",
+        "bankName": "Tên ngân hàng",
+        "accountNumber": "Số tài khoản",
+        "branchName": "Chi nhánh",
+        "ibanSwiftCode": "IBAN/SWIFT",
+        "currency": "Loại tiền tệ",
+        "currency_vnd": "VND - Đồng Việt Nam",
+        "currency_usd": "USD - Đô la Mỹ",
+        "currency_eur": "EUR - Euro",
+        "registeredEmail": "Email đã đăng ký",
+        "registeredPhone": "Số điện thoại đã đăng ký",
+        
+        "setaccountHolderName":" Nhập tên chủ tài khoản",
+        "setbank":" Nhập tên ngân hàng",
+        "setbranch":" Nhập tên chi nhánh",
+
+        "setaccountNumber":" Nhập số tài khoản",
+    
+
+
+        "commitment_title": "Tôi cam kết rằng tất cả thông tin cung cấp là chính xác và tôi đồng ý tuân thủ các điều khoản dịch vụ của Alowork.com."
+    },
+    "saved": {
+        "not_initialized": "Chưa có chương trình nào được lưu"
+    },
+    "shared": {
+        "title": "Trạng thái các chương trình đang chia sẻ",
+        "loading": "Đang tải...",
+        "alert": {
+            "status_updated": "Trạng thái đã được cập nhật thành công.",
+            "status_failed": "Cập nhật trạng thái thất bại. Vui lòng thử lại.",
+            "steps_updated": "Các bước đã được cập nhật thành công.",
+            "update_steps_failed": "Cập nhật các bước thất bại. Vui lòng thử lại."
+        },
+
+        "table": {
+            "status": "Trạng thái",
+            "candidate": "Ứng cử viên",
+            "programm": "Chương trình",
+            "bonus": "Thưởng",
+            "created": "Tạo lúc",
+            "updated": "Cập nhật lúc",
+            "expires": "Hết hạn",
+            "steps" : "Các bước",
+            "step": "Bước",
+            "actions": "Hành động",
+            "select_placeholder": "Chọn trạng thái",
+            "getlink": "Lấy liên kết",
+            "linkavailable": "Liên kết đã sẵn sàng",
+            "linkunavailable": "Chưa có liên kết"
+        },
+        "not_initialized": "Chưa được cung cấp"
+    }
+  },
+  "programm": {
+    "detail": {
+        "loading_programm": "Đang tải chương trình...",
+        "not_found": "Chương trình không tồn tại hoặc đã bị xóa.",
+        "overview": {
+            "degrees":"Bằng cấp",
+            "type_category":"Chương trình",
+            "job":"xuất khẩu lao động",
+            "studium":"du học",
+            "type":"Loại chương trình",
+            "expected_salary":"Mức lương kỳ vọng", 
+            "fee":"Phí",
+            "status":"Trạng thái",
+            "enough":"Đã đủ",
+            "hire": "Đang tuyển",
+            "public_day" :"Ngày đăng",
+            "deadline":"Hạn nộp",
+            "bonus":"Thưởng",
+            "vacancies":"Số lượng",
+            "hired":"Đã tuyển",
+            
+            "company":"Công ty",
+            "land":"Quốc gia",
+            "overview":"Tổng quan",
+            "requirements":"Yêu cầu",
+            "age":"Tuổi",
+            "education":"Trình độ học vấn",
+            "certificate": "Chứng chỉ",
+            "health":"Tình trạng sức khỏe",
+            "benefit": "Chế độ đãi ngộ",
+            "other":"Khác"
+            
+        },
+        "journey": {
+            "title": "🧭 Lộ trình chi tiết chương trình",
+            "training_phase": "📌 Giai đoạn đào tạo",
+            "cost_table_title": "💸 Bảng thống kê chi phí",
+            "no_extra_costs": "⚖️ Cam kết không chi phí phát sinh",
+            "documents_title": "📁 Hồ sơ cần chuẩn bị",
+            "steps": {
+                "1": "Đăng ký ở Việt Nam",
+                "2": "Học tiếng",
+                "3": "Phỏng vấn",
+                "4": "Hoàn thiện hồ sơ",
+                "5": "Bay",
+                "6": "Quá trình học và làm việc tại nước ngoài"
+            },
+            "costs": {
+                "service_fee": "Phí dịch vụ",
+                "visa_fee": "Phí visa",
+                "flight_ticket": "Vé máy bay",
+                "tuition": "Học phí",
+                "living_expenses": "Chi phí sinh hoạt",
+                "note": {
+                "service_fee": "Thanh toán tại Việt Nam",
+                "visa_fee": "Bao gồm hỗ trợ hồ sơ",
+                "flight_ticket": "Một chiều sang Đức",
+                "tuition": "Tùy chương trình",
+                "living_expenses": "Khoảng 800 EUR/tháng – Tự túc"
+                }
+            },
+            "documents": {
+                "passport": "Hộ chiếu (Passport)",
+                "id_card": "CMND / CCCD",
+                "birth_certificate": "Giấy khai sinh",
+                "household": "Sổ hộ khẩu",
+                "degree": "Bằng cấp / Học bạ",
+                "language_certificate": "Chứng chỉ tiếng (Goethe / IELTS / JLPT...)",
+                "health_check": "Giấy khám sức khỏe",
+                "photo": "Ảnh thẻ 3x4",
+                "application_form": "Đơn xin nhập học / Đơn xin việc",
+                "cv": "Sơ yếu lý lịch"
+            }
+            },
+            "partner": {
+                "title": "Thông tin đối tác chương trình",
+                "intro_title": "📄 Giới thiệu đối tác",
+                "email": "Email",
+                "phone": "Điện thoại",
+                "website": "Website",
+                "address": "Địa chỉ",
+                "country": "Quốc gia",
+                "qa": {
+                    "title": "💬 Hỏi đáp đối tác",
+                    "placeholder": "Đặt câu hỏi cho đối tác...",
+                    "button": "Gửi câu hỏi",
+                    "question_prefix": "❓ Hỏi:",
+                    "answer_prefix": "💡 Trả lời:"
+                },
+                "review": {
+                    "title": "⭐ Đánh giá đối tác",
+                    "select_label": "Chọn số sao:",
+                    "placeholder": "Viết đánh giá...",
+                    "button": "Gửi đánh giá",
+                    "stars": "sao"
+                }
+        }
+    }
+  },
+  "applyform": {
+    "title": "Mẫu Đăng Ký",
+    "name": "Họ và Tên",
+    "phone": "Số Điện Thoại",
+    "cover": "Thư Ứng Tuyển",
+    "resume": "Tệp Hồ Sơ",
+    "enter_resume": "Nhập tệp hồ sơ",
+    "submit": "Gửi Đơn Ứng Tuyển"
+    },
+  "footer": {
+    "subtitle":"Tham gia cùng chúng tôi và bắt đầu hành trình",
+    "address":"Địa chỉ",
+    "phone":"Số Điện Thoại",
+    "street": "Số 30 đường Trần Hữu Dực, Từ Liêm, Hà Nội",
+    "becomecollab":"Kết nối với chúng tôi",
+    "right":" © 2025 AloWork. Bản quyền đã được bảo hộ.",
+    "signup":"Đăng ký"
+  }
+
+  
+
+}

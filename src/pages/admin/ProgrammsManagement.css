@@ -1,0 +1,229 @@
+/* ================= Desktop ================= */
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔹 Toolbar chứa Filter + Add Button */
+.programm-toolbar {
+  display: flex;
+  flex-direction: column;       /* desktop: row */
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  width: 100%;
+  background-color: #F8F9FA;
+}
+
+.add-btn {
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: self-end;
+  margin-right: 50px;
+}
+
+.add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  cursor: pointer;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tab-item {
+  padding: 6px 12px;
+  border-radius: 6px 6px 0 0;
+}
+
+/* ================= Modal (Add New Programm Form) ================= */
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45); /* lớp mờ nền */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* đảm bảo nổi lên trên cùng */
+  backdrop-filter: blur(2px);
+}
+
+/* Khung form chính */
+.edit-form {
+  background: #fff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 650px;
+  padding: 24px 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  animation: fadeInModal 0.25s ease-out;
+  position: relative;
+}
+
+/* Animation xuất hiện mượt */
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Tiêu đề và bước */
+.edit-form h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.edit-form h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Label + Input */
+.edit-form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.edit-form input,
+.edit-form textarea,
+.edit-form select {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-top: 4px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus,
+.edit-form select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Button group */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.form-buttons button {
+  flex: 1;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* Các nút riêng biệt */
+.form-buttons button[type="button"] {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.form-buttons button[type="button"]:hover {
+  background: #e2e8f0;
+}
+
+.form-buttons button[type="submit"] {
+  color: white;
+}
+
+.form-buttons button[type="submit"]:hover {
+  transform: translateY(-1px);
+}
+
+/* Responsive trên mobile */
+@media (max-width: 600px) {
+  .edit-form {
+    width: 95%;
+    padding: 18px;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .form-buttons button {
+    width: 100%;
+  }
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #475569;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+}
+
+
+/* ================= Mobile (≤768px) ================= */
+@media (max-width: 768px) {
+  .programm-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .add-btn {
+    margin-right: 0px;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+  }
+
+  .tab-item {
+    flex: 1 1 auto;
+    text-align: center;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+  }
+}

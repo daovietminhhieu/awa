@@ -1,0 +1,230 @@
+.admin-programms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  justify-items: center;
+  align-items: start;
+  max-width: 1300px;
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: #F8F9FA;
+}
+
+.admin-program-card {
+  width: 100%;
+  max-width: 360px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.admin-program-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header */
+.admin-program-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.admin-program-header h3 {
+  font-size: 1.1rem;
+  color: #222;
+  margin: 0;
+}
+
+/* Info List */
+.admin-program-info {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.admin-program-info li {
+  margin-bottom: 4px;
+}
+
+/* Extra info (Bonus + Vacancies) */
+.admin-program-extra {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.admin-program-extra p {
+  font-size: 0.85rem;
+  background: #e8f0fe;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.admin-program-extra p.bonus-tag {
+  background: #e6f4ea;
+  color: #188038;
+}
+
+.admin-program-extra p.vacancy-tag {
+  background: #fce8e6;
+  color: #F59E0B;
+}
+
+/* Footer buttons */
+.admin-program-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.admin-program-footer button {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Modal adjustments */
+.admin-edit-modal {
+  position: fixed;        /* nổi lên trên tất cả */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);  /* nền mờ */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;          /* cao hơn tất cả */
+}
+
+.admin-edit-form {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  max-height: 90vh;       /* tránh quá cao */
+  overflow-y: auto;
+  width: 90%;
+  max-width: 600px;       /* giới hạn chiều rộng */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.admin-pause-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.admin-pause-btn:hover {
+  background-color: #3e8e41;
+}
+
+.admin-edit-btn {
+  color: white;
+}
+.admin-edit-btn:hover {
+}
+
+.admin-delete-btn {
+  background: #F59E0B;
+  color: white;
+}
+.admin-delete-btn:hover {
+  background: #F59E0B;
+}
+
+/* =============================
+   📱 Responsive (Tablet + Mobile)
+   ============================= */
+@media (max-width: 1024px) {
+  .admin-programms-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-programms-grid {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .admin-program-card {
+    max-width: 100%;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .admin-program-header {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .admin-program-header h3 {
+    font-size: 1rem;
+  }
+
+  .admin-program-info {
+    font-size: 0.85rem;
+  }
+
+  .admin-program-extra {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .admin-program-extra p {
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 16px;
+  }
+
+  .admin-program-footer {
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .admin-program-footer button {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+
+  
+
+  .admin-form-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .admin-form-buttons button {
+    width: 100%;
+    padding: 8px;
+  }
+}

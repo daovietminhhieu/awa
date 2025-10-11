@@ -16,8 +16,7 @@ import {
   getStackedBarDataByCountryStatus,
 } from "../mocks/init";
 
-
-// Đăng ký Chart.js components
+// Register Chart.js components
 ChartJS.register(
   ArcElement,
   Tooltip,
@@ -29,19 +28,17 @@ ChartJS.register(
 
 const applicants = generateApplicants(200);
 
-// Màu cố định cho từng trạng thái
+// Fixed colors for each status
 const statusColors = {
-  "Mới": "#FF6384",
-  "Đang xét duyệt": "#36A2EB",
-  "Phỏng vấn": "#FFCE56",
-  "Trúng tuyển": "#4CAF50",
-  "Xuất cảnh": "#9C27B0",
+  "New": "#FF6384",
+  "Under Review": "#36A2EB",
+  "Interviewing": "#FFCE56",
+  "Hired": "#4CAF50",
+  "Deployed": "#9C27B0",
 };
 
 export default function ApplicantDashboard() {
-  // Pie chart
-
-  // Bar stacked
+  // Bar stacked data
   const stacked = getStackedBarDataByCountryStatus(applicants);
   const barData = {
     labels: stacked.labels,
@@ -79,7 +76,7 @@ export default function ApplicantDashboard() {
       height: "100%", 
       width: "100%" 
     }}>
-      <h2 style={titleStyle}>Ứng viên theo quốc gia & trạng thái</h2>
+      <h2 style={titleStyle}>Applicants by Country & Status</h2>
       <div style={{
         flex: 1,
         display: "flex",
@@ -90,6 +87,5 @@ export default function ApplicantDashboard() {
         <Bar data={barData} options={barOptions} />
       </div>
     </div>
-    
   );
 }

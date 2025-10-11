@@ -1,0 +1,268 @@
+/* Link toàn bộ card để bỏ gạch chân */
+.course-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* Thay cho inline style borderTopColor bằng CSS variable */
+.course-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 1rem;
+  border-top: 6px solid var(--card-color, #2196f3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 350px;
+  max-width: 100%;
+  cursor: pointer;
+}
+
+/* Lấy màu từ attribute data-color */
+.course-card[data-color] {
+  --card-color: attr(data-color color);
+}
+/* attr() có hỗ trợ rất hạn chế, để fallback, dùng JS hoặc tạm thời dùng biến CSS: 
+   Cách phổ biến là dùng JS để gán style hoặc class riêng, do CSS attr() với màu chưa chuẩn */
+/* Thay thế bằng cách viết style cho từng màu trong CSS nếu bạn biết danh sách màu trước */
+
+/* Tạm thời dùng JS gán CSS inline cho color, hoặc bỏ qua phần này */
+/* Nếu cần thật sự đa dạng màu sắc, tốt nhất dùng inline style hoặc class dynamic */
+
+/* Hover hiệu ứng */
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Tiêu đề */
+.course-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Trường */
+.course-university {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.course-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+
+.uni-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.uni-country {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* Info ngắn gọn */
+.course-info {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+}
+.course-info li {
+  font-size: 0.85rem;
+  margin: 0.25rem 0;
+  color: #444;
+}
+
+/* Extra info giống job card */
+.course-extra {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.course-extra p {
+  margin: 0.2rem 0;
+}
+
+/* Nhấn mạnh keyword */
+.course-extra b {
+  font-weight: 600;
+  color: #000;
+}
+
+/* Style cho status */
+.course-status {
+  font-weight: 600;
+  margin: 0.3rem 0;
+}
+
+.course-status.completed {
+  color: green;
+}
+
+.course-status.pending {
+  color: red;
+}
+
+/* Link JD */
+.course-extra a {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #1976d2;
+  text-decoration: none;
+}
+.course-extra a:hover {
+  text-decoration: underline;
+}
+
+/* Badges (nếu dùng) */
+.course-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0;
+}
+
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* Màu badge */
+.badge-bonus {
+  background: #ff9800;
+}
+.badge-reward {
+  background: #2196f3;
+}
+.badge-vacancies {
+  background: #4caf50;
+}
+
+/* Footer */
+.course-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+/* Button Xem chi tiết */
+.course-detail-btn {
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.course-detail-btn:hover {
+  background: linear-gradient(135deg, #125ea2, #1e88e5);
+}
+
+/* Grid bố cục */
+.programms-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 cột đều nhau */
+  grid-auto-rows: auto; /* chiều cao hàng tự động theo nội dung */
+  gap: 1.2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  overflow-x: hidden;
+}
+
+.requirement-list {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.requirement-list ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.requirement-list li {
+  margin-bottom: 0.3rem;
+  line-height: 1.4;
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination-btn {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #eee;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination-btn.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination-btn:hover:not(.active) {
+  background-color: #ccc;
+}
+
+/* Bạn có thể chuyển sang dạng list ngang scroll bằng cách thay đổi
+   .programms-grid như sau nếu muốn:
+
+.programms-grid {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+}
+
+.programms-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.programms-grid::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+.course-card {
+  min-width: 280px;
+  flex-shrink: 0;
+}
+
+*/
+

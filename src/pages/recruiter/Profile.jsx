@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-//import { getBalances, updateBasicInfoOnServer, fetchProfileFromServer} from "../../api";
-import { FaEdit, FaSave, FaTimes, FaCreditCard, FaUser, FaEye, FaEyeSlash} from "react-icons/fa";
+import {
+  FaEdit,
+  FaSave,
+  FaTimes,
+  FaCreditCard,
+  FaUser,
+} from "react-icons/fa";
 import "./Profile.css";
+import { useI18n } from "../../i18n";
 
-export default function Profile() {
+export default function ViewProfile() {
   const { user, setUser } = useAuth();
-  const ctvId = user?.email || user?.id || "recruiter";
+  const { t } = useI18n();
 
   const [isEditing, setIsEditing] = useState(false);
   const [bankInfo, setBankInfo] = useState({
@@ -17,48 +23,21 @@ export default function Profile() {
     ibanSwiftCode: "",
     currency: "VNĐ",
     registeredEmail: "",
-    registeredPhone: ""
+    registeredPhone: "",
   });
   const [basicInfo, setBasicInfo] = useState({
     name: user?.name || "",
     email: user?.email || "",
     role: user?.role || "",
     password: user?.password || "",
-    newPassword: ""
+    newPassword: "",
   });
-
-  useEffect(() => {
-    // Load saved bank info from localStorage
-    const fetchData = async () => {
-      //const userdata = await fetchProfileFromServer();
-      const userdata = {
-
-      };
-      if (userdata && Object.keys(userdata).length > 0) {
-        setUser(userdata); // Update user context with fetched data
-        setBasicInfo({
-          name: userdata.name || "",
-          email: userdata.email || "",
-          role: userdata.role || "",
-          //password: userdata.password || "",
-          //newPassword: ""
-        });
-      } else {
-        console.warn("Fetched userdata is empty or invalid.");
-      }
-      //const savedBankInfo = localStorage.getItem(`bankInfo_${ctvId}`);
-      //if (savedBankInfo) {
-        //setBankInfo(JSON.parse(savedBankInfo));
-      //}
-    };
-    fetchData();
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setBankInfo(prev => ({
+    setBankInfo((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -70,46 +49,36 @@ export default function Profile() {
     }));
   };
 
- const handleBasicInfoSave = async () => {
-  try {
-    const response = await updateBasicInfoOnServer(basicInfo);
-    if (response.success) {
-      alert("Basic information updated successfully on server!");
+  const handleBasicInfoSave = async () => {
+    try {
+      // Gửi lên server / API
+      alert(t("recruiter.profile.alert_updated_success") || "Basic information updated!");
 
-      // Fetch updated profile
-      const updatedProfile = await fetchProfileFromServer();
+      const updatedProfile = {
+        name: basicInfo.name,
+        email: basicInfo.email,
+        role: basicInfo.role,
+        password: basicInfo.password,
+      };
 
-      if (updatedProfile) {
-        setBasicInfo({
-          name: updatedProfile.name,
-          email: updatedProfile.email,
-          role: updatedProfile.role,
-          //password: updatedProfile.password
-        });
+      setBasicInfo({
+        name: updatedProfile.name,
+        email: updatedProfile.email,
+        role: updatedProfile.role,
+        password: updatedProfile.password,
+        newPassword: "",
+      });
 
-        console.log("Updated profile fetched:", updatedProfile);
-        console.log("Updating user context with new profile data.");
-        // Update user context
-        setUser(updatedProfile);
-      } else {
-        console.error("Failed to fetch updated profile.");
-        alert("Failed to fetch updated profile from server.");
-      }
+      setUser(updatedProfile);
+    } catch (error) {
+      console.error("Error updating basic information:", error);
+      alert(t("recruiter.profile.alert_update_error") || "An error occurred while updating.");
+    } finally {
+      setIsEditing(false);
     }
-  } catch (error) {
-    console.error("Error updating basic information on server:", error);
-    alert("An error occurred while updating basic information on server.");
-  } finally {
-    setIsEditing(false);
-  }
-};
+  };
 
   const handleCancel = () => {
-    // Reload from localStorage
-    const savedBankInfo = localStorage.getItem(`bankInfo_${ctvId}`);
-    if (savedBankInfo) {
-      setBankInfo(JSON.parse(savedBankInfo));
-    }
     setIsEditing(false);
   };
 
@@ -118,23 +87,23 @@ export default function Profile() {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <h2>Profile Information</h2>
+        <h2>{t("recruiter.profile.title")}</h2>
         <div className="profile-actions">
           {!isEditing ? (
-            <button 
-              onClick={() => setIsEditing(true)} 
+            <button
+              onClick={() => setIsEditing(true)}
               className="btn-edit"
-              title="Edit bank information"
+              title={t("recruiter.profile.edit_profile")}
             >
-              <FaEdit /> Edit Profile
+              <FaEdit /> {t("recruiter.profile.edit_profile")}
             </button>
           ) : (
             <div className="edit-actions">
               <button onClick={handleBasicInfoSave} className="btn-save">
-                <FaSave /> Save
+                <FaSave /> {t("recruiter.profile.save_changes")}
               </button>
               <button onClick={handleCancel} className="btn-cancel">
-                <FaTimes /> Cancel
+                <FaTimes /> {t("recruiter.profile.cancel")}
               </button>
             </div>
           )}
@@ -144,11 +113,13 @@ export default function Profile() {
       <div className="profile-content">
         {/* Basic Information */}
         <div className="info-section">
-          <h3><FaUser className="section-icon" /> Basic Information</h3>
+          <h3>
+            <FaUser className="section-icon" /> {t("recruiter.profile.info")}
+          </h3>
           {isEditing ? (
             <div className="info-grid">
               <div className="info-item">
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="name">{t("recruiter.profile.setname")}</label>
                 <input
                   type="text"
                   id="name"
@@ -158,7 +129,7 @@ export default function Profile() {
                 />
               </div>
               <div className="info-item">
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email">{t("recruiter.profile.setemail")}</label>
                 <input
                   type="email"
                   id="email"
@@ -168,130 +139,130 @@ export default function Profile() {
                 />
               </div>
               <div className="info-item">
-                <label htmlFor="role">Role:</label>
+                <label htmlFor="role">{t("recruiter.profile.role")}</label>
                 <input
                   type="text"
                   id="role"
                   name="role"
                   value={basicInfo.role}
-                  onChange={handleBasicInfoChange}
                   disabled
                 />
               </div>
               <div className="info-item">
-                <label htmlFor="password">Give new password:</label>
+                <label htmlFor="newPassword">{t("recruiter.profile.setnewpassword")}</label>
                 <input
                   type="password"
                   id="newPassword"
                   name="newPassword"
-                  value={basicInfo.newPassword || ""}
+                  value={basicInfo.newPassword}
                   onChange={handleBasicInfoChange}
-                  placeholder="Enter new password"
+                  placeholder={t("recruiter.profile.place_newpassword")}
                 />
               </div>
             </div>
           ) : (
             <div className="info-grid">
               <div className="info-item">
-                <label>Name:</label>
+                <label>{t("recruiter.profile.name")}</label>
                 <span>{basicInfo.name || "-"}</span>
               </div>
               <div className="info-item">
-                <label>Email:</label>
+                <label>{t("recruiter.profile.email")}</label>
                 <span>{basicInfo.email || "-"}</span>
               </div>
               <div className="info-item">
-                <label>Role:</label>
+                <label>{t("recruiter.profile.role")}</label>
                 <span className={`role-badge ${basicInfo.role}`}>{basicInfo.role}</span>
               </div>
               <div className="info-item">
-                <label>Password:</label>
-                <span>{user.password || "---------"}</span>
-              </div>            
+                <label>{t("recruiter.profile.password")}</label>
+                <span>{"••••••••"}</span>
+              </div>
             </div>
-              
           )}
         </div>
 
-        {/* Bank Account Information */}
+        {/* Bank Account Information, nếu role = recruiter */}
         {user.role === "recruiter" && (
           <div className="info-section">
-            <h3><FaCreditCard className="section-icon" /> Bank Account Information (for Commission Payment)</h3>
-            
+            <h3>
+              <FaCreditCard className="section-icon" />{" "}
+              {t("recruiter.profile.bank_info_title")}
+            </h3>
             {isEditing ? (
               <div className="bank-form">
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="accountHolderName">Account Holder Name *</label>
+                    <label htmlFor="accountHolderName">
+                      {t("recruiter.profile.setname")} *
+                    </label>
                     <input
                       type="text"
                       id="accountHolderName"
                       name="accountHolderName"
                       value={bankInfo.accountHolderName}
                       onChange={handleInputChange}
-                      placeholder="Must match ID/Passport name"
+                      placeholder={t("recruiter.profile.placeholder_accountHolderName")}
                       required
                     />
-                    <small>Must match CMND/CCCD/Passport name</small>
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="bankName">Bank Name *</label>
+                    <label htmlFor="bankName">{t("recruiter.profile.setbank")} *</label>
                     <input
                       type="text"
                       id="bankName"
                       name="bankName"
                       value={bankInfo.bankName}
                       onChange={handleInputChange}
-                      placeholder="e.g., Vietcombank, Techcombank"
+                      placeholder={t("recruiter.profile.placeholder_bankName")}
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="branchName">Branch Name / Branch Code</label>
+                    <label htmlFor="branchName">{t("recruiter.profile.setbranch")}</label>
                     <input
                       type="text"
                       id="branchName"
                       name="branchName"
                       value={bankInfo.branchName}
                       onChange={handleInputChange}
-                      placeholder="Branch where account was opened"
+                      placeholder={t("recruiter.profile.placeholder_branchName")}
                     />
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="accountNumber">Account Number *</label>
+                    <label htmlFor="accountNumber">{t("recruiter.profile.accountNumber")} *</label>
                     <input
                       type="text"
                       id="accountNumber"
                       name="accountNumber"
                       value={bankInfo.accountNumber}
                       onChange={handleInputChange}
-                      placeholder="Bank account number"
+                      placeholder={t("recruiter.profile.placeholder_accountNumber")}
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="ibanSwiftCode">IBAN / SWIFT Code</label>
+                    <label htmlFor="ibanSwiftCode">{t("recruiter.profile.ibanSwiftCode")}</label>
                     <input
                       type="text"
                       id="ibanSwiftCode"
                       name="ibanSwiftCode"
                       value={bankInfo.ibanSwiftCode}
                       onChange={handleInputChange}
-                      placeholder="Required for international payments"
+                      placeholder={t("recruiter.profile.placeholder_ibanSwiftCode")}
                     />
-                    <small>Required if international payment</small>
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="currency">Currency *</label>
+                    <label htmlFor="currency">{t("recruiter.profile.currency")} *</label>
                     <select
                       id="currency"
                       name="currency"
@@ -299,35 +270,41 @@ export default function Profile() {
                       onChange={handleInputChange}
                       required
                     >
-                      <option value="VNĐ">VNĐ (Vietnamese Dong)</option>
-                      <option value="USD">USD (US Dollar)</option>
-                      <option value="EUR">EUR (Euro)</option>
+                      <option value="VNĐ">
+                        {t("recruiter.profile.currency_vnd")}
+                      </option>
+                      <option value="USD">
+                        {t("recruiter.profile.currency_usd")}
+                      </option>
+                      <option value="EUR">
+                        {t("recruiter.profile.currency_eur")}
+                      </option>
                     </select>
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="registeredEmail">Registered Email *</label>
+                    <label htmlFor="registeredEmail">{t("recruiter.profile.registeredEmail")} *</label>
                     <input
                       type="email"
                       id="registeredEmail"
                       name="registeredEmail"
                       value={bankInfo.registeredEmail}
                       onChange={handleInputChange}
-                      placeholder="Contact email for payment issues"
+                      placeholder={t("recruiter.profile.placeholder_registeredEmail")}
                       required
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="registeredPhone">Registered Phone *</label>
+                    <label htmlFor="registeredPhone">{t("recruiter.profile.registeredPhone")} *</label>
                     <input
                       type="tel"
                       id="registeredPhone"
                       name="registeredPhone"
                       value={bankInfo.registeredPhone}
                       onChange={handleInputChange}
-                      placeholder="Contact phone for payment issues"
+                      placeholder={t("recruiter.profile.placeholder_registeredPhone")}
                       required
                     />
                   </div>
@@ -337,48 +314,45 @@ export default function Profile() {
               <div className="bank-info-display">
                 <div className="info-grid">
                   <div className="info-item">
-                    <label>Account Holder Name:</label>
-                    <span>{bankInfo.accountHolderName || "Not provided"}</span>
+                    <label>{t("recruiter.profile.accountHolderName")}</label>
+                    <span>{bankInfo.accountHolderName || t("common.not_provided")}</span>
                   </div>
                   <div className="info-item">
-                    <label>Bank Name:</label>
-                    <span>{bankInfo.bankName || "Not provided"}</span>
+                    <label>{t("recruiter.profile.bankName")}</label>
+                    <span>{bankInfo.bankName || t("common.not_provided")}</span>
                   </div>
                   <div className="info-item">
-                    <label>Branch Name:</label>
-                    <span>{bankInfo.branchName || "Not provided"}</span>
+                    <label>{t("recruiter.profile.branchName")}</label>
+                    <span>{bankInfo.branchName || t("common.not_provided")}</span>
                   </div>
                   <div className="info-item">
-                    <label>Account Number:</label>
-                    <span className="account-number">{bankInfo.accountNumber || "Not provided"}</span>
+                    <label>{t("recruiter.profile.accountNumber")}</label>
+                    <span>{bankInfo.accountNumber || t("common.not_provided")}</span>
                   </div>
                   <div className="info-item">
-                    <label>IBAN / SWIFT Code:</label>
-                    <span>{bankInfo.ibanSwiftCode || "Not provided"}</span>
+                    <label>{t("recruiter.profile.ibanSwiftCode")}</label>
+                    <span>{bankInfo.ibanSwiftCode || t("common.not_provided")}</span>
                   </div>
                   <div className="info-item">
-                    <label>Currency:</label>
-                    <span className="currency-badge">{bankInfo.currency}</span>
+                    <label>{t("recruiter.profile.currency")}</label>
+                    <span>{bankInfo.currency}</span>
                   </div>
                   <div className="info-item">
-                    <label>Contact Email:</label>
-                    <span>{bankInfo.registeredEmail || "Not provided"}</span>
+                    <label>{t("recruiter.profile.registeredEmail")}</label>
+                    <span>{bankInfo.registeredEmail || t("common.not_provided")}</span>
                   </div>
                   <div className="info-item">
-                    <label>Contact Phone:</label>
-                    <span>{bankInfo.registeredPhone || "Not provided"}</span>
+                    <label>{t("recruiter.profile.registeredPhone")}</label>
+                    <span>{bankInfo.registeredPhone || t("common.not_provided")}</span>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Commitment Statement */}
             <div className="commitment-section">
               <div className="commitment-box">
-                <h4>📋 Commitment Statement</h4>
-                <p>
-                  "The Collaborator confirms that the above banking information is accurate and will immediately inform Ant-Tech Asia in case of any change."
-                </p>
+                <h4>{t("recruiter.profile.commitment_title")}</h4>
+                <p>{t("recruiter.profile.commitment_text")}</p>
               </div>
             </div>
           </div>

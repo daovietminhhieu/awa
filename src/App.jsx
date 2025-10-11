@@ -1,17 +1,20 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { I18nProvider } from "./i18n";
 
 // Admins import
 import AdOverView from "./pages/admin/Overview";
 import AdCandidatesManagement from "./pages/admin/CandidatesManagement";
-import AdCoursesManagement from "./pages/admin/CoursesManagement";
+import AdProgrammsManagement from "./pages/admin/ProgrammsManagement";
 import AdProfile from "./pages/admin/Profile";
+import AdProgrammsDetail from "./pages/admin/ProgrammsDetail";
 
 // Recruiters import
 import ReCandidatesSubmittion from "./pages/recruiter/CandidatesSubmittion";
 import ReProfile from "./pages/recruiter/Profile";
-import ReCoursesView from "./pages/recruiter/CoursesView";
+import ReProgrammsView from "./pages/recruiter/ProgrammsView";
+import ProgrammsDetail from "./pages/recruiter/ProgrammsDetail";
 
 // Candidates import
 import CaHome from "./pages/candidates/Home";
@@ -24,7 +27,8 @@ import SignUp from "./pages/auth/SignUp";
 import Navbar from "./pages/NavBar";
 
 import HomePage from "./pages/Home";
-import JobDetail from "./pages/recruiter/JobDetail";
+import CandidateExternSystemApply from "./pages/CandidateExternSystemApply";
+import { DetailSuccessStory, EventDetail, PartnerDetail, TipDetail } from "./components/Short";
 
 
 
@@ -60,7 +64,7 @@ function RootRedirect() {
   if (!user) return <Navigate to="/home" />;
 
   if (user.role === "admin") return <Navigate to="/admin/overview" />;
-  if (user.role === "recruiter") return <Navigate to="/recruiter/jobsview" />;
+  if (user.role === "recruiter") return <Navigate to="/recruiter/programmsview" />;
   if (user.role === "candidate") return <Navigate to="/candidate/home" />;
 
   return <Navigate to="/home" />;
@@ -73,7 +77,8 @@ export default function App() {
 
   return (
     <Router basename={basename}>
-      <AuthProvider>
+      <I18nProvider>
+        <AuthProvider>
         <Routes>
           {/* Redirect root → dashboard hoặc home */}
           <Route path="/" element={<RootRedirect />} />
@@ -82,7 +87,7 @@ export default function App() {
           <Route path="/home" element={<Layout>
             <HomePage />
           </Layout>} />
-          <Route path="/courses/:id" element={<Layout>
+          <Route path="/programm/:id" element={<Layout>
             <Detail />
           </Layout>} />
           <Route path="/login" element={<Layout>
@@ -91,6 +96,15 @@ export default function App() {
           <Route path="/signup" element={<Layout>
             <SignUp />
           </Layout>} />
+          <Route path="programm-view/candidate-apply/:id" element={<Layout>
+            <CandidateExternSystemApply />
+          </Layout>} />
+          <Route path="success-story-detail/:id" element={<Layout>
+            <DetailSuccessStory />
+          </Layout>}/>
+          <Route path="/tip-detail/:tipId" element={<Layout><TipDetail /></Layout>} />
+          <Route path="/event-detail/:eventId" element={<Layout><EventDetail /></Layout>} />
+          <Route path="/collabor" element={<Layout><PartnerDetail/></Layout>} />
 
           {/* Admin router */}
           <Route
@@ -110,12 +124,20 @@ export default function App() {
             }
           />
           <Route
-            path="/admin/job-management"
+            path="/admin/programms-management"
             element={
               <PrivateRoute role="admin">
-                <Layout><AdCoursesManagement /></Layout>
+                <Layout><AdProgrammsManagement /></Layout>
               </PrivateRoute>
             }          
+          />
+          <Route
+            path="/admin/programmsdetail/:id"
+            element={
+              <PrivateRoute role="admin">
+                <Layout><AdProgrammsDetail /></Layout>
+              </PrivateRoute>
+            }
           />
           <Route
             path="/admin/profile"
@@ -128,10 +150,10 @@ export default function App() {
             
           {/* Recruiter router */}
           <Route
-            path="/recruiter/jobsview"
+            path="/recruiter/programmsview"
             element={
               <PrivateRoute role="recruiter">
-                <Layout><ReCoursesView /></Layout>
+                <Layout><ReProgrammsView /></Layout>
               </PrivateRoute>
             }
           />
@@ -152,10 +174,10 @@ export default function App() {
             }
           />
           <Route
-            path="/recruiter/jobdetail/:id"
+            path="/recruiter/programmsdetail/:id"
             element={
               <PrivateRoute role="recruiter">
-                <Layout><JobDetail /></Layout>
+                <Layout><ProgrammsDetail /></Layout>
               </PrivateRoute>
             }
           />
@@ -190,6 +212,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </AuthProvider>
+      </I18nProvider>
     </Router>
   );
 }
