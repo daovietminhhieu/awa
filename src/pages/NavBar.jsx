@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useI18n } from "../i18n";
-import './Navbar.css';
+import './NavBar.css';
 
 import { 
   FaSearch, FaSignInAlt, FaSignOutAlt, FaRegBookmark, FaUserPlus, FaUser, FaBars, FaTimes, FaUsers 
