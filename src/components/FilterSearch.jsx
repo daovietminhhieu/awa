@@ -3,7 +3,6 @@ import "./FilterSearch.css";
 import { useI18n } from "../i18n";
 
 export default function FilterSearch({ programms = [], onSelectProgramm, onFilterChange }) {
-  const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [filters, setFilters] = useState({ type_category: "", land: "", deadline: "", age: "", degrees: "" });
   const { t } = useI18n();
@@ -68,7 +67,7 @@ export default function FilterSearch({ programms = [], onSelectProgramm, onFilte
         </div>
       </div>
 
-      <div className="search-wrapper">
+      {/**<div className="search-wrapper">
         <input type="search" placeholder={t('filter.search_placeholder')} className="search-field" value={searchTerm} onChange={handleSearchChange} />
         {suggestions.length > 0 && (
           <div className="suggestions-list">
@@ -80,7 +79,7 @@ export default function FilterSearch({ programms = [], onSelectProgramm, onFilte
             ))}
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

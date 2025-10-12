@@ -59,6 +59,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                     value={formData[field]}
                     onChange={handleChange}
                     required={field === "title"}
+                    placeholder={t(`admin.programms.edit.new.enter_${field}`)}
                   />
                 </label>
               ))}
@@ -80,6 +81,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   value={formData.bonus}
                   onChange={handleChange}
                   type="text"
+                  placeholder={t('admin.programms.edit.new.enter_bonus')}
                 />
               </label>
 
@@ -90,6 +92,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   value={formData.vacancies}
                   onChange={handleChange}
                   type="text"
+                  placeholder={t('admin.programms.edit.new.enter_vacancies')}
                 />
               </label>
 
@@ -100,6 +103,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   value={formData.hired}
                   onChange={handleChange}
                   type="text"
+                  placeholder={t('admin.programms.edit.new_hired')}
                 />
               </label>
 
@@ -120,6 +124,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                     name={`requirement.${f}`}
                     value={formData.requirement[f]}
                     onChange={handleChange}
+                    placeholder={t(`admin.programms.edit.new.enter_${f}`)}
                   />
                 </label>
               ))}
@@ -146,6 +151,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   name="details.overview"
                   value={formData.details.overview}
                   onChange={handleChange}
+                  placeholder={t('admin.programms.edit.new.enter_details_overview')}
                 />
               </label>
 
@@ -155,12 +161,13 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   name="details.other"
                   value={formData.details.other}
                   onChange={handleChange}
+                  placeholder={t('admin.programms.edit.new.enter_details_other')}
                 />
               </label>
 
               <label>
                 {t("admin.programms.edit.new.fee") || "Fee:"}
-                <input name="fee" value={formData.fee} onChange={handleChange} />
+                <input name="fee" value={formData.fee} onChange={handleChange} placeholder={t('admin.programms.edit.new.enter_fee')}/>
               </label>
 
               <label>
@@ -169,6 +176,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   name="expected_salary"
                   value={formData.expected_salary}
                   onChange={handleChange}
+                  placeholder={t('admin.programms.edit.new.enter_expected_salary')}
                 />
               </label>
 
@@ -189,6 +197,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
                   name="public_day"
                   value={formData.public_day}
                   onChange={handleChange}
+                  placeholder={t('admin.programms.edit.new.enter_public_day')}
                 />
               </label>
 

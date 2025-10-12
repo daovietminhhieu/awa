@@ -1,57 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import './NavBar.css';
 import { useI18n } from "../i18n";
+import './Navbar.css';
 
-import { FaSearch, FaSignInAlt, FaSignOutAlt, FaRegBookmark, FaUserPlus, FaUser, FaBars, FaTimes } from "react-icons/fa";
+import { 
+  FaSearch, FaSignInAlt, FaSignOutAlt, FaRegBookmark, FaUserPlus, FaUser, FaBars, FaTimes, FaUsers 
+} from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 import { HiOutlineBriefcase } from "react-icons/hi";
 import { BiBarChart } from "react-icons/bi";
-import { FaUsers } from "react-icons/fa";
+
+import { getProgrammsList } from "../api"; // API để load danh sách programms
 
 function LoggedInIcons({ user, onLogout, t }) {
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchText, setSearchText] = useState("");
   const [activeIcon, setActiveIcon] = useState(null);
 
   const handleClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
   };
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    alert("Search result executed.");
-    setSearchText("");
-    setShowSearch(false);
-  };
-
   return (
     <div className="nav-loggedIn">
-      <div className="search-container">
-        {!showSearch ? (
-          <FaSearch onClick={() => setShowSearch(true)} className="search-icon" title="Search" />
-        ) : (
-          <form onSubmit={handleSearchSubmit} className="search-form">
-            <input
-              type="text"
-              placeholder={t('nav.search_placeholder')}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              className="search-input"
-              autoFocus
-              onBlur={() => setTimeout(() => {
-                if (!document.querySelector(".search-results:hover")) {
-                  setShowSearch(false);
-                }
-              }, 200)}
-            />
-            <button type="submit" style={{ display: "none" }}>Find</button>
-          </form>
-        )}
-      </div>
-
-      {/* Các icon hiển thị desktop */}
       {user.role === 'admin' && (
         <>
           <Link to="/home">
@@ -153,7 +123,20 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { t, lang, changeLang } = useI18n();
+
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const [programms, setProgramms] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    getProgrammsList()
+      .then(data => setProgramms(data.data || [])) // <- data.data nếu API trả về object
+      .catch(console.error);
+  }, []);
+  
 
   const homePath =
     user?.role === 'admin' ? '/admin/overview' :
@@ -162,6 +145,34 @@ export default function Navbar() {
 
   const goHome = () => navigate(homePath);
   const handleLogOut = () => logout();
+
+  // === Search ===
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchText(value); // dùng searchText cho cả input và filter
+    if (!value.trim()) return setSuggestions([]);
+    const lowerValue = value.toLowerCase();
+    const matched = programms.filter(
+      (p) => p.title?.toLowerCase().includes(lowerValue) ||
+             p.company?.toLowerCase().includes(lowerValue) ||
+             p.land?.toLowerCase().includes(lowerValue)
+    );
+    setSuggestions(matched.slice(0, 5));
+  };
+
+  const handleSelect = (program) => {
+    navigate(`/programm/${program._id}`);
+    setSearchText("");
+    setSuggestions([]);
+    setShowSearch(false);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    alert(`Tìm kiếm: ${searchText}`);
+    setSearchText("");
+    setShowSearch(false);
+  };
 
   return (
     <header className="navbar">
@@ -172,18 +183,57 @@ export default function Navbar() {
       </div>
 
       <div className="navbar-right">
+        {/* Search */}
+        <div className="search-container">
+          {!showSearch ? (
+            <FaSearch
+              onClick={() => setShowSearch(true)}
+              className="search-icon"
+              title={t('nav.search_title')}
+            />
+          ) : (
+            <form onSubmit={handleSearchSubmit} className="search-form">
+              <input
+                type="text"
+                placeholder={t('nav.search_placeholder')}
+                value={searchText}
+                onChange={handleSearchChange}
+                className="search-input"
+                autoFocus
+                onBlur={() => setTimeout(() => {
+                  setShowSearch(false);  // Ẩn input + suggestions
+                  setSuggestions([]);    // Xóa suggestion khi ẩn
+                }, 150)}
+              />
+              <button type="submit" style={{ display: "none" }}>{t('nav.search_button')}</button>
+            </form>
+          )}
+
+          {showSearch && suggestions.length > 0 && (
+            <div className="suggestions-list">
+              {suggestions.map((p) => (
+                <div
+                  key={p._id}
+                  className="suggestion-item"
+                  onClick={() => handleSelect(p)}
+                >
+                  <img src={p.logoL || p.logo} alt={p.title} style={{ width: 40, height: 40, borderRadius: 8 }} />
+                  <span>{p.title}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
 
         {/* Menu icon mobile */}
         <div className="menu-toggle" onClick={() => setMenuOpen(true)}>
           <FaBars />
         </div>
 
-        {/* Language toggle desktop */}
+        {/* Language toggle */}
         <div className="translator-btn" onClick={() => changeLang(lang === 'vi' ? 'en' : 'vi')} title={t('nav.language')}>
-          <img
-            src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'}
-            alt={lang}
-          />
+          <img src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'} alt={lang} />
         </div>
 
         {/* Desktop nav items */}

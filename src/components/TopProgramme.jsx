@@ -6,10 +6,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 import { useI18n } from '../i18n';
+import { useNavigate } from 'react-router-dom';
 
 function TopProgrammeSlider({ programs }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [topProgrammsList, setTopProgrammsList] = useState([]);
+  const navigate = useNavigate();
 
   // ✅ Dịch đa ngôn ngữ
   const { t } = useI18n();
@@ -35,6 +37,10 @@ function TopProgrammeSlider({ programs }) {
   const toggleExpand = (idx) => {
     setExpandedIndex(expandedIndex === idx ? null : idx);
   };
+  // 🔹 Hàm chuyển hướng khi click vào chương trình
+  const handleClickProgram = (program) => {
+    navigate(`/programm/${program.id || program._id}`, { state: { program } });
+  };
 
   return (
     <section className="top-programme-section">
@@ -57,7 +63,7 @@ function TopProgrammeSlider({ programs }) {
       >
         {topProgrammsList.map((item, idx) => (
           <SwiperSlide key={idx}>
-            <article className="featured-card">
+            <article className="featured-card" onClick={() => handleClickProgram(item)} style={{ cursor: 'pointer' }}>
               <div className="card-body">
                 <img src={item.image} alt={item.title} loading="lazy" />
                 <div className="content-right">

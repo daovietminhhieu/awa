@@ -98,20 +98,27 @@ export function DetailSuccessStory() {
   const { t } = useI18n();
 
   const story = location.state?.story;
+  const render = null;
 
   if (!story) return <p>{t('short.not_found_story')}</p>;
 
   return (
-    <section className="detail-story section">
-      <button onClick={() => navigate(-1)} className="back-btn">
-        {t('short.back')}
-      </button>
-      <div className="detail-card">
-        <img src={story.imageUrl} alt={story.title} className="detail-image" />
-        <h2 className="detail-title">{story.title}</h2>
-        <p className="detail-desc">{story.description}</p>
-      </div>
-    </section>
+    <>
+      <h3 style={{margin:"100px 20px"}}>Not implement yet</h3>
+      {render && <>
+        <section className="detail-story section">
+          <button onClick={() => navigate(-1)} className="back-btn">
+            {t('short.back')}
+          </button>
+          <div className="detail-card">
+            <img src={story.imageUrl} alt={story.title} className="detail-image" />
+            <h2 className="detail-title">{story.title}</h2>
+            <p className="detail-desc">{story.description}</p>
+          </div>
+        </section>
+      </>}
+    
+    </>
   );
 }
 

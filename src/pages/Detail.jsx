@@ -18,7 +18,7 @@ export default function ProgrammDetail({role}) {
     async function fetchProgramm() {
       try {
         const res = await getProgrammById(id);
-  if (!res.success) throw new Error(t('programm.detail.not_found'));
+        if (!res.success) throw new Error(t('programm.detail.not_found'));
         setProgramm(res.data);
       } catch (err) {
         setError(err.message || "Có lỗi xảy ra");

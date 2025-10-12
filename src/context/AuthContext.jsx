@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
-const LS_SESSION = "authSession"; // stored in sessionStorage to isolate per tab
+const LS_SESSION = "awa-ss"; // stored in sessionStorage to isolate per tab
 const ONE_HOUR_MS = 60 * 60 * 1000;
 
 // =========================
@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
   // auto-logout when expired (check every minute)
   useEffect(() => {
     const interval = setInterval(() => {
+      sessionStorage.removeItem("authSession");
       const s = readSession();
       if (!s?.user) {
         if (user) {

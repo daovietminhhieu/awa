@@ -11,6 +11,7 @@ import {
 // ==========================
 import { useI18n } from "../../../../i18n";
 
+
 export function EditProgramForm({ programm, onClose, onSubmit }) {
   const { t } = useI18n();
   const [formData, setFormData] = useState({ ...programm });
@@ -20,7 +21,7 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const renderInput = (label, name, type = "text") => (
+  const renderInput = (label, name, type = "text", placeholderText = "") => (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
       <input
@@ -29,6 +30,7 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
         type={type}
         value={formData[name] || ""}
         onChange={handleChange}
+        placeholder={placeholderText}
       />
     </div>
   );
@@ -36,7 +38,7 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
   return (
     <div className="admin-edit-modal">
       <div className="admin-edit-form">
-  <h2>{t('admin.programms.edit.title') || 'Edit Program'}</h2>
+        <h2>{t('admin.programms.edit.title') || 'Edit Program'}</h2>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -46,31 +48,113 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
         >
           {/* Thông tin cơ bản */}
           <h4>{t('admin.programms.edit.basic_info') || 'Basic Info'}</h4>
-          {renderInput(t('admin.programms.edit.labels.title') || "Title", "title")}
-          {renderInput(t('admin.programms.edit.labels.company') || "Company", "company")}
-          {renderInput(t('admin.programms.edit.labels.logo') || "Logo URL", "logoUrl", "url")}
-          {renderInput(t('admin.programms.edit.labels.type') || "Program Type", "type")}
-          {renderInput(t('admin.programms.edit.labels.degrees') || "Degrees", "degrees")}
-          {renderInput(t('admin.programms.edit.labels.duration') || "Duration", "duration")}
-          {renderInput(t('admin.programms.edit.labels.land') || "Location", "land")}
-          {renderInput(t('admin.programms.edit.labels.fee') || "Fee", "fee")}
+          {renderInput(
+            t('admin.programms.edit.labels.title') || "Title",
+            "title",
+            "text",
+            t('admin.programms.edit.new.enter_name') || "Enter program title"
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.company') || "Company",
+            "company",
+            "text",
+            t('admin.programms.edit.new.enter_company') || "Enter company name"
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.logo') || "Logo URL",
+            "logoUrl",
+            "url",
+            "https://example.com/logo.png"
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.type') || "Program Type",
+            "type",
+            "text",
+            t('admin.programms.edit.new.enter_programm_type')
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.degrees') || "Degrees",
+            "degrees",
+            "text",
+            t('admin.programms.edit.new.enter_degrees')
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.duration') || "Duration",
+            "duration",
+            "text",
+            t('admin.programms.edit.new.enter_duration')
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.land') || "Location",
+            "land",
+            "text",
+            t('admin.programms.edit.new.enter_land')
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.fee') || "Fee",
+            "fee",
+            "text",
+            t('admin.programms.edit.new.enter_fee')
+          )}
 
           {/* Chi tiết tuyển dụng */}
           <h4>{t('admin.programms.edit.details_title') || 'Recruitment Details'}</h4>
-          {renderInput(t('admin.programms.edit.labels.expected_salary') || "Expected Salary", "expected_salary")}
-          {renderInput(t('admin.programms.edit.labels.deadline') || "Deadline", "deadline", "date")}
-          {renderInput(t('admin.programms.edit.labels.vacancies') || "Vacancies", "vacancies", "number")}
-          {renderInput(t('admin.programms.edit.labels.benefit') || "Benefit", "benefit")}
-          {renderInput(t('admin.programms.edit.labels.review') || "Review", "review")}
+          {renderInput(
+            t('admin.programms.edit.labels.expected_salary') || "Expected Salary",
+            "expected_salary",
+            "text",
+            t('admin.programms.edit.new.enter_expected_salary')
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.deadline') || "Deadline",
+            "deadline",
+            "date",
+            ""
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.vacancies') || "Vacancies",
+            "vacancies",
+            "number",
+            ""
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.benefit') || "Benefit",
+            "benefit",
+            "text",
+            "..."
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.review') || "Review",
+            "review",
+            "text",
+            "..."
+          )}
 
-          {/* Video & Link */}
+          {/* Video & Bonus */}
           <h4>{t('admin.programms.edit.other_title') || 'Other'}</h4>
-          {renderInput(t('admin.programms.edit.labels.video') || "Video URL", "videos", "url")}
-          {renderInput(t('admin.programms.edit.labels.bonus') || "Bonus", "bonus")}
-          {renderInput(t('admin.programms.edit.labels.public_day') || "Public Day", "public_day", "date")}
+          {renderInput(
+            t('admin.programms.edit.labels.video') || "Video URL",
+            "videos",
+            "url",
+            "https://example.com/video.mp4"
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.bonus') || "Bonus",
+            "bonus",
+            "text",
+            t('admin.programms.edit.new.enter_bonus')
+          )}
+          {renderInput(
+            t('admin.programms.edit.labels.public_day') || "Public Day",
+            "public_day",
+            "date",
+            "Select public day"
+          )}
 
           <div className="admin-form-buttons">
-            <button type="submit" className="admin-edit-btn">{t('admin.programms.edit.save') || 'Save'}</button>
+            <button type="submit" className="admin-edit-btn">
+              {t('admin.programms.edit.save') || 'Save'}
+            </button>
             <button type="button" className="admin-delete-btn" onClick={onClose}>
               {t('admin.programms.edit.cancel') || 'Cancel'}
             </button>
@@ -80,6 +164,7 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
     </div>
   );
 }
+
 
 // ==========================
 // 🎓 Main List Component

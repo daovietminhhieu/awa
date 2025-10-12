@@ -5,6 +5,7 @@
   align-items: center;
   height: 100%;
   animation: fadeInBg 1s ease-in-out;
+
 }
 
 /* 🔧 Wrapper để rung khi lỗi */
@@ -28,7 +29,7 @@
   border: 3px solid #e67e22;
   box-shadow: 10px 10px 0px #e67e22;
   text-align: center;
-  margin: 0 auto; 
+  margin: 200px auto; 
   opacity: 0;
   transform: translateY(30px);
   animation: fadeInForm 1s ease forwards;

@@ -243,7 +243,7 @@
             "tabs": {"my":"All","saved":"Saved","shared":"Shared"},
             "edit": {
                 "title": "Edit Program",
-                "add_title": "Add New Programm",
+                "add_title": "+ Add New Programm",
                 "requirements": "Requirements",
                 "details": "Details",
                 "next": "Next",
@@ -258,23 +258,37 @@
                     "level":"Level", 
                     "duration":"Duration",
                     "land":"Land",
-                    "bonus":"Bonus",
-                    "vacancies":"Vacancies",
+                    "enter_title":"",
+                    "enter_company":"",
+                    "enter_type":"Fulltime, parttime, exchange,...",
+                    "enter_degrees":"Bachelor, Master,...",
+                    "enter_level":"",
+                    "enter_duration":"6 months, 1 year,...",
+                    "enter_land":"",
+                    
+                    "bonus":"Bonus", "enter_bonus":"1000 Usd,...",
+                    "vacancies":"Vacancies", "enter_vacancies":"10, 20,...",
                     "hired":"Hired",
                     "age": "Age", 
                     "health": "Health", 
                     "education": "Education", 
                     "certificate": "Certificate",
-                    "overview":"Overview",
-                    "other":"Other",
+                    "enter_health":"healthy, good, ...",
+                    "enter_education":"highschool, uni break,...",
+                    "enter_certificate":"IELTS, TestDaF, C1 Goethe,....",
+                    
+                    "overview":"Overview", "enter_details_overview": "description with 100 -> 200 words",
+                    "other":"Other", "enter_details_other":"description with 100 -> 200 words",
                     "fee":"Fee",
+                    "public_day":"Public Day",
                     "expected_salary":"Expected Salary",
                     "deadline":"Deadline",
                     "type_job": "Job",
                     "type_studium": "Studium",
                     "is_active":"Is Active",
                     "active":"yes",
-                    "inactive": "no"
+                    "inactive": "no",
+                    "type_category":"Program type"
                 },
                 "basic_info": "Basic Info",
                 "details_title": "Recruitment Details",
@@ -545,101 +559,102 @@
     },
    
     "programm": {
-    "detail": {
-      "loading_programm": "Loading program...",
-      "not_found": "The program does not exist or has been deleted.",
-      "overview": {
-        "degrees": "Degree",
-        "type_category": "Program type",
-        "job": "Labor export",
-        "studium": "Study abroad",
-        "type": "Program form",
-        "expected_salary": "Expected salary",
-        "fee": "Fee",
-        "status": "Status",
-        "enough": "Full quota",
-        "hire": "Hiring",
-        "public_day": "Posted date",
-        "deadline": "Application deadline",
-        "bonus": "Bonus",
-        "vacancies": "Vacancies",
-        "hired": "Hired",
-        "company": "Company",
-        "land": "Country",
-        "overview": "Overview",
-        "requirements": "Requirements",
-        "age": "Age",
-        "education": "Education level",
-        "certificate": "Certificate",
-        "health": "Health condition",
-        "benefit": "Benefits",
-        "other": "Other"
-      },
-      "journey": {
-        "title": "🧭 Detailed program journey",
-        "training_phase": "📌 Training phases",
-        "cost_table_title": "💸 Cost breakdown table",
-        "no_extra_costs": "⚖️ No hidden or additional fees guaranteed",
-        "documents_title": "📁 Required documents",
-        "steps": {
-          "1": "Register in Vietnam",
-          "2": "Language training",
-          "3": "Interview",
-          "4": "Complete documentation",
-          "5": "Fly abroad",
-          "6": "Study and work overseas"
+        "detail": {
+        "loading_programm": "Loading program...",
+        "not_found": "The program does not exist or has been deleted.",
+        "overview": {
+            "duration":"Duration",
+            "degrees": "Degree",
+            "type_category": "Program type",
+            "job": "Labor export",
+            "studium": "Study abroad",
+            "type": "Program form",
+            "expected_salary": "Expected salary",
+            "fee": "Fee",
+            "status": "Status",
+            "enough": "Full quota",
+            "hire": "Hiring",
+            "public_day": "Posted date",
+            "deadline": "Application deadline",
+            "bonus": "Bonus",
+            "vacancies": "Vacancies",
+            "hired": "Hired",
+            "company": "Company",
+            "land": "Country",
+            "overview": "Overview",
+            "requirements": "Requirements",
+            "age": "Age",
+            "education": "Education level",
+            "certificate": "Certificate",
+            "health": "Health condition",
+            "benefit": "Benefits",
+            "other": "Other"
         },
-        "costs": {
-          "service_fee": "Service fee",
-          "visa_fee": "Visa fee",
-          "flight_ticket": "Flight ticket",
-          "tuition": "Tuition fee",
-          "living_expenses": "Living expenses",
-          "note": {
-            "service_fee": "Payable in Vietnam",
-            "visa_fee": "Includes document assistance",
-            "flight_ticket": "One-way to Germany",
-            "tuition": "Depends on the program",
-            "living_expenses": "Around 800 EUR/month – self-funded"
-          }
+        "journey": {
+            "title": "🧭 Detailed program journey",
+            "training_phase": "📌 Training phases",
+            "cost_table_title": "💸 Cost breakdown table",
+            "no_extra_costs": "⚖️ No hidden or additional fees guaranteed",
+            "documents_title": "📁 Required documents",
+            "steps": {
+            "1": "Register in Vietnam",
+            "2": "Language training",
+            "3": "Interview",
+            "4": "Complete documentation",
+            "5": "Fly abroad",
+            "6": "Study and work overseas"
+            },
+            "costs": {
+            "service_fee": "Service fee",
+            "visa_fee": "Visa fee",
+            "flight_ticket": "Flight ticket",
+            "tuition": "Tuition fee",
+            "living_expenses": "Living expenses",
+            "note": {
+                "service_fee": "Payable in Vietnam",
+                "visa_fee": "Includes document assistance",
+                "flight_ticket": "One-way to Germany",
+                "tuition": "Depends on the program",
+                "living_expenses": "Around 800 EUR/month – self-funded"
+            }
+            },
+            "documents": {
+            "passport": "Passport",
+            "id_card": "National ID / Citizen ID",
+            "birth_certificate": "Birth certificate",
+            "household": "Household registration book",
+            "degree": "Diploma / Transcript",
+            "language_certificate": "Language certificate (Goethe / IELTS / JLPT...)",
+            "health_check": "Health certificate",
+            "photo": "3x4 photo",
+            "application_form": "Application form (study/work)",
+            "cv": "Curriculum Vitae (CV)"
+            }
         },
-        "documents": {
-          "passport": "Passport",
-          "id_card": "National ID / Citizen ID",
-          "birth_certificate": "Birth certificate",
-          "household": "Household registration book",
-          "degree": "Diploma / Transcript",
-          "language_certificate": "Language certificate (Goethe / IELTS / JLPT...)",
-          "health_check": "Health certificate",
-          "photo": "3x4 photo",
-          "application_form": "Application form (study/work)",
-          "cv": "Curriculum Vitae (CV)"
+        "partner": {
+            "title": "Program partner information",
+            "intro_title": "📄 Partner introduction",
+            "email": "Email",
+            "phone": "Phone",
+            "website": "Website",
+            "address": "Address",
+            "country": "Country",
+            "qa": {
+            "title": "💬 Partner Q&A",
+            "placeholder": "Ask a question to the partner...",
+            "button": "Send question",
+            "question_prefix": "❓ Question:",
+            "answer_prefix": "💡 Answer:"
+            },
+            "review": {
+            "title": "⭐ Partner reviews",
+            "select_label": "Select rating:",
+            "placeholder": "Write your review...",
+            "button": "Submit review",
+            "stars": "stars"
+            }
         }
-      },
-      "partner": {
-        "title": "Program partner information",
-        "intro_title": "📄 Partner introduction",
-        "email": "Email",
-        "phone": "Phone",
-        "website": "Website",
-        "address": "Address",
-        "country": "Country",
-        "qa": {
-          "title": "💬 Partner Q&A",
-          "placeholder": "Ask a question to the partner...",
-          "button": "Send question",
-          "question_prefix": "❓ Question:",
-          "answer_prefix": "💡 Answer:"
-        },
-        "review": {
-          "title": "⭐ Partner reviews",
-          "select_label": "Select rating:",
-          "placeholder": "Write your review...",
-          "button": "Submit review",
-          "stars": "stars"
         }
-      }
-    }
     },
 
     "applyform" : {

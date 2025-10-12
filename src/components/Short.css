@@ -177,13 +177,12 @@
   }
   
   .left {
-    border: 2px solid black;
   }
   
   .right {
-    border: 2px solid black;
     display: flex;
     align-items: center;
+    text-align: center;
     
   }
   
@@ -196,7 +195,7 @@
     font-size: 2.2rem;
     font-weight: 700;
     width: 50%;
-    text-align: center;
+    
   }
   
   .partner-detail-desc {

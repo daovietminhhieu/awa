@@ -1,6 +1,7 @@
 // ====================== CONFIG ======================
 export const API_BASE =
-  process.env.REACT_APP_API_BASE || "http://localhost:3000/alowork";
+  import.meta.env.VITE_API_BASE || "http://localhost:3000/alowork";
+
 
 console.log("🌐 Using API base:", API_BASE);
 
@@ -36,13 +37,14 @@ export async function loginUser({ email, password }) {
   });
 
   const data = await res.json();
-  if (!res.ok || !data.success)
-    throw new Error(data.message || "Login failed");
+  if (!res.ok || !data.success) {
+     alert(data.message);
+  }
 
   const ONE_HOUR_MS = 60 * 60 * 1000;
   const expiresAt = Date.now() + ONE_HOUR_MS;
   sessionStorage.setItem(
-    "authSession",
+    "awa-ss",
     JSON.stringify({ user: data.data, token: data.token, expiresAt })
   );
 
@@ -74,7 +76,7 @@ export async function getProgrammsList() {
 
 export async function getProgrammById(id) {
   const res = await fetch(`${API_BASE}/db/programm/${id}`);
-  if (!res.ok) throw new Error("Failed to fetch programm by id");
+  if (!res.ok) throw new Error("No programm found");
   return await res.json();
 }
 
