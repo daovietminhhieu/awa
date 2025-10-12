@@ -8,7 +8,7 @@ console.log("🌐 Using API base:", API_BASE);
 // ====================== SESSION HANDLING ======================
 function getSession() {
   try {
-    const raw = sessionStorage.getItem("authSession");
+    const raw = sessionStorage.getItem("awa-ss");
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
