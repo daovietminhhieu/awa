@@ -178,7 +178,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar-left">
         <div className="logo-btn" onClick={goHome} title={t('nav.home')}>
-          <span className="logo">AloWorks</span>
+          <span className="logo">AloWork</span>
         </div>
       </div>
 
