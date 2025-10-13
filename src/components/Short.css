@@ -155,9 +155,9 @@
      ĐỐI TÁC
      ============================== */
   
-  .partner-detail-section {
-    max-width: 1000px;
-    margin: 4rem auto;
+  .form-detail-partner {
+    height: 400px;
+    margin: 10px auto;
     padding: 3rem 2rem;
     background: #f9fafb;
     border-radius: 16px;
@@ -170,6 +170,14 @@
     justify-content: space-between;
     color: #222;
     flex-wrap: wrap;
+  }
+
+  .partner-detail-section {
+    max-width: 1000px;
+    height: 600px;
+    margin: 4rem auto;
+    padding: 3rem 2rem;
+    
   }
   
   .partner-divider {
@@ -502,58 +510,121 @@
      RESPONSIVE
      ============================== */
   
-  @media (max-width: 768px) {
-    .partner-sections {
-      flex-direction: column;
-      text-align: center;
-      padding: 2rem 1.5rem;
+     @media (max-width: 768px) {
+      .form-detail-partner {
+        height: auto;
+        flex-direction: column;
+        padding: 2rem 1.2rem;
+        gap: 2rem;
+      }
+    
+      .partner-sections {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    
+      .partner-title {
+        font-size: 1.8rem;
+      }
+    
+      .partner-desc {
+        font-size: 1.05rem;
+      }
+    
+      .partner-benefits {
+        align-items: center;
+      }
+    
+      .success-story-card img,
+      .success-story-card video {
+        width: 120px;
+        height: 120px;
+      }
+    
+      .reason-card {
+        flex-direction: row;
+      }
+
+      .partner-detail-title {
+        font-size: 1.6rem;
+        width: 100%;
+        text-align: center;
+      }
+    
+      .partner-detail-content {
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .left, .right {
+        width: 100%;
+      }
+    
+      .partner-detail-info .info-item {
+        margin-bottom: 1rem;
+      }
+    
+      .partner-goodbye {
+        font-size: 1rem;
+      }
     }
-  
-    .partner-title {
-      font-size: 1.8rem;
+    
+    @media (max-width: 480px) {
+
+    
+      .form-detail-partner {
+        margin: 0; /* Xóa margin cũ */
+        height: auto; /* Cho phép co giãn chiều cao */
+        width: 90%; /* Hoặc 100%, tùy ý */
+        max-width: 400px;
+      }
+      .partner-detail-title {
+        font-size: 1.4rem;
+      }
+    
+      .partner-detail-desc {
+        font-size: 1rem;
+      }
+    
+      .partner-goodbye {
+        font-size: 0.95rem;
+      }
+    
+      .partner-detail-info strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+    
+      .partner-detail-info span {
+        display: block;
+        color: #333;
+      }
+
+      .reason-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    
+      .reason-icon {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+      }
+    
+      .reason-content {
+        align-items: center;
+      }
+    
+      .success-story-card p {
+        font-size: 0.95rem;
+      }
+    
+      .story-btn {
+        font-size: 0.95rem;
+      }
     }
-  
-    .partner-desc {
-      font-size: 1.05rem;
-    }
-  
-    .partner-benefits {
-      align-items: center;
-    }
-  
-    .success-story-card img,
-    .success-story-card video {
-      width: 120px;
-      height: 120px;
-    }
-  
-    .reason-card {
-      flex-direction: row;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .reason-card {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-  
-    .reason-icon {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-    }
-  
-    .reason-content {
-      align-items: center;
-    }
-  
-    .success-story-card p {
-      font-size: 0.95rem;
-    }
-  
-    .story-btn {
-      font-size: 0.95rem;
-    }
-  }
-  
+    
+

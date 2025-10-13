@@ -30,9 +30,9 @@ export default function ProgrammDetail({role}) {
     fetchProgramm();
   }, [id]);
 
-  if (loading) return <p>{t('programm.detail.loading_programm')}</p>;
-  if (error) return <p style={{ color: "red" }}>❌ {error}</p>;
-  if (!programm) return <p>{t('programm.detail.not_found')}</p>;
+  if (loading) return <p style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</p>;
+  //if (error) return <p style={{ color: "red" }}>❌ {error}</p>;
+  if (!programm) return <p style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</p>;
 
   return (
       <div className="programm-detail column-layout">

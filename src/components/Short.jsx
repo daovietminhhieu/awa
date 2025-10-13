@@ -104,7 +104,7 @@ export function DetailSuccessStory() {
 
   return (
     <>
-      <h3 style={{margin:"100px 20px"}}>Not implement yet</h3>
+      <h3 style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</h3>
       {render && <>
         <section className="detail-story section">
           <button onClick={() => navigate(-1)} className="back-btn">
@@ -189,36 +189,38 @@ import Footer from "./Footer";
 export function PartnerDetail() {
   const { t } = useI18n();
   return (
-    <>
+    <div >
       <section className="partner-detail-section">
-          <h2 className="partner-detail-title">{t('short.partners.detail.title')}</h2>
-          {/**Them divider */}
-          <hr className="partner-divider" />
-          <div className="partner-detail-content">
-            <div className="left">
-              <div className="partner-detail-info">
-                <div className="info-item">
-                  <strong>{t('short.partners.detail.address_label')}:</strong>
-                  <span>{t('short.partners.detail.address')}</span>
-                </div>
-                <div className="info-item">
-                  <strong>{t('short.partners.detail.email_label')}:</strong>
-                  <span>{t('short.partners.detail.email')}</span>
-                </div>
-                <div className="info-item">
-                  <strong>{t('short.partners.detail.phone_label')}:</strong>
-                  <span>{t('short.partners.detail.phone')}</span>
+          <div className="form-detail-partner">
+            <h2 className="partner-detail-title">{t('short.partners.detail.title')}</h2>
+            {/**Them divider */}
+            <hr className="partner-divider" />
+            <div className="partner-detail-content">
+              <div className="left">
+                <div className="partner-detail-info">
+                  <div className="info-item">
+                    <strong>{t('short.partners.detail.address_label')}:</strong>
+                    <span>{t('short.partners.detail.address')}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>{t('short.partners.detail.email_label')}:</strong>
+                    <span>{t('short.partners.detail.email')}</span>
+                  </div>
+                  <div className="info-item">
+                    <strong>{t('short.partners.detail.phone_label')}:</strong>
+                    <span>{t('short.partners.detail.phone')}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="right">
-              <p className="partner-goodbye">{t('short.partners.detail.goodbye')}</p>
+              <div className="right">
+                <p className="partner-goodbye">{t('short.partners.detail.goodbye')}</p>
+              </div>
             </div>
           </div>
         
       </section>
       <Footer />
-    </>
+    </div>
   );
 }
 

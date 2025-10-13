@@ -1,59 +1,14 @@
-.filter-and-search {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    gap: 1rem;
-    background: red;
-    padding: 1rem;
-    border-radius: 12px;
-    margin-top: 5px;
-  }
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-  .search-field {
-    width: 10%;
-    height: 30px;
-    border: 1px solid #ddd;
-    border-radius: 6px;    
+/* Phiên bản mobile */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px; /* hoặc ít hơn nếu muốn */
   }
-  
-  .filter {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-
-  .filter-first {
-    display: flex;
-    gap: 40px;
-  }
-
-  .filter-item {
-    display: flex;
-    flex-direction: column;
-    min-width: 180px;
-  }
-  
-
-  .selector {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    width: 200px;
-  }
-
-  
-  .update-btn {
-    padding: 10px 20px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    height: 30px;
-    margin-top: 18.5px;
-  }
-  
-  .update-btn:hover {
-    background: #1d4ed8;
-  }
-  
+}
