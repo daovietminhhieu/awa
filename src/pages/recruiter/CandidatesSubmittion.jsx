@@ -12,7 +12,7 @@ export default function CandidateManagement() {
   const [archived, setArchived] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
 
   const [archivedPage, setArchivedPage] = useState(1);
   const archivedPerPage = 10;

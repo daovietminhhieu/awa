@@ -14,7 +14,7 @@ export default function CandidateManagement() {
 
   // Phân trang cho bảng submissions
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 10;
 
   // Phân trang cho bảng archived
   const [archivedPage, setArchivedPage] = useState(1);
