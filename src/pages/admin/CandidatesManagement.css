@@ -4,13 +4,13 @@
 }
 
 .admin-table {
-  width: 100%;
+  width: 80%;
   border-collapse: collapse;
-  margin-top: 12px;
+  margin: 12px auto;
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  min-width: 600px;
+  min-width: 300px;
 }
 
 /* Header bảng */
@@ -44,6 +44,38 @@
   display: flex;
   gap: 8px;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.pagination button.active {
+  background-color: #ff9800;
+  color: white;
+  border-color: #e65100;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
 
 button {
   padding: 6px 12px;

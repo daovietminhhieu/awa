@@ -85,9 +85,12 @@ function TopProgrammeSlider({ programs }) {
                     <div className="read-more-container">
                       <button
                         className="read-more-btn"
-                        onClick={() => toggleExpand(idx)}
+                        onClick={(e) => {
+                          e.stopPropagation(); 
+                          toggleExpand(idx)
+                        }}
                       >
-                        {expandedIndex === idx ? 'Hide' : 'Read more'}
+                        {expandedIndex === idx ? t('common.hide_less') : t('common.show_more')}
                       </button>
                     </div>
                   )}

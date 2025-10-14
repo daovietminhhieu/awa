@@ -4,7 +4,8 @@
     "cancel": "Hủy",
     "save": "Lưu",
     "close": "Đóng",
-    "show_more":"Xem thêm"
+    "show_more":"Xem thêm",
+    "hide_less":"Hiển thị ít hơn"
   },
   "short": {
     "review_title": "Đánh giá nổi bật",

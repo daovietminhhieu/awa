@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { CandidateTable, ArchivedTable} from "../../components/admin/management/candidates/Table";
-import { mockCandidates } from "../../mocks/candidates";
+import { CandidateTable, ArchivedTable } from "../../components/admin/management/candidates/Table";
+import Divider from '../../components/Divider';
 import { useI18n } from "../../i18n";
-
 import { getPotentialsList } from "../../api";
-
 import './CandidatesManagement.css';
 
 export default function CandidateManagement() {
   const { t } = useI18n();
-  const [submissions, setSubmissions] = useState(mockCandidates.filter((c) => !c.finalized));
-  const [archived, setArchived] = useState(mockCandidates.filter((c) => c.finalized));
+
+  // Dữ liệu
+  const [submissions, setSubmissions] = useState([]);
+  const [archived, setArchived] = useState([]);
+
+  // Phân trang cho bảng submissions
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
+
+  // Phân trang cho bảng archived
+  const [archivedPage, setArchivedPage] = useState(1);
+  const archivedPerPage = 10;
+
+  // Trạng thái chỉnh sửa và loading
   const [editedRows, setEditedRows] = useState({});
   const [loadingRow, setLoadingRow] = useState(null);
-
 
   useEffect(() => {
     const fetchCandidates = async () => {
@@ -21,15 +30,13 @@ export default function CandidateManagement() {
         const res = await getPotentialsList(true);
         const list = res?.data || [];
 
-        console.log("📋 Candidate list:", list);
-
-        // Giả sử mỗi candidate có trường "status" hoặc "archived"
         const active = list.filter(c => c.programm?.completed !== "true" && !c.archived);
         const done = list.filter(c => c.programm?.completed === "true" || c.archived);
-        console.log(active);
-        console.log(done)
+
         setSubmissions(active);
-        setArchived(done);
+
+        // 👇 Nhân bản dữ liệu archived để test phân trang
+        setArchived(Array(5).fill(done).flat()); // 5x số dòng archived
       } catch (err) {
         console.error("❌ Failed to load potentials:", err);
       }
@@ -38,7 +45,28 @@ export default function CandidateManagement() {
     fetchCandidates();
   }, []);
 
+  // Phân trang submissions
+  const totalPages = Math.ceil(submissions.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentSubmissions = submissions.slice(indexOfFirstItem, indexOfLastItem);
 
+  // Phân trang archived
+  const archivedTotalPages = Math.ceil(archived.length / archivedPerPage);
+  const archivedStart = (archivedPage - 1) * archivedPerPage;
+  const currentArchived = archived.slice(archivedStart, archivedStart + archivedPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const handleArchivedPageChange = (page) => {
+    if (page >= 1 && page <= archivedTotalPages) {
+      setArchivedPage(page);
+    }
+  };
 
   const handleStatusChange = (id, newStatus) => {
     setEditedRows((prev) => ({ ...prev, [id]: { ...prev[id], status: newStatus } }));
@@ -69,9 +97,13 @@ export default function CandidateManagement() {
 
   return (
     <div className="admin-table-wrapper">
-      <h2>{t('admin.candidates.title') || 'Candidate Management (Mock Data)'}</h2>
+      <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "20px" }}>
+        {t('admin.candidates.title') || 'Candidate Management'}
+      </h2>
+
+      {/* Bảng chính */}
       <CandidateTable
-        submissions={submissions}
+        submissions={currentSubmissions}
         editedRows={editedRows}
         onStatusChange={handleStatusChange}
         onBonusChange={handleBonusChange}
@@ -79,8 +111,52 @@ export default function CandidateManagement() {
         onRemove={handleRemove}
         loadingRow={loadingRow}
       />
-      <h3 style={{ marginTop: 24 }}>{t('admin.candidates.completed_title') || 'Completed (Hired / Rejected)'}</h3>
-      <ArchivedTable archived={archived} />
+
+      {/* Phân trang submissions */}
+      <div className="pagination">
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          « Prev
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            className={currentPage === i + 1 ? "active" : ""}
+            onClick={() => handlePageChange(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          Next »
+        </button>
+      </div>
+
+      <Divider />
+
+      <h3 style={{ textAlign: "center", marginTop: "30px" }}>
+        {t('admin.candidates.completed_title') || 'Completed (Hired / Rejected)'}
+      </h3>
+
+      <ArchivedTable archived={currentArchived} />
+
+      {/* Phân trang archived */}
+      <div className="pagination">
+        <button onClick={() => handleArchivedPageChange(archivedPage - 1)} disabled={archivedPage === 1}>
+          « Prev
+        </button>
+        {Array.from({ length: archivedTotalPages }, (_, i) => (
+          <button
+            key={i}
+            className={archivedPage === i + 1 ? "active" : ""}
+            onClick={() => handleArchivedPageChange(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button onClick={() => handleArchivedPageChange(archivedPage + 1)} disabled={archivedPage === archivedTotalPages}>
+          Next »
+        </button>
+      </div>
     </div>
   );
 }
