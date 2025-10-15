@@ -129,7 +129,8 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                     if (isExpired) return;
                     try {
                       const res = await requestASharedLink(p._id);
-                      alert(`Shared link created:\n${res.data.link}`);
+                      const link = res.data.link;
+                      window.prompt("Shared link created::", link);
                     } catch (err) {
                       console.error("Error sharing link", err);
                       alert("Share failed");

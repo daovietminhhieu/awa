@@ -427,7 +427,7 @@ export function BecomeCollaborator() {
           }}
         >
           <strong>{t('short.become_collaborator.greeting') || 'Hello!'}</strong>
-          <p>{t('short.become_collaborator.popup_text') || 'Do you want to become a collaborator? Click Register now to join!'}</p>
+          <p>{t('short.become_collaborator.popup_text') || 'Do you want to become a collaborator? Click Signup now to join!'}</p>
           <button
             onClick={handleRegisterClick}
             style={{
