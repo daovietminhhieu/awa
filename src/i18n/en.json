@@ -1,683 +1,720 @@
 {
-    "common": {"not_provided": "Not provided","cancel":"Cancel","save":"Save","close":"Close","hide":"Hide","show":"Show","show_more":"Expand","hide_less":"Collapse"},
-    "short": {
-        "review_title": "Featured Review",
-        "hide":"hide",
-        "more":"more",
-        "topprogramm": [
-            {
-                "title": "Leadership and Effective Management",
-                "image": "https://picsum.photos/seed/leadership/300/200",
-                "description":
-                "This program is designed for current and aspiring managers who want to develop strategic thinking, persuasive communication, and effective decision-making skills. The course combines real-world business scenarios, leadership simulations, and practical tools to help participants become confident, inspiring leaders capable of driving high-performing teams.",
-                "rate": 5,
-                "review":
-                "The course completely changed the way I think about leadership and management. The instructors are dedicated, and the case studies are highly relevant to real business contexts."
-            },
-            {
-                "title": "Innovation in the Digital Era",
-                "image": "https://picsum.photos/seed/innovation/300/200",
-                "description":
-                "This course helps learners understand the critical role of innovation in modern enterprises. It focuses on emerging technologies such as AI, Blockchain, and Cloud Computing — and how to apply them to create new value. Students will participate in group projects and hands-on sessions led by mentors from top tech companies.",
-                "rate": 4,
-                "review":
-                "Very satisfied with the content and delivery. The mentors provided detailed guidance and practical support throughout the projects."
-            },
-            {
-                "title": "Data Analytics and Decision Making",
-                "image": "https://picsum.photos/seed/dataanalytics/300/200",
-                "description":
-                "This program equips learners with both foundational and advanced knowledge of data science, statistics, and data visualization. You’ll learn to use Python, SQL, and tools like Power BI and Tableau to analyze and interpret data. After completing the course, you’ll be confident in making data-driven decisions in real business environments.",
-                "rate": 5,
-                "review":
-                "The course is highly practical and well-structured. The instructors’ explanations were clear and easy to apply directly to real company projects."
-            },
-            {
-                "title": "Communication and Personal Branding",
-                "image": "https://picsum.photos/seed/branding/300/200",
-                "description":
-                "This course focuses on communication skills, content creation, social media strategy, and building a professional personal brand. Participants learn how to define their positioning, tell their brand story, and build a strong online presence that reflects their expertise and values.",
-                "rate": 4,
-                "review":
-                "It helped me become more confident in sharing my expertise online and improved how I present myself in a professional context."
-            }
-        ],
-        "partner": {
-            "title": "Partners"
-        },
-        "why_choose": {
-            "title": "Why Choose Us",
-            "reasons": [
-            {
-                "title": "",
-                "description": "Clear information with no unexpected fees, giving you peace of mind while studying."
-            },
-            {
-                "title": "",
-                "description": "Our team of expert recruiters ensures you get the best candidates."
-            },
-            {
-                "title": "",
-                "description": "We provide high-quality candidates that match your job requirements."
-            },
-            {
-                "title": "",
-                "description": "Competitive pricing to fit your budget without compromising quality."
-            }
-            ]
-        },
-        "stories": {
-            "title": "Success Stories",
-            "descriptions": [
-            {
-                "name": "Nguyễn Văn A",
-                "description": "Found my dream job through Alowork.com, developed skills and expanded my network."
-            },
-            {
-                "name": "Trần Thị B",
-                "description": "Thanks to Alowork.com, I had the opportunity to study abroad and intern overseas, broadening my horizons."
-            },
-            {
-                "name": "Lê Văn C",
-                "description": "Succeeded with the internship program at a big company, receiving high praise from the employer."
-            }
-            ]
-        },
-        "partners": {
-            "title": "Become Our Partner",
-            "become_collaborator_desc": "Collaborate with Alowork.com not just to increase your income. We offer you an ecosystem to develop your expertise, expand your network, and access exclusive opportunities",
-            "benefits": [
-                "Expand quality partnerships",
-                "Effective revenue growth",
-                "Access to a large user base",
-                "Comprehensive support"
-            ],
-            "contact-now": "Contact Now",
-            "detail": {
-                "title": "Contact",
-                "address_label": "Address",
-                "email_label": "Email",
-                "phone_label": "Phone",
-                "address": "No. 30 Tran Huu Duc Street, Tu Liem, Hanoi",
-                "email": "alowork.com@gmail.com",
-                "phone": "+84817777000",
-                "goodbye": "Partnership isn’t a transaction. It’s a shared journey."
-            }
-        },     
-        "career_guide": "Career Tips",
-        "events": "Upcoming Events",
-        "event-location": "Location",
-        "event-date": "Date",
-        "tips": [
-        {
-            "id": "tip-1",
-            "title": "How to Write an Outstanding CV",
-            "description": "A guide on how to present an impressive CV to attract recruiters.",
-            "image": "https://source.unsplash.com/300x200/?cv,resume"
-        },
-        {
-            "id": "tip-2",
-            "title": "Successful Interviewing",
-            "description": "Tips for answering interviews confidently and convincingly.",
-            "image": "https://source.unsplash.com/300x200/?interview,job"
-        },
-        {
-            "id": "tip-3",
-            "title": "Important Soft Skills",
-            "description": "Essential soft skills you need to develop your career.",
-            "image": "https://source.unsplash.com/300x200/?skills,communication"
-        }
-        ],
-        "events_data": [
-        {
-            "id": "event-1",
-            "title": "Career Orientation Seminar 2025",
-            "date": "10/20/2025",
-            "location": "Ho Chi Minh City",
-            "image": "https://source.unsplash.com/300x200/?career,event"
-        },
-        {
-            "id": "event-2",
-            "title": "Professional CV Writing Workshop",
-            "date": "11/10/2025",
-            "location": "Hanoi",
-            "image": "https://source.unsplash.com/300x200/?workshop,resume"
-        }
-        ],
-        "become_collaborator": {
-            "title": "Become Our Collaborator",
-            "description": "Join us to expand your reach and grow your business effectively.",            
-            "register_now": "Signup Now",
-            "greetings": "Hello!",
-            "popup_text": "Do you want to become a collaborator? Click Register now to join!",
-            "close":"Close"}       
+  "common": {
+    "not_provided": "Not provided",
+    "cancel": "Cancel",
+    "save": "Save",
+    "close": "Close",
+    "hide": "Hide",
+    "show": "Show",
+    "show_more": "Expand",
+    "hide_less": "Collapse"
+  },
+  "short": {
+    "review_title": "Featured Review",
+    "hide": "hide",
+    "more": "more",
+    "topprogramm": [
+      {
+        "title": "Leadership and Effective Management",
+        "image": "https://picsum.photos/seed/leadership/300/200",
+        "description": "This program is designed for current and aspiring managers who want to develop strategic thinking, persuasive communication, and effective decision-making skills. The course combines real-world business scenarios, leadership simulations, and practical tools to help participants become confident, inspiring leaders capable of driving high-performing teams.",
+        "rate": 5,
+        "review": "The course completely changed the way I think about leadership and management. The instructors are dedicated, and the case studies are highly relevant to real business contexts."
+      },
+      {
+        "title": "Innovation in the Digital Era",
+        "image": "https://picsum.photos/seed/innovation/300/200",
+        "description": "This course helps learners understand the critical role of innovation in modern enterprises. It focuses on emerging technologies such as AI, Blockchain, and Cloud Computing — and how to apply them to create new value. Students will participate in group projects and hands-on sessions led by mentors from top tech companies.",
+        "rate": 4,
+        "review": "Very satisfied with the content and delivery. The mentors provided detailed guidance and practical support throughout the projects."
+      },
+      {
+        "title": "Data Analytics and Decision Making",
+        "image": "https://picsum.photos/seed/dataanalytics/300/200",
+        "description": "This program equips learners with both foundational and advanced knowledge of data science, statistics, and data visualization. You’ll learn to use Python, SQL, and tools like Power BI and Tableau to analyze and interpret data. After completing the course, you’ll be confident in making data-driven decisions in real business environments.",
+        "rate": 5,
+        "review": "The course is highly practical and well-structured. The instructors’ explanations were clear and easy to apply directly to real company projects."
+      },
+      {
+        "title": "Communication and Personal Branding",
+        "image": "https://picsum.photos/seed/branding/300/200",
+        "description": "This course focuses on communication skills, content creation, social media strategy, and building a professional personal brand. Participants learn how to define their positioning, tell their brand story, and build a strong online presence that reflects their expertise and values.",
+        "rate": 4,
+        "review": "It helped me become more confident in sharing my expertise online and improved how I present myself in a professional context."
+      }
+    ],
+    "partner": {
+      "title": "Partners"
     },
+    "why_choose": {
+      "title": "Why Choose Us",
+      "reasons": [
+        {
+          "title": "",
+          "description": "Clear information with no unexpected fees, giving you peace of mind while studying."
+        },
+        {
+          "title": "",
+          "description": "Our team of expert recruiters ensures you get the best candidates."
+        },
+        {
+          "title": "",
+          "description": "We provide high-quality candidates that match your job requirements."
+        },
+        {
+          "title": "",
+          "description": "Competitive pricing to fit your budget without compromising quality."
+        }
+      ]
+    },
+    "stories": {
+      "title": "Success Stories",
+      "descriptions": [
+        {
+          "name": "Nguyễn Văn A",
+          "description": "Found my dream job through Alowork.com, developed skills and expanded my network."
+        },
+        {
+          "name": "Trần Thị B",
+          "description": "Thanks to Alowork.com, I had the opportunity to study abroad and intern overseas, broadening my horizons."
+        },
+        {
+          "name": "Lê Văn C",
+          "description": "Succeeded with the internship program at a big company, receiving high praise from the employer."
+        }
+      ]
+    },
+    "partners": {
+      "title": "Become Our Partner",
+      "become_collaborator_desc": "Collaborate with Alowork.com not just to increase your income. We offer you an ecosystem to develop your expertise, expand your network, and access exclusive opportunities",
+      "benefits": [
+        "Expand quality partnerships",
+        "Effective revenue growth",
+        "Access to a large user base",
+        "Comprehensive support"
+      ],
+      "contact-now": "Contact Now",
+      "detail": {
+        "title": "Contact",
+        "address_label": "Address",
+        "email_label": "Email",
+        "phone_label": "Phone",
+        "address": "No. 30 Tran Huu Duc Street, Tu Liem, Hanoi",
+        "email": "alowork.com@gmail.com",
+        "phone": "+84817777000",
+        "goodbye": "Partnership isn’t a transaction. It’s a shared journey."
+      }
+    },
+    "career_guide": "Career Tips",
+    "events": "Upcoming Events",
+    "event-location": "Location",
+    "event-date": "Date",
+    "tips": [
+      {
+        "id": "tip-1",
+        "title": "How to Write an Outstanding CV",
+        "description": "A guide on how to present an impressive CV to attract recruiters.",
+        "image": "https://source.unsplash.com/300x200/?cv,resume"
+      },
+      {
+        "id": "tip-2",
+        "title": "Successful Interviewing",
+        "description": "Tips for answering interviews confidently and convincingly.",
+        "image": "https://source.unsplash.com/300x200/?interview,job"
+      },
+      {
+        "id": "tip-3",
+        "title": "Important Soft Skills",
+        "description": "Essential soft skills you need to develop your career.",
+        "image": "https://source.unsplash.com/300x200/?skills,communication"
+      }
+    ],
+    "events_data": [
+      {
+        "id": "event-1",
+        "title": "Career Orientation Seminar 2025",
+        "date": "10/20/2025",
+        "location": "Ho Chi Minh City",
+        "image": "https://source.unsplash.com/300x200/?career,event"
+      },
+      {
+        "id": "event-2",
+        "title": "Professional CV Writing Workshop",
+        "date": "11/10/2025",
+        "location": "Hanoi",
+        "image": "https://source.unsplash.com/300x200/?workshop,resume"
+      }
+    ],
+    "become_collaborator": {
+      "title": "Become Our Collaborator",
+      "description": "Join us to expand your reach and grow your business effectively.",
+      "register_now": "Signup Now",
+      "greetings": "Hello!",
+      "popup_text": "Do you want to become a collaborator? Click Register now to join!",
+      "close": "Close"
+    }
+  },
 
-    "nav": {
-        "home":"Home",
-        "language":"EN",
-        "profile":"Profile",
-        "overview":"Overview",
-        "programms":"Programms",
-        "candidates":"Candidates",
-        "search_result": "",
-        "search_title": "Search",
-        "search_button":"find",
-        "login":"Login",
-        "signup":"Sign Up",
-        "logout":"Logout",
-        "search_placeholder":"Search programs...",
-        "notifications":"Notifications"},
-    
-    "auth": {
-        "login": {
-            "welcome_back": "Welcome back!",
-            "login_to_continue": "Login to continue",
-            "email_label": "Email",
-            "enter_email": "Enter your email",
-            "password_label": "Password",
-            "enter_password": "Enter your password",
-            "login_button": "Login",
-            "remember": "Remember me",
-            "forgot_password": "Forgot password?",
-            "cancel": "Cancel",
-            "reset_title": "Reset your password",
-            "reset_instructions": "Enter your email to receive reset instructions",
-            "reset_success": "✔️ A new password has been sent to your email."
-        },
-        "signup": {
-            "title": "Create an Account",
-            "subtitle": "Join us and start your journey",
-            "phone_label": "Phone",
-            "enter_phone": "Enter your phone...",
-            "name_label": "Full Name",
-            "enter_name": "Enter your full name...",
-            "email_label": "Email",
-            "enter_email": "Enter your email...",
-            "password_label": "Password",
-            "enter_password": "Enter your password...",
-            "confirm_password_label": "Confirm Password",
-            "enter_confirm_password": "Re-enter your password...",
-            "register": "Sign Up",
-            "have_account": "Already have an account? Login"
-        }
+  "nav": {
+    "home": "Home",
+    "language": "EN",
+    "profile": "Profile",
+    "overview": "Overview",
+    "programms": "Programms",
+    "candidates": "Candidates",
+    "search_result": "",
+    "search_title": "Search",
+    "search_button": "find",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "search_placeholder": "Search programs...",
+    "notifications": "Notifications"
+  },
+
+  "auth": {
+    "login": {
+      "welcome_back": "Welcome back!",
+      "login_to_continue": "Login to continue",
+      "email_label": "Email",
+      "enter_email": "Enter your email",
+      "password_label": "Password",
+      "enter_password": "Enter your password",
+      "login_button": "Login",
+      "remember": "Remember me",
+      "forgot_password": "Forgot password?",
+      "cancel": "Cancel",
+      "reset_title": "Reset your password",
+      "reset_instructions": "Enter your email to receive reset instructions",
+      "reset_success": "✔️ A new password has been sent to your email."
     },
-    "filter": {
-        "type_label": "Type",
-        "country_label": "Country",
-        "deadline_label": "Deadline",
-        "degree_label": "Degree",
-        "all": "All",
-        "apply_filters": "Apply Filters",
+    "signup": {
+      "title": "Create an Account",
+      "subtitle": "Join us and start your journey",
+      "phone_label": "Phone",
+      "enter_phone": "Enter your phone...",
+      "name_label": "Full Name",
+      "enter_name": "Enter your full name...",
+      "email_label": "Email",
+      "enter_email": "Enter your email...",
+      "password_label": "Password",
+      "enter_password": "Enter your password...",
+      "confirm_password_label": "Confirm Password",
+      "enter_confirm_password": "Re-enter your password...",
+      "register": "Sign Up",
+      "have_account": "Already have an account? Login"
+    }
+  },
+  "filter": {
+    "type_label": "Type",
+    "country_label": "Country",
+    "deadline_label": "Deadline",
+    "degree_label": "Degree",
+    "all": "All",
+    "apply_filters": "Apply Filters",
+    "search_placeholder": "Search by title or company..."
+  },
+
+  "admin": {
+    "overview": {
+      "greeting": "Admin Dashboard",
+      "title": "Admin Dashboard",
+      "balance_label": "Current Balance",
+      "balance_value": "$12,300",
+      "total_candidates_label": "Total Candidates",
+      "total_candidates_value": "324",
+      "interview_rate_label": "Interview Rate",
+      "interview_rate_value": "65%",
+      "hire_rate_label": "Hire Rate",
+      "hire_rate_value": "45%",
+      "concentration_label": "Main Focus Area",
+      "concentration_value": "Information Technology",
+      "recent_notifications": "Recent Notifications",
+      "notif_1": "New candidate registered today.",
+      "notif_2": "3 interviews scheduled this week.",
+      "notif_3": "Program approval pending review.",
+      "weather_title": "Today's Weather",
+      "weather_1": "🌤 Clear sky, 30°C",
+      "weather_2": "💨 Light wind, 12 km/h",
+      "weather_3": "💧 Humidity: 60%",
+      "weather_4": "🌅 Sunrise: 5:45 AM",
+      "stacked_bar_chart": "Stacked Bar Chart",
+      "chart_title": "Monthly Program Applications"
+    },
+    "programms": {
+      "tabs": { "my": "All", "saved": "Saved", "shared": "Shared" },
+      "edit": {
+        "title": "Edit Program",
+        "add_title": "+ Add New Programm",
+        "requirements": "Requirements",
+        "details": "Details",
+        "next": "Next",
+        "back": "Back",
+        "create": "Create",
+        "new": {
+          "title": "Name",
+          "university": "University",
+          "company": "Company",
+          "type": "Contract Type - Visa Type",
+          "degrees": "Degrees",
+          "level": "Level",
+          "duration": "Duration",
+          "land": "Land",
+          "enter_title": "",
+          "enter_company": "",
+          "enter_type": "Fulltime, parttime, exchange, visa, student, tourist...",
+          "enter_degrees": "Bachelor, Master,...",
+          "enter_level": "",
+          "enter_duration": "6 months, 1 year,...",
+          "enter_land": "",
+
+          "bonus": "Bonus",
+          "enter_bonus": "1000 Usd,...",
+          "vacancies": "Vacancies",
+          "enter_vacancies": "10, 20,...",
+          "hired": "Hired",
+          "age": "Age",
+          "health": "Health",
+          "education": "Education",
+          "certificate": "Certificate",
+          "enter_health": "healthy, good, ...",
+          "enter_education": "highschool, uni break,...",
+          "enter_certificate": "IELTS, TestDaF, C1 Goethe,....",
+
+          "overview": "Overview",
+          "enter_details_overview": "description with 100 -> 200 words",
+          "other": "Other",
+          "enter_details_other": "description with 100 -> 200 words",
+          "fee": "Fee",
+          "public_day": "Public Day",
+          "expected_salary": "Expected Salary",
+          "deadline": "Deadline",
+          "type_job": "Job",
+          "type_studium": "Studium",
+          "is_active": "Is Active",
+          "active": "yes",
+          "inactive": "no",
+          "type_category": "Program type"
+        },
+        "basic_info": "Basic Info",
+        "details_title": "Recruitment Details",
+        "other_title": "Other",
+        "labels": {
+          "title": "Title",
+          "company": "Company",
+          "logo": "Logo URL",
+          "type": "Program Type",
+          "degrees": "Degrees",
+          "duration": "Duration",
+          "land": "Location",
+          "fee": "Fee",
+          "expected_salary": "Expected Salary",
+          "deadline": "Deadline",
+          "vacancies": "Vacancies",
+          "benefit": "Benefit",
+          "review": "Review",
+          "video": "Video URL",
+          "bonus": "Bonus",
+          "public_day": "Public Day"
+        },
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "pagination": {
+        "page_info": "Page {{current}} of {{total}}",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "toolbar": {
+        "add_program": "Add Program",
+        "filter": "Filter",
         "search_placeholder": "Search by title or company..."
+      },
+      "card": {
+        "duration_label": "Duration:",
+        "deadline_label": "Deadline:",
+        "status_label": "Status:",
+        "status_open": "Open",
+        "status_closed": "Closed",
+        "bonus_label": "Bonus:",
+        "vacancy_label": "Applicants:",
+        "save": "Save",
+        "unsave": "Unsave",
+        "edit": "Edit",
+        "delete_confirm": "Delete this program?",
+        "delete_message": "Refresh the page to update new programms list",
+        "delete": "Delete"
+      },
+      "messages": {
+        "added_success": "✅ Added successfully",
+        "added_failed": "❌ Failed to add program"
+      },
+      "alert": { "updated_success": "Updated successfully!" },
+      "form": {
+        "course": "Course",
+        "title": "Title",
+        "university": "University",
+        "country": "Country",
+        "level": "Level",
+        "duration": "Duration",
+        "fee": "Fee",
+        "bonus": "Bonus",
+        "reward": "Reward",
+        "vacancies": "Vacancies",
+        "requirement": "Requirement",
+        "status_active": "Active",
+        "status_inactive": "Inactive"
+      }
     },
-        
-
-    "admin": {
-        "overview": {
-            "greeting": "Admin Dashboard",
-            "title": "Admin Dashboard",
-            "balance_label": "Current Balance",
-            "balance_value": "$12,300",
-            "total_candidates_label": "Total Candidates",
-            "total_candidates_value": "324",
-            "interview_rate_label": "Interview Rate",
-            "interview_rate_value": "65%",
-            "hire_rate_label": "Hire Rate",
-            "hire_rate_value": "45%",
-            "concentration_label": "Main Focus Area",
-            "concentration_value": "Information Technology",
-            "recent_notifications": "Recent Notifications",
-            "notif_1": "New candidate registered today.",
-            "notif_2": "3 interviews scheduled this week.",
-            "notif_3": "Program approval pending review.",
-            "weather_title": "Today's Weather",
-            "weather_1": "🌤 Clear sky, 30°C",
-            "weather_2": "💨 Light wind, 12 km/h",
-            "weather_3": "💧 Humidity: 60%",
-            "weather_4": "🌅 Sunrise: 5:45 AM",
-            "stacked_bar_chart": "Stacked Bar Chart",
-            "chart_title": "Monthly Program Applications"
-        },
-        "programms": {
-            "tabs": {"my":"All","saved":"Saved","shared":"Shared"},
-            "edit": {
-                "title": "Edit Program",
-                "add_title": "+ Add New Programm",
-                "requirements": "Requirements",
-                "details": "Details",
-                "next": "Next",
-                "back": "Back", 
-                "create": "Create",
-                "new": {
-                    "title": "Name",
-                    "university": "University", 
-                    "company":"Company", 
-                    "type":"Contract Type - Visa Type", 
-                    "degrees":"Degrees", 
-                    "level":"Level", 
-                    "duration":"Duration",
-                    "land":"Land",
-                    "enter_title":"",
-                    "enter_company":"",
-                    "enter_type":"Fulltime, parttime, exchange, visa, student, tourist...",
-                    "enter_degrees":"Bachelor, Master,...",
-                    "enter_level":"",
-                    "enter_duration":"6 months, 1 year,...",
-                    "enter_land":"",
-                    
-                    "bonus":"Bonus", "enter_bonus":"1000 Usd,...",
-                    "vacancies":"Vacancies", "enter_vacancies":"10, 20,...",
-                    "hired":"Hired",
-                    "age": "Age", 
-                    "health": "Health", 
-                    "education": "Education", 
-                    "certificate": "Certificate",
-                    "enter_health":"healthy, good, ...",
-                    "enter_education":"highschool, uni break,...",
-                    "enter_certificate":"IELTS, TestDaF, C1 Goethe,....",
-                    
-                    "overview":"Overview", "enter_details_overview": "description with 100 -> 200 words",
-                    "other":"Other", "enter_details_other":"description with 100 -> 200 words",
-                    "fee":"Fee",
-                    "public_day":"Public Day",
-                    "expected_salary":"Expected Salary",
-                    "deadline":"Deadline",
-                    "type_job": "Job",
-                    "type_studium": "Studium",
-                    "is_active":"Is Active",
-                    "active":"yes",
-                    "inactive": "no",
-                    "type_category":"Program type"
-                },
-                "basic_info": "Basic Info",
-                "details_title": "Recruitment Details",
-                "other_title": "Other",
-                "labels": {
-                    "title":"Title",
-                    "company":"Company",
-                    "logo":"Logo URL",
-                    "type":"Program Type",
-                    "degrees":"Degrees",
-                    "duration":"Duration",
-                    "land":"Location",
-                    "fee":"Fee",
-                    "expected_salary":"Expected Salary",
-                    "deadline":"Deadline",
-                    "vacancies":"Vacancies",
-                    "benefit":"Benefit",
-                    "review":"Review",
-                    "video":"Video URL",
-                    "bonus":"Bonus",
-                    "public_day":"Public Day"},
-                "save": "Save",
-                "cancel": "Cancel"
-                
-            },
-            "pagination": {
-                    "page_info": "Page {{current}} of {{total}}",
-                    "previous": "Previous",
-                    "next": "Next"
-            },
-            "toolbar": {"add_program":"Add Program","filter":"Filter","search_placeholder":"Search by title or company..."},
-            "card": {
-                "duration_label":"Duration:",
-                "deadline_label":"Deadline:",
-                "status_label":"Status:",
-                "status_open":"Open",
-                "status_closed":"Closed",
-                "bonus_label":"Bonus:",
-                "vacancy_label":"Applicants:",
-                "save":"Save",
-                "unsave":"Unsave",
-                "edit":"Edit",
-                "delete_confirm":"Delete this program?",
-                "delete_message":"Refresh the page to update new programms list",
-                "delete":"Delete"
-            },
-            "messages": {
-                "added_success": "✅ Added successfully",
-                "added_failed": "❌ Failed to add program"
-            },
-            "alert": {"updated_success":"Updated successfully!"},
-        "form": {"course":"Course","title":"Title","university":"University","country":"Country","level":"Level","duration":"Duration","fee":"Fee","bonus":"Bonus","reward":"Reward","vacancies":"Vacancies","requirement":"Requirement","status_active":"Active","status_inactive":"Inactive"}
-        },
-        "shared": {
-            "title":"Shared Programms Status",
-            "alert":{
-                "status_updated":"✅ Status updated to \"{{status}}\"",
-                "update_failed":"Failed to update status: {{error}}",
-                "steps_updated":"✅ Updated {{count}} step(s) to \"{{step}}\".",
-                "update_steps_failed":"Failed to update steps: {{error}}"
-            },
-            "select_steps_required":"Please select at least one step to update.",
-            "step_label":"Step {{n}}:",
-            "table":{
-                "id":"ID",
-                "programm":"Programm",
-                "recruiter":"Recruiter",
-                "candidate":"Candidate",
-                "status":"Status",
-                "bonus":"Bonus",
-                "expires":"Expires",
-                "steps":"Steps",
-                "actions":"Actions"
-            },
-            "select_placeholder":"-- Select --","not_initialized":"Not initialized",
-             "group": {
-                "status":"Status",
-                "steps":"Steps"            
-            },
-            "option": {
-                "approve": "Approved",
-                "reject": "Rejected",
-                "ongoing": "Ongoing",
-                "mark_completed": "Mark as Completed",
-                "mark_rejected": "Mark as Not Completed"
-            }
-        },
-           
-        "candidates": {
-            "title": "Candidate Tracking",
-            "completed_title": "Completed",
-            "table": {
-                "candidate":"Candidate",
-                "programm":"Programm",
-                "referrer":"Referrer",
-                "email":"Email",
-                "phone":"Phone",
-                "cv":"CV",
-                "linkedin":"LinkedIn",
-                "portfolio":"Portfolio",
-                "status":"Status",
-                "bonus":"Bonus",
-                "salary":"Salary",
-                "finalized":"Finalized",
-                "time":"Time",
-                "statusvalue": {"completed":"Completed","notcompleted":"Not Completed"}
-            }
-        },
-        "profile": {
-            "title": "Profile",
-            "edit_profile": "Edit Profile",
-            "save_changes": "Save Changes",
-            "cancel": "Cancel",
-            "info": "Basic Information",
-            "setname": "Full Name",
-            "setemail": "Email",
-            "role": "Role",
-            "setnewpassword": "Set New Password",
-            "place_newpassword": "Enter new password",
-            "name": "Name",
-            "email": "Email",
-            "password": "Password",
-            "alert_updated_success": "Basic information updated successfully",
-            "alert_update_error": "Failed to update basic information"
-        }
+    "shared": {
+      "title": "Shared Programms Status",
+      "alert": {
+        "status_updated": "✅ Status updated to \"{{status}}\"",
+        "update_failed": "Failed to update status: {{error}}",
+        "steps_updated": "✅ Updated {{count}} step(s) to \"{{step}}\".",
+        "update_steps_failed": "Failed to update steps: {{error}}"
+      },
+      "select_steps_required": "Please select at least one step to update.",
+      "step_label": "Step {{n}}:",
+      "table": {
+        "id": "ID",
+        "programm": "Programm",
+        "recruiter": "Recruiter",
+        "candidate": "Candidate",
+        "status": "Status",
+        "bonus": "Bonus",
+        "expires": "Expires",
+        "steps": "Steps",
+        "actions": "Actions"
+      },
+      "select_placeholder": "-- Select --",
+      "not_initialized": "Not initialized",
+      "group": {
+        "status": "Status",
+        "steps": "Steps"
+      },
+      "option": {
+        "approve": "Approved",
+        "reject": "Rejected",
+        "ongoing": "Ongoing",
+        "mark_completed": "Mark as Completed",
+        "mark_rejected": "Mark as Not Completed"
+      }
     },
 
-    "recruiter": {
-        "programms":{
-            "tabs": {"all":"All","saved":"Saved","shared":"Shared"},
-            "edit": {
-                "title": "Edit Program",
-                "basic_info": "Basic Info",
-                "details_title": "Recruitment Details",
-                "other_title": "Other",
-                "labels": {
-                    "title":"Title",
-                    "company":"Company",
-                    "logo":"Logo URL",
-                    "type":"Program Type",
-                    "degrees":"Degrees",
-                    "duration":"Duration",
-                    "land":"Location",
-                    "fee":"Fee",
-                    "expected_salary":"Expected Salary",
-                    "deadline":"Deadline",
-                    "vacancies":"Vacancies",
-                    "benefit":"Benefit",
-                    "review":"Review",
-                    "video":"Video URL",
-                    "bonus":"Bonus",
-                    "public_day":"Public Day"
-                },
-                "save": "Save",
-                "cancel": "Cancel"
-            },
-            "pagination": {
-                "page_info": "Page {{current}} of {{total}}",
-                "previous": "Previous",
-                "next": "Next"
-            },
-            "duration":"Duration",
-            "status":"Status",
-            "status_open":"Open",
-            "status_closed":"Closed",
-            "deadline":"Deadline",
-            "bonus":"Bonus",
-            "vacancies":"Vacancies",
-            "save":"Save",
-            "unsave":"Unsave",
-            "share":"Share"
-        },
-        "saved": {
-            "not_initialized": "No saved programms"
-        },
-        "shared": {
-            "title": "Shared Programs Status",
-            "loading": "Loading...",
-            "alert": {
-                "status_updated": "✅ Status updated to \"{{status}}\"",
-                "update_failed": "Failed to update status: {{error}}",
-                "steps_updated": "✅ Updated {{count}} step(s) to \"{{step}}\".",
-                "update_steps_failed": "Failed to update steps: {{error}}"
-            },
-            "select_steps_required": "Please select at least one step to update.",
-            "step_label": "Step {{n}}:",
-            "table": {
-                "id": "ID",
-                "status": "Status",
-                "candidate": "Candidate",
-                "programm": "Programm",
-                "bonus": "Bonus",
-                "created": "Created",
-                "updated": "Updated",
-                "expires": "Expires",
-                "steps": "Steps",
-                "step": "Step",
-                "actions": "Actions",
-                "select_placeholder": "-- Select --",
-                "getlink": "get link",
-                "linkavailable": "Available",
-                "linkunavailable": "No"
-            },
-            "not_initialized": "Not initialized"
-            
-        },
-        "candidates": {
-            "tracking": "Candidate Tracking",
-            "completed": "Completed",
-            "table": {
-                "candidate": "Candidate",
-                "programm": "Programm",
-                "expected_salary": "Expected Salary",
-                "status": "Status",
-                "bonus": "Bonus",
-                "email": "Email",
-                "phone": "Phone",
-                "cv": "CV",
-                "linkedin": "LinkedIn",
-                "portfolio": "Portfolio",
-                "time": "Time",
-                "statusvalue": {
-                    "completed": "Completed",
-                    "notcompleted": "Not Completed"
-                }
-            }
-           
-        },
-        "profile": {
-            "title": "Profile",
-            "info": "Basic Information",
-            "edit_profile": "Edit Profile",
-            "bank_info_title": "Bank Account Information",
-            "setname": "Account Holder Name",
-            "placeholder_accountHolderName": "Enter account holder name",
-            "setbank": "Bank Name",
-            "placeholder_bankName": "Enter bank name",
-            "setbranch": "Branch Name / Code",
-            "placeholder_branchName": "Enter branch name or code",
-            "placeholder_accountNumber": "Enter account number",
-            "ibanSwiftCode": "IBAN / SWIFT Code",
-            "placeholder_ibanSwiftCode": "Enter IBAN or SWIFT code",
-            "name": "Name",
-            "email": "Email",
-            "role": "Role",
-            "password": "Password",
-            "accountHolderName": "Account Holder Name",
-            "bankName": "Bank Name",
-            "branchName": "Branch Name / Code",
-            "accountNumber": "Account Number",
-            "alert_updated_success": "Basic information updated successfully",
-            "alert_update_error": "Failed to update basic information",
-            "alert_bankinfo_success": "Bank information updated successfully",
-            "alert_bankinfo_error": "Failed to update bank information",
-            "bank_info": "Bank Information",
-            "bank_info_desc": "Please provide accurate bank details to ensure timely payments.",
-            "currency": "Currency",
-            "currency_vnd": "VNĐ (Vietnamese Dong)",
-            "currency_usd": "USD (US Dollar)",
-            "currency_eur": "EUR (Euro)",
-            "registeredEmail": "Registered Email",
-            "placeholder_registeredEmail": "Enter contact email",
-            "registeredPhone": "Registered Phone",
-            "placeholder_registeredPhone": "Enter contact phone",
-            "commitment_title": "Commitment Statement",
-            "commitment_text": "The Collaborator confirms that the above banking information is accurate and will immediately inform Ant-Tech Asia in case of any change."
+    "candidates": {
+      "title": "Candidate Tracking",
+      "completed_title": "Completed",
+      "table": {
+        "candidate": "Candidate",
+        "programm": "Programm",
+        "referrer": "Referrer",
+        "email": "Email",
+        "phone": "Phone",
+        "cv": "CV",
+        "linkedin": "LinkedIn",
+        "portfolio": "Portfolio",
+        "status": "Status",
+        "bonus": "Bonus",
+        "salary": "Salary",
+        "finalized": "Finalized",
+        "time": "Time",
+        "statusvalue": {
+          "completed": "Completed",
+          "notcompleted": "Not Completed"
         }
+      }
     },
-   
-    "programm": {
-        "detail": {
-        "loading_programm": "Loading program...",
-        "not_found": "The program does not exist or has been deleted.",
-        "overview": {
-            "duration":"Duration",
-            "degrees": "Degree",
-            "type_category": "Program type",
-            "job": "Labor export",
-            "studium": "Study abroad",
-            "type": "Program form",
-            "expected_salary": "Expected salary",
-            "fee": "Fee",
-            "status": "Status",
-            "enough": "Full quota",
-            "hire": "Hiring",
-            "public_day": "Posted date",
-            "deadline": "Application deadline",
-            "bonus": "Bonus",
-            "vacancies": "Vacancies",
-            "hired": "Hired",
-            "company": "Company",
-            "land": "Country",
-            "overview": "Overview",
-            "requirements": "Requirements",
-            "age": "Age",
-            "education": "Education level",
-            "certificate": "Certificate",
-            "health": "Health condition",
-            "benefit": "Benefits",
-            "other": "Other"
-        },
-        "journey": {
-            "title": "🧭 Detailed program journey",
-            "training_phase": "📌 Training phases",
-            "cost_table_title": "💸 Cost breakdown table",
-            "no_extra_costs": "⚖️ No hidden or additional fees guaranteed",
-            "documents_title": "📁 Required documents",
-            "steps": {
-            "1": "Register in Vietnam",
-            "2": "Language training",
-            "3": "Interview",
-            "4": "Complete documentation",
-            "5": "Fly abroad",
-            "6": "Study and work overseas"
-            },
-            "costs": {
-            "service_fee": "Service fee",
-            "visa_fee": "Visa fee",
-            "flight_ticket": "Flight ticket",
-            "tuition": "Tuition fee",
-            "living_expenses": "Living expenses",
-            "note": {
-                "service_fee": "Payable in Vietnam",
-                "visa_fee": "Includes document assistance",
-                "flight_ticket": "One-way to Germany",
-                "tuition": "Depends on the program",
-                "living_expenses": "Around 800 EUR/month – self-funded"
-            }
-            },
-            "documents": {
-            "passport": "Passport",
-            "id_card": "National ID / Citizen ID",
-            "birth_certificate": "Birth certificate",
-            "household": "Household registration book",
-            "degree": "Diploma / Transcript",
-            "language_certificate": "Language certificate (Goethe / IELTS / JLPT...)",
-            "health_check": "Health certificate",
-            "photo": "3x4 photo",
-            "application_form": "Application form (study/work)",
-            "cv": "Curriculum Vitae (CV)"
-            }
-        },
-        "partner": {
-            "title": "Program partner information",
-            "intro_title": "📄 Partner introduction",
-            "email": "Email",
-            "phone": "Phone",
-            "website": "Website",
-            "address": "Address",
-            "country": "Country",
-            "qa": {
-            "title": "💬 Partner Q&A",
-            "placeholder": "Ask a question to the partner...",
-            "button": "Send question",
-            "question_prefix": "❓ Question:",
-            "answer_prefix": "💡 Answer:"
-            },
-            "review": {
-            "title": "⭐ Partner reviews",
-            "select_label": "Select rating:",
-            "placeholder": "Write your review...",
-            "button": "Submit review",
-            "stars": "stars"
-            }
-        }
-        }
-    },
+    "profile": {
+      "title": "Profile",
+      "edit_profile": "Edit Profile",
+      "save_changes": "Save Changes",
+      "cancel": "Cancel",
+      "info": "Basic Information",
+      "setname": "Full Name",
+      "setemail": "Email",
+      "role": "Role",
+      "setnewpassword": "Set New Password",
+      "place_newpassword": "Enter new password",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "alert_updated_success": "Basic information updated successfully",
+      "alert_update_error": "Failed to update basic information"
+    }
+  },
 
-    "applyform" : {
-        "title":"Apply Form",
-        "name": "Fullname",
-        "phone":"Phone",
-        "cover":"Cover letter",
-        "resume":"Resume file",
-        "enter_resume":"Enter resume file",
-        "submit":"Submit Application"
+  "recruiter": {
+    "programms": {
+      "tabs": { "all": "All", "saved": "Saved", "shared": "Shared" },
+      "edit": {
+        "title": "Edit Program",
+        "basic_info": "Basic Info",
+        "details_title": "Recruitment Details",
+        "other_title": "Other",
+        "labels": {
+          "title": "Title",
+          "company": "Company",
+          "logo": "Logo URL",
+          "type": "Program Type",
+          "degrees": "Degrees",
+          "duration": "Duration",
+          "land": "Location",
+          "fee": "Fee",
+          "expected_salary": "Expected Salary",
+          "deadline": "Deadline",
+          "vacancies": "Vacancies",
+          "benefit": "Benefit",
+          "review": "Review",
+          "video": "Video URL",
+          "bonus": "Bonus",
+          "public_day": "Public Day"
+        },
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "pagination": {
+        "page_info": "Page {{current}} of {{total}}",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "duration": "Duration",
+      "status": "Status",
+      "status_open": "Open",
+      "status_closed": "Closed",
+      "deadline": "Deadline",
+      "bonus": "Bonus",
+      "vacancies": "Vacancies",
+      "save": "Save",
+      "unsave": "Unsave",
+      "share": "Share"
     },
-    "footer": {
-        "subtitle": "A platform providing global learning and job opportunities.",
-        "address":"Address",
-        "phone":"Phone",
-        "street":"No. 30 Tran Huu Duc Street, Tu Liem, Hanoi",
-        "becomecollab":"Connect With Us",
-        "right":"© 2025 AloWork. All rights reserved.",
-        "signup":"Sign Up"
+    "saved": {
+      "not_initialized": "No saved programms"
     },
+    "shared": {
+      "title": "Shared Programs Status",
+      "loading": "Loading...",
+      "alert": {
+        "status_updated": "✅ Status updated to \"{{status}}\"",
+        "update_failed": "Failed to update status: {{error}}",
+        "steps_updated": "✅ Updated {{count}} step(s) to \"{{step}}\".",
+        "update_steps_failed": "Failed to update steps: {{error}}"
+      },
+      "select_steps_required": "Please select at least one step to update.",
+      "step_label": "Step {{n}}:",
+      "table": {
+        "id": "ID",
+        "status": "Status",
+        "candidate": "Candidate",
+        "programm": "Programm",
+        "bonus": "Bonus",
+        "created": "Created",
+        "updated": "Updated",
+        "expires": "Expires",
+        "steps": "Steps",
+        "step": "Step",
+        "actions": "Actions",
+        "select_placeholder": "-- Select --",
+        "getlink": "get link",
+        "linkavailable": "Available",
+        "linkunavailable": "No"
+      },
+      "not_initialized": "Not initialized"
+    },
+    "candidates": {
+      "tracking": "Candidate Tracking",
+      "completed": "Completed",
+      "table": {
+        "candidate": "Candidate",
+        "programm": "Programm",
+        "expected_salary": "Expected Salary",
+        "status": "Status",
+        "bonus": "Bonus",
+        "email": "Email",
+        "phone": "Phone",
+        "cv": "CV",
+        "linkedin": "LinkedIn",
+        "portfolio": "Portfolio",
+        "time": "Time",
+        "statusvalue": {
+          "completed": "Completed",
+          "notcompleted": "Not Completed"
+        }
+      }
+    },
+    "profile": {
+      "title": "Profile",
+      "info": "Basic Information",
+      "edit_profile": "Edit Profile",
+      "bank_info_title": "Bank Account Information",
+      "setname": "Account Holder Name",
+      "placeholder_accountHolderName": "Enter account holder name",
+      "setbank": "Bank Name",
+      "placeholder_bankName": "Enter bank name",
+      "setbranch": "Branch Name / Code",
+      "placeholder_branchName": "Enter branch name or code",
+      "placeholder_accountNumber": "Enter account number",
+      "ibanSwiftCode": "IBAN / SWIFT Code",
+      "placeholder_ibanSwiftCode": "Enter IBAN or SWIFT code",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "password": "Password",
+      "accountHolderName": "Account Holder Name",
+      "bankName": "Bank Name",
+      "branchName": "Branch Name / Code",
+      "accountNumber": "Account Number",
+      "alert_updated_success": "Basic information updated successfully",
+      "alert_update_error": "Failed to update basic information",
+      "alert_bankinfo_success": "Bank information updated successfully",
+      "alert_bankinfo_error": "Failed to update bank information",
+      "bank_info": "Bank Information",
+      "bank_info_desc": "Please provide accurate bank details to ensure timely payments.",
+      "currency": "Currency",
+      "currency_vnd": "VNĐ (Vietnamese Dong)",
+      "currency_usd": "USD (US Dollar)",
+      "currency_eur": "EUR (Euro)",
+      "registeredEmail": "Registered Email",
+      "placeholder_registeredEmail": "Enter contact email",
+      "registeredPhone": "Registered Phone",
+      "placeholder_registeredPhone": "Enter contact phone",
+      "commitment_title": "Commitment Statement",
+      "commitment_text": "The Collaborator confirms that the above banking information is accurate and will immediately inform Ant-Tech Asia in case of any change.",
+      "setemail": "Email",
+      "setnewpassword": "Set New Password"
+    }
+  },
 
-    "admin_jobs": {"placeholders":{"cost_per_candidate":"USD / Candidate","cost_per_interview":"+USD / Interview"},"badges":{"cost_per_candidate":"USD 0 / Candidate","cost_per_interview":"+USD 0 / Interview"},"add":"Add job","edit":"Edit job","details_title":"Job Details"}
+  "programm": {
+    "detail": {
+      "loading_programm": "Loading program...",
+      "not_found": "The program does not exist or has been deleted.",
+      "overview": {
+        "duration": "Duration",
+        "degrees": "Degree",
+        "type_category": "Program type",
+        "job": "Labor export",
+        "studium": "Study abroad",
+        "type": "Program form",
+        "expected_salary": "Expected salary",
+        "fee": "Fee",
+        "status": "Status",
+        "enough": "Full quota",
+        "hire": "Hiring",
+        "public_day": "Posted date",
+        "deadline": "Application deadline",
+        "bonus": "Bonus",
+        "vacancies": "Vacancies",
+        "hired": "Hired",
+        "company": "Company",
+        "land": "Country",
+        "overview": "Overview",
+        "requirements": "Requirements",
+        "age": "Age",
+        "education": "Education level",
+        "certificate": "Certificate",
+        "health": "Health condition",
+        "benefit": "Benefits",
+        "other": "Other"
+      },
+      "journey": {
+        "title": "🧭 Detailed program journey",
+        "training_phase": "📌 Training phases",
+        "cost_table_title": "💸 Cost breakdown table",
+        "no_extra_costs": "⚖️ No hidden or additional fees guaranteed",
+        "documents_title": "📁 Required documents",
+        "steps": {
+          "1": "Register in Vietnam",
+          "2": "Language training",
+          "3": "Interview",
+          "4": "Complete documentation",
+          "5": "Fly abroad",
+          "6": "Study and work overseas"
+        },
+        "costs": {
+          "service_fee": "Service fee",
+          "visa_fee": "Visa fee",
+          "flight_ticket": "Flight ticket",
+          "tuition": "Tuition fee",
+          "living_expenses": "Living expenses",
+          "note": {
+            "service_fee": "Payable in Vietnam",
+            "visa_fee": "Includes document assistance",
+            "flight_ticket": "One-way to Germany",
+            "tuition": "Depends on the program",
+            "living_expenses": "Around 800 EUR/month – self-funded"
+          }
+        },
+        "documents": {
+          "passport": "Passport",
+          "id_card": "National ID / Citizen ID",
+          "birth_certificate": "Birth certificate",
+          "household": "Household registration book",
+          "degree": "Diploma / Transcript",
+          "language_certificate": "Language certificate (Goethe / IELTS / JLPT...)",
+          "health_check": "Health certificate",
+          "photo": "3x4 photo",
+          "application_form": "Application form (study/work)",
+          "cv": "Curriculum Vitae (CV)"
+        }
+      },
+      "partner": {
+        "title": "Program partner information",
+        "intro_title": "📄 Partner introduction",
+        "email": "Email",
+        "phone": "Phone",
+        "website": "Website",
+        "address": "Address",
+        "country": "Country",
+        "qa": {
+          "title": "💬 Partner Q&A",
+          "placeholder": "Ask a question to the partner...",
+          "button": "Send question",
+          "question_prefix": "❓ Question:",
+          "answer_prefix": "💡 Answer:"
+        },
+        "review": {
+          "title": "⭐ Partner reviews",
+          "select_label": "Select rating:",
+          "placeholder": "Write your review...",
+          "button": "Submit review",
+          "stars": "stars"
+        }
+      }
+    }
+  },
+
+  "applyform": {
+    "title": "Apply Form",
+    "name": "Fullname",
+    "phone": "Phone",
+    "cover": "Cover letter",
+    "resume": "Resume file",
+    "enter_resume": "Enter resume file",
+    "submit": "Submit Application"
+  },
+  "footer": {
+    "subtitle": "A platform providing global learning and job opportunities.",
+    "address": "Address",
+    "phone": "Phone",
+    "street": "No. 30 Tran Huu Duc Street, Tu Liem, Hanoi",
+    "becomecollab": "Connect With Us",
+    "right": "© 2025 AloWork. All rights reserved.",
+    "signup": "Sign Up"
+  },
+
+  "admin_jobs": {
+    "placeholders": {
+      "cost_per_candidate": "USD / Candidate",
+      "cost_per_interview": "+USD / Interview"
+    },
+    "badges": {
+      "cost_per_candidate": "USD 0 / Candidate",
+      "cost_per_interview": "+USD 0 / Interview"
+    },
+    "add": "Add job",
+    "edit": "Edit job",
+    "details_title": "Job Details"
+  }
 }
-
-
-

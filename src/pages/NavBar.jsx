@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useI18n } from "../i18n";
-import './NavBar.css';
+import "./NavBar.css";
 
-import { 
-  FaSearch, FaSignInAlt, FaSignOutAlt, FaRegBookmark, FaUserPlus, FaUser, FaBars, FaTimes, FaUsers 
+import {
+  FaSearch,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaRegBookmark,
+  FaUserPlus,
+  FaUser,
+  FaBars,
+  FaTimes,
+  FaUsers,
 } from "react-icons/fa";
 import { AiFillHome } from "react-icons/ai";
 import { HiOutlineBriefcase } from "react-icons/hi";
@@ -22,91 +30,113 @@ function LoggedInIcons({ user, onLogout, t }) {
 
   return (
     <div className="nav-loggedIn">
-      {user.role === 'admin' && (
+      {user.role === "admin" && (
         <>
           <Link to="/home">
             <AiFillHome
-              className={`profile-icon ${activeIcon === "home" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "home" ? "active" : ""
+              }`}
               onClick={() => handleClick("home")}
-              title={t('nav.home')}
+              title={t("nav.home")}
             />
           </Link>
           <Link to="/admin/profile">
             <FaUser
-              className={`profile-icon ${activeIcon === "user" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "user" ? "active" : ""
+              }`}
               onClick={() => handleClick("user")}
-              title={t('nav.profile')}
+              title={t("nav.profile")}
             />
           </Link>
           <Link to="/admin/overview">
             <BiBarChart
-              className={`profile-icon ${activeIcon === "overview" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "overview" ? "active" : ""
+              }`}
               onClick={() => handleClick("overview")}
-              title={t('nav.overview')}
+              title={t("nav.overview")}
             />
           </Link>
           <Link to="/admin/programms-management">
             <HiOutlineBriefcase
-              className={`profile-icon ${activeIcon === "programms" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "programms" ? "active" : ""
+              }`}
               onClick={() => handleClick("programms")}
-              title={t('nav.programms')}
+              title={t("nav.programms")}
             />
           </Link>
           <Link to="/admin/candidates-management">
             <FaUsers
-              className={`profile-icon ${activeIcon === "candidates" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "candidates" ? "active" : ""
+              }`}
               onClick={() => handleClick("candidates")}
-              title={t('nav.candidates')}
+              title={t("nav.candidates")}
             />
           </Link>
         </>
       )}
 
-      {user.role === 'recruiter' && (
+      {user.role === "recruiter" && (
         <>
           <Link to="/home">
             <AiFillHome
-              className={`profile-icon ${activeIcon === "home" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "home" ? "active" : ""
+              }`}
               onClick={() => handleClick("home")}
-              title={t('nav.home')}
+              title={t("nav.home")}
             />
           </Link>
           <Link to="/recruiter/profile">
             <FaUser
-              className={`profile-icon ${activeIcon === "user" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "user" ? "active" : ""
+              }`}
               onClick={() => handleClick("user")}
-              title={t('nav.profile')}
+              title={t("nav.profile")}
             />
           </Link>
           <Link to="/recruiter/programmsview">
             <HiOutlineBriefcase
-              className={`profile-icon ${activeIcon === "programms" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "programms" ? "active" : ""
+              }`}
               onClick={() => handleClick("programms")}
-              title={t('nav.programms')}
+              title={t("nav.programms")}
             />
           </Link>
           <Link to="/recruiter/candidates-submittion">
             <FaUsers
-              className={`profile-icon ${activeIcon === "submittions" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "submittions" ? "active" : ""
+              }`}
               onClick={() => handleClick("submittions")}
-              title={t('nav.candidates')}
+              title={t("nav.candidates")}
             />
           </Link>
         </>
       )}
 
-      {user.role === 'candidate' && (
+      {user.role === "candidate" && (
         <>
           <Link to="/candidate/profile">
             <HiOutlineBriefcase
-              className={`profile-icon ${activeIcon === "profile" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "profile" ? "active" : ""
+              }`}
               onClick={() => handleClick("profile")}
-              title={t('nav.profile')}
+              title={t("nav.profile")}
             />
           </Link>
           <Link to="/candidate/jobs-view">
             <FaRegBookmark
-              className={`profile-icon ${activeIcon === "saved" ? "active" : ""}`}
+              className={`profile-icon ${
+                activeIcon === "saved" ? "active" : ""
+              }`}
               onClick={() => handleClick("saved")}
               title="Saved Jobs"
             />
@@ -114,7 +144,11 @@ function LoggedInIcons({ user, onLogout, t }) {
         </>
       )}
 
-      <FaSignOutAlt onClick={onLogout} className="profile-icon" title={t('nav.logout')} />
+      <FaSignOutAlt
+        onClick={onLogout}
+        className="profile-icon"
+        title={t("nav.logout")}
+      />
     </div>
   );
 }
@@ -133,15 +167,18 @@ export default function Navbar() {
 
   useEffect(() => {
     getProgrammsList()
-      .then(data => setProgramms(data.data || [])) // <- data.data nếu API trả về object
+      .then((data) => setProgramms(data.data || [])) // <- data.data nếu API trả về object
       .catch(console.error);
   }, []);
-  
 
   const homePath =
-    user?.role === 'admin' ? '/admin/overview' :
-    user?.role === 'recruiter' ? '/recruiter/jobsview' :
-    user?.role === 'candidate' ? '/candidate/home' : '/home';
+    user?.role === "admin"
+      ? "/admin/overview"
+      : user?.role === "recruiter"
+      ? "/recruiter/jobsview"
+      : user?.role === "candidate"
+      ? "/candidate/home"
+      : "/home";
 
   const goHome = () => navigate(homePath);
   const handleLogOut = () => logout();
@@ -153,9 +190,10 @@ export default function Navbar() {
     if (!value.trim()) return setSuggestions([]);
     const lowerValue = value.toLowerCase();
     const matched = programms.filter(
-      (p) => p.title?.toLowerCase().includes(lowerValue) ||
-             p.company?.toLowerCase().includes(lowerValue) ||
-             p.land?.toLowerCase().includes(lowerValue)
+      (p) =>
+        p.title?.toLowerCase().includes(lowerValue) ||
+        p.company?.toLowerCase().includes(lowerValue) ||
+        p.land?.toLowerCase().includes(lowerValue)
     );
     setSuggestions(matched.slice(0, 5));
   };
@@ -177,7 +215,7 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-left">
-        <div className="logo-btn" onClick={goHome} title={t('nav.home')}>
+        <div className="logo-btn" onClick={goHome} title={t("nav.home")}>
           <span className="logo">AloWork</span>
         </div>
       </div>
@@ -189,23 +227,27 @@ export default function Navbar() {
             <FaSearch
               onClick={() => setShowSearch(true)}
               className="search-icon"
-              title={t('nav.search_title')}
+              title={t("nav.search_title")}
             />
           ) : (
             <form onSubmit={handleSearchSubmit} className="search-form">
               <input
                 type="text"
-                placeholder={t('nav.search_placeholder')}
+                placeholder={t("nav.search_placeholder")}
                 value={searchText}
                 onChange={handleSearchChange}
                 className="search-input"
                 autoFocus
-                onBlur={() => setTimeout(() => {
-                  setShowSearch(false);  // Ẩn input + suggestions
-                  setSuggestions([]);    // Xóa suggestion khi ẩn
-                }, 150)}
+                onBlur={() =>
+                  setTimeout(() => {
+                    setShowSearch(false); // Ẩn input + suggestions
+                    setSuggestions([]); // Xóa suggestion khi ẩn
+                  }, 150)
+                }
               />
-              <button type="submit" style={{ display: "none" }}>{t('nav.search_button')}</button>
+              <button type="submit" style={{ display: "none" }}>
+                {t("nav.search_button")}
+              </button>
             </form>
           )}
 
@@ -217,7 +259,11 @@ export default function Navbar() {
                   className="suggestion-item"
                   onClick={() => handleSelect(p)}
                 >
-                  <img src={p.logoL || p.logo} alt={p.title} style={{ width: 40, height: 40, borderRadius: 8 }} />
+                  <img
+                    src={p.logoL || p.logo}
+                    alt={p.title}
+                    style={{ width: 40, height: 40, borderRadius: 8 }}
+                  />
                   <span>{p.title}</span>
                 </div>
               ))}
@@ -225,23 +271,42 @@ export default function Navbar() {
           )}
         </div>
 
-
         {/* Menu icon mobile */}
         <div className="menu-toggle" onClick={() => setMenuOpen(true)}>
           <FaBars />
         </div>
 
         {/* Language toggle */}
-        <div className="translator-btn" onClick={() => changeLang(lang === 'vi' ? 'en' : 'vi')} title={t('nav.language')}>
-          <img src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'} alt={lang} />
+        <div
+          className="translator-btn"
+          onClick={() => changeLang(lang === "vi" ? "en" : "vi")}
+          title={t("nav.language")}
+        >
+          <img
+            src={
+              lang === "vi"
+                ? "https://flagcdn.com/h40/us.png"
+                : "https://flagcdn.com/h40/vn.png"
+            }
+            alt={lang}
+          />
         </div>
 
         {/* Desktop nav items */}
         {!user ? (
           <nav className="nav-items">
-            <Link to="/home" className="nav-btn"> <AiFillHome title={t('nav.home')} /> </Link>
-            <Link to="/login" className="nav-btn"> <FaSignInAlt title={t('nav.login')} /> </Link>
-            <Link to="/signup" className="nav-btn"> <FaUserPlus title={t('nav.signup')} /> </Link>
+            <Link to="/home" className="nav-btn">
+              {" "}
+              <AiFillHome title={t("nav.home")} />{" "}
+            </Link>
+            <Link to="/login" className="nav-btn">
+              {" "}
+              <FaSignInAlt title={t("nav.login")} />{" "}
+            </Link>
+            <Link to="/signup" className="nav-btn">
+              {" "}
+              <FaUserPlus title={t("nav.signup")} />{" "}
+            </Link>
           </nav>
         ) : (
           <LoggedInIcons user={user} onLogout={handleLogOut} t={t} />
@@ -249,53 +314,116 @@ export default function Navbar() {
       </div>
 
       {/* Sidebar mobile */}
-      <div className={`sidebar ${menuOpen ? 'open' : ''}`}>
+      <div className={`sidebar ${menuOpen ? "open" : ""}`}>
         <div className="close-btn" onClick={() => setMenuOpen(false)}>
           <FaTimes />
         </div>
 
         <Link to="/home" onClick={() => setMenuOpen(false)}>
-          <AiFillHome /> {t('nav.home')}
+          <AiFillHome /> {t("nav.home")}
         </Link>
 
         {!user && (
           <>
             <Link to="/login" onClick={() => setMenuOpen(false)}>
-              <FaSignInAlt /> {t('nav.login')}
+              <FaSignInAlt /> {t("nav.login")}
             </Link>
             <Link to="/signup" onClick={() => setMenuOpen(false)}>
-              <FaUserPlus /> {t('nav.signup')}
+              <FaUserPlus /> {t("nav.signup")}
             </Link>
           </>
         )}
 
         {user && (
           <>
-            {user.role === 'admin' && (
+            {user.role === "admin" && (
               <>
-                <Link to="/admin/profile" onClick={() => setMenuOpen(false)}><FaUser /> {t('nav.profile')}</Link>
-                <Link to="/admin/overview" onClick={() => setMenuOpen(false)}><BiBarChart /> {t('nav.overview')}</Link>
-                <Link to="/admin/programms-management" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.programms')}</Link>
-                <Link to="/admin/candidates-management" onClick={() => setMenuOpen(false)}><FaUsers /> {t('nav.candidates')}</Link>
+                <Link to="/admin/profile" onClick={() => setMenuOpen(false)}>
+                  <FaUser /> {t("nav.profile")}
+                </Link>
+                <Link to="/admin/overview" onClick={() => setMenuOpen(false)}>
+                  <BiBarChart /> {t("nav.overview")}
+                </Link>
+                <Link
+                  to="/admin/programms-management"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <HiOutlineBriefcase /> {t("nav.programms")}
+                </Link>
+                <Link
+                  to="/admin/candidates-management"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaUsers /> {t("nav.candidates")}
+                </Link>
               </>
             )}
-            {user.role === 'recruiter' && (
+            {user.role === "recruiter" && (
               <>
-                <Link to="/recruiter/profile" onClick={() => setMenuOpen(false)}><FaUser /> {t('nav.profile')}</Link>
-                <Link to="/recruiter/programmsview" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.programms')}</Link>
-                <Link to="/recruiter/candidates-submittion" onClick={() => setMenuOpen(false)}><FaUsers /> {t('nav.candidates')}</Link>
+                <Link
+                  to="/recruiter/profile"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaUser /> {t("nav.profile")}
+                </Link>
+                <Link
+                  to="/recruiter/programmsview"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <HiOutlineBriefcase /> {t("nav.programms")}
+                </Link>
+                <Link
+                  to="/recruiter/candidates-submittion"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaUsers /> {t("nav.candidates")}
+                </Link>
               </>
             )}
-            {user.role === 'candidate' && (
+            {user.role === "candidate" && (
               <>
-                <Link to="/candidate/profile" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.profile')}</Link>
-                <Link to="/candidate/jobs-view" onClick={() => setMenuOpen(false)}><FaRegBookmark /> Saved Jobs</Link>
+                <Link
+                  to="/candidate/profile"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <HiOutlineBriefcase /> {t("nav.profile")}
+                </Link>
+                <Link
+                  to="/candidate/jobs-view"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaRegBookmark /> Saved Jobs
+                </Link>
               </>
             )}
 
-            <Link to="#" onClick={() => { handleLogOut(); setMenuOpen(false); }}>
-              <FaSignOutAlt /> {t('nav.logout')}
+            <Link
+              to="#"
+              onClick={() => {
+                handleLogOut();
+                setMenuOpen(false);
+              }}
+            >
+              <FaSignOutAlt /> {t("nav.logout")}
             </Link>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center", // centers vertically
+                justifyContent: "center", // centers horizontally
+              }}
+              onClick={() => changeLang(lang === "vi" ? "en" : "vi")}
+              title={t("nav.language")}
+            >
+              <img
+                src={
+                  lang === "vi"
+                    ? "https://flagcdn.com/h40/us.png"
+                    : "https://flagcdn.com/h40/vn.png"
+                }
+                alt={lang}
+              />
+            </div>
           </>
         )}
       </div>

@@ -58,7 +58,6 @@ export default function ViewProfile() {
     setBasicInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-
   // 💾 Lưu thông tin
   const handleBasicInfoSave = async () => {
     try {
@@ -68,7 +67,6 @@ export default function ViewProfile() {
       };
       delete payload.newPassword;
       if (basicInfo.newPassword) payload.password = basicInfo.newPassword;
-
 
       const res = await updateBasicInfo(payload);
 
@@ -138,7 +136,9 @@ export default function ViewProfile() {
                 />
               </div>
               <div className="info-item">
-                <label htmlFor="newPassword">{t("admin.profile.setnewpassword")}</label>
+                <label htmlFor="newPassword">
+                  {t("admin.profile.setnewpassword")}
+                </label>
                 <input
                   id="newPassword"
                   type="password"
@@ -165,8 +165,6 @@ export default function ViewProfile() {
             </div>
           )}
         </div>
-
-       
       </div>
     </div>
   );
