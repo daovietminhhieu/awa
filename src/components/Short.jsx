@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import './Short.css'
+import "./Short.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useI18n } from "../i18n";
 
@@ -10,13 +10,14 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-
 export function SuccessStories() {
   const navigate = useNavigate();
   const { t } = useI18n();
 
   const videos = ["/v1.mp4", "/v1.mp4", "/v1.mp4"];
-  const rawDescriptions = t("short.stories.descriptions", { returnObjects: true });
+  const rawDescriptions = t("short.stories.descriptions", {
+    returnObjects: true,
+  });
   const descriptionData = Array.isArray(rawDescriptions) ? rawDescriptions : [];
 
   const stories = descriptionData.map((item, idx) => ({
@@ -24,11 +25,13 @@ export function SuccessStories() {
     title: item.name || `Story ${idx + 1}`,
     description: item.description || "",
     videoUrl: videos[idx % videos.length],
-    imageUrl: item.image || [
-      "https://randomuser.me/api/portraits/men/32.jpg",
-      "https://randomuser.me/api/portraits/women/44.jpg",
-      "https://randomuser.me/api/portraits/men/65.jpg"
-    ][idx % 3],
+    imageUrl:
+      item.image ||
+      [
+        "https://randomuser.me/api/portraits/men/32.jpg",
+        "https://randomuser.me/api/portraits/women/44.jpg",
+        "https://randomuser.me/api/portraits/men/65.jpg",
+      ][idx % 3],
   }));
 
   return (
@@ -50,9 +53,13 @@ export function SuccessStories() {
           <SwiperSlide key={id}>
             <article
               className="success-story-card"
-              onClick={() => navigate(`/success-story-detail/${id}`, { state: { story: { id, title, description, imageUrl, videoUrl } } })}
-
-
+              onClick={() =>
+                navigate(`/success-story-detail/${id}`, {
+                  state: {
+                    story: { id, title, description, imageUrl, videoUrl },
+                  },
+                })
+              }
             >
               <div className="story-left">
                 {videoUrl && (
@@ -73,7 +80,9 @@ export function SuccessStories() {
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/success-story-detail/${id}`, {
-                      state: { story: { id, title, description, imageUrl, videoUrl } },
+                      state: {
+                        story: { id, title, description, imageUrl, videoUrl },
+                      },
                     });
                   }}
                 >
@@ -88,8 +97,6 @@ export function SuccessStories() {
   );
 }
 
-
-
 import { useLocation } from "react-router-dom";
 
 export function DetailSuccessStory() {
@@ -100,35 +107,49 @@ export function DetailSuccessStory() {
   const story = location.state?.story;
   const render = null;
 
-  if (!story) return <p>{t('short.not_found_story')}</p>;
+  if (!story) return <p>{t("short.not_found_story")}</p>;
 
   return (
     <>
-      <h3 style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</h3>
-      {render && <>
-        <section className="detail-story section">
-          <button onClick={() => navigate(-1)} className="back-btn">
-            {t('short.back')}
-          </button>
-          <div className="detail-card">
-            <img src={story.imageUrl} alt={story.title} className="detail-image" />
-            <h2 className="detail-title">{story.title}</h2>
-            <p className="detail-desc">{story.description}</p>
-          </div>
-        </section>
-      </>}
-    
+      <h3
+        style={{
+          maxWidth: "900px",
+          height: "600px",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {t("programm.detail.loading_programm")}
+      </h3>
+      {render && (
+        <>
+          <section className="detail-story section">
+            <button onClick={() => navigate(-1)} className="back-btn">
+              {t("short.back")}
+            </button>
+            <div className="detail-card">
+              <img
+                src={story.imageUrl}
+                alt={story.title}
+                className="detail-image"
+              />
+              <h2 className="detail-title">{story.title}</h2>
+              <p className="detail-desc">{story.description}</p>
+            </div>
+          </section>
+        </>
+      )}
     </>
   );
 }
 
-
-
 export function WhyChoose() {
   const { t } = useI18n();
-  const reasonData = t('short.why_choose.reasons', { returnObjects: true });
+  const reasonData = t("short.why_choose.reasons", { returnObjects: true });
 
-// Nếu reasonData không phải là mảng, gán mảng rỗng để tránh lỗi
+  // Nếu reasonData không phải là mảng, gán mảng rỗng để tránh lỗi
   const reasons = Array.isArray(reasonData)
     ? reasonData.map((reason, idx) => ({
         ...reason,
@@ -136,10 +157,11 @@ export function WhyChoose() {
       }))
     : [];
 
-
   return (
     <section className="why-choose section">
-      <h2 className="section-title">{t('short.why_choose.title') || 'Why choose Alowork.com?'}</h2>
+      <h2 className="section-title">
+        {t("short.why_choose.title") || "Why choose Alowork.com?"}
+      </h2>
       <div className="reasons-grid">
         {reasons.map(({ title, description, icon }, idx) => (
           <div key={idx} className="reason-card">
@@ -165,18 +187,13 @@ export function Partner() {
   return (
     <section className="partner-section">
       <div className="partner-inner">
-        <h2 className="partner-title">
-          {t("short.partners.title")}
-        </h2>
+        <h2 className="partner-title">{t("short.partners.title")}</h2>
 
         <p className="partner-desc">
           {t("short.partners.become_collaborator_desc")}
         </p>
 
-        <button
-          onClick={handleContactClick}
-          className="partner-cta-btn"
-        >
+        <button onClick={handleContactClick} className="partner-cta-btn">
           {t("short.partners.contact_now") || "Contact now"}
         </button>
       </div>
@@ -184,60 +201,61 @@ export function Partner() {
   );
 }
 
-
 import Footer from "./Footer";
 export function PartnerDetail() {
   const { t } = useI18n();
   return (
-    <div >
+    <div>
       <section className="partner-detail-section">
-          <div className="form-detail-partner">
-            <h2 className="partner-detail-title">{t('short.partners.detail.title')}</h2>
-            {/**Them divider */}
-            <hr className="partner-divider" />
-            <div className="partner-detail-content">
-              <div className="left">
-                <div className="partner-detail-info">
-                  <div className="info-item">
-                    <strong>{t('short.partners.detail.address_label')}:</strong>
-                    <span>{t('short.partners.detail.address')}</span>
-                  </div>
-                  <div className="info-item">
-                    <strong>{t('short.partners.detail.email_label')}:</strong>
-                    <span>{t('short.partners.detail.email')}</span>
-                  </div>
-                  <div className="info-item">
-                    <strong>{t('short.partners.detail.phone_label')}:</strong>
-                    <span>{t('short.partners.detail.phone')}</span>
-                  </div>
+        <div className="form-detail-partner">
+          <h2 className="partner-detail-title">
+            {t("short.partners.detail.title")}
+          </h2>
+          {/**Them divider */}
+          <hr className="partner-divider" />
+          <div className="partner-detail-content">
+            <div className="left">
+              <div className="partner-detail-info">
+                <div className="info-item">
+                  <strong>{t("short.partners.detail.address_label")}:</strong>
+                  <span>{t("short.partners.detail.address")}</span>
+                </div>
+                <div className="info-item">
+                  <strong>{t("short.partners.detail.email_label")}:</strong>
+                  <span>{t("short.partners.detail.email")}</span>
+                </div>
+                <div className="info-item">
+                  <strong>{t("short.partners.detail.phone_label")}:</strong>
+                  <span>{t("short.partners.detail.phone")}</span>
                 </div>
               </div>
-              <div className="right">
-                <p className="partner-goodbye">{t('short.partners.detail.goodbye')}</p>
-              </div>
+            </div>
+            <div className="right">
+              <p className="partner-goodbye">
+                {t("short.partners.detail.goodbye")}
+              </p>
             </div>
           </div>
-        
+        </div>
       </section>
       <Footer />
     </div>
   );
 }
 
-
 export function TipsAndEventsSection() {
   const navigate = useNavigate();
   const { t } = useI18n();
 
   // ✅ Load data từ i18n JSON
-  const tips = t('short.tips', { returnObjects: true });
-  const events = t('short.events_data', { returnObjects: true });
+  const tips = t("short.tips", { returnObjects: true });
+  const events = t("short.events_data", { returnObjects: true });
 
   return (
     <section className="tips-events section">
       {/* Cẩm nang nghề nghiệp */}
       <div className="tips-guide">
-        <h2 className="section-title">{t('short.career_guide')}</h2>
+        <h2 className="section-title">{t("short.career_guide")}</h2>
         <div className="stories-grid">
           {tips.map(({ title, description, image }, idx) => (
             <div
@@ -256,7 +274,7 @@ export function TipsAndEventsSection() {
 
       {/* Sự kiện sắp tới */}
       <div className="event-section" style={{ marginTop: "40px" }}>
-        <h2 className="section-title">{t('short.events')}</h2>
+        <h2 className="section-title">{t("short.events")}</h2>
         <div className="stories-grid">
           {events.map(({ title, date, location, image }, idx) => (
             <div
@@ -267,8 +285,12 @@ export function TipsAndEventsSection() {
             >
               <img src={image} alt={title} loading="lazy" />
               <h3>{title}</h3>
-              <p><strong>{t('short.event-location')}:</strong> {location}</p>
-              <p><strong>{t('short.event-date')}:</strong> {date}</p>
+              <p>
+                <strong>{t("short.event-location")}:</strong> {location}
+              </p>
+              <p>
+                <strong>{t("short.event-date")}:</strong> {date}
+              </p>
             </div>
           ))}
         </div>
@@ -276,7 +298,6 @@ export function TipsAndEventsSection() {
     </section>
   );
 }
-
 
 // Chi tiết cẩm nang nghề nghiệp
 export function TipDetail() {
@@ -287,30 +308,35 @@ export function TipDetail() {
     {
       id: "1",
       title: "Cách viết CV nổi bật",
-      description: "Những mẹo đơn giản để tạo một bản CV ấn tượng trong mắt nhà tuyển dụng.",
+      description:
+        "Những mẹo đơn giản để tạo một bản CV ấn tượng trong mắt nhà tuyển dụng.",
       imageUrl: "https://source.unsplash.com/600x400/?cv,resume",
     },
     {
       id: "2",
       title: "Phỏng vấn thành công",
-      description: "Chuẩn bị và ứng xử đúng cách để ghi điểm tuyệt đối trong buổi phỏng vấn.",
+      description:
+        "Chuẩn bị và ứng xử đúng cách để ghi điểm tuyệt đối trong buổi phỏng vấn.",
       imageUrl: "https://source.unsplash.com/600x400/?interview,job",
     },
     {
       id: "3",
       title: "Kỹ năng mềm quan trọng",
-      description: "Phát triển kỹ năng giao tiếp, làm việc nhóm và quản lý thời gian hiệu quả.",
+      description:
+        "Phát triển kỹ năng giao tiếp, làm việc nhóm và quản lý thời gian hiệu quả.",
       imageUrl: "https://source.unsplash.com/600x400/?skills,communication",
     },
   ];
 
-  const tip = tips.find(t => t.id === tipId);
+  const tip = tips.find((t) => t.id === tipId);
 
-  if (!tip) return <p>{useI18n().t('short.not_found_story')}</p>;
+  if (!tip) return <p>{useI18n().t("short.not_found_story")}</p>;
 
   return (
     <section className="detail-tip section">
-      <button onClick={() => navigate(-1)} className="back-btn">{useI18n().t('short.back')}</button>
+      <button onClick={() => navigate(-1)} className="back-btn">
+        {useI18n().t("short.back")}
+      </button>
       <div className="detail-card">
         <img src={tip.imageUrl} alt={tip.title} className="detail-image" />
         <h2 className="detail-title">{tip.title}</h2>
@@ -331,7 +357,8 @@ export function EventDetail() {
       title: "Hội thảo định hướng nghề nghiệp 2025",
       date: "20/10/2025",
       location: "TP.HCM",
-      description: "Tham gia hội thảo để định hướng phát triển sự nghiệp trong tương lai.",
+      description:
+        "Tham gia hội thảo để định hướng phát triển sự nghiệp trong tương lai.",
       imageUrl: "https://source.unsplash.com/600x400/?career,event",
     },
     {
@@ -339,31 +366,35 @@ export function EventDetail() {
       title: "Workshop viết CV chuyên nghiệp",
       date: "10/11/2025",
       location: "Hà Nội",
-      description: "Học cách viết CV chuyên nghiệp để gây ấn tượng với nhà tuyển dụng.",
+      description:
+        "Học cách viết CV chuyên nghiệp để gây ấn tượng với nhà tuyển dụng.",
       imageUrl: "https://source.unsplash.com/600x400/?workshop,resume",
     },
   ];
 
-  const event = events.find(e => e.id === eventId);
+  const event = events.find((e) => e.id === eventId);
 
-  if (!event) return <p>{useI18n().t('short.not_found_story')}</p>;
+  if (!event) return <p>{useI18n().t("short.not_found_story")}</p>;
 
   return (
     <section className="detail-event section">
-      <button onClick={() => navigate(-1)} className="back-btn">{useI18n().t('short.back')}</button>
+      <button onClick={() => navigate(-1)} className="back-btn">
+        {useI18n().t("short.back")}
+      </button>
       <div className="detail-card">
         <img src={event.imageUrl} alt={event.title} className="detail-image" />
         <h2 className="detail-title">{event.title}</h2>
-        <p><strong>Thời gian:</strong> {event.date}</p>
-        <p><strong>Địa điểm:</strong> {event.location}</p>
+        <p>
+          <strong>Thời gian:</strong> {event.date}
+        </p>
+        <p>
+          <strong>Địa điểm:</strong> {event.location}
+        </p>
         <p className="detail-desc">{event.description}</p>
       </div>
     </section>
   );
 }
-
-
-
 
 export function BecomeCollaborator() {
   const [showPopup, setShowPopup] = useState(false);
@@ -390,12 +421,14 @@ export function BecomeCollaborator() {
         border: "1px solid #ddd",
         borderRadius: "8px",
         textAlign: "center",
-        background:"linear-gradient(135deg, #e3f2fd, #f9fbff)",
+        background: "linear-gradient(135deg, #e3f2fd, #f9fbff)",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
       }}
     >
-      <h2 className="section-becomecollab-title">{t('short.become_collaborator.title')}</h2>
-      <p>{t('short.become_collaborator.description')}</p>
+      <h2 className="section-becomecollab-title">
+        {t("short.become_collaborator.title")}
+      </h2>
+      <p>{t("short.become_collaborator.description")}</p>
       <button
         onClick={handleRegisterClick}
         style={{
@@ -408,7 +441,7 @@ export function BecomeCollaborator() {
           borderRadius: "5px",
         }}
       >
-        {t('short.become_collaborator.register_now')}
+        {t("short.become_collaborator.register_now")}
       </button>
 
       {showPopup && (
@@ -426,8 +459,11 @@ export function BecomeCollaborator() {
             maxWidth: "300px",
           }}
         >
-          <strong>{t('short.become_collaborator.greeting') || 'Hello!'}</strong>
-          <p>{t('short.become_collaborator.popup_text') || 'Do you want to become a collaborator? Click Signup now to join!'}</p>
+          <strong>{t("short.become_collaborator.greeting") || "Hello!"}</strong>
+          <p>
+            {t("short.become_collaborator.popup_text") ||
+              "Do you want to become a collaborator? Click Signup now to join!"}
+          </p>
           <button
             onClick={handleRegisterClick}
             style={{
@@ -440,7 +476,7 @@ export function BecomeCollaborator() {
               marginRight: "10px",
             }}
           >
-            {t('short.become_collaborator.register_now')}
+            {t("short.become_collaborator.register_now")}
           </button>
           <button
             onClick={() => setShowPopup(false)}
@@ -452,12 +488,10 @@ export function BecomeCollaborator() {
               cursor: "pointer",
             }}
           >
-            {t('short.become_collaborator.close')}
+            {t("short.become_collaborator.close")}
           </button>
         </div>
       )}
     </section>
   );
 }
-
-

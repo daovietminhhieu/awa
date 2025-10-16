@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 24px;
-  background: linear-gradient(90deg, #D97706, #F59E0B, #F59E0B);
+  background: linear-gradient(90deg, #d97706, #f59e0b, #f59e0b);
   color: white;
   gap: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,7 @@
   color: #ffe0b2;
 }
 .profile-icon.active {
-  color: #FFD700;
+  color: #ffd700;
 }
 
 .nav-btn {
@@ -107,7 +107,7 @@
   border: 1px solid #ddd;
   border-top: none;
   border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   max-height: 250px; /* Giới hạn chiều cao */
   overflow-y: auto;
@@ -169,8 +169,6 @@
   }
 }
 
-
-
 /* Menu toggle for mobile */
 .menu-toggle {
   display: none;
@@ -189,7 +187,7 @@
   background: #333;
   color: white;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.3);
-  padding: 20px;
+  padding: 45px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
