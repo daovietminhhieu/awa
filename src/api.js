@@ -137,7 +137,6 @@ export async function requestASharedLink(programmId) {
 
 export async function getReferralsList() {
   const headers = { "Content-Type": "application/json", ...authHeaders() };
-  console.log("[getReferralsList]: ", headers);
   const res = await fetch(`${API_BASE}/user/my-referrals`, {
     headers,
   });
