@@ -1,0 +1,63 @@
+.post-editor {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 40px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  width: 90%;
+}
+
+.post-editor select,
+.post-editor input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.post-editor-quill {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.ql-toolbar.ql-snow {
+  border-radius: 8px 8px 0 0;
+}
+
+.ql-container.ql-snow {
+  border-radius: 0 0 8px 8px;
+  min-height: 300px;
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.editor-actions button {
+  background-color: #0366d6;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editor-actions button:hover {
+  background-color: #024eaa;
+}
+
+.post-editor-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}

@@ -68,6 +68,8 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
       return copy;
     });
   };
+  const [copiedId, setCopiedId] = useState(null);
+  const [copiedLink, setCopiedLink] = useState("");
 
   return (
     <div>
@@ -117,28 +119,96 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                 className="programm-footer"
                 style={{ display: "flex", gap: "10px", marginTop: "10px" }}
               >
-                <button
-                  style={{
-                    height: "40px",
-                    cursor: isExpired ? "not-allowed" : "pointer",
-                    opacity: isExpired ? 0.5 : 1,
-                  }}
-                  disabled={isExpired}
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    if (isExpired) return;
-                    try {
-                      const res = await requestASharedLink(p._id);
-                      const link = res.data.link;
-                      window.prompt("Shared link created::", link);
-                    } catch (err) {
-                      console.error("Error sharing link", err);
-                      alert("Share failed");
-                    }
-                  }}
-                >
-                  <FaShareAlt /> {t('recruiter.programms.share')}
-                </button>
+                <div style={{ position: "relative" }}>
+                  <button
+                    style={{
+                      height: "40px",
+                      cursor: isExpired ? "not-allowed" : "pointer",
+                      opacity: isExpired ? 0.5 : 1,
+                      display: copiedId === p._id? "none": "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      background: copiedId === p._id ? "#28a745" : "",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "6px",
+                      padding: "0 12px",
+                      transition: "background 0.3s ease",
+                    }}
+                    disabled={isExpired}
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      if (isExpired) return;
+
+                      try {
+                        const res = await requestASharedLink(p._id);
+                        let link = res.data.link;
+                        console.log("before process relative path: " + link);
+                          // Nếu link trả về là relative path → thêm domain hiện tại
+                        if (!/^https?:\/\//i.test(link)) 
+                          link = `${window.location.origin}${link}`;
+                        console.log("after process relative path:" + link);
+
+                        await navigator.clipboard.writeText(link);
+
+                        setCopiedId(p._id); // hiện popup cho card này
+                        setCopiedLink(link);     // lưu link để hiển thị trong popup
+                        console.log("Link that will set at popup: " + link);
+
+                        // Tự ẩn sau 3s
+                        setTimeout(() => setCopiedId(null), 30000);
+                      } catch (err) {
+                        console.error("Error sharing link", err);
+                        alert(t('recruiter.programms.share_failed', 'Không thể tạo liên kết chia sẻ!'));
+                      }
+                    }}
+                  >
+                    <FaShareAlt />{" "}
+                    
+                      {t('recruiter.programms.share')}
+                  </button>
+                  
+                  {copiedId === p._id && (
+                    <div 
+                      className="share-popup"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <p className="share-message">
+                        ✅ {t('recruiter.programms.link_copied', 'Liên kết đã được sao chép!')}
+                      </p>
+                      <div className="second-line">
+                        <div
+                          className="close-popup-btn"
+                          onClick={(e) => {
+                            e.stopPropagation(); // ngăn click lan lên thẻ Link cha
+                            e.preventDefault();
+                            setCopiedId(null);
+                          }}
+                        >
+                          ❌
+                        </div>
+
+
+                        <a
+                          href={copiedLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="share-link"
+                        >
+                          🔗 {t('recruiter.programms.open_link', 'Mở liên kết')}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+
+                </div>
+
+
 
                 <button
                   className="save-icon"

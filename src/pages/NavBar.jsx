@@ -250,55 +250,76 @@ export default function Navbar() {
 
       {/* Sidebar mobile */}
       <div className={`sidebar ${menuOpen ? 'open' : ''}`}>
-        <div className="close-btn" onClick={() => setMenuOpen(false)}>
-          <FaTimes />
-        </div>
+  <div className="sidebar-header">
+    <div className="close-btn" onClick={() => setMenuOpen(false)}>
+      <FaTimes />
+    </div>
+    <div className="sidebar-lang">
+      <button
+        className="lang-switch"
+        onClick={() => changeLang(lang === 'vi' ? 'en' : 'vi')}
+        title={t('nav.language')}
+      >
+        <img
+          src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'}
+          alt={lang}
+          className="lang-flag"
+        />
+        <span>{lang === 'vi' ? 'EN' : 'VI'}</span>
+      </button>
+    </div>
+  </div>
 
-        <Link to="/home" onClick={() => setMenuOpen(false)}>
-          <AiFillHome /> {t('nav.home')}
+  <nav className="sidebar-links">
+    <Link to="/home" onClick={() => setMenuOpen(false)}>
+      <AiFillHome /> {t('nav.home')}
+    </Link>
+
+    {!user && (
+      <>
+        <Link to="/login" onClick={() => setMenuOpen(false)}>
+          <FaSignInAlt /> {t('nav.login')}
         </Link>
+        <Link to="/signup" onClick={() => setMenuOpen(false)}>
+          <FaUserPlus /> {t('nav.signup')}
+        </Link>
+      </>
+    )}
 
-        {!user && (
+    {user && (
+      <>
+        {user.role === 'admin' && (
           <>
-            <Link to="/login" onClick={() => setMenuOpen(false)}>
-              <FaSignInAlt /> {t('nav.login')}
-            </Link>
-            <Link to="/signup" onClick={() => setMenuOpen(false)}>
-              <FaUserPlus /> {t('nav.signup')}
-            </Link>
+            <Link to="/admin/profile" onClick={() => setMenuOpen(false)}><FaUser /> {t('nav.profile')}</Link>
+            <Link to="/admin/overview" onClick={() => setMenuOpen(false)}><BiBarChart /> {t('nav.overview')}</Link>
+            <Link to="/admin/programms-management" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.programms')}</Link>
+            <Link to="/admin/candidates-management" onClick={() => setMenuOpen(false)}><FaUsers /> {t('nav.candidates')}</Link>
           </>
         )}
 
-        {user && (
+        {user.role === 'recruiter' && (
           <>
-            {user.role === 'admin' && (
-              <>
-                <Link to="/admin/profile" onClick={() => setMenuOpen(false)}><FaUser /> {t('nav.profile')}</Link>
-                <Link to="/admin/overview" onClick={() => setMenuOpen(false)}><BiBarChart /> {t('nav.overview')}</Link>
-                <Link to="/admin/programms-management" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.programms')}</Link>
-                <Link to="/admin/candidates-management" onClick={() => setMenuOpen(false)}><FaUsers /> {t('nav.candidates')}</Link>
-              </>
-            )}
-            {user.role === 'recruiter' && (
-              <>
-                <Link to="/recruiter/profile" onClick={() => setMenuOpen(false)}><FaUser /> {t('nav.profile')}</Link>
-                <Link to="/recruiter/programmsview" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.programms')}</Link>
-                <Link to="/recruiter/candidates-submittion" onClick={() => setMenuOpen(false)}><FaUsers /> {t('nav.candidates')}</Link>
-              </>
-            )}
-            {user.role === 'candidate' && (
-              <>
-                <Link to="/candidate/profile" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.profile')}</Link>
-                <Link to="/candidate/jobs-view" onClick={() => setMenuOpen(false)}><FaRegBookmark /> Saved Jobs</Link>
-              </>
-            )}
-
-            <Link to="#" onClick={() => { handleLogOut(); setMenuOpen(false); }}>
-              <FaSignOutAlt /> {t('nav.logout')}
-            </Link>
+            <Link to="/recruiter/profile" onClick={() => setMenuOpen(false)}><FaUser /> {t('nav.profile')}</Link>
+            <Link to="/recruiter/programmsview" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.programms')}</Link>
+            <Link to="/recruiter/candidates-submittion" onClick={() => setMenuOpen(false)}><FaUsers /> {t('nav.candidates')}</Link>
           </>
         )}
+
+        {user.role === 'candidate' && (
+          <>
+            <Link to="/candidate/profile" onClick={() => setMenuOpen(false)}><HiOutlineBriefcase /> {t('nav.profile')}</Link>
+            <Link to="/candidate/jobs-view" onClick={() => setMenuOpen(false)}><FaRegBookmark /> Saved Jobs</Link>
+          </>
+        )}
+
+        <Link to="#" onClick={() => { handleLogOut(); setMenuOpen(false); }}>
+          <FaSignOutAlt /> {t('nav.logout')}
+        </Link>
+      </>
+    )}
+  </nav>
       </div>
+
     </header>
   );
 }

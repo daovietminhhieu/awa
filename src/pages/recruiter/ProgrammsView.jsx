@@ -4,8 +4,10 @@ import {
   getSavedProgramms,
   saveProgrammById,
   unsaveProgrammById,
+  createPost
 } from "../../api";
 
+import PostEditor from "../../components/PostEditor";
 import ProgrammsList from "../../components/recruiter/management/programms/List";
 import SavedProgramms from "../../components/recruiter/management/programms/Saved";
 import ListOfSharedProgramms from "../../components/recruiter/management/programms/Shared";
@@ -161,6 +163,25 @@ export default function ProgrammsManagement() {
             savedPrograms={savedProgramsMap}
             toggleSaveProgramm={toggleSaveProgramm}
           />
+          {/* 📝 Post Editor xuất hiện bên dưới danh sách chương trình */}
+          <div className="post-container">
+            <PostEditor
+                    style={{ width: "100%", boxSizing: "border-box" }}
+                    onSave={async (post) => {
+                      console.log("Bài viết mới:", post);
+                      try {
+                        const res = await createPost(post);
+                        alert("✅ Bài viết đã lưu");
+                        console.log("Post saved:", res.data);
+                        // Tải lại danh sách posts nếu cần
+                      } catch (error) {
+                        alert("❌ Lỗi khi lưu bài viết");
+                        console.error(error);
+                      }
+                    }}
+              />
+          </div>
+
         </>
       )}
 

@@ -13,6 +13,10 @@
     color: #0d3c61;
   }
   
+  .section-title {
+    text-align: center;
+  }
+
   .section-becomecollab-title {
     text-align: center;
     font-size: 2.2rem;
@@ -31,71 +35,166 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
   }
-  
+
+  .success-stories-swiper {
+    padding-bottom: 50px; /* tạo chỗ trống cho pagination/navigation */
+  }
+  .success-stories-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+  .section-stories-title {
+    width: 1000px;
+    text-align: center;
+  }
+
+  .success-stories-content {
+    display: flex;
+  }
+
   .success-story-card {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    background: #f9fbff;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.1);
-    padding: 1.6rem 1.2rem;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    text-align: center;
-    cursor: default;
+    flex-direction: column;
+    align-items: stretch;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+    transition: transform 0.25s ease;
   }
+
+  .edit-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .edit-form input,
+  .edit-form textarea {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .save-btn, .cancel-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .save-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .cancel-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
   
   .success-story-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-3px);
   }
   
-  .success-story-card img,
-  .success-story-card video {
-    width: 280px;
-    height: 280px;
-    border-radius: 5px;
-    object-fit: cover;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.35);
-    transition: box-shadow 0.3s ease;
+  .story-title {
+    text-align: center;
   }
-  
-  
-  
-  .success-story-card h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: #144a82;
+
+  .story-content {
+    text-align: center;
   }
-  
-  .success-story-card p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.5;
-    max-height: 100px;
+
+  .story-left {
+    flex: 1;
+    max-width: 45%;
     overflow: hidden;
-    transition: max-height 0.4s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f7f9fc;
+    cursor: pointer;
   }
   
-  .success-story-card.expanded p {
-    max-height: 500px;
+  .story-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .story-right {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    background-color: #fdfdfd; /* nền sáng nhẹ */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color: #333;
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  
+  
+  .story-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #222;
+  }
+  
+  .story-title.clickable {
+    cursor: pointer;
+  }
+  
+  .story-content {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.6;
+    overflow: hidden;
+    max-height: 140px;
+    text-align: justify;
+    transition: max-height 0.3s ease;
+  }
+  
+  .story-content.expanded {
+    max-height: none;
   }
   
   .story-btn {
-    margin-top: 1rem;
+    margin-top: 12px;
+    align-self: center;
+    background: #007bff;
+    color: #fff;
     border: none;
-    background: none;
-    color: #1976d2;
-    font-weight: 600;
-    font-size: 1rem;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: color 0.2s ease;
   }
   
   .story-btn:hover {
-    color: #0d3c61;
+    background: #005ec7;
   }
   
+  /* Swiper pagination/navigation */
+  .success-stories-swiper {
+    padding-bottom: 50px;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    bottom: 5px;
+    top: auto;
+    transform: translateY(100%);
+    color: #007bff;
+  }
+  
+
   /* ==============================
      LÝ DO CHỌN
      ============================== */
@@ -455,7 +554,6 @@
     font-size: 0.98rem;
     color: #555;
     line-height: 1.45;
-    padding: 0 1rem 1rem;
   }
   
   /* Tips section */

@@ -300,3 +300,125 @@ export async function getMyProfile() {
     throw err;
   }
 }
+
+export async function createPost(data) {
+
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    };
+
+    const response = await fetch(`${API_BASE}/user/`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(data),
+    });
+    
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to create new post");
+    }
+
+    return result; // { success: true, message: "...", data: { user } }
+  } catch(err) {
+    console.error("❌ create new Post failed:", err.message);
+    throw err;
+  }
+}
+
+export async function getPosts() {
+  const res = await fetch(`${API_BASE}/user/posts`);
+  const result = await res.json();
+  if (!res.ok || !result.success) throw new Error(result.message);
+  return result;
+}
+
+export async function getPostsByType(type) {
+  const res = await fetch(`${API_BASE}/user/post?type=${encodeURIComponent(type)}`, {
+    headers: { "Content-Type": "application/json" },
+  });
+
+  const result = await res.json();
+
+  // Kiểm tra status HTTP và response body success flag
+  if (!res.ok || !result.success) {
+    throw new Error(result.message || "Failed to fetch posts by type");
+  }
+
+  return result; // Trả về toàn bộ object (có .data)
+}
+
+// ====================== FILE UPLOAD ======================
+
+/**
+ * Upload một file lên Supabase thông qua backend
+ * @param {File} file - File cần upload (từ input type="file")
+ * @returns {Promise<string>} URL public của file
+ */
+export async function upFileToStorage(file) {
+  if (!file) throw new Error("No file provided");
+
+  // FormData chứa file
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // Gọi API upload
+  const res = await fetch(`${API_BASE}/db/upload`, {
+    method: "POST",
+    headers: {
+      ...authHeaders(), // nếu cần xác thực token
+      // ❌ KHÔNG thêm Content-Type, fetch sẽ tự set multipart boundary
+    },
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log(data);
+  if (!res.ok || !data.success) {
+    console.error("❌ Upload failed:", data);
+    throw new Error(data.message || "Failed to upload file");
+  }
+
+  // Backend nên trả về: { success: true, file_url: "https://..." }
+  return data.publicUrl;
+}
+
+export async function updatePost(id, updates) {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...authHeaders(),
+    };
+
+    const res = await fetch(`${API_BASE}/user/update/${id}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify(updates),  
+    });
+    const data = await res.json();
+    if(!res.ok || !data.success) {
+      throw new Error(data.message || "Failed to update Post");
+    }
+    
+    return data;    
+}
+
+export async function removePost(id) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...authHeaders()
+  }
+
+  const res = await fetch(`${API_BASE}/user/remove/${id}`, {
+    method: "DELETE",
+    headers
+  });
+  const data = await res.json();
+  if(!res.ok || !data.success) {
+    throw new Error(data.message || "Failed to remove Post");
+  }
+  return data;
+
+}

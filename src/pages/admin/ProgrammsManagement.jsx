@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   addNewProgramm,
+  createPost,
   getProgrammsList,
   getSavedProgramms,
   saveProgrammById,
@@ -12,6 +13,7 @@ import ListOfSharedProgramms from "../../components/admin/management/programms/S
 import FilterSearch from "../../components/FilterSearch";
 import "./ProgrammsManagement.css";
 import { useI18n } from "../../i18n";
+
 
 
 // ------------------- AddProgramForm -------------------
@@ -383,12 +385,18 @@ export default function ProgrammsManagement() {
           )}
 
           {!loading && displayedProgramms.length > 0 && (
-            <ProgrammsList
-              programms={displayedProgramms}
-              savedPrograms={savedProgramsMap}
-              toggleSaveProgramm={toggleSaveProgramm}
-            />
-          )}
+            <>
+              
+              <ProgrammsList
+                  programms={displayedProgramms}
+                  savedPrograms={savedProgramsMap}
+                  toggleSaveProgramm={toggleSaveProgramm}
+                />           
+                
+              </>
+           
+            )}
+
 
           {showAddForm && (
             <AddProgramForm

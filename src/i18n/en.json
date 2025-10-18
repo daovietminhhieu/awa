@@ -252,7 +252,7 @@
                 "new": {
                     "title": "Name",
                     "university": "University", 
-                    "company":"Company", 
+                    "company":"Organization", 
                     "type":"Contract Type - Visa Type", 
                     "degrees":"Degrees", 
                     "level":"Level", 
@@ -295,7 +295,7 @@
                 "other_title": "Other",
                 "labels": {
                     "title":"Title",
-                    "company":"Company",
+                    "company":"Organization",
                     "logo":"Logo URL",
                     "type":"Program Type",
                     "degrees":"Degrees",

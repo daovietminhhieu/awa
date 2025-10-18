@@ -169,8 +169,8 @@
   },
   "auth": {
     "login": {
-      "welcome_back": "Chào mừng quay trở lại!",
-      "login_to_continue": "Đăng nhập để tiếp tục",
+      "welcome_back": "Chào mừng bạn quay trở lại!",
+      "login_to_continue": "Hãy đăng nhập để tiếp tục",
       "email_label": "Email",
       "enter_email": "Nhập email",
       "password_label": "Mật khẩu",
@@ -184,7 +184,7 @@
       "reset_success": "✔️ Mật khẩu mới đã được gửi tới email."
     },
     "signup": {
-      "title": "Tạo tài khoản",
+      "title": "Tạo một tài khoản mới",
       "subtitle": "Tham gia cùng chúng tôi và bắt đầu hành trình",
       "phone_label": "Số điện thoại",
       "enter_phone": "Nhập số điện thoại...",
@@ -248,7 +248,7 @@
             "new": {
                 "title": "Tên chương trình",
                 "university": "Trường đại học", 
-                "company":"Công ty", 
+                "company":"Đơn vị tiếp nhận", 
                 "type":"Loại hợp đồng - thị thực", 
                 "degrees":"Bằng tốt nghiệp", 
                 "level":"Trình độ", 
@@ -293,8 +293,8 @@
             "other_title":"Thông tin khác",
             "labels": {
                 "title":"Tiêu đề chương trình",
-                "company":"Công ty",
-                "logo":"Logo công ty",
+                "company":"Đơn vị tiếp nhận",
+                "logo":"Ảnh đại diện",
                 "type":"Loại chương trình",
                 "degrees":"Bằng cấp yêu cầu",
                 "duration":"Thời gian",
