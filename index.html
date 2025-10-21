@@ -1,12 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AloWork</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
+    <!-- Google Translate -->
+    <div id="google_translate_element">
+      <span style="font-size: 18px">🌐</span>
+    </div>
+
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "auto",
+            includedLanguages: "vi,en,fr,ja,ko",
+          },
+          "google_translate_element"
+        );
+      }
+    </script>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Script điều chỉnh vị trí -->
+    <script>
+      // Đợi banner Google Translate load xong rồi điều chỉnh
+      const adjustLayout = () => {
+        const banner = document.querySelector(".goog-te-banner-frame");
+        const translateElement = document.getElementById(
+          "google_translate_element"
+        );
+        const root = document.getElementById("root");
+
+        if (banner) {
+          // Lấy chiều cao thực tế của banner
+          const bannerHeight = banner.offsetHeight;
+
+          // Điều chỉnh vị trí của dropdown ngôn ngữ
+          if (translateElement) {
+            translateElement.style.top = bannerHeight + 10 + "px";
+          }
+
+          // Điều chỉnh margin-top cho nội dung chính
+          if (root) {
+            root.style.marginTop = bannerHeight + "px";
+          }
+        }
+      };
+
+      // Chạy khi trang load và khi resize
+      window.addEventListener("load", adjustLayout);
+      window.addEventListener("resize", adjustLayout);
+
+      // Chạy định kỳ để đảm bảo layout đúng (Google Translate load chậm)
+      setInterval(adjustLayout, 500);
+
+      // Chạy ngay lập tức
+      adjustLayout();
+    </script>
+
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>  
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
