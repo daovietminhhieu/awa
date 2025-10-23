@@ -134,6 +134,14 @@ body {
   opacity: 1 !important;
 }
 
+/* Giữ nút 🌐 nổi bên trên React App */
+#google_translate_element {
+  z-index: 999999 !important;
+  position: fixed !important;
+  right: 20px !important;
+  top: 100px !important;
+  pointer-events: auto !important;
+}
 /* Responsive */
 @media (max-width: 768px) {
   #google_translate_element {
