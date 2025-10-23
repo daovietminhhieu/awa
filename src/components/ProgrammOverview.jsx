@@ -211,7 +211,7 @@ export default function ProgrammOverview({ programm, role, to }) {
                   style={{ textDecoration: "underline", cursor: "pointer" }}
                   onClick={handleShareReferrals}  // ✅ Corrected here
                 >
-                  Bấm vào đây để lấy link chia sẻ
+                  Bấm vào đây để chia sẻ chương trình này
                 </p>
               </div>
             )}
