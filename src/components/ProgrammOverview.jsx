@@ -1,7 +1,8 @@
 // src/components/ApplicationForm.js
 import React, { useState } from "react";
-import { sendFilledInformationsForm } from "../api";
+import { requestASharedLink, sendFilledInformationsForm } from "../api";
 import { useI18n } from "../i18n";
+import { useAuth } from "../context/AuthContext";
 
 export function ApplicationForm({ to, translator}) {
   
@@ -94,7 +95,7 @@ export function ApplicationForm({ to, translator}) {
 // src/components/ProgrammOverview.js
 export default function ProgrammOverview({ programm, role, to }) {
   const {t} = useI18n();
-  
+  const { user: currentUser } = useAuth();
   const tags = [
     { label: t("programm.detail.overview.duration"), value: programm.duration },
     { label: t("programm.detail.overview.degrees"), value: programm.degrees },
@@ -131,6 +132,11 @@ export default function ProgrammOverview({ programm, role, to }) {
   if (programm.vacancies) specialTags.push({ label: t("programm.detail.overview.vacancies"), value: programm.vacancies, bg: "#4caf50" });
   if (programm.hired) specialTags.push({ label: t("programm.detail.overview.hired"), value: programm.hired, bg: "#4caf50" });
 
+  const handleShareReferrals = async () => {
+    console.log(programm._id);
+      const res = await requestASharedLink(programm._id);
+      console.log(res.data);
+  }
 
   return (
     <>
@@ -198,6 +204,18 @@ export default function ProgrammOverview({ programm, role, to }) {
               <b>{t('programm.detail.overview.land')}</b>
               <p>{programm.land}</p>
             </div>
+            {currentUser?.role === "recruiter" && (
+              <div className="info-box">
+                <b>Chia sẻ chương trình này</b>
+                <p
+                  style={{ textDecoration: "underline", cursor: "pointer" }}
+                  onClick={handleShareReferrals}  // ✅ Corrected here
+                >
+                  Bấm vào đây để lấy link chia sẻ
+                </p>
+              </div>
+            )}
+
           </div>
 
           <section>

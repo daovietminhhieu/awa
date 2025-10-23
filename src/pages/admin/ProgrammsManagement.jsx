@@ -12,6 +12,7 @@ import ListOfSharedProgramms from "../../components/admin/management/programms/S
 import FilterSearch from "../../components/FilterSearch";
 import "./ProgrammsManagement.css";
 import { useI18n } from "../../i18n";
+import Payments from "../../components/admin/management/programms/Payment";
 
 
 
@@ -348,6 +349,7 @@ export default function ProgrammsManagement() {
     { id: "my", label: t("admin.programms.tabs.my") || "My Programms" },
     { id: "saved", label: t("admin.programms.tabs.saved") || "Saved Programms" },
     { id: "shared", label: t("admin.programms.tabs.shared") || "Shared Programms" },
+    { id: "payments", label: t("admin.programms.tabs.payment") || "Payment" }
   ];
 
   return (
@@ -436,6 +438,7 @@ export default function ProgrammsManagement() {
       )}
 
       {activePage === "shared" && <ListOfSharedProgramms />}
+      {activePage === "payments" && <Payments />}
     </div>
   );
 }

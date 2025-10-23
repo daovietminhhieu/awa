@@ -23,6 +23,27 @@
   letter-spacing: 0.05em;
 }
 
+.stars {
+  display: inline-flex; /* 👈 giữ cùng 1 dòng */
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap; /* 👈 tránh xuống dòng */
+  font-size: 1.3rem;
+  color: #f5b50a;
+}
+
+.star-icons {
+  letter-spacing: 2px;
+}
+
+.review-count {
+  font-size: 1rem;
+  color: #555;
+  white-space: nowrap; /* 👈 đảm bảo không bị xuống dòng */
+}
+
+
+
 /* Card tổng */
 .featured-card {
   background: #f9fbff;

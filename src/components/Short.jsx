@@ -412,43 +412,48 @@ export function Partner() {
 import Footer from "./Footer";
 import { getPostsByType, removePost, updatePost, upFileToStorage } from "../api";
 import { useAuth } from "../context/AuthContext";
+
 export function PartnerDetail() {
   const { t } = useI18n();
+
   return (
-    <div >
+    <div>
       <section className="partner-detail-section">
-          <div className="form-detail-partner">
-            <h2 className="partner-detail-title">{t('short.partners.detail.title')}</h2>
-            {/**Them divider */}
-            <hr className="partner-divider" />
-            <div className="partner-detail-content">
-              <div className="left">
-                <div className="partner-detail-info">
-                  <div className="info-item">
-                    <strong>{t('short.partners.detail.address_label')}:</strong>
-                    <span>{t('short.partners.detail.address')}</span>
-                  </div>
-                  <div className="info-item">
-                    <strong>{t('short.partners.detail.email_label')}:</strong>
-                    <span>{t('short.partners.detail.email')}</span>
-                  </div>
-                  <div className="info-item">
-                    <strong>{t('short.partners.detail.phone_label')}:</strong>
-                    <span>{t('short.partners.detail.phone')}</span>
-                  </div>
-                </div>
+        <div className="partner-detail-container">
+          <h2 className="partner-detail-title">
+            {t("short.partners.detail.title")}
+          </h2>
+          <hr className="partner-divider" />
+
+          <div className="partner-detail-content">
+            <div className="partner-info">
+              <div className="info-item">
+                <strong>{t("short.partners.detail.address_label")}:</strong>
+                <span>{t("short.partners.detail.address")}</span>
               </div>
-              <div className="right">
-                <p className="partner-goodbye">{t('short.partners.detail.goodbye')}</p>
+              <div className="info-item">
+                <strong>{t("short.partners.detail.email_label")}:</strong>
+                <span>{t("short.partners.detail.email")}</span>
+              </div>
+              <div className="info-item">
+                <strong>{t("short.partners.detail.phone_label")}:</strong>
+                <span>{t("short.partners.detail.phone")}</span>
               </div>
             </div>
+
+            <div className="partner-message">
+              <p className="partner-goodbye">
+                {t("short.partners.detail.goodbye")}
+              </p>
+            </div>
           </div>
-        
+        </div>
       </section>
       <Footer />
     </div>
   );
 }
+
 
 
 

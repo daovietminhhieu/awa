@@ -251,73 +251,134 @@
   }
   
   /* ==============================
-     ĐỐI TÁC
-     ============================== */
-  
-  .form-detail-partner {
-    height: 400px;
-    margin: 10px auto;
-    padding: 3rem 2rem;
-    background: #f9fafb;
-    border-radius: 16px;
-    border: 5px solid black;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-    align-items: center;
-    justify-content: space-between;
-    color: #222;
-    flex-wrap: wrap;
+   🌐 PARTNER DETAIL SECTION
+   ============================== */
+
+.partner-detail-section {
+  max-width: 1000px;
+  margin: 4rem auto;
+  padding: 3rem 2rem;
+}
+
+.partner-detail-container {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.1);
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  color: #0d3c61;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.partner-detail-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(25, 118, 210, 0.18);
+}
+
+.partner-detail-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #0d3c61;
+  margin-bottom: 0.5rem;
+}
+
+.partner-divider {
+  width: 100%;
+  border: none;
+  border-top: 2px solid rgba(25, 118, 210, 0.2);
+}
+
+.partner-detail-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Thông tin bên trái */
+.partner-info {
+  flex: 1;
+  min-width: 250px;
+  background: #f9fbff;
+  border-radius: 10px;
+  padding: 1.5rem 1.8rem;
+  box-shadow: inset 0 0 0 1px rgba(25, 118, 210, 0.08);
+}
+
+.info-item {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.info-item strong {
+  color: #1976d2;
+  display: inline-block;
+  min-width: 100px;
+}
+
+/* Lời chào bên phải */
+.partner-message {
+  flex: 1;
+  min-width: 250px;
+  background: linear-gradient(135deg, #e3f2fd, #f9fbff);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(25, 118, 210, 0.08);
+}
+
+.partner-goodbye {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #0d3c61;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .partner-detail-container {
+    padding: 2rem 1.5rem;
   }
 
-  .partner-detail-section {
-    max-width: 1000px;
-    height: 600px;
-    margin: 4rem auto;
-    padding: 3rem 2rem;
-    
+  .partner-detail-title {
+    font-size: 1.8rem;
   }
-  
-  .partner-divider {
-    width: 100%;
-  }
-  
-  .left {
-  }
-  
-  .right {
-    display: flex;
+
+  .partner-detail-content {
+    flex-direction: column;
     align-items: center;
     text-align: center;
-    
   }
-  
-  .partner-goodbye {
-    font-weight: bold;
+
+  .partner-info,
+  .partner-message {
+    width: 100%;
   }
-  
-  
+}
+
+@media (max-width: 480px) {
   .partner-detail-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    width: 50%;
-    
+    font-size: 1.6rem;
   }
-  
-  .partner-detail-desc {
-    font-size: 1.15rem;
-    color: #374151;
-    line-height: 1.6;
-    text-align: center;
+
+  .info-item strong {
+    display: block;
+    margin-bottom: 4px;
   }
-  
-  .partner-detail-content {
-    display: flex;
-    justify-content: space-around;
-    gap: 50px;
+
+  .partner-goodbye {
+    font-size: 1rem;
   }
-  
+}
+
   /* ==============================
      PARTNER SECTION (Styled again)
      ============================== */
@@ -569,6 +630,8 @@
   .tips-events .event-section p strong {
     color: #1976d2;
   }
+
+  
   
   /* Responsive */
   @media (max-width: 768px) {

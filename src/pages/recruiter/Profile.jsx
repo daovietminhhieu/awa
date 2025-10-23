@@ -144,6 +144,7 @@ export default function ViewProfile() {
                   name="name"
                   value={basicInfo.name}
                   onChange={handleBasicInfoChange}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                 />
               </div>
               <div className="info-item">
@@ -154,6 +155,7 @@ export default function ViewProfile() {
                   name="email"
                   value={basicInfo.email}
                   onChange={handleBasicInfoChange}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                 />
               </div>
               <div className="info-item">
@@ -163,6 +165,7 @@ export default function ViewProfile() {
                   id="role"
                   name="role"
                   value={basicInfo.role}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                   disabled
                 />
               </div>
@@ -175,6 +178,7 @@ export default function ViewProfile() {
                   value={basicInfo.newPassword}
                   onChange={handleBasicInfoChange}
                   placeholder={t("recruiter.profile.place_newpassword")}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                 />
               </div>
             </div>
@@ -200,7 +204,7 @@ export default function ViewProfile() {
           )}
         </div>
 
-        {/* Bank Account Information, nếu role = recruiter */}
+        {/* Bank Account Information, nếu role = recruiter
         {false & user.role === "recruiter" && (
           <div className="info-section">
             <h3>
@@ -374,7 +378,7 @@ export default function ViewProfile() {
               </div>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

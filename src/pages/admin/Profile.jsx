@@ -125,6 +125,7 @@ export default function ViewProfile() {
                   name="name"
                   value={basicInfo.name}
                   onChange={handleBasicInfoChange}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                 />
               </div>
               <div className="info-item">
@@ -135,6 +136,7 @@ export default function ViewProfile() {
                   name="email"
                   value={basicInfo.email}
                   onChange={handleBasicInfoChange}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                 />
               </div>
               <div className="info-item">
@@ -145,6 +147,7 @@ export default function ViewProfile() {
                   name="newPassword"
                   value={basicInfo.newPassword}
                   onChange={handleBasicInfoChange}
+                  style={{borderRadius: "25px", height: "35px", marginTop: "10px"}}
                 />
               </div>
             </div>

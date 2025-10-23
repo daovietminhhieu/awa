@@ -423,3 +423,22 @@ export async function removePost(id) {
   return data;
 
 }
+
+export async function sendProgrammReview(programmId, reviewData) {
+  try {
+    const res = await fetch(`${API_BASE}/user/programm/${programmId}/review`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reviewData),
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to add review");
+    return data;
+  } catch (err) {
+    console.error("❌ sendProgrammReview failed:", err);
+    throw err;
+  }
+}

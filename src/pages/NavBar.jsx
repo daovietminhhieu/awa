@@ -133,10 +133,13 @@ export default function Navbar() {
 
   useEffect(() => {
     getProgrammsList()
-      .then(data => setProgramms(data.data || [])) // <- data.data nếu API trả về object
+      .then(data => setProgramms(data.data || [])) // <- data.data nếu API trả về object. Dung de tim chuong trinh
       .catch(console.error);
   }, []);
   
+  useEffect(() => {
+    document.body.classList.toggle("sidebar-open", menuOpen);
+  }, [menuOpen]);
 
   const homePath =
     user?.role === 'admin' ? '/admin/overview' :
@@ -231,10 +234,10 @@ export default function Navbar() {
           <FaBars />
         </div>
 
-        {/* Language toggle */}
+        {/* Language toggle
         <div className="translator-btn" onClick={() => changeLang(lang === 'vi' ? 'en' : 'vi')} title={t('nav.language')}>
           <img src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'} alt={lang} />
-        </div>
+        </div> */}
 
         {/* Desktop nav items */}
         {!user ? (
@@ -250,25 +253,25 @@ export default function Navbar() {
 
       {/* Sidebar mobile */}
       <div className={`sidebar ${menuOpen ? 'open' : ''}`}>
-  <div className="sidebar-header">
-    <div className="close-btn" onClick={() => setMenuOpen(false)}>
-      <FaTimes />
-    </div>
-    <div className="sidebar-lang">
-      <button
-        className="lang-switch"
-        onClick={() => changeLang(lang === 'vi' ? 'en' : 'vi')}
-        title={t('nav.language')}
-      >
-        <img
-          src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'}
-          alt={lang}
-          className="lang-flag"
-        />
-        <span>{lang === 'vi' ? 'EN' : 'VI'}</span>
-      </button>
-    </div>
-  </div>
+      <div className="sidebar-header">
+        <div className="close-btn" onClick={() => setMenuOpen(false)}>
+          <FaTimes />
+        </div>
+        {/* <div className="sidebar-lang">
+          <button
+            className="lang-switch"
+            onClick={() => changeLang(lang === 'vi' ? 'en' : 'vi')}
+            title={t('nav.language')}
+          >
+            <img
+              src={lang === 'vi' ? 'https://flagcdn.com/h40/us.png' : 'https://flagcdn.com/h40/vn.png'}
+              alt={lang}
+              className="lang-flag"
+            />
+            <span>{lang === 'vi' ? 'EN' : 'VI'}</span>
+          </button>
+        </div> */}
+      </div>
 
   <nav className="sidebar-links">
     <Link to="/home" onClick={() => setMenuOpen(false)}>

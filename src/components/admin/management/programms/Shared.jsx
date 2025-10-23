@@ -76,6 +76,10 @@ export default function ListOfSharedProgramms() {
     }
   };
 
+  const handleUpdatePayment = async (id, amount) => {
+    console.log("id, amount: ", id, amount);
+  };
+
   const handleCheckBoxChange = (referralId, stepId, checked) => {
     setCheckedSteps((prev) => {
       const prevSteps = prev[referralId] || [];
@@ -222,10 +226,30 @@ export default function ListOfSharedProgramms() {
                       onChange={(e) => {
                         const value = e.target.value;
                         if (!value) return;
-                        if (["approve", "reject", "ongoing"].includes(value))
-                          handleUpdateStatus(prog._id, value);
-                        else handleUpdateSteps(prog._id, value);
-                        e.target.value = "";
+                        
+                        const statusOptions = ["approve", "reject", "ongoing"];
+                        const stepOption = "steps";
+                        const paymentOption = "paid";
+                        
+                        switch (value) {
+                          case statusOptions.includes(value):  // Kiểm tra nếu `value` có trong mảng `statusOptions`
+                          handleUpdateStatus();
+                          break;
+                          
+                          case stepOption:
+                            handleUpdateSteps();
+                            break;
+
+                            case paymentOption:
+                            handleUpdatePayment(prog._id, prog.bonus);
+                            break;
+
+                          default:
+                            // Nếu không phải bất kỳ trường hợp nào trên
+                            console.log('Invalid option');
+                          }
+                          e.target.value = "";
+                          
                       }}
                     >
                       <option value="">{t('admin.shared.select_placeholder') || '-- Select --'}</option>
@@ -237,6 +261,9 @@ export default function ListOfSharedProgramms() {
                       <optgroup label={t('admin.shared.group.steps') || 'Steps'}>
                         <option value="completed">{t('admin.shared.option.mark_completed') || 'Mark Completed'}</option>
                         <option value="rejected">{t('admin.shared.option.mark_rejected') || 'Mark Rejected'}</option>
+                      </optgroup>
+                      <optgroup label={t('admin.shared.group.payment') || 'Payment'}>
+                        <option value="paid">{t('admin.shared.option.pay') || 'Pay'}</option>
                       </optgroup>
                     </select>
                   </div>
