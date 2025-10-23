@@ -90,12 +90,3 @@ body > .skiptranslate {
   border: none !important;
   box-shadow: none !important;
 }
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  #google_translate_element {
-    top: 0px !important;
-    bottom: 725px;
-    right: 10px !important;
-  }
-}
