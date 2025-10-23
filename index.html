@@ -2,19 +2,107 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>AloWork</title>
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      :root {
+        --font-family-base: "Inter", sans-serif;
+        font-family: var(--font-family-base);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        overflow-x: hidden;
+      }
+
+      /* --- Google Translate button --- */
+      #google_translate_element {
+        position: fixed;
+        top: 90px;
+        right: 20px;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 6px 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.25s ease;
+      }
+
+      #google_translate_element:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+      }
+
+      /* Ẩn logo Google mặc định */
+      .goog-logo-link,
+      .goog-te-gadget span {
+        display: none !important;
+      }
+      .goog-te-gadget {
+        font-size: 0 !important;
+      }
+
+      /* Dropdown select đẹp hơn */
+      .goog-te-combo {
+        border-radius: 8px;
+        padding: 8px 12px;
+        border: 1px solid #e1e5e9;
+        background-color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+        color: #2d3748;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 35px;
+        cursor: pointer;
+      }
+
+      /* Dropdown iframe fix cho Safari iOS */
+      .goog-te-menu-frame.skiptranslate {
+        position: fixed !important;
+        top: 70px !important;
+        right: 10px !important;
+        width: 200px !important;
+        z-index: 999999 !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+        overflow: visible !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+
+      /* Mobile layout */
+      @media (max-width: 768px) {
+        #google_translate_element {
+          bottom: 80px;
+          top: auto;
+          right: 15px;
+          padding: 8px 14px;
+        }
+      }
+    </style>
   </head>
 
   <body>
     <div id="root"></div>
 
-    <!-- Google Translate -->
+    <!-- 🌐 Google Translate Button -->
     <div id="google_translate_element">
       <span style="font-size: 18px">🌐</span>
     </div>
 
+    <!-- Google Translate API -->
     <script type="text/javascript">
       function googleTranslateElementInit() {
         new google.translate.TranslateElement(
@@ -30,81 +118,15 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-      // ✅ Tự động điều chỉnh layout khi banner Google Translate xuất hiện
-      const adjustLayout = () => {
-        const banner = document.querySelector(".goog-te-banner-frame");
-        const translateElement = document.getElementById("google_translate_element");
-        const root = document.getElementById("root");
-
-        if (banner) {
-          const bannerHeight = banner.offsetHeight || 40;
-          if (translateElement) translateElement.style.top = bannerHeight + 10 + "px";
-          if (root) root.style.marginTop = bannerHeight + "px";
-        }
-      };
-
-      window.addEventListener("load", adjustLayout);
-      window.addEventListener("resize", adjustLayout);
-      setInterval(adjustLayout, 500);
-
-      // ✅ Fix Google Translate dropdown không hiển thị
-      const fixTranslateDropdown = () => {
-        const iframe = document.querySelector(".goog-te-menu-frame.skiptranslate");
-        if (iframe) {
-          iframe.style.position = "fixed";
-          iframe.style.top = "60px";
-          iframe.style.right = "20px";
-          iframe.style.zIndex = "999999";
-          iframe.style.pointerEvents = "auto";
-          iframe.style.visibility = "visible";
-          iframe.style.opacity = "1";
-          iframe.style.display = "block";
-        }
-      };
-      setInterval(fixTranslateDropdown, 800);
-    </script>
-
-<script>
-  function googleTranslateElementInit() {
-    new google.translate.TranslateElement(
-      {
-        pageLanguage: "auto",
-        includedLanguages: "vi,en,de,fr,ja",
-      },
-      "google_translate_element"
-    );
-  }
-
-  // Force hiển thị dropdown (Google Translate iframe)
-  function forceShowTranslateMenu() {
-    const iframe = document.querySelector("iframe.goog-te-menu-frame.skiptranslate");
-    if (iframe) {
-      iframe.style.display = "block";
-      iframe.style.opacity = "1";
-      iframe.style.visibility = "visible";
-      iframe.style.zIndex = "9999999";
-      iframe.style.position = "fixed";
-      iframe.style.top = "70px";
-      iframe.style.right = "20px";
-      iframe.style.pointerEvents = "auto";
-      iframe.contentWindow.document.body.style.pointerEvents = "auto";
-    }
-  }
-
-      // Khi click icon 🌐 hoặc chọn ngôn ngữ → đảm bảo hiển thị dropdown
+      // 🔹 Chỉ mở dropdown khi người dùng thật sự bấm vào icon 🌐
       document.addEventListener("click", (e) => {
         if (e.target.closest("#google_translate_element")) {
-          setTimeout(forceShowTranslateMenu, 300);
+          const combo = document.querySelector(
+            "#google_translate_element select.goog-te-combo"
+          );
+          if (combo) combo.focus(); // Mở menu chọn ngôn ngữ hợp lệ
         }
       });
-
-      // Cứ mỗi 1s kiểm tra ẩn/hiện menu (đảm bảo không bị mất)
-      setInterval(forceShowTranslateMenu, 1500);
     </script>
-
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-
-    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
