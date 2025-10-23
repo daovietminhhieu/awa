@@ -22,43 +22,34 @@ body {
   margin: 0 !important;
   padding: 0 !important;
 }
+
 /* Ẩn thanh Google Translate tự động của Chrome */
 body > .skiptranslate {
   display: none !important;
 }
-html {
-  top: 0 !important;
-}
-/* === GOOGLE TRANSLATE FIX === */
 
+/* === GOOGLE TRANSLATE CLEAN UI === */
+
+/* Ẩn thanh banner mặc định */
 .goog-te-banner-frame {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  z-index: 9998 !important;
-  background: white !important;
-  border: none !important;
-  height: auto !important;
-  min-height: 40px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  display: none !important;
+  visibility: hidden !important;
 }
 
+/* Vị trí widget */
 #google_translate_element {
-  position: fixed !important;
+  position: absolute !important; /* 👈 đổi từ fixed thành absolute */
   top: 100px !important;
   right: 20px !important;
   z-index: 999999 !important;
   display: flex !important;
   align-items: center !important;
   gap: 8px !important;
-  padding: 6px 12px !important;
-  transition: all 0.25s ease !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
   pointer-events: auto !important;
-}
-
-#google_translate_element:hover {
-  transform: translateY(-1px);
 }
 
 /* Ẩn logo và text mặc định */
@@ -66,70 +57,45 @@ html {
 .goog-te-gadget span {
   display: none !important;
 }
-.goog-te-gadget {
-  font-size: 0 !important;
-  color: transparent !important;
+
+/* Xóa nền và viền container */
+.goog-te-gadget-simple {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
 }
 
-/* Dropdown select đẹp hơn */
+/* Giữ lại dropdown chọn ngôn ngữ */
 .goog-te-combo {
-  border-radius: 8px !important;
-  padding: 8px 12px !important;
-  border: 1px solid #e1e5e9 !important;
-  background-color: #ffffff !important;
+  border: none !important;
+  background: transparent !important;
   font-size: 14px !important;
-  font-weight: 500 !important;
   color: #2d3748 !important;
-  transition: all 0.2s ease !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-  min-width: 140px !important;
   cursor: pointer !important;
-  appearance: none !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
-  background-repeat: no-repeat !important;
-  background-position: right 10px center !important;
-  background-size: 16px !important;
-  padding-right: 35px !important;
+  padding: 4px 20px 4px 6px !important;
+  border-radius: 4px !important;
+  appearance: auto !important;
+  outline: none !important;
 }
 
-.goog-te-combo:hover {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-}
-
-/* ✅ FIX Dropdown menu không hiển thị */
-.goog-te-menu-frame.skiptranslate {
-  position: fixed !important;
-  top: 60px !important;
-  right: 20px !important;
-  width: auto !important;
-  height: auto !important;
-  z-index: 999999 !important;
-  pointer-events: auto !important;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  background: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-  border-radius: 8px !important;
-  border: 1px solid #e5e7eb !important;
-}
-
+/* Ẩn toàn bộ nền popup dropdown */
+.goog-te-menu-frame.skiptranslate,
 .goog-te-menu2 {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
   #google_translate_element {
     top: 0px !important;
-    bottom: 350px !important;
-    right: 15px !important;
-    padding: 8px 14px !important;
-    background: none !important;
+    bottom: 725px;
+    right: 10px !important;
   }
 }
