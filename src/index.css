@@ -52,16 +52,12 @@ html {
   display: flex !important;
   align-items: center !important;
   gap: 8px !important;
-  background: #ffffff !important;
-  border-radius: 10px !important;
   padding: 6px 12px !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
   transition: all 0.25s ease !important;
   pointer-events: auto !important;
 }
 
 #google_translate_element:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
   transform: translateY(-1px);
 }
 
@@ -130,9 +126,10 @@ html {
 /* Mobile responsive */
 @media (max-width: 768px) {
   #google_translate_element {
-    top: auto !important;
-    bottom: 100px !important;
+    top: 0px !important;
+    bottom: 350px !important;
     right: 15px !important;
     padding: 8px 14px !important;
+    background: none !important;
   }
 }
