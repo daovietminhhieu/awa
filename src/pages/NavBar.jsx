@@ -183,6 +183,11 @@ export default function Navbar() {
         <div className="logo-btn" onClick={goHome} title={t('nav.home')}>
           <span className="logo">AloWork</span>
         </div>
+        {/* <!-- 🌐 Google Translate Button --> */}
+        <div id="google_translate_element">
+        <span style={{ fontSize: "18px" }}>🌐</span>
+
+        </div>
       </div>
 
       <div className="navbar-right">
