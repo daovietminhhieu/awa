@@ -10,7 +10,8 @@ import { recruiterRoutes } from "./routes/RecruiterRoutes";
 import { candidateRoutes } from "./routes/CandidateRoutes";
 
 export default function App() {
-  const basename = (import.meta?.env?.BASE_URL || "/").replace(/\/$/, "");
+  const basename = "/";
+
 
   return (
     <Router basename={basename}>
