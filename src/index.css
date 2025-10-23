@@ -120,13 +120,18 @@ body {
   overflow: hidden !important;
 }
 
-/* Fix lỗi iPhone - không click được */
+/* ✅ Fix hiển thị & click được dropdown trên iPhone / Safari */
 .goog-te-menu-frame.skiptranslate {
   pointer-events: auto !important;
   z-index: 999999 !important;
-  position: absolute !important;
+  position: fixed !important;  /* Dùng fixed thay vì absolute */
   top: 0 !important;
   left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Responsive */
