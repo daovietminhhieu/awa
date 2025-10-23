@@ -17,14 +17,14 @@ html, body {
 }
 
 body {
-  top: 0 !important;
   position: static !important;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-/* Banner Google Translate */
+/* === GOOGLE TRANSLATE FIX === */
+
 .goog-te-banner-frame {
   position: fixed !important;
   top: 0 !important;
@@ -32,56 +32,44 @@ body {
   width: 100% !important;
   z-index: 9998 !important;
   background: white !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   border: none !important;
+  height: auto !important;
   min-height: 40px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
 
-.goog-te-banner,
-.goog-te-banner-content {
-  margin: 0 !important;
-  padding: 8px 16px !important;
-  border: none !important;
-  box-sizing: border-box !important;
-}
-
-/* 🌐 Container nút chọn ngôn ngữ */
 #google_translate_element {
-  position: fixed;
-  top: 100px;
-  right: 20px;
-  z-index: 999999;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 6px 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.25s ease;
+  position: fixed !important;
+  top: 100px !important;
+  right: 20px !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #ffffff !important;
+  border-radius: 10px !important;
+  padding: 6px 12px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.25s ease !important;
   pointer-events: auto !important;
 }
 
 #google_translate_element:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
   transform: translateY(-1px);
 }
 
-/* 🔝 Đảm bảo nội dung không bị banner che */
-#root {
-  margin-top: 40px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Ẩn text gốc của Google */
-.goog-te-gadget,
-.goog-te-gadget span,
-.goog-logo-link {
+/* Ẩn logo và text mặc định */
+.goog-logo-link,
+.goog-te-gadget span {
   display: none !important;
 }
+.goog-te-gadget {
+  font-size: 0 !important;
+  color: transparent !important;
+}
 
-/* Dropdown select */
+/* Dropdown select đẹp hơn */
 .goog-te-combo {
   border-radius: 8px !important;
   padding: 8px 12px !important;
@@ -90,9 +78,10 @@ body {
   font-size: 14px !important;
   font-weight: 500 !important;
   color: #2d3748 !important;
+  transition: all 0.2s ease !important;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-  cursor: pointer !important;
   min-width: 140px !important;
+  cursor: pointer !important;
   appearance: none !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
@@ -106,53 +95,38 @@ body {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
-.goog-te-combo:focus {
-  outline: none !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
-}
-
-/* Menu dropdown */
-.goog-te-menu2 {
-  border-radius: 8px !important;
-  border: 1px solid #e1e5e9 !important;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-  overflow: hidden !important;
-}
-
-/* ✅ Fix hiển thị & click được dropdown trên iPhone / Safari */
+/* ✅ FIX Dropdown menu không hiển thị */
 .goog-te-menu-frame.skiptranslate {
-  pointer-events: auto !important;
-  z-index: 999999 !important;
-  position: fixed !important;  /* Dùng fixed thay vì absolute */
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
+  position: fixed !important;
+  top: 60px !important;
+  right: 20px !important;
+  width: auto !important;
   height: auto !important;
+  z-index: 999999 !important;
+  pointer-events: auto !important;
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  border-radius: 8px !important;
+  border: 1px solid #e5e7eb !important;
 }
 
-/* Giữ nút 🌐 nổi bên trên React App */
-#google_translate_element {
-  z-index: 999999 !important;
-  position: fixed !important;
-  right: 20px !important;
-  top: 100px !important;
-  pointer-events: auto !important;
+.goog-te-menu2 {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
 }
-/* Responsive */
+
+/* Mobile responsive */
 @media (max-width: 768px) {
   #google_translate_element {
-    top: 90px;
-    right: 10px;
-    padding: 4px 8px;
-  }
-
-  .goog-te-combo {
-    min-width: 120px !important;
-    font-size: 13px !important;
-    padding: 6px 10px !important;
+    top: auto !important;
+    bottom: 100px !important;
+    right: 15px !important;
+    padding: 8px 14px !important;
   }
 }
