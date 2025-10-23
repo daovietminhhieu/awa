@@ -64,6 +64,47 @@
       setInterval(fixTranslateDropdown, 800);
     </script>
 
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: "auto",
+        includedLanguages: "vi,en,de,fr,ja",
+      },
+      "google_translate_element"
+    );
+  }
+
+  // Force hiển thị dropdown (Google Translate iframe)
+  function forceShowTranslateMenu() {
+    const iframe = document.querySelector("iframe.goog-te-menu-frame.skiptranslate");
+    if (iframe) {
+      iframe.style.display = "block";
+      iframe.style.opacity = "1";
+      iframe.style.visibility = "visible";
+      iframe.style.zIndex = "9999999";
+      iframe.style.position = "fixed";
+      iframe.style.top = "70px";
+      iframe.style.right = "20px";
+      iframe.style.pointerEvents = "auto";
+      iframe.contentWindow.document.body.style.pointerEvents = "auto";
+    }
+  }
+
+      // Khi click icon 🌐 hoặc chọn ngôn ngữ → đảm bảo hiển thị dropdown
+      document.addEventListener("click", (e) => {
+        if (e.target.closest("#google_translate_element")) {
+          setTimeout(forceShowTranslateMenu, 300);
+        }
+      });
+
+      // Cứ mỗi 1s kiểm tra ẩn/hiện menu (đảm bảo không bị mất)
+      setInterval(forceShowTranslateMenu, 1500);
+    </script>
+
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
