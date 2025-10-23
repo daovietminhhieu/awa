@@ -22,7 +22,13 @@ body {
   margin: 0 !important;
   padding: 0 !important;
 }
-
+/* Ẩn thanh Google Translate tự động của Chrome */
+body > .skiptranslate {
+  display: none !important;
+}
+html {
+  top: 0 !important;
+}
 /* === GOOGLE TRANSLATE FIX === */
 
 .goog-te-banner-frame {
