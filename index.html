@@ -24,22 +24,19 @@
 
       /* --- Google Translate button --- */
       #google_translate_element {
-        position: fixed;
+        position: absolute;
         top: 90px;
         right: 20px;
         z-index: 999999;
         display: flex;
         align-items: center;
         gap: 8px;
-        background: #ffffff;
         border-radius: 10px;
         padding: 6px 12px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         transition: all 0.25s ease;
       }
 
       #google_translate_element:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         transform: translateY(-1px);
       }
 
@@ -87,10 +84,9 @@
       /* Mobile layout */
       @media (max-width: 768px) {
         #google_translate_element {
-          bottom: 80px;
-          top: auto;
-          right: 15px;
-          padding: 8px 14px;
+          top: 0px !important;
+          bottom: 725px;
+          right: 10px !important;
         }
       }
     </style>
