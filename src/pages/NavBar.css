@@ -1,76 +1,89 @@
 /* === GOOGLE TRANSLATE WIDGET – INTEGRATED WITH NAVBAR === */
 
+/* === GOOGLE TRANSLATE WIDGET – MATCH NAVBAR STYLE === */
 #google_translate_element {
   position: relative !important;
   display: flex !important;
   align-items: center !important;
-  background: rgba(255, 255, 255, 0.15) !important;
+  justify-content: center !important;
+  background: linear-gradient(90deg, #D97706, #F59E0B) !important; /* Cam đồng bộ navbar */
   border-radius: 8px !important;
-  padding: 4px 10px !important;
-  gap: 6px !important;
+  padding: 6px 14px !important;
+  gap: 8px !important;
   cursor: pointer !important;
   transition: all 0.25s ease-in-out !important;
+  font-family: "Inter", sans-serif !important;
+  font-weight: 500 !important;
+  color: #fff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
 }
 
 #google_translate_element:hover {
-  background: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+  background: linear-gradient(90deg, #E68508, #FBBF24) !important;
   transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* Ẩn logo và text mặc định của Google */
+/* Ẩn logo + text "Powered by Google" */
 .goog-logo-link,
 .goog-te-gadget span {
   display: none !important;
 }
 
-/* Đặt vị trí và style nút chọn ngôn ngữ */
-#google_translate_element {
-  position: relative !important;
-  right: 0 !important;
-  top: 0 !important;
+/* Căn chỉnh bố cục bên trong */
+.goog-te-gadget-simple {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
   display: flex !important;
   align-items: center !important;
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-radius: 6px !important;
-  padding: 4px 8px !important;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
-  height: 34px !important;
-  overflow: hidden !important;
-  font-size: 14px !important;
+  gap: 8px !important;
 }
 
-/* Tùy chỉnh select box */
+/* Dropdown ngôn ngữ */
 .goog-te-combo {
-  background: transparent !important;
-  color: white !important;
   border: none !important;
-  outline: none !important;
+  background: transparent !important;
+  color: black !important;
+  font-size: 14.5px !important;
   font-weight: 500 !important;
-  cursor: pointer;
+  cursor: pointer !important;
+  padding-right: 20px !important;
+  appearance: none !important;
+  outline: none !important;
+  text-transform: capitalize !important;
 }
 
-.goog-te-combo option {
-  color: black !important; /* dropdown bên trong vẫn trắng mặc định */
+/* Icon mũi tên */
+#google_translate_element::after {
+  font-size: 10px;
+  color: linear-gradient(90deg, #E68508, #FBBF24);
+  opacity: 0.9;
+  margin-left: 4px;
+  pointer-events: none;
 }
 
-/* Ẩn logo và text “Powered by Google” */
-.goog-logo-link,
-.goog-te-gadget span {
-  display: none !important;
-}
-
-/* Ẩn luôn phần viền của container Google */
-.goog-te-gadget {
+/* Ẩn khung popup nền của Google menu */
+.goog-te-menu-frame.skiptranslate,
+.goog-te-menu2 {
+  background: linear-gradient(90deg, #E68508, #FBBF24) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25) !important;
   border: none !important;
-  background: transparent !important;
-  box-shadow: none !important;
+  color: #333 !important;
 }
 
-/* Responsive nhỏ hơn */
+/* Dropdown focus (chỉ khi bấm mở) */
+#google_translate_element select.goog-te-combo:focus {
+  outline: none !important;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   #google_translate_element {
-    padding: 3px 8px !important;
+    padding: 4px 10px !important;
     font-size: 13px !important;
   }
 }

@@ -140,7 +140,26 @@ export default function Navbar() {
   useEffect(() => {
     document.body.classList.toggle("sidebar-open", menuOpen);
   }, [menuOpen]);
-
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (window.google && window.google.translate && document.getElementById("google_translate_element")) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,vi,de",
+            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+        clearInterval(interval);
+      }
+    }, 500);
+  
+    return () => clearInterval(interval);
+  }, []);
+  
   const homePath =
     user?.role === 'admin' ? '/admin/overview' :
     user?.role === 'recruiter' ? '/recruiter/jobsview' :
@@ -185,9 +204,9 @@ export default function Navbar() {
         </div>
         {/* <!-- 🌐 Google Translate Button --> */}
         <div id="google_translate_element">
-        <span style={{ fontSize: "18px" }}>🌐</span>
-
+          <span style={{ fontSize: "18px" }}>🌐</span>
         </div>
+
       </div>
 
       <div className="navbar-right">

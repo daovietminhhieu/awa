@@ -2,100 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google" content="notranslate" />
-
     <title>AloWork</title>
-    <!-- <style>
-      :root {
-        --font-family-base: "Inter", sans-serif;
-        font-family: var(--font-family-base);
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        overflow-x: hidden;
-      }
-
-      /* --- Google Translate button --- */
-      #google_translate_element {
-        position: absolute;
-        top: 90px;
-        right: 20px;
-        z-index: 999999;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        border-radius: 10px;
-        padding: 6px 12px;
-        transition: all 0.25s ease;
-      }
-
-      #google_translate_element:hover {
-        transform: translateY(-1px);
-      }
-
-      /* Ẩn logo Google mặc định */
-      .goog-logo-link,
-      .goog-te-gadget span {
-        display: none !important;
-      }
-      .goog-te-gadget {
-        font-size: 0 !important;
-      }
-
-      /* Dropdown select đẹp hơn */
-      .goog-te-combo {
-        border-radius: 8px;
-        padding: 8px 12px;
-        border: 1px solid #e1e5e9;
-        background-color: #fff;
-        font-size: 14px;
-        font-weight: 500;
-        color: #2d3748;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        background-size: 16px;
-        padding-right: 35px;
-        cursor: pointer;
-      }
-
-      /* Dropdown iframe fix cho Safari iOS */
-      .goog-te-menu-frame.skiptranslate {
-        position: fixed !important;
-        top: 70px !important;
-        right: 10px !important;
-        width: 200px !important;
-        z-index: 999999 !important;
-        transform: none !important;
-        -webkit-transform: none !important;
-        overflow: visible !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      }
-
-      /* Mobile layout */
-      @media (max-width: 768px) {
-        #google_translate_element {
-          top: 0px !important;
-          bottom: 1000px;
-          right: 10px !important;
-        }
-      }
-    </style> -->
   </head>
 
   <body>
     <div id="root"></div>
 
-
+    <!-- Google Translate container -->
+    <!-- <div id="google_translate_element" style="display: none;"></div> -->
 
     <!-- Google Translate API -->
     <script type="text/javascript">
@@ -123,8 +39,7 @@
         }
       });
     </script>
+
     <script type="module" src="/src/main.jsx"></script>
-
-
   </body>
 </html>
