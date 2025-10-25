@@ -93,6 +93,7 @@ function TopProgrammeSlider() {
                 style={{ cursor: 'pointer' }}
               >
                 <div className="card-body">
+                  {console.log(item)}
                   <img src={item.logoL} alt={item.title} loading="lazy" />
                   <div className="content-right">
                     <div className="title-star-row">

@@ -1,5 +1,3 @@
-/* === GOOGLE TRANSLATE WIDGET – INTEGRATED WITH NAVBAR === */
-
 /* === GOOGLE TRANSLATE WIDGET – MATCH NAVBAR STYLE === */
 #google_translate_element {
   position: relative !important;
@@ -360,6 +358,8 @@
 
 /* === Responsive === */
 @media (max-width: 768px) {
+  
+ 
   .search-input {
     width: 120px;
   }

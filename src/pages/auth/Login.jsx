@@ -78,7 +78,7 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
+    <div className="auth-container">
       {/* Thêm keyframe animation style inline */}
       <style>{keyframesStyle}</style>
 
@@ -91,117 +91,119 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Email */}
-          <div className="input-group">
-            <label className="label" htmlFor="username">{t('auth.login.email_label')}</label>
-            <div className="input-wrapper">
-              <FaUser className="icon" />
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder={t('auth.login.enter_email')}
-                className={errors.username ? "error" : ""}
-              />
-            </div>
-          </div>
-          {errors.username && <p className="error-message">{errors.username}</p>}
-
-          {/* Password */}
-          <div className="input-group">
-            <label className="label" htmlFor="password">{t('auth.login.password_label')}</label>
-            <div className="input-wrapper">
-              <FaLock className="icon" />
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
-                placeholder={t('auth.login.enter_password')}
-                className={errors.password ? "error" : ""}
-              />
-              <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </span>
-            </div>
-          </div>
-          {errors.password && <p className="error-message">{errors.password}</p>}
-
-          {/* Remember me */}
-          <div className="form-options">
-            <button type="submit" disabled={loading}>
-              {loading ? <span style={spinnerStyle}></span> : t('auth.login.login_button')}
-            </button>
-          </div>
-          <div className="remember-me">
-              <input
-                type="checkbox"
-                id="remember"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                style={{marginTop:3}}
-              />
-              <label htmlFor="remember">{t('auth.login.remember')}</label>
-            </div>
-          <div style={{ marginTop: "12px", textAlign: "right" }}>
-            <span
-              style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline" }}
-              onClick={() => setShowReset(true)}
-            >
-              {t('auth.login.forgot_password')}
-            </span>
-          </div>
-
-          {/* Modal Forgot Password */}
-          {showReset && (
-            <div className="modal-overlay">
-              <div className="modal">
-                <h3>{t('auth.login.reset_title')}</h3>
-                <p>{t('auth.login.reset_instructions')}</p>
+          <div className="form-auth-body">
+            {/* Email */}
+            <div className="input-group">
+              <label className="label" htmlFor="username">{t('auth.login.email_label')}</label>
+              <div className="input-wrapper">
+                <FaUser className="icon" />
                 <input
-                  type="email"
-                  value={resetEmail}
-                  onChange={(e) => setResetEmail(e.target.value)}
-                  placeholder="Your email"
-                  style={{ width: "100%", padding: "8px", margin: "10px 0" }}
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder={t('auth.login.enter_email')}
+                  className={errors.username ? "error" : ""}
                 />
-                <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-                  <button onClick={() => setShowReset(false)} disabled={resetLoading}>{t('auth.login.cancel')}</button>
-                  <button
-                    onClick={async () => {
-                      setResetMessage("");
-                      setResetLoading(true);
-                      try {
-                        const res = await fetch(`${API_BASE}/db/users/resetPassword`, {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ email: resetEmail }),
-                        });
-
-                        const data = await res.json();
-                        if (!res.ok) throw new Error(data.message || "Reset failed");
-                        setResetMessage("✔️ Mật khẩu mới đẫkalsmxlkãmlká.");
-                      } catch (err) {
-                        setResetMessage("❌ " + err.message);
-                      }
-                      setResetLoading(false);
-                    }}
-                    disabled={resetLoading}
-                  >
-                    {resetLoading ? <span style={spinnerStyle}></span> : t('auth.send')}
-                  </button>
-                </div>
-                {resetMessage && <p style={{ marginTop: "10px", color: "#555" }}>{resetMessage}</p>}
               </div>
             </div>
-          )}
+            {errors.username && <p className="error-message">{errors.username}</p>}
 
-          {/* Server message */}
-          {serverMessage && (
-            <p className={`server-message ${serverMessage.includes("thành công") ? "success" : "error"}`}>
-              {serverMessage}
-            </p>
-          )}
+            {/* Password */}
+            <div className="input-group">
+              <label className="label" htmlFor="password">{t('auth.login.password_label')}</label>
+              <div className="input-wrapper">
+                <FaLock className="icon" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  placeholder={t('auth.login.enter_password')}
+                  className={errors.password ? "error" : ""}
+                />
+                <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+            </div>
+            {errors.password && <p className="error-message">{errors.password}</p>}
 
+            {/* Remember me */}
+            <div className="form-options">
+              <button type="submit" disabled={loading}>
+                {loading ? <span style={spinnerStyle}></span> : t('auth.login.login_button')}
+              </button>
+            </div>
+            <div className="remember-me">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  style={{marginTop:3}}
+                />
+                <label htmlFor="remember">{t('auth.login.remember')}</label>
+              </div>
+            <div style={{ marginTop: "12px", textAlign: "right" }}>
+              <span
+                style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline" }}
+                onClick={() => setShowReset(true)}
+              >
+                {t('auth.login.forgot_password')}
+              </span>
+            </div>
+
+            {/* Modal Forgot Password */}
+            {showReset && (
+              <div className="modal-overlay">
+                <div className="modal">
+                  <h3>{t('auth.login.reset_title')}</h3>
+                  <p>{t('auth.login.reset_instructions')}</p>
+                  <input
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="Your email"
+                    style={{ width: "100%", padding: "8px", margin: "10px 0" }}
+                  />
+                  <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+                    <button onClick={() => setShowReset(false)} disabled={resetLoading}>{t('auth.login.cancel')}</button>
+                    <button
+                      onClick={async () => {
+                        setResetMessage("");
+                        setResetLoading(true);
+                        try {
+                          const res = await fetch(`${API_BASE}/db/users/resetPassword`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: resetEmail }),
+                          });
+
+                          const data = await res.json();
+                          if (!res.ok) throw new Error(data.message || "Reset failed");
+                          setResetMessage("✔️ Mật khẩu mới đẫkalsmxlkãmlká.");
+                        } catch (err) {
+                          setResetMessage("❌ " + err.message);
+                        }
+                        setResetLoading(false);
+                      }}
+                      disabled={resetLoading}
+                    >
+                      {resetLoading ? <span style={spinnerStyle}></span> : t('auth.send')}
+                    </button>
+                  </div>
+                  {resetMessage && <p style={{ marginTop: "10px", color: "#555" }}>{resetMessage}</p>}
+                </div>
+              </div>
+            )}
+
+            {/* Server message */}
+            {serverMessage && (
+              <p className={`server-message ${serverMessage.includes("thành công") ? "success" : "error"}`}>
+                {serverMessage}
+              </p>
+            )}
+
+          </div>
           {/**
            * 
            * Đăng nhập bằng nền tảng thứ 3 

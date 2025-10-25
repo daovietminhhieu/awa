@@ -54,7 +54,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="container">
+    <div className="auth-container">
       <form className="form" onSubmit={handleSubmit}>
         <div className="title">
           {t('auth.signup.title')}
@@ -63,119 +63,121 @@ export default function SignUp() {
           </div>
         </div>
 
-        {/* Name */}
-        <div className="input-group">
-          <label className="label" htmlFor="name">{t('auth.signup.name_label') || 'Name'}</label>
-          <div className="input-wrapper">
-            <FaUser className="icon" />
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder={t('auth.signup.enter_name') || 'Enter name...'}
-              value={form.name}
-              onChange={handleChange}
-              className={errors.name ? "error" : ""}
-            />
+        <div className="form-auth-body">
+          {/* Name */}
+          <div className="input-group">
+            <label className="label" htmlFor="name">{t('auth.signup.name_label') || 'Name'}</label>
+            <div className="input-wrapper">
+              <FaUser className="icon" />
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder={t('auth.signup.enter_name') || 'Enter name...'}
+                value={form.name}
+                onChange={handleChange}
+                className={errors.name ? "error" : ""}
+              />
+            </div>
           </div>
-        </div>
-        {errors.name && <p className="error-message">{errors.name}</p>}
+          {errors.name && <p className="error-message">{errors.name}</p>}
 
-        <div className="input-group">
-          <label className="label">{t('auth.signup.phone_label') || 'Phone'}</label>
-          <div className="input-wrapper">
-            <FaPhoneAlt className="icon" />
-            <input
-              type="text" 
-              id="phone"
-              name="phone"
-              placeholder={t('auth.signup.enter_phone') || 'Enter phone'}
-              value={form.phone}
-              onChange={handleChange}
-              className={errors.name ? "error" : ""}
-            />
+          <div className="input-group">
+            <label className="label">{t('auth.signup.phone_label') || 'Phone'}</label>
+            <div className="input-wrapper">
+              <FaPhoneAlt className="icon" />
+              <input
+                type="text" 
+                id="phone"
+                name="phone"
+                placeholder={t('auth.signup.enter_phone') || 'Enter phone'}
+                value={form.phone}
+                onChange={handleChange}
+                className={errors.name ? "error" : ""}
+              />
+            </div>
           </div>
-        </div>
-        {errors.phone && <p className="error-message">{errors.phone}</p>}
+          {errors.phone && <p className="error-message">{errors.phone}</p>}
 
-        {/* Email */}
-        <div className="input-group">
-          <label className="label" htmlFor="email">{t('auth.signup.email_label')}</label>
-          <div className="input-wrapper">
-            <FaEnvelope className="icon" />
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder={t('auth.signup.enter_email')}
-              value={form.email}
-              onChange={handleChange}
-              className={errors.email ? "error" : ""}
-            />
+          {/* Email */}
+          <div className="input-group">
+            <label className="label" htmlFor="email">{t('auth.signup.email_label')}</label>
+            <div className="input-wrapper">
+              <FaEnvelope className="icon" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder={t('auth.signup.enter_email')}
+                value={form.email}
+                onChange={handleChange}
+                className={errors.email ? "error" : ""}
+              />
+            </div>
           </div>
-        </div>
-        {errors.email && <p className="error-message">{errors.email}</p>}
+          {errors.email && <p className="error-message">{errors.email}</p>}
 
-        {/* Password */}
-        <div className="input-group">
-          <label className="label" htmlFor="password">{t('auth.signup.password_label')}</label>
-          <div className="input-wrapper">
-            <FaLock className="icon" />
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              name="password"
-              placeholder={t('auth.signup.enter_password')}
-              value={form.password}
-              onChange={handleChange}
-              className={errors.password ? "error" : ""}
-            />
-            <span
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </span>
+          {/* Password */}
+          <div className="input-group">
+            <label className="label" htmlFor="password">{t('auth.signup.password_label')}</label>
+            <div className="input-wrapper">
+              <FaLock className="icon" />
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                placeholder={t('auth.signup.enter_password')}
+                value={form.password}
+                onChange={handleChange}
+                className={errors.password ? "error" : ""}
+              />
+              <span
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+
+            
+          </div>
+          {errors.password && <p className="error-message">{errors.password}</p>}
+
+          {/* Confirm Password */}
+          <div className="input-group">
+            <label className="label" htmlFor="confirm">{t('auth.signup.confirm_password_label') || 'Confirm password'}</label>
+            <div className="input-wrapper">
+              <FaLock className="icon" />
+              <input
+                type={showConfirm ? "text" : "password"}
+                id="confirm"
+                name="confirm"
+                placeholder={t('auth.signup.enter_confirm_password') || 'Confirm password'}
+                value={form.confirm}
+                onChange={handleChange}
+                className={errors.confirm ? "error" : ""}
+              />
+              <span
+                className="toggle-password"
+                onClick={() => setShowConfirm(!showConfirm)}
+              >
+                {showConfirm ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+          </div>
+          {errors.confirm && <p className="error-message">{errors.confirm}</p>}
+
+          {/* Submit */}
+          <div className="form-options">
+            <button type="submit" >{t('auth.signup.register')}</button>
           </div>
 
-          
+          {message && (
+            <p className={message.includes("✅") ? "success-message" : "error-message"}>
+              {message}
+            </p>
+          )}
         </div>
-        {errors.password && <p className="error-message">{errors.password}</p>}
-
-        {/* Confirm Password */}
-        <div className="input-group">
-          <label className="label" htmlFor="confirm">{t('auth.signup.confirm_password_label') || 'Confirm password'}</label>
-          <div className="input-wrapper">
-            <FaLock className="icon" />
-            <input
-              type={showConfirm ? "text" : "password"}
-              id="confirm"
-              name="confirm"
-              placeholder={t('auth.signup.enter_confirm_password') || 'Confirm password'}
-              value={form.confirm}
-              onChange={handleChange}
-              className={errors.confirm ? "error" : ""}
-            />
-            <span
-              className="toggle-password"
-              onClick={() => setShowConfirm(!showConfirm)}
-            >
-              {showConfirm ? <FaEyeSlash /> : <FaEye />}
-            </span>
-          </div>
-        </div>
-        {errors.confirm && <p className="error-message">{errors.confirm}</p>}
-
-        {/* Submit */}
-        <div className="form-options">
-          <button type="submit" >{t('auth.signup.register')}</button>
-        </div>
-
-        {message && (
-          <p className={message.includes("✅") ? "success-message" : "error-message"}>
-            {message}
-          </p>
-        )}
       </form>
     </div>
   );

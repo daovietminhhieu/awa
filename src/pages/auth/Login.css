@@ -1,14 +1,37 @@
-   /* Nền toàn màn hình */
-.container {
+/* =========================
+   LOGIN PAGE (FINAL VERSION)
+   ========================= */
+
+/* Nền toàn màn hình */
+/* Nền toàn màn hình */
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 100vh; /* ✅ chiếm toàn bộ chiều cao màn hình */
   animation: fadeInBg 1s ease-in-out;
-
+  padding: 60px 0; /* thêm khoảng cách trên dưới */
 }
 
-/* 🔧 Wrapper để rung khi lỗi */
+/* Form style */
+.form {
+  width: 1200px;              /* ✅ tăng từ 1000px → 1200px */
+  max-width: 90vw;            /* không vượt quá 90% màn hình */
+  min-height: 550px;          /* ✅ cao hơn trước (480 → 550) */
+  padding: 60px 80px;         /* ✅ tăng khoảng padding */
+  border-radius: 28px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(232,245,233,0.92));
+  border: 3px solid #e67e22;
+  box-shadow: 12px 12px 0px #e67e22;
+  text-align: center;
+  margin: 120px auto;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInForm 1s ease forwards;
+  
+}
+
+/* Hiệu ứng rung khi lỗi */
 .shake-wrapper {
   display: inline-block;
   will-change: transform;
@@ -17,97 +40,90 @@
   animation: shake 0.5s ease;
 }
 
-/* Form style */
-.form {
-  width: 100%;
-  width:1000px;
-  max-width: 1000px;
-  min-height: 480px;
-  padding: 50px 60px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(232, 245, 233, 0.9));
-  border: 3px solid #e67e22;
-  box-shadow: 10px 10px 0px #e67e22;
-  text-align: center;
-  margin: 200px auto; 
-  opacity: 0;
-  transform: translateY(30px);
-  animation: fadeInForm 1s ease forwards;
-}
+
 
 /* Animations */
 @keyframes fadeInForm {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeInBg {
-  from { opacity: 0 }
-  to { opacity: 1 }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 @keyframes shake {
-  0%, 100% { transform: translateX(0) }
-  20% { transform: translateX(-8px) }
-  40% { transform: translateX(8px) }
-  60% { transform: translateX(-6px) }
-  80% { transform: translateX(6px) }
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
 }
 
-/* Title */
+/* Tiêu đề */
 .title {
   color: #e67e22;
-  font-size: 1.6rem;
-  margin-bottom: 25px;
+  font-size: 1.5rem;
+  margin-top: 75px;
   text-align: center;
-  line-height: 1.4;
   font-weight: bold;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
-/* Input group */
+/* ====== INPUT GROUP ====== */
 .input-group {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: flex-start;
+  margin-bottom: 15px;
+  gap: 10px;
 }
 
-/* Label */
 .label {
-  width: 120px;
+  width: 100px;
   font-size: 1rem;
   color: #e67e22;
-  margin-right: 10px;
-  text-align: left;
   font-weight: 600;
+  text-align: left;
+  margin: 0;
 }
 
-/* Ô input */
 .input-wrapper {
   flex: 1;
   position: relative;
 }
+
 .input-wrapper input {
   width: 100%;
-  padding: 12px 40px 12px 35px;
-  border-radius: 12px;
+  padding: 10px 38px 10px 34px;
+  border-radius: 10px;
   border: 2px solid #e67e22;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
   background: #fff;
-  transition: all 0.3s ease;
-  font-size: 1rem;
 }
 .input-wrapper input:focus {
-  border-color: #e67e22;
-  box-shadow: 0 0 10px rgba(46, 125, 50, 0.6);
+  border-color: #f59e0b;
+  box-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
   outline: none;
 }
+input.error {
+  border-color: #ff4d4d;
+}
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.85rem;
+  margin: -10px 0 10px 110px;
+  text-align: left;
+}
+
+/* Icons trong input */
 .icon {
   position: absolute;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
   color: #e67e22;
+  font-size: 1rem;
 }
 .toggle-password {
   position: absolute;
@@ -118,60 +134,85 @@
   color: #e67e22;
 }
 
-/* Error message + border */
-.error-message {
-  font-size: 0.85rem;
-  color: #ff4d4d;
-  margin-top: 4px;
-}
-input.error {
-  border-color: #ff4d4d;
-}
-
-/* Remember & button */
+/* ====== REMEMBER & BUTTON ====== */
 .form-options {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 20px;
-}
-.remember-me {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  margin-top: 10px;
-}
-.remember-me input {
-  margin: 0;
-}
-.remember-me label {
-  color: #e67e22;
-  font-size: 13px;
-  cursor: pointer;
+  margin-top: 15px;
 }
 
-/* Button */
 button {
+  padding: 12px 20px;
   border: none;
-  border-radius: 12px;
-  background: #F59E0B;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
+  border-radius: 10px;
+  background: #f59e0b;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  transition: transform .2s ease, background .3s ease, box-shadow .3s ease;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 4px 4px 0px #FBBF24;
+  box-shadow: 4px 4px 0px #fbbf24;
 }
 button:disabled {
-  opacity: .7;
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
+/* Remember me */
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.remember-me label {
+  color: #e67e22;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
 
-/* Spinner loading */
+/* Forgot password */
+.form > div:last-of-type span {
+  color: #007bff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.form > div:last-of-type span:hover {
+  text-decoration: underline;
+}
+
+/* ====== MODAL RESET PASSWORD ====== */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background: #fff;
+  border: 2px solid #e67e22;
+  border-radius: 12px;
+  padding: 25px 30px;
+  width: 400px;
+  box-shadow: 6px 6px 0px #e67e22;
+}
+.modal h3 {
+  color: #e67e22;
+  margin-bottom: 10px;
+}
+.modal button {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* ====== SPINNER ====== */
 .spinner {
   width: 16px;
   height: 16px;
@@ -181,186 +222,48 @@ button:disabled {
   display: inline-block;
   animation: spin .6s linear infinite;
 }
-@keyframes spin {
-  to { transform: rotate(360deg) }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Divider */
-.divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #e67e22;
-  margin: 25px 0;
-  font-weight: 600;
+.form-auth-body {
+  margin-top: 75px;
 }
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 2px solid #A5D6A7;
-}
-.divider:not(:empty)::before { margin-right: .75em; }
-.divider:not(:empty)::after { margin-left: .75em; }
-
-/* Social login */
-.social-login {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-}
-.social-btn {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 2px solid #2E7D32;
-  transition: transform .2s ease, opacity .3s ease;
-  color: #fff;
-  font-size: 13px;
-}
-.social-btn:hover {
-  transform: translateY(-2px);
-  opacity: .9;
-}
-.social-btn.email { background: #d44638; border-color: #b73229; }
-.social-btn.facebook { background: #1877f2; border-color: #0d47a1; }
-.social-btn.linkedin { background: #0077b5; border-color: #004c75; }
-
-/* Responsive mobile */
+/* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
   .form {
-    width: 95%;
-    padding: 30px;
+    width: 90%;
+    padding: 30px 25px;
   }
   .input-group {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
   }
   .label {
-    width: 100%;
-    margin-bottom: 6px;
-    text-align: left;
+    width: 90px;
+    font-size: 0.95rem;
   }
-  .input-wrapper {
-    width: 100%;
-  }
-  .form-options {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .form-options button {
-    width: 100%;
-  }
-  .social-login {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .social-btn {
-    width: 100%;
+  .error-message {
+    margin-left: 100px;
   }
 }
-/* Responsive mobile nhỏ */
-/* Mobile nhỏ */
-/* Mobile nhỏ (≤480px) */
+
+/* 📱 Mobile nhỏ (≤480px) */
 @media (max-width: 480px) {
   .form {
-    width: 94%;
-    padding: 22px 18px;
-    border-radius: 14px;
-    box-shadow: 4px 4px 0px #e67e22;
-    margin-top:100px;
-    min-height: unset; /* bỏ chiều cao cố định */
-  }
-
-  .title {
-    font-size: 1.2rem;
-    line-height: 1.3;
-    margin-bottom: 18px;
-    text-align: center;
-  }
-
-  .label {
-    font-size: 0.9rem;
-    color: #e67e22;
-    margin-bottom: 5px;
-  }
-
-  .input-group {
-    flex-direction: column;
-    align-items: flex-start;
     width: 100%;
-    margin-bottom: 16px;
+    padding: 25px 18px;
+    border-radius: 16px;
+    box-shadow: 6px 6px 0px #e67e22;
   }
-
+  .form-auth-body {
+    margin-top: 50px;
+  }
+  .title { font-size: 1.1rem; margin-bottom: 16px; }
   .input-wrapper input {
     font-size: 0.9rem;
-    padding: 10px 36px 10px 34px;
-    border-radius: 10px;
+    padding: 10px 36px 10px 30px;
   }
-
-  .icon {
-    font-size: 14px;
-    left: 10px;
-  }
-
-  .toggle-password {
-    right: 10px;
-    font-size: 14px;
-  }
-
-  .error-message {
-    font-size: 0.75rem;
-    margin-top: 2px;
-  }
-
-  .form-options {
-    margin-top: 10px;
-    justify-content: center;
-  }
-
-  .form-options button {
-    width: 100%;
-    padding: 12px;
-    font-size: 0.95rem;
-    border-radius: 10px;
-  }
-
-  .remember-me {
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-top: 10px;
-  }
-
-  .remember-me label {
-    font-size: 0.8rem;
-  }
-
-  /* Quên mật khẩu */
-  .form span[style*="underline"] {
-    font-size: 0.85rem;
-  }
-
-  /* Modal reset password */
-  .modal {
-    width: 90%;
-    padding: 16px;
-    font-size: 0.9rem;
-  }
-
-  .modal input {
-    font-size: 0.85rem;
-  }
-
-  /* Cải thiện animation mượt hơn trên mobile */
-  @keyframes fadeInForm {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .icon, .toggle-password { font-size: 14px; }
+  .remember-me { justify-content: flex-start; gap: 4px; }
+  .remember-me label { font-size: 0.8rem; }
 }

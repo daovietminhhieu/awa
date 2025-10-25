@@ -1,162 +1,208 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./List.css";
 import {
   editProgrammsById,
   deleteProgrammsById,
+  upFileToStorage,
 } from "../../../../api";
+import { useI18n } from "../../../../i18n";
 
 // ==========================
 // 🛠️ Modal Form for Editing
 // ==========================
-import { useI18n } from "../../../../i18n";
-
-
 export function EditProgramForm({ programm, onClose, onSubmit }) {
   const { t } = useI18n();
   const [formData, setFormData] = useState({ ...programm });
+  const [uploading, setUploading] = useState(false);
+  const [fileType, setFileType] = useState("");
+  const fileInputRef = useRef(null);
 
+  // --- Helper functions ---
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name.startsWith("details.")) {
+      const key = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        details: { ...prev.details, [key]: value },
+      }));
+    } else if (name.startsWith("requirement.")) {
+      const key = name.split(".")[1];
+      setFormData((prev) => ({
+        ...prev,
+        requirement: { ...prev.requirement, [key]: value },
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  const renderInput = (label, name, type = "text", placeholderText = "") => (
-    <div className="form-group">
-      <label htmlFor={name}>{label}</label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        value={formData[name] || ""}
-        onChange={handleChange}
-        placeholder={placeholderText}
-      />
-    </div>
-  );
+  // 🟩 Upload file lên Supabase
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+
+    const isVideo = selectedFile.type.startsWith("video/");
+    const isImage = selectedFile.type.startsWith("image/");
+    if (!isVideo && !isImage) {
+      alert("Vui lòng chọn file ảnh hoặc video hợp lệ!");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await upFileToStorage(selectedFile);
+      if (!result) throw new Error("Upload failed: no URL returned");
+
+      const fileType = isVideo ? "video" : "image";
+      setFileType(fileType);
+      setFormData((prev) => ({ ...prev, logoL: result }));
+    } catch (err) {
+      alert("Upload thất bại: " + err.message);
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const removeFile = () => {
+    setFormData((prev) => ({ ...prev, logoL: "" }));
+    setFileType("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  // ✅ renderInput mới — hỗ trợ cả input & textarea
+  const renderInput = (
+    label,
+    name,
+    type = "text",
+    placeholderText = "",
+    as = "input"
+  ) => {
+    const getValue = () => {
+      if (name.startsWith("details.")) {
+        const key = name.split(".")[1];
+        return formData.details?.[key] || "";
+      } else if (name.startsWith("requirement.")) {
+        const key = name.split(".")[1];
+        return formData.requirement?.[key] || "";
+      } else {
+        return formData[name] || "";
+      }
+    };
+
+    return (
+      <div className="form-group">
+        <label htmlFor={name}>{label}</label>
+        {as === "textarea" ? (
+          <textarea
+            id={name}
+            name={name}
+            value={getValue()}
+            onChange={handleChange}
+            rows={3}
+            placeholder={placeholderText}
+          />
+        ) : (
+          <input
+            id={name}
+            name={name}
+            type={type}
+            value={getValue()}
+            onChange={handleChange}
+            placeholder={placeholderText}
+          />
+        )}
+      </div>
+    );
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await onSubmit(formData);
+  };
 
   return (
     <div className="admin-edit-modal">
       <div className="admin-edit-form">
-        <h2>{t('admin.programms.edit.title') || 'Edit Program'}</h2>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            onSubmit(formData);
-          }}
-          className="admin-form-grid"
-        >
-          {/* Thông tin cơ bản */}
-          <h4>{t('admin.programms.edit.basic_info') || 'Basic Info'}</h4>
-          {renderInput(
-            t('admin.programms.edit.labels.title') || "Title",
-            "title",
-            "text",
-            t('admin.programms.edit.new.enter_name') || "Enter program title"
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.company') || "Company",
-            "company",
-            "text",
-            t('admin.programms.edit.new.enter_company') || "Enter company name"
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.logo') || "Logo URL",
-            "logoUrl",
-            "url",
-            "https://example.com/logo.png"
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.type') || "Program Type",
-            "type",
-            "text",
-            t('admin.programms.edit.new.enter_programm_type')
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.degrees') || "Degrees",
-            "degrees",
-            "text",
-            t('admin.programms.edit.new.enter_degrees')
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.duration') || "Duration",
-            "duration",
-            "text",
-            t('admin.programms.edit.new.enter_duration')
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.land') || "Location",
-            "land",
-            "text",
-            t('admin.programms.edit.new.enter_land')
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.fee') || "Fee",
-            "fee",
-            "text",
-            t('admin.programms.edit.new.enter_fee')
-          )}
+        <h2>{t("admin.programms.edit.title") || "Edit Program"}</h2>
 
-          {/* Chi tiết tuyển dụng */}
-          <h4>{t('admin.programms.edit.details_title') || 'Recruitment Details'}</h4>
-          {renderInput(
-            t('admin.programms.edit.labels.expected_salary') || "Expected Salary",
-            "expected_salary",
-            "text",
-            t('admin.programms.edit.new.enter_expected_salary')
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.deadline') || "Deadline",
-            "deadline",
-            "date",
-            ""
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.vacancies') || "Vacancies",
-            "vacancies",
-            "number",
-            ""
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.benefit') || "Benefit",
-            "benefit",
-            "text",
-            "..."
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.review') || "Review",
-            "review",
-            "text",
-            "..."
-          )}
+        <form onSubmit={handleSubmit} className="admin-form-grid">
+          {/* 🧩 BASIC INFO */}
+          <h4>Basic Information</h4>
+          {renderInput("Title", "title")}
+          {renderInput("Company", "company")}
+          {renderInput("Program Type", "type")}
+          {renderInput("Type Category (job/studium)", "type_category")}
+          {renderInput("Degrees", "degrees")}
+          {renderInput("Duration", "duration")}
+          {renderInput("Location", "land")}
+          {renderInput("Fee", "fee")}
+          {renderInput("Expected Salary", "expected_salary")}
+          {renderInput("Deadline", "deadline", "date")}
+          {renderInput("Vacancies", "vacancies", "number")}
+          {renderInput("Hired", "hired", "number")}
+          {renderInput("Benefit", "benefit")}
+          {renderInput("Bonus", "bonus")}
+          {renderInput("Public Day", "public_day", "date")}
 
-          {/* Video & Bonus */}
-          <h4>{t('admin.programms.edit.other_title') || 'Other'}</h4>
-          {renderInput(
-            t('admin.programms.edit.labels.video') || "Video URL",
-            "videos",
-            "url",
-            "https://example.com/video.mp4"
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.bonus') || "Bonus",
-            "bonus",
-            "text",
-            t('admin.programms.edit.new.enter_bonus')
-          )}
-          {renderInput(
-            t('admin.programms.edit.labels.public_day') || "Public Day",
-            "public_day",
-            "date",
-            "Select public day"
-          )}
+          {/* 🖼️ Upload ảnh/video */}
+          <div className="form-group">
+            <label>Logo / Media</label>
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
+            {uploading && <p>⏳ Đang tải file lên...</p>}
+            {formData.logoL && (
+              <div style={{ marginTop: "8px" }}>
+                {fileType === "video" || formData.logoL.includes(".mp4") ? (
+                  <video
+                    src={formData.logoL}
+                    controls
+                    style={{ width: "220px", borderRadius: "8px" }}
+                  />
+                ) : (
+                  <img
+                    src={formData.logoL}
+                    alt="Preview"
+                    style={{ width: "200px", borderRadius: "8px" }}
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={removeFile}
+                  className="text-red-600 text-sm mt-2 underline"
+                >
+                  Xóa file
+                </button>
+              </div>
+            )}
+          </div>
 
+          {/* 📄 DETAILS */}
+          <h4>Details</h4>
+          {renderInput("Overview", "details.overview", "text", "", "textarea")}
+          {renderInput("Other Details", "details.other", "text", "", "textarea")}
+
+          {/* 🧾 REQUIREMENTS */}
+          <h4>Requirements</h4>
+          {renderInput("Age", "requirement.age")}
+          {renderInput("Health", "requirement.health")}
+          {renderInput("Education", "requirement.education")}
+          {renderInput("Certificate", "requirement.certificate")}
+
+          {/* ✅ BUTTONS */}
           <div className="admin-form-buttons">
-            <button type="submit" className="admin-edit-btn">
-              {t('admin.programms.edit.save') || 'Save'}
+            <button type="submit" className="admin-edit-btn" disabled={uploading}>
+              {uploading ? "⏳ Uploading..." : "Save"}
             </button>
             <button type="button" className="admin-delete-btn" onClick={onClose}>
-              {t('admin.programms.edit.cancel') || 'Cancel'}
+              Cancel
             </button>
           </div>
         </form>
@@ -165,9 +211,8 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
   );
 }
 
-
 // ==========================
-// 🎓 Main List Component
+// 🎓 MAIN ADMIN LIST
 // ==========================
 export default function AdminProgrammsList({
   programms,
@@ -198,7 +243,6 @@ export default function AdminProgrammsList({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Toggle Save
   const handleSaveToggle = async (p) => {
     const isSaved = !!savedPrograms[p._id];
     setLoadingIds((prev) => ({ ...prev, [p._id]: true }));
@@ -210,17 +254,12 @@ export default function AdminProgrammsList({
     });
   };
 
-  
-  
-
   return (
     <div>
-      {/* GRID */}
       <div className="admin-programms-grid">
         {currentItems.map((p) => {
           const isSaved = !!savedPrograms[p._id];
           const isLoading = !!loadingIds[p._id];
-
           return (
             <div key={p._id} className="admin-program-card">
               <Link
@@ -230,51 +269,42 @@ export default function AdminProgrammsList({
               >
                 <div className="admin-program-header">
                   <h3>{p.title}</h3>
-                  
                 </div>
 
                 <ul className="admin-program-info">
                   <li>
-                    <b>{t('admin.programms.card.duration_label') || 'Duration:'}</b> {p.duration}
+                    <b>Duration:</b> {p.duration}
                   </li>
                   <li>
-                    <b>{t('admin.programms.card.deadline_label') || 'Deadline:'}</b> {p.deadline}
+                    <b>Deadline:</b> {p.deadline}
                   </li>
                   <li>
-                    <b>{t('admin.programms.card.status_label') || 'Status:'}</b>{" "}
-                    {new Date(p.deadline) >= new Date()
-                      ? t('admin.programms.card.status_open') || "Open"
-                      : t('admin.programms.card.status_closed') || "Closed"}
+                    <b>Status:</b>{" "}
+                    {new Date(p.deadline) >= new Date() ? "Open" : "Closed"}
                   </li>
                 </ul>
 
                 <div className="admin-program-extra">
                   <p className="bonus-tag">
-                    <b>{t('admin.programms.card.bonus_label') || 'Bonus:'}</b> {p.bonus || ""}
+                    <b>Bonus:</b> {p.bonus || ""}
                   </p>
                   <p className="vacancy-tag">
-                    <b>{t('admin.programms.card.vacancy_label') || 'Applicants:'}</b> {p.vacancies || 0}
+                    <b>Applicants:</b> {p.vacancies || 0}
                   </p>
                 </div>
               </Link>
 
               <div className="admin-program-footer">
                 <button
-                    className="admin-save-icon"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      if (!isLoading) handleSaveToggle(p);
-                    }}
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  >
-                     { isSaved ? ( <span>{t('admin.programms.card.unsave') || 'Unsave'}</span>) : ( <span>{t('admin.programms.card.save') || 'Save'}</span>)}
-                     
-                     
+                  className="admin-save-icon"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!isLoading) handleSaveToggle(p);
+                  }}
+                >
+                  {isSaved ? "Unsave" : "Save"}
                 </button>
-
 
                 <button
                   className="admin-edit-btn"
@@ -284,18 +314,20 @@ export default function AdminProgrammsList({
                     setEditingProgramm(p);
                   }}
                 >
-                  {t('admin.programms.card.edit') || 'Edit'}
+                  Edit
                 </button>
 
                 <button
                   className="admin-delete-btn"
                   onClick={async () => {
-                    if (window.confirm(t('admin.programms.card.delete_confirm') || "Delete this program?"))
+                    if (window.confirm("Delete this program?")) {
                       await deleteProgrammsById(p._id);
-                      alert(t('admin.programms.card.delete_message'));
+                      alert("Deleted successfully!");
+                      onProgrammsUpdated?.();
+                    }
                   }}
                 >
-                  {t('admin.programms.card.delete') || 'Delete'}
+                  Delete
                 </button>
               </div>
             </div>
@@ -303,107 +335,41 @@ export default function AdminProgrammsList({
         })}
       </div>
 
-      {/* PHÂN TRANG */}
+      {/* Pagination */}
       {totalPages > 1 && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "20px",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          {(() => {
-            const buttons = [];
-            buttons.push(
-              <button
-                key={1}
-                onClick={() => handlePageChange(1)}
-                style={{
-                  fontWeight: currentPage === 1 ? "bold" : "normal",
-                  background: currentPage === 1 ? "#e67e22" : "#f0f0f0",
-                  color: currentPage === 1 ? "#fff" : "#333",
-                  borderRadius: "5px",
-                  padding: "5px 10px",
-                }}
-              >
-                1
-              </button>
-            );
-
-            if (currentPage > 3) {
-              buttons.push(<span key="dots-left">...</span>);
-            }
-
-            const start = Math.max(2, currentPage - 1);
-            const end = Math.min(totalPages - 1, currentPage + 1);
-            for (let i = start; i <= end; i++) {
-              buttons.push(
-                <button
-                  key={i}
-                  onClick={() => handlePageChange(i)}
-                  style={{
-                    fontWeight: i === currentPage ? "bold" : "normal",
-                    background: i === currentPage ? "#e67e22" : "#f0f0f0",
-                    color: i === currentPage ? "#fff" : "#333",
-                    borderRadius: "5px",
-                    padding: "5px 10px",
-                  }}
-                >
-                  {i}
-                </button>
-              );
-            }
-
-            if (currentPage < totalPages - 2) {
-              buttons.push(<span key="dots-right">...</span>);
-            }
-
-            if (totalPages > 1) {
-              buttons.push(
-                <button
-                  key={totalPages}
-                  onClick={() => handlePageChange(totalPages)}
-                  style={{
-                    fontWeight:
-                      currentPage === totalPages ? "bold" : "normal",
-                    background:
-                      currentPage === totalPages ? "#e67e22" : "#f0f0f0",
-                    color: currentPage === totalPages ? "#fff" : "#333",
-                    borderRadius: "5px",
-                    padding: "5px 10px",
-                  }}
-                >
-                  {totalPages}
-                </button>
-              );
-            }
-
-            return buttons;
-          })()}
+        <div className="pagination-container">
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => handlePageChange(i + 1)}
+              className={i + 1 === currentPage ? "active-page" : ""}
+            >
+              {i + 1}
+            </button>
+          ))}
         </div>
       )}
 
-      {/* MOBILE PAGE INFO */}
       {isMobile && (
         <p style={{ textAlign: "center", marginTop: "10px", color: "#555" }}>
-          {t('admin.programms.pagination.page_info', { current: currentPage, total: totalPages }) || `Page ${currentPage} / ${totalPages}`}
-
+          Page {currentPage} / {totalPages}
         </p>
       )}
 
-      {/* MODAL */}
+      {/* Edit Modal */}
       {editingProgramm && (
         <EditProgramForm
           programm={editingProgramm}
           onClose={() => setEditingProgramm(null)}
           onSubmit={async (data) => {
-            await editProgrammsById(editingProgramm._id, data);
-            alert(t('admin.programms.alert.updated_success') || 'Updated successfully!');
-            setEditingProgramm(null);
-            onProgrammsUpdated?.();
+            try {
+              await editProgrammsById(editingProgramm._id, data);
+              alert("✅ Updated successfully!");
+              setEditingProgramm(null);
+              onProgrammsUpdated?.();
+            } catch (err) {
+              alert("❌ Lỗi khi cập nhật: " + err.message);
+            }
           }}
         />
       )}

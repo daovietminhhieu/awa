@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   addNewProgramm,
@@ -6,6 +6,7 @@ import {
   getSavedProgramms,
   saveProgrammById,
   unsaveProgrammById,
+  upFileToStorage,
 } from "../../api";
 import ProgrammsList from "../../components/admin/management/programms/List";
 import ListOfSharedProgramms from "../../components/admin/management/programms/Shared";
@@ -14,14 +15,17 @@ import "./ProgrammsManagement.css";
 import { useI18n } from "../../i18n";
 import Payments from "../../components/admin/management/programms/Payment";
 
-
-
-// ------------------- AddProgramForm -------------------
+/* =========================================================
+   🟢 ADD PROGRAM FORM
+   ========================================================= */
 export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
   const { t } = useI18n();
   const [formData, setFormData] = useState(defaultValues);
-  const [step, setStep] = useState(1);
+  const [uploading, setUploading] = useState(false);
+  const [fileType, setFileType] = useState(""); // image | video
+  const fileInputRef = useRef(null);
 
+  // Xử lý thay đổi input
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name.includes(".")) {
@@ -35,220 +39,154 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  // Upload file lên Supabase
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+
+    const isVideo = selectedFile.type.startsWith("video/");
+    const isImage = selectedFile.type.startsWith("image/");
+    if (!isVideo && !isImage) {
+      alert("Vui lòng chọn file ảnh hoặc video hợp lệ!");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const result = await upFileToStorage(selectedFile);
+      if (!result) throw new Error("Upload failed: no URL returned");
+
+      setFileType(isVideo ? "video" : "image");
+      setFormData((prev) => ({ ...prev, logoL: result }));
+
+      console.log("📦 File uploaded to Supabase:", result);
+    } catch (err) {
+      alert("Upload thất bại: " + err.message);
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  // Submit form
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    if (!formData.logoL) {
+      alert("Vui lòng tải lên logo hoặc video trước khi tạo chương trình!");
+      return;
+    }
+    await onSubmit(formData);
     onClose();
   };
 
   return (
     <div className="edit-modal">
       <div className="edit-form">
-        <button className="close-btn" onClick={onClose}>×</button>
+        <button className="close-btn" onClick={onClose}>
+          ×
+        </button>
         <h2>{t("admin.programms.edit.add_title") || "Add New Program"}</h2>
 
         <form onSubmit={handleSubmit}>
-          {/* 🧩 Step 1: Basic Info */}
-          {step === 1 && (
-            <>
-              <h3>{t("admin.programms.edit.basic_info") || "Basic Info"}</h3>
+          <h3>{t("admin.programms.edit.basic_info") || "Basic Info"}</h3>
 
-              {["title", "company", "type", "degrees", "duration", "land"].map((field) => (
-                <label key={field}>
-                  {t(`admin.programms.edit.new.${field}`)}:
-                  <input
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleChange}
-                    required={field === "title"}
-                    placeholder={t(`admin.programms.edit.new.enter_${field}`)}
+          {["title", "company", "type", "degrees", "duration", "land"].map(
+            (field) => (
+              <label key={field}>
+                {t(`admin.programms.edit.new.${field}`)}:
+                <input
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  required={field === "title"}
+                  placeholder={t(`admin.programms.edit.new.enter_${field}`)}
+                />
+              </label>
+            )
+          )}
+
+          {/* Upload ảnh/video */}
+          <label>
+            {t("admin.programms.edit.new.logoL") || "Logo / Media:"}
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={handleFileChange}
+              ref={fileInputRef}
+            />
+            {uploading && (
+              <p className="text-sm text-blue-600 mt-1">
+                ⏳ {t("common.uploading") || "Đang tải file lên..."}
+              </p>
+            )}
+            {formData.logoL && (
+              <div style={{ marginTop: "8px" }}>
+                {fileType === "image" ? (
+                  <img
+                    src={formData.logoL}
+                    alt="Preview"
+                    style={{
+                      width: "200px",
+                      borderRadius: "8px",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                    }}
                   />
-                </label>
-              ))}
-
-              <label>
-                {t("admin.programms.edit.new.logoL") || "Logo URL:"}
-                <input
-                  name="logoL"
-                  value={formData.logoL}
-                  onChange={handleChange}
-                  placeholder="https://example.com/logo.png"
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.bonus") || "Bonus:"}
-                <input
-                  name="bonus"
-                  value={formData.bonus}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder={t('admin.programms.edit.new.enter_bonus')}
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.vacancies") || "Vacancies:"}
-                <input
-                  name="vacancies"
-                  value={formData.vacancies}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder={t('admin.programms.edit.new.enter_vacancies')}
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.hired") || "Hired:"}
-                <input
-                  name="hired"
-                  value={formData.hired}
-                  onChange={handleChange}
-                  type="text"
-                  placeholder={t('admin.programms.edit.new_hired')}
-                />
-              </label>
-
-              <button type="button" onClick={() => setStep(2)}>
-                {t("admin.programms.edit.next") || "Next →"}
-              </button>
-            </>
-          )}
-
-          {/* 🧩 Step 2: Requirements */}
-          {step === 2 && (
-            <>
-              <h3>{t("admin.programms.edit.requirements") || "Requirements"}</h3>
-              {["age", "health", "education", "certificate"].map((f) => (
-                <label key={f}>
-                  {t(`admin.programms.edit.new.${f}`)}:
-                  <input
-                    name={`requirement.${f}`}
-                    value={formData.requirement[f]}
-                    onChange={handleChange}
-                    placeholder={t(`admin.programms.edit.new.enter_${f}`)}
+                ) : (
+                  <video
+                    src={formData.logoL}
+                    controls
+                    style={{
+                      width: "220px",
+                      borderRadius: "8px",
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                    }}
                   />
-                </label>
-              ))}
-
-              <div className="form-buttons">
-                <button type="button" onClick={() => setStep(1)}>
-                  ← {t("admin.programms.edit.back") || "Back"}
-                </button>
-                <button type="button" onClick={() => setStep(3)}>
-                  {t("admin.programms.edit.next") || "Next →"}
-                </button>
+                )}
               </div>
-            </>
-          )}
+            )}
+          </label>
 
-          {/* 🧩 Step 3: Details */}
-          {step === 3 && (
-            <>
-              <h3>{t("admin.programms.edit.details") || "Details"}</h3>
+          {/* Thông tin thêm */}
+          <label>
+            Overview:
+            <textarea
+              name="details.overview"
+              value={formData.details.overview}
+              onChange={handleChange}
+              placeholder="Short program overview"
+            />
+          </label>
 
-              <label>
-                {t("admin.programms.edit.new.details_overview") || "Overview:"}
-                <textarea
-                  name="details.overview"
-                  value={formData.details.overview}
-                  onChange={handleChange}
-                  placeholder={t('admin.programms.edit.new.enter_details_overview')}
-                />
-              </label>
+          <label>
+            Requirements:
+            <textarea
+              name="requirement.education"
+              value={formData.requirement.education}
+              onChange={handleChange}
+              placeholder="Required education level"
+            />
+          </label>
 
-              <label>
-                {t("admin.programms.edit.new.details_other") || "Other:"}
-                <textarea
-                  name="details.other"
-                  value={formData.details.other}
-                  onChange={handleChange}
-                  placeholder={t('admin.programms.edit.new.enter_details_other')}
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.fee") || "Fee:"}
-                <input name="fee" value={formData.fee} onChange={handleChange} placeholder={t('admin.programms.edit.new.enter_fee')}/>
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.expected_salary") || "Expected Salary:"}
-                <input
-                  name="expected_salary"
-                  value={formData.expected_salary}
-                  onChange={handleChange}
-                  placeholder={t('admin.programms.edit.new.enter_expected_salary')}
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.deadline") || "Deadline:"}
-                <input
-                  type="date"
-                  name="deadline"
-                  value={formData.deadline}
-                  onChange={handleChange}
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.public_day") || "Public Day:"}
-                <input
-                  type="date"
-                  name="public_day"
-                  value={formData.public_day}
-                  onChange={handleChange}
-                  placeholder={t('admin.programms.edit.new.enter_public_day')}
-                />
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.type_category") || "Type Category:"}
-                <select
-                  name="type_category"
-                  value={formData.type_category}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="job">{t("admin.programms.edit.new.type_job") || "Job"}</option>
-                  <option value="studium">{t("admin.programms.edit.new.type_studium") || "Studium"}</option>
-                </select>
-              </label>
-
-              <label>
-                {t("admin.programms.edit.new.is_active") || "Is Active:"}
-                <select
-                  name="is_active"
-                  value={formData.is_active}
-                  onChange={handleChange}
-                >
-                  <option value="true">{t("admin.programms.edit.new.active")}</option>
-                  <option value="false">{t("admin.programms.edit.new.inactive")}</option>
-                </select>
-              </label>
-
-              <div className="form-buttons">
-                <button type="button" onClick={() => setStep(2)}>
-                  ← {t("admin.programms.edit.back") || "Back"}
-                </button>
-                <button type="submit">
-                  ✅ {t("admin.programms.edit.create") || "Create"}
-                </button>
-                <button type="button" onClick={onClose}>
-                  {t("admin.programms.edit.cancel") || "Cancel"}
-                </button>
-              </div>
-            </>
-          )}
+          {/* Buttons */}
+          <div className="form-buttons">
+            <button type="submit" disabled={uploading}>
+              {uploading
+                ? "Đang tải file..."
+                : `✅ ${t("admin.programms.edit.create") || "Create"}`}
+            </button>
+            <button type="button" onClick={onClose}>
+              {t("admin.programms.edit.cancel") || "Cancel"}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 }
 
-
-// ------------------- ProgrammsManagement -------------------
+/* =========================================================
+   🟦 MAIN MANAGEMENT PAGE
+   ========================================================= */
 export default function ProgrammsManagement() {
   const navigate = useNavigate();
   const { t } = useI18n();
@@ -344,12 +282,11 @@ export default function ProgrammsManagement() {
   const savedProgramsList = programms.filter((p) => savedProgramsMap[p._id]);
   const displayedProgramms = useMemo(() => filteredProgramms, [filteredProgramms]);
 
-  // --- Tabs fix: static IDs, translatable labels ---
   const tabs = [
     { id: "my", label: t("admin.programms.tabs.my") || "My Programms" },
     { id: "saved", label: t("admin.programms.tabs.saved") || "Saved Programms" },
     { id: "shared", label: t("admin.programms.tabs.shared") || "Shared Programms" },
-    { id: "payments", label: t("admin.programms.tabs.payment") || "Payment" }
+    { id: "payments", label: t("admin.programms.tabs.payment") || "Payment" },
   ];
 
   return (
@@ -367,7 +304,7 @@ export default function ProgrammsManagement() {
       </div>
 
       {activePage === "my" && (
-        <div style={{ width: "100%" }}>
+        <div className="programs-section">
           <div className="programm-toolbar">
             <FilterSearch
               programms={programms}
@@ -375,29 +312,23 @@ export default function ProgrammsManagement() {
               onSelectProgramm={handleSelectProgramm}
             />
             <button className="add-btn" onClick={() => setShowAddForm(true)}>
-              {t("admin.programms.toolbar.add_new") || "+ Add New Programm"}
+              {t("admin.programms.toolbar.add_new") || "+ Add New Program"}
             </button>
           </div>
 
           {loading && <p>Loading...</p>}
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="error-text">{error}</p>}
           {!loading && displayedProgramms.length === 0 && (
             <p>{t("admin.programms.messages.no_programms") || "No programms found"}</p>
           )}
 
           {!loading && displayedProgramms.length > 0 && (
-            <>
-              
-              <ProgrammsList
-                  programms={displayedProgramms}
-                  savedPrograms={savedProgramsMap}
-                  toggleSaveProgramm={toggleSaveProgramm}
-                />           
-                
-              </>
-           
-            )}
-
+            <ProgrammsList
+              programms={displayedProgramms}
+              savedPrograms={savedProgramsMap}
+              toggleSaveProgramm={toggleSaveProgramm}
+            />
+          )}
 
           {showAddForm && (
             <AddProgramForm
@@ -424,7 +355,6 @@ export default function ProgrammsManagement() {
                 public_day: "",
               }}
             />
-
           )}
         </div>
       )}
@@ -436,7 +366,6 @@ export default function ProgrammsManagement() {
           toggleSaveProgramm={toggleSaveProgramm}
         />
       )}
-
       {activePage === "shared" && <ListOfSharedProgramms />}
       {activePage === "payments" && <Payments />}
     </div>
