@@ -72,21 +72,6 @@ export default function ProgrammPartner({ programm }) {
         <p>{programm?.partner_description || "Đang cập nhật..."}</p>
       </div>
 
-      {/* === FORM HỎI ĐÁP === */}
-      <div className="partner-reviews-container">
-        <h2>{t("programm.detail.partner.qa.title")}</h2>
-        <form onSubmit={handleQuestionSubmit} className="review-form">
-          <textarea
-            placeholder={t("programm.detail.partner.qa.placeholder")}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-          />
-          <button type="submit" className="footer-btn">
-            {t("programm.detail.partner.qa.button")}
-          </button>
-        </form>
-      </div>
-
       {/* === FORM ĐÁNH GIÁ === */}
       <div className="partner-reviews-container">
         <h2>{t("programm.detail.partner.review.title")}</h2>
