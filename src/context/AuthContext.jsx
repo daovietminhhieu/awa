@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 const LS_SESSION = "awa-ss"; // stored in sessionStorage to isolate per tab
-const ONE_HOUR_MS = 60 * 60 * 1000;
+const ONE_DAY = 24 * 60 * 60 * 1000;
 
 // =========================
 // 🔹 Helpers
@@ -24,7 +24,7 @@ function readSession() {
 
 function writeSession(user, token) {
   try {
-    const data = { user, token, expiresAt: Date.now() + ONE_HOUR_MS };
+    const data = { user, token, expiresAt: Date.now() + ONE_DAY };
     sessionStorage.setItem(LS_SESSION, JSON.stringify(data));
   } catch {}
 }
@@ -106,7 +106,7 @@ export function AuthProvider({ children }) {
       const newSession = {
         user: updatedUser,
         token: tokenToUse,
-        expiresAt: Date.now() + ONE_HOUR_MS,
+        expiresAt: Date.now() + ONE_DAY,
       };
 
       sessionStorage.setItem(LS_SESSION, JSON.stringify(newSession));
