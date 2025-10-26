@@ -204,7 +204,7 @@ export default function Navbar() {
         </div>
         {/* <!-- 🌐 Google Translate Button --> */}
         <div id="google_translate_element">
-          <span style={{ fontSize: "18px" }}>🌐</span>
+          <span style={{ fontSize: "18px" }}>{"🌐"}</span>
         </div>
 
       </div>
