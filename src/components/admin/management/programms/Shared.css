@@ -98,8 +98,11 @@
 
 /* --- Nút toggle hiển thị trong cột Steps --- */
 .toggle-steps-btn {
-  width: 100%;
-  text-align: center;
+  height: fit-content;
+  width: 50px;
+  text-align: end;
+  margin-left: 50px;
+  background-color: black;
   border: none;
   background: none;
   color: black;

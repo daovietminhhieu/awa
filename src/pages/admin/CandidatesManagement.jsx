@@ -30,8 +30,9 @@ export default function CandidateManagement() {
         const res = await getPotentialsList(true);
         const list = res?.data || [];
 
-        const active = list.filter(c => c.programm?.completed !== "true" && !c.archived);
-        const done = list.filter(c => c.programm?.completed === "true" || c.archived);
+        console.log(list);
+        const active = list.filter(c => c.referral?.status === "completed" && !c.archived);
+        const done = list.filter(c => c.referral?.status === "rejected" || c.archived);
 
         setSubmissions(active);
 

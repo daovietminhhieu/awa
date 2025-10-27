@@ -378,8 +378,8 @@
         },
            
         "candidates": {
-            "title": "Candidate Tracking",
-            "completed_title": "Completed",
+            "title": "Completed",
+            "completed_title": "Rejected",
             "table": {
                 "candidate":"Candidate",
                 "programm":"Programm",

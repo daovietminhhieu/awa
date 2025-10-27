@@ -26,11 +26,11 @@ export default function CandidateManagement() {
         const res = await getPotentialsList(false);
         const list = res?.data || [];
 
-        const active = list.filter(c => c.programm?.completed !== "true" && !c.archived);
-        const done = list.filter(c => c.programm?.completed === "true" || c.archived);
+        const completed = list.filter(c => c.referral?.status === "completed" && !c.archived);
+        const rejected = list.filter(c => c.referral?.status === "rejected" || c.archived);
 
-        setSubmissions(active);
-        setArchived(Array(5).fill(done).flat()); // Fake nhiều dữ liệu để test phân trang
+        setSubmissions(completed);
+        setArchived(rejected);
       } catch (err) {
         console.error("❌ Failed to load potentials:", err);
       }

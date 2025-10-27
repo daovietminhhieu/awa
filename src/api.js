@@ -5,6 +5,8 @@ export const API_BASE =
 
 console.log("🌐 Using API base:", API_BASE);
 
+
+
 // ====================== SESSION HANDLING ======================
 function getSession() {
   try {
@@ -150,6 +152,7 @@ export async function updateReferralStatus(referralId, newStatus) {
     headers: { "Content-Type": "application/json", ...authHeaders() },
   });
   const data = await res.json();
+  console.log("🔗 API URL:", `${API_BASE}/user/referrals/${referralId}/${newStatus}`);
   if (!res.ok) throw new Error(data?.message || "Failed to update referral");
   return data;
 }
