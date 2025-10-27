@@ -6,13 +6,11 @@
   color: #2b2b2b;
 }
 
-/* ... giữ nguyên phần header / table baseline của bạn (copy từ file cũ) ... */
-
+/* ====== Table base ====== */
 .shared-table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 12px;
-  overflow: visible;
   background: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -23,51 +21,13 @@
   text-align: left;
   border-bottom: 1px solid #eee;
   vertical-align: top;
+}
+
+/* --- Steps collapse logic --- */
+.steps-cell {
   position: relative;
 }
 
-/* --- NEW: wrapper inside each cell that we will clamp to collapsed height --- */
-.cell-inner {
-  max-height: 100px; /* collapsed height */
-  overflow: hidden;
-  transition: max-height 0.35s ease;
-}
-
-/* When row expanded, lift the clamp so all content shows */
-.shared-row.expanded .cell-inner {
-  max-height: 2000px; /* a large number to show full content */
-}
-
-/* Gradient overlay at bottom of row when collapsed (visual cue) */
-.shared-row {
-  /* keep table-row display (do NOT change display) */
-  position: relative; /* used so ::after is positioned relative to the row */
-}
-
-.shared-row::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 46px;
-  background: linear-gradient(to top, #ffffff, rgba(255,255,255,0));
-  pointer-events: none;
-  z-index: 1;
-  display: block;
-}
-
-/* hide the gradient when expanded */
-.shared-row.expanded::after {
-  display: none;
-}
-
-/* ensure button sits above gradient */
-.actions-cell {
-  position: relative;
-}
-
-/* --- Steps column wrapper (collapsible area) --- */
 .steps-wrapper {
   position: relative;
   max-height: 100px;
@@ -76,47 +36,42 @@
 }
 
 .steps-wrapper.expanded {
-  max-height: 2000px; /* hiển thị toàn bộ nội dung */
+  max-height: 2000px;
 }
 
-/* tạo hiệu ứng mờ ở đáy vùng steps khi bị cắt */
 .steps-wrapper::after {
   content: "";
   position: absolute;
-  bottom: 36px; /* để chừa chỗ cho nút Xem thêm */
+  bottom: 0;
   left: 0;
   right: 0;
   height: 40px;
   background: linear-gradient(to top, white, transparent);
   pointer-events: none;
-  display: block;
 }
 
 .steps-wrapper.expanded::after {
   display: none;
 }
 
-/* --- Nút toggle hiển thị trong cột Steps --- */
+/* --- Toggle button always visible --- */
 .toggle-steps-btn {
-  height: fit-content;
-  width: 50px;
-  text-align: end;
-  margin-left: 50px;
-  background-color: black;
-  border: none;
+  display: block;
+  margin: 6px auto 0;
   background: none;
-  color: black;
-  font-size: 20px;
-  font-weight: 20;
+  border: none;
+  color: #007bff;
+  font-size: 22px;
   cursor: pointer;
-  position: absolute;
-  bottom: 0;
+  position: relative;
+  z-index: 2;
 }
 
+.toggle-steps-btn:hover {
+  color: #0056b3;
+}
 
-
-
-/* statuses & dropdown (kept) */
+/* --- Status badge --- */
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -127,10 +82,8 @@
   letter-spacing: 0.3px;
 }
 
-/* other CSS from your file (error, responsive, etc.) remains unchanged */
 /* ===== Responsive: Mobile view ===== */
 @media (max-width: 900px) {
-  /* keep your existing responsive rules, but ensure .cell-inner behavior persists */
   .shared-table,
   .shared-table thead,
   .shared-table tbody,
@@ -139,14 +92,19 @@
   .shared-table tr {
     display: block;
   }
-  .shared-table thead { display: none; }
+
+  .shared-table thead {
+    display: none;
+  }
+
   .shared-table tr {
     background: #fff;
     margin-bottom: 16px;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     padding: 12px;
   }
+
   .shared-table td {
     border: none;
     display: flex;
@@ -154,18 +112,35 @@
     padding: 8px 0;
     font-size: 0.9rem;
   }
+
   .shared-table td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #444;
+    flex: 1;
   }
+
+  .shared-table td > * {
+    flex: 1;
+    text-align: right;
+  }
+
   .actions-cell {
     margin-top: 8px;
   }
+
+  /* Mobile version collapse works the same */
+  .steps-wrapper {
+    max-height: 100px;
+  }
+
+  .steps-wrapper.expanded {
+    max-height: 2000px;
+  }
+
   .toggle-steps-btn {
     position: static;
-    transform: none;
-    display: block;
     margin-top: 8px;
+    font-size: 20px;
   }
 }
