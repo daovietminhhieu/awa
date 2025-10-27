@@ -35,9 +35,7 @@ export default function CandidateManagement() {
         const done = list.filter(c => c.referral?.status === "rejected" || c.archived);
 
         setSubmissions(active);
-
-        // 👇 Nhân bản dữ liệu archived để test phân trang
-        setArchived(Array(5).fill(done).flat()); // 5x số dòng archived
+        setArchived(done); 
       } catch (err) {
         console.error("❌ Failed to load potentials:", err);
       }
