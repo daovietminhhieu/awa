@@ -222,50 +222,45 @@ export default function ListOfSharedProgramms() {
 
                 <td data-label="Actions" className="actions-cell">
                   <div className="cell-inner">
-                    <select
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!value) return;
-                        
-                        const statusOptions = ["approve", "reject", "ongoing"];
-                        const stepOption = "steps";
-                        const paymentOption = "paid";
-                        
-                        switch (value) {
-                          case statusOptions.includes(value):  // Kiểm tra nếu `value` có trong mảng `statusOptions`
-                          handleUpdateStatus();
-                          break;
-                          
-                          case stepOption:
-                            handleUpdateSteps();
-                            break;
+                  <select
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (!value) return;
 
-                            case paymentOption:
-                            handleUpdatePayment(prog._id, prog.bonus);
-                            break;
+                      const statusOptions = ["approve", "reject", "ongoing"];
+                      const stepOptions = ["completed", "rejected"];
+                      const paymentOption = "paid";
 
-                          default:
-                            // Nếu không phải bất kỳ trường hợp nào trên
-                            console.log('Invalid option');
-                          }
-                          e.target.value = "";
-                          
-                      }}
-                    >
-                      <option value="">{t('admin.shared.select_placeholder') || '-- Select --'}</option>
-                      <optgroup label={t('admin.shared.group.status') || 'Status'}>
-                        <option value="approve">{t('admin.shared.option.approve') || 'Approve'}</option>
-                        <option value="reject">{t('admin.shared.option.reject') || 'Reject'}</option>
-                        <option value="ongoing">{t('admin.shared.option.ongoing') || 'Ongoing'}</option>
-                      </optgroup>
-                      <optgroup label={t('admin.shared.group.steps') || 'Steps'}>
-                        <option value="completed">{t('admin.shared.option.mark_completed') || 'Mark Completed'}</option>
-                        <option value="rejected">{t('admin.shared.option.mark_rejected') || 'Mark Rejected'}</option>
-                      </optgroup>
-                      <optgroup label={t('admin.shared.group.payment') || 'Payment'}>
-                        <option value="paid">{t('admin.shared.option.pay') || 'Pay'}</option>
-                      </optgroup>
-                    </select>
+                      if (statusOptions.includes(value)) {
+                        handleUpdateStatus(prog._id, value);
+                      } else if (stepOptions.includes(value)) {
+                        handleUpdateSteps(prog._id, value);
+                      } else if (value === paymentOption) {
+                        handleUpdatePayment(prog._id, prog.bonus);
+                      } else {
+                        console.log("Invalid option");
+                      }
+
+                      e.target.value = "";
+                    }}
+                  >
+                    <option value="">
+                      {t('admin.shared.select_placeholder') || '-- Select --'}
+                    </option>
+                    <optgroup label={t('admin.shared.group.status') || 'Status'}>
+                      <option value="approve">{t('admin.shared.option.approve') || 'Approve'}</option>
+                      <option value="reject">{t('admin.shared.option.reject') || 'Reject'}</option>
+                      <option value="ongoing">{t('admin.shared.option.ongoing') || 'Ongoing'}</option>
+                    </optgroup>
+                    <optgroup label={t('admin.shared.group.steps') || 'Steps'}>
+                      <option value="completed">{t('admin.shared.option.mark_completed') || 'Mark Completed'}</option>
+                      <option value="rejected">{t('admin.shared.option.mark_rejected') || 'Mark Rejected'}</option>
+                    </optgroup>
+                    <optgroup label={t('admin.shared.group.payment') || 'Payment'}>
+                      <option value="paid">{t('admin.shared.option.pay') || 'Pay'}</option>
+                    </optgroup>
+                  </select>
+
                   </div>
 
                  

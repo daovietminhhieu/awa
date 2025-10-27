@@ -136,6 +136,7 @@ export default function ProgrammOverview({ programm, role, to }) {
     console.log(programm._id);
       const res = await requestASharedLink(programm._id);
       console.log(res.data);
+      alert("Successfully shared this programm. Wait for candidate to wait and admin to confirm.");
   }
 
   return (
