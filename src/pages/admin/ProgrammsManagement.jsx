@@ -14,6 +14,7 @@ import FilterSearch from "../../components/FilterSearch";
 import "./ProgrammsManagement.css";
 import { useI18n } from "../../i18n";
 import Payments from "../../components/admin/management/programms/Payment";
+import TranslatableText from "../../TranslateableText";
 
 /* =========================================================
    🟢 ADD PROGRAM FORM
@@ -189,7 +190,7 @@ export function AddProgramForm({ onSubmit, onClose, defaultValues }) {
    ========================================================= */
 export default function ProgrammsManagement() {
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [programms, setProgramms] = useState([]);
   const [filteredProgramms, setFilteredProgramms] = useState([]);
   const [savedProgramsMap, setSavedProgramsMap] = useState({});
@@ -211,7 +212,9 @@ export default function ProgrammsManagement() {
       setProgramms(res.data || []);
       setFilteredProgramms(res.data || []);
     } catch {
-      setError(t("admin.programms.messages.failed_load") || "Failed to load programms");
+      setError(
+        t("admin.programms.messages.failed_load") || "Failed to load programms"
+      );
     }
     setLoading(false);
   };
@@ -233,11 +236,15 @@ export default function ProgrammsManagement() {
   const handleAddNewProgramm = async (newData) => {
     try {
       await addNewProgramm(newData);
-      alert(t("admin.programms.messages.added_success") || "✅ Added successfully");
+      alert(
+        t("admin.programms.messages.added_success") || "✅ Added successfully"
+      );
       setShowAddForm(false);
       loadProgramms();
     } catch {
-      alert(t("admin.programms.messages.added_failed") || "❌ Failed to add program");
+      alert(
+        t("admin.programms.messages.added_failed") || "❌ Failed to add program"
+      );
     }
   };
 
@@ -245,7 +252,8 @@ export default function ProgrammsManagement() {
     let result = [...programms];
 
     result = result.filter((p) => {
-      const matchType = !filters.type_category || p.type_category === filters.type_category;
+      const matchType =
+        !filters.type_category || p.type_category === filters.type_category;
       const matchLand = !filters.land || p.land === filters.land;
       const matchDeadline =
         !filters.deadline || new Date(p.deadline) <= new Date(filters.deadline);
@@ -280,17 +288,27 @@ export default function ProgrammsManagement() {
   };
 
   const savedProgramsList = programms.filter((p) => savedProgramsMap[p._id]);
-  const displayedProgramms = useMemo(() => filteredProgramms, [filteredProgramms]);
+  const displayedProgramms = useMemo(
+    () => filteredProgramms,
+    [filteredProgramms]
+  );
 
   const tabs = [
     { id: "my", label: t("admin.programms.tabs.my") || "My Programms" },
-    { id: "saved", label: t("admin.programms.tabs.saved") || "Saved Programms" },
-    { id: "shared", label: t("admin.programms.tabs.shared") || "Shared Programms" },
+    {
+      id: "saved",
+      label: t("admin.programms.tabs.saved") || "Saved Programms",
+    },
+    {
+      id: "shared",
+      label: t("admin.programms.tabs.shared") || "Shared Programms",
+    },
     { id: "payments", label: t("admin.programms.tabs.payment") || "Payment" },
   ];
 
   return (
     <div className="container">
+      {/* Tabs */}
       <div className="tabs">
         {tabs.map((tab) => (
           <div
@@ -298,11 +316,12 @@ export default function ProgrammsManagement() {
             className={`tab-item ${activePage === tab.id ? "active" : ""}`}
             onClick={() => setActivePage(tab.id)}
           >
-            {tab.label}
+            <TranslatableText text={tab.label} lang={lang} />
           </div>
         ))}
       </div>
 
+      {/* My Programms */}
       {activePage === "my" && (
         <div className="programs-section">
           <div className="programm-toolbar">
@@ -312,14 +331,35 @@ export default function ProgrammsManagement() {
               onSelectProgramm={handleSelectProgramm}
             />
             <button className="add-btn" onClick={() => setShowAddForm(true)}>
-              {t("admin.programms.toolbar.add_new") || "+ Add New Program"}
+              <TranslatableText
+                text={
+                  t("admin.programms.toolbar.add_new") || "+ Add New Program"
+                }
+                lang={lang}
+              />
             </button>
           </div>
 
-          {loading && <p>Loading...</p>}
-          {error && <p className="error-text">{error}</p>}
+          {loading && (
+            <p>
+              <TranslatableText text="Loading..." lang={lang} />
+            </p>
+          )}
+          {error && (
+            <p className="error-text">
+              <TranslatableText text={error} lang={lang} />
+            </p>
+          )}
           {!loading && displayedProgramms.length === 0 && (
-            <p>{t("admin.programms.messages.no_programms") || "No programms found"}</p>
+            <p>
+              <TranslatableText
+                text={
+                  t("admin.programms.messages.no_programms") ||
+                  "No programms found"
+                }
+                lang={lang}
+              />
+            </p>
           )}
 
           {!loading && displayedProgramms.length > 0 && (
@@ -327,6 +367,7 @@ export default function ProgrammsManagement() {
               programms={displayedProgramms}
               savedPrograms={savedProgramsMap}
               toggleSaveProgramm={toggleSaveProgramm}
+              lang={lang} // <-- truyền lang xuống ProgrammsList để dịch content động
             />
           )}
 
@@ -348,7 +389,12 @@ export default function ProgrammsManagement() {
                 bonus: "",
                 vacancies: "",
                 hired: "",
-                requirement: { age: "", health: "", education: "", certificate: "" },
+                requirement: {
+                  age: "",
+                  health: "",
+                  education: "",
+                  certificate: "",
+                },
                 details: { overview: "", other: "" },
                 is_active: "true",
                 type_category: "job",
@@ -359,15 +405,21 @@ export default function ProgrammsManagement() {
         </div>
       )}
 
+      {/* Saved Programms */}
       {activePage === "saved" && (
         <ProgrammsList
           programms={savedProgramsList}
           savedPrograms={savedProgramsMap}
           toggleSaveProgramm={toggleSaveProgramm}
+          lang={lang}
         />
       )}
-      {activePage === "shared" && <ListOfSharedProgramms />}
-      {activePage === "payments" && <Payments />}
+
+      {/* Shared Programms */}
+      {activePage === "shared" && <ListOfSharedProgramms lang={lang} />}
+
+      {/* Payments */}
+      {activePage === "payments" && <Payments lang={lang} />}
     </div>
   );
 }

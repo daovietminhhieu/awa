@@ -24,20 +24,26 @@ export default function ProgrammJourney({ programm }) {
         <table className="cost-table">
           <thead>
             <tr>
-              <th>{t("programm.detail.journey.costs.header_item") || "Khoản mục"}</th>
-              <th>{t("programm.detail.journey.costs.header_note") || "Ghi chú"}</th>
+              <th>
+                {t("programm.detail.journey.costs.header_item") || "Khoản mục"}
+              </th>
+              <th>
+                {t("programm.detail.journey.costs.header_note") || "Ghi chú"}
+              </th>
             </tr>
           </thead>
           <tbody>
-            {Object.entries(t("programm.detail.journey.costs")).map(([key, value]) => {
-              if (key === "note") return null; // skip note object
-              return (
-                <tr key={key}>
-                  <td>{value}</td>
-                  <td>{t(`programm.detail.journey.costs.note.${key}`)}</td>
-                </tr>
-              );
-            })}
+            {Object.entries(t("programm.detail.journey.costs")).map(
+              ([key, value]) => {
+                if (key === "note") return null; // skip note object
+                return (
+                  <tr key={key}>
+                    <td>{value}</td>
+                    <td>{t(`programm.detail.journey.costs.note.${key}`)}</td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
         <p style={{ marginTop: "10px", fontStyle: "italic" }}>

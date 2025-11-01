@@ -3,7 +3,7 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import "./PostEditor.css";
 import { upFileToStorage } from "../api";
-
+import { useI18n } from "../i18n";
 export default function PostEditor({ onSave }) {
   const [type, setType] = useState("success_story");
   const [title, setTitle] = useState("");
@@ -14,7 +14,7 @@ export default function PostEditor({ onSave }) {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [eventDate, setEventDate] = useState("");
-
+  const { t } = useI18n();
   const fileInputRef = useRef(null);
 
   // 🟩 Khi chọn file (ảnh hoặc video)
@@ -90,17 +90,19 @@ export default function PostEditor({ onSave }) {
 
   return (
     <form className="post-editor" onSubmit={handleSubmit}>
-      <h2 className="post-editor-title">📝 New Post</h2>
+      <h2 className="post-editor-title">📝{t("post.new_post")} </h2>
 
       <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="success_story">Success Story</option>
-        <option value="career_tip">Career Tip</option>
-        <option value="upcoming_event">Upcoming Event</option>
+        <option value="success_story">{t("post.post_type.success")}</option>
+        <option value="career_tip">{t("post.post_type.career_tip")}</option>
+        <option value="upcoming_event">
+          {t("post.post_type.coming_event")}
+        </option>
       </select>
 
       <input
         className="post-title-input"
-        placeholder="Title"
+        placeholder={t("post.title")}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
@@ -171,7 +173,7 @@ export default function PostEditor({ onSave }) {
 
       <div className="editor-actions">
         <button type="submit" disabled={uploading}>
-          {uploading ? "Đang tải file..." : "Đăng bài"}
+          {uploading ? t("post.uploading") : t("post.upload")}
         </button>
       </div>
     </form>

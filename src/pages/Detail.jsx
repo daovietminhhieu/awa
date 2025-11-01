@@ -7,7 +7,7 @@ import ProgrammJourney from "../components/ProgrammJourney";
 import ProgrammPartner from "../components/ProgrammPartner";
 import { useI18n } from "../i18n";
 
-export default function ProgrammDetail({role}) {
+export default function ProgrammDetail({ role }) {
   const { id } = useParams();
   const [programm, setProgramm] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ export default function ProgrammDetail({role}) {
     async function fetchProgramm() {
       try {
         const res = await getProgrammById(id);
-        if (!res.success) throw new Error(t('programm.detail.not_found'));
+        if (!res.success) throw new Error(t("programm.detail.not_found"));
         setProgramm(res.data);
       } catch (err) {
         setError(err.message || "Có lỗi xảy ra");
@@ -30,15 +30,43 @@ export default function ProgrammDetail({role}) {
     fetchProgramm();
   }, [id]);
 
-  if (loading) return <p style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</p>;
+  if (loading)
+    return (
+      <p
+        style={{
+          maxWidth: "900px",
+          height: "600px",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {t("programm.detail.loading_programm")}
+      </p>
+    );
   //if (error) return <p style={{ color: "red" }}>❌ {error}</p>;
-  if (!programm) return <p style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</p>;
+  if (!programm)
+    return (
+      <p
+        style={{
+          maxWidth: "900px",
+          height: "600px",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {t("programm.detail.loading_programm")}
+      </p>
+    );
 
   return (
-      <div className="programm-detail column-layout">
-        <ProgrammOverview programm={programm} role={role} />
-        <ProgrammJourney programm={programm} />
-        <ProgrammPartner programm={programm} />
-      </div>
+    <div className="programm-detail column-layout">
+      <ProgrammOverview programm={programm} role={role} />
+      <ProgrammJourney programm={programm} />
+      <ProgrammPartner programm={programm} />
+    </div>
   );
 }

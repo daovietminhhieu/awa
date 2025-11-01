@@ -1,16 +1,19 @@
 import { useLocation, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { getProgrammById } from "../../api"; // giả sử bạn có api này để lấy detail theo id
+import { getProgrammById } from "../../api";
 import "./ProgrammsDetail.css";
 import ProgrammDetail from "../Detail";
+import { useI18n } from "../../i18n";
 
 export default function ProgrammsDetail() {
+  // 1. Call useI18n FIRST, before any other hooks
+  const { t } = useI18n();
+
+  // 2. Then call other hooks
   const location = useLocation();
   const { id } = useParams();
 
-  // Nếu đã được truyền programm qua location.state thì dùng luôn
   const initialProgramm = location.state?.programm;
-
   const [programm, setProgramm] = useState(initialProgramm);
   const [loading, setLoading] = useState(!initialProgramm);
   const [error, setError] = useState(null);
@@ -31,10 +34,9 @@ export default function ProgrammsDetail() {
   }, [id, programm]);
 
   if (loading) return <p>Loading programm detail...</p>;
-  if (error) return <p style={{color: 'red'}}>{`Error: ${error}`}</p>;
-  if (!programm) return <p>{useI18n().t('admin.programms.no_selected') || 'No programm selected'}</p>;
+  if (error) return <p style={{ color: "red" }}>{`Error: ${error}`}</p>;
+  if (!programm)
+    return <p>{t("admin.programms.no_selected") || "No programm selected"}</p>;
 
-  return (
-      <ProgrammDetail role="admin"/>
-  );
+  return <ProgrammDetail role="admin" programm={programm} />;
 }

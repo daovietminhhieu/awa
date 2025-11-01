@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import './Short.css'
+import "./Short.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useI18n } from "../i18n";
 import ReactQuill from "react-quill-new";
@@ -50,7 +50,7 @@ export function SuccessStories() {
 
   const toggleExpand = (id) => {
     setStories((prev) =>
-    prev.map((story) =>
+      prev.map((story) =>
         story._id === id ? { ...story, expanded: !story.expanded } : story
       )
     );
@@ -100,7 +100,9 @@ export function SuccessStories() {
       await updatePost(id, updates);
       alert("Cập nhật thành công!");
       setStories((prev) =>
-        prev.map((story) => (story._id === id ? { ...story, ...updates } : story))
+        prev.map((story) =>
+          story._id === id ? { ...story, ...updates } : story
+        )
       );
       setEditingStory(null);
     } catch (err) {
@@ -123,7 +125,8 @@ export function SuccessStories() {
     if (!url) return null;
     const ext = url.split(".").pop().toLowerCase().split(/\#|\?/)[0];
     if (["mp4", "webm", "ogg"].includes(ext)) return "video";
-    if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)) return "image";
+    if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext))
+      return "image";
     return null;
   }
 
@@ -148,16 +151,27 @@ export function SuccessStories() {
                 <h2 className="section-stories-title">
                   🎓 {t("short.stories.title") || "Câu chuyện thành công"}
                 </h2>
-          
+
                 {currentUser?.role === "recruiter" && (
-                  <div style={{ display: "flex", textAlign: "right", marginBottom: "10px", gap: "5px" }}>
-                  <button onClick={() => startEdit({ _id, title, content, thumbnail_url })}>
-                    📝 Edit
-                  </button>
-                  <button onClick={() => handleRemoveSuccessStories(_id)}>
-                    ❌ Remove
-                  </button>
-                </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      textAlign: "right",
+                      marginBottom: "10px",
+                      gap: "5px",
+                    }}
+                  >
+                    <button
+                      onClick={() =>
+                        startEdit({ _id, title, content, thumbnail_url })
+                      }
+                    >
+                      📝 Edit
+                    </button>
+                    <button onClick={() => handleRemoveSuccessStories(_id)}>
+                      ❌ Remove
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -179,18 +193,23 @@ export function SuccessStories() {
                           controls
                           className="story-media"
                           onError={(e) => {
-                            e.target.outerHTML = '<img src="https://placehold.co/600x400?text=No+Video" class="story-media" />';
+                            e.target.outerHTML =
+                              '<img src="https://placehold.co/600x400?text=No+Video" class="story-media" />';
                           }}
                         />
                       );
                     }
                     return (
                       <img
-                        src={thumbnail_url || "https://placehold.co/600x400?text=No+Image"}
+                        src={
+                          thumbnail_url ||
+                          "https://placehold.co/600x400?text=No+Image"
+                        }
                         alt={title}
                         className="story-media"
                         onError={(e) =>
-                          (e.target.src = "https://placehold.co/600x400?text=No+Image")
+                          (e.target.src =
+                            "https://placehold.co/600x400?text=No+Image")
                         }
                       />
                     );
@@ -202,7 +221,9 @@ export function SuccessStories() {
                     className="story-title clickable"
                     onClick={() =>
                       navigate(`/success-story-detail/${_id}`, {
-                        state: { story: { _id, title, content, thumbnail_url } },
+                        state: {
+                          story: { _id, title, content, thumbnail_url },
+                        },
                       })
                     }
                   >
@@ -245,7 +266,7 @@ export function SuccessStories() {
                   }}
                   className="edit-form"
                   style={{
-                    alignSelf:"center",
+                    alignSelf: "center",
                     marginTop: "20px",
                     background: "#f9f9f9",
                     padding: "15px",
@@ -258,7 +279,9 @@ export function SuccessStories() {
                     <input
                       type="text"
                       value={editData.title}
-                      onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                      onChange={(e) =>
+                        setEditData({ ...editData, title: e.target.value })
+                      }
                       required
                       style={{ width: "100%", padding: "8px" }}
                     />
@@ -268,7 +291,9 @@ export function SuccessStories() {
                     <ReactQuill
                       theme="snow"
                       value={editData.content}
-                      onChange={(val) => setEditData({ ...editData, content: val })}
+                      onChange={(val) =>
+                        setEditData({ ...editData, content: val })
+                      }
                       style={{ backgroundColor: "white" }}
                     />
                   </div>
@@ -285,9 +310,17 @@ export function SuccessStories() {
                     {editData.thumbnail_url && (
                       <>
                         {fileType === "video" ? (
-                          <video src={editData.thumbnail_url} controls width="240" />
+                          <video
+                            src={editData.thumbnail_url}
+                            controls
+                            width="240"
+                          />
                         ) : (
-                          <img src={editData.thumbnail_url} alt="preview" width="220" />
+                          <img
+                            src={editData.thumbnail_url}
+                            alt="preview"
+                            width="220"
+                          />
                         )}
                       </>
                     )}
@@ -308,11 +341,7 @@ export function SuccessStories() {
       </Swiper>
     </section>
   );
-
 }
-
-
-
 
 import { useLocation } from "react-router-dom";
 
@@ -324,35 +353,49 @@ export function DetailSuccessStory() {
   const story = location.state?.story;
   const render = null;
 
-  if (!story) return <p>{t('short.not_found_story')}</p>;
+  if (!story) return <p>{t("short.not_found_story")}</p>;
 
   return (
     <>
-      <h3 style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</h3>
-      {render && <>
-        <section className="detail-story section">
-          <button onClick={() => navigate(-1)} className="back-btn">
-            {t('short.back')}
-          </button>
-          <div className="detail-card">
-            <img src={story.imageUrl} alt={story.title} className="detail-image" />
-            <h2 className="detail-title">{story.title}</h2>
-            <p className="detail-desc">{story.description}</p>
-          </div>
-        </section>
-      </>}
-    
+      <h3
+        style={{
+          maxWidth: "900px",
+          height: "600px",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {t("programm.detail.loading_programm")}
+      </h3>
+      {render && (
+        <>
+          <section className="detail-story section">
+            <button onClick={() => navigate(-1)} className="back-btn">
+              {t("short.back")}
+            </button>
+            <div className="detail-card">
+              <img
+                src={story.imageUrl}
+                alt={story.title}
+                className="detail-image"
+              />
+              <h2 className="detail-title">{story.title}</h2>
+              <p className="detail-desc">{story.description}</p>
+            </div>
+          </section>
+        </>
+      )}
     </>
   );
 }
 
-
-
 export function WhyChoose() {
   const { t } = useI18n();
-  const reasonData = t('short.why_choose.reasons', { returnObjects: true });
+  const reasonData = t("short.why_choose.reasons", { returnObjects: true });
 
-// Nếu reasonData không phải là mảng, gán mảng rỗng để tránh lỗi
+  // Nếu reasonData không phải là mảng, gán mảng rỗng để tránh lỗi
   const reasons = Array.isArray(reasonData)
     ? reasonData.map((reason, idx) => ({
         ...reason,
@@ -360,10 +403,11 @@ export function WhyChoose() {
       }))
     : [];
 
-
   return (
     <section className="why-choose section">
-      <h2 className="section-title">{t('short.why_choose.title') || 'Why choose Alowork.com?'}</h2>
+      <h2 className="section-title">
+        {t("short.why_choose.title") || "Why choose Alowork.com?"}
+      </h2>
       <div className="reasons-grid">
         {reasons.map(({ title, description, icon }, idx) => (
           <div key={idx} className="reason-card">
@@ -389,18 +433,13 @@ export function Partner() {
   return (
     <section className="partner-section">
       <div className="partner-inner">
-        <h2 className="partner-title">
-          {t("short.partners.title")}
-        </h2>
+        <h2 className="partner-title">{t("short.partners.title")}</h2>
 
         <p className="partner-desc">
           {t("short.partners.become_collaborator_desc")}
         </p>
 
-        <button
-          onClick={handleContactClick}
-          className="partner-cta-btn"
-        >
+        <button onClick={handleContactClick} className="partner-cta-btn">
           {t("short.partners.contact_now") || "Contact now"}
         </button>
       </div>
@@ -408,9 +447,13 @@ export function Partner() {
   );
 }
 
-
 import Footer from "./Footer";
-import { getPostsByType, removePost, updatePost, upFileToStorage } from "../api";
+import {
+  getPostsByType,
+  removePost,
+  updatePost,
+  upFileToStorage,
+} from "../api";
 import { useAuth } from "../context/AuthContext";
 
 export function PartnerDetail() {
@@ -453,9 +496,6 @@ export function PartnerDetail() {
     </div>
   );
 }
-
-
-
 
 export function TipsAndEventsSection() {
   const navigate = useNavigate();
@@ -664,7 +704,11 @@ export function TipsAndEventsSection() {
                     gap: "5px",
                   }}
                 >
-                  <button onClick={() => startEditTip({ _id, title, content, thumbnail_url })}>
+                  <button
+                    onClick={() =>
+                      startEditTip({ _id, title, content, thumbnail_url })
+                    }
+                  >
                     📝
                   </button>
                   <button onClick={() => handleRemoveTip(_id)}>❌</button>
@@ -692,7 +736,10 @@ export function TipsAndEventsSection() {
                       type="text"
                       value={editTipData.title}
                       onChange={(e) =>
-                        setEditTipData({ ...editTipData, title: e.target.value })
+                        setEditTipData({
+                          ...editTipData,
+                          title: e.target.value,
+                        })
                       }
                       required
                       style={{ width: "100%", padding: "8px" }}
@@ -703,7 +750,9 @@ export function TipsAndEventsSection() {
                     <ReactQuill
                       theme="snow"
                       value={editTipData.content}
-                      onChange={(val) => setEditTipData({ ...editTipData, content: val })}
+                      onChange={(val) =>
+                        setEditTipData({ ...editTipData, content: val })
+                      }
                       style={{ backgroundColor: "white" }}
                     />
                   </div>
@@ -718,7 +767,9 @@ export function TipsAndEventsSection() {
                     {uploading && <p>Đang tải lên...</p>}
                     {editTipData.thumbnail_url && (
                       <>
-                        {editTipData.thumbnail_url.match(/\.(mp4|webm|ogg)$/i) ? (
+                        {editTipData.thumbnail_url.match(
+                          /\.(mp4|webm|ogg)$/i
+                        ) ? (
                           <video
                             src={editTipData.thumbnail_url}
                             controls
@@ -759,154 +810,168 @@ export function TipsAndEventsSection() {
       <div className="event-section" style={{ marginTop: "40px" }}>
         <h2 className="section-title">{t("short.events")}</h2>
         <div className="stories-grid">
-          {events.map(({ _id, title, location, createdAt, thumbnail_url }, idx) => (
-            <div
-              key={_id}
-              className="story-card"
-              style={{ cursor: "pointer", position: "relative" }}
-            >
-              <img src={thumbnail_url} alt={title} loading="lazy" />
-              <h3 style={{ textAlign: "center" }}>{title}</h3>
-              <p style={{ textAlign: "center" }}>
-                <strong>{t("short.event-location")}:</strong> {location}
-              </p>
-              <p style={{ textAlign: "center" }}>
-                <strong>{t("short.event-date")}:</strong>{" "}
-                {new Date(createdAt).toLocaleDateString("vi-VN", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                })}
-              </p>
+          {events.map(
+            ({ _id, title, location, createdAt, thumbnail_url }, idx) => (
+              <div
+                key={_id}
+                className="story-card"
+                style={{ cursor: "pointer", position: "relative" }}
+              >
+                <img src={thumbnail_url} alt={title} loading="lazy" />
+                <h3 style={{ textAlign: "center" }}>{title}</h3>
+                <p style={{ textAlign: "center" }}>
+                  <strong>{t("short.event-location")}:</strong> {location}
+                </p>
+                <p style={{ textAlign: "center" }}>
+                  <strong>{t("short.event-date")}:</strong>{" "}
+                  {new Date(createdAt).toLocaleDateString("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })}
+                </p>
 
-              {/* Chức năng chỉnh sửa & xóa chỉ cho recruiter */}
-              {currentUser?.role === "recruiter" && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "5px",
-                    right: "5px",
-                    display: "flex",
-                    gap: "5px",
-                  }}
-                >
-                  <button
-                    onClick={() =>
-                      startEditEvent({ _id, title, location, createdAt, thumbnail_url })
-                    }
+                {/* Chức năng chỉnh sửa & xóa chỉ cho recruiter */}
+                {currentUser?.role === "recruiter" && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "5px",
+                      right: "5px",
+                      display: "flex",
+                      gap: "5px",
+                    }}
                   >
-                    📝
-                  </button>
-                  <button onClick={() => handleRemoveEvent(_id)}>❌</button>
-                </div>
-              )}
-
-              {/* Form chỉnh sửa event */}
-              {editingEventId === _id && (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleUpdateEvent(_id);
-                  }}
-                  style={{
-                    marginTop: "10px",
-                    background: "#f9f9f9",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Tiêu đề:</label>
-                    <input
-                      type="text"
-                      value={editEventData.title}
-                      onChange={(e) =>
-                        setEditEventData({ ...editEventData, title: e.target.value })
-                      }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Địa điểm:</label>
-                    <input
-                      type="text"
-                      value={editEventData.location}
-                      onChange={(e) =>
-                        setEditEventData({ ...editEventData, location: e.target.value })
-                      }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Ngày tổ chức:</label>
-                    <input
-                      type="date"
-                      value={editEventData.createdAt.slice(0, 10)} // format yyyy-mm-dd
-                      onChange={(e) =>
-                        setEditEventData({
-                          ...editEventData,
-                          createdAt: e.target.value,
+                    <button
+                      onClick={() =>
+                        startEditEvent({
+                          _id,
+                          title,
+                          location,
+                          createdAt,
+                          thumbnail_url,
                         })
                       }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Upload ảnh/video mới:</label>
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      onChange={(e) => handleFileChange(e, "event")}
-                      ref={fileInputRef}
-                    />
-                    {uploading && <p>Đang tải lên...</p>}
-                    {editEventData.thumbnail_url && (
-                      <>
-                        {editEventData.thumbnail_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                          <video
-                            src={editEventData.thumbnail_url}
-                            controls
-                            width="240"
-                            style={{ marginTop: "10px" }}
-                          />
-                        ) : (
-                          <img
-                            src={editEventData.thumbnail_url}
-                            alt="preview"
-                            width="220"
-                            style={{ marginTop: "10px" }}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button type="submit" disabled={uploading}>
-                      💾 {uploading ? "Đang lưu..." : "Lưu lại"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEditingEventId(null)}
-                      disabled={uploading}
                     >
-                      ❌ Hủy
+                      📝
                     </button>
+                    <button onClick={() => handleRemoveEvent(_id)}>❌</button>
                   </div>
-                </form>
-              )}
-            </div>
-          ))}
+                )}
+
+                {/* Form chỉnh sửa event */}
+                {editingEventId === _id && (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleUpdateEvent(_id);
+                    }}
+                    style={{
+                      marginTop: "10px",
+                      background: "#f9f9f9",
+                      padding: "15px",
+                      borderRadius: "8px",
+                      boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                    }}
+                  >
+                    <div style={{ marginBottom: "10px" }}>
+                      <label>Tiêu đề:</label>
+                      <input
+                        type="text"
+                        value={editEventData.title}
+                        onChange={(e) =>
+                          setEditEventData({
+                            ...editEventData,
+                            title: e.target.value,
+                          })
+                        }
+                        required
+                        style={{ width: "100%", padding: "8px" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: "10px" }}>
+                      <label>Địa điểm:</label>
+                      <input
+                        type="text"
+                        value={editEventData.location}
+                        onChange={(e) =>
+                          setEditEventData({
+                            ...editEventData,
+                            location: e.target.value,
+                          })
+                        }
+                        required
+                        style={{ width: "100%", padding: "8px" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: "10px" }}>
+                      <label>Ngày tổ chức:</label>
+                      <input
+                        type="date"
+                        value={editEventData.createdAt.slice(0, 10)} // format yyyy-mm-dd
+                        onChange={(e) =>
+                          setEditEventData({
+                            ...editEventData,
+                            createdAt: e.target.value,
+                          })
+                        }
+                        required
+                        style={{ width: "100%", padding: "8px" }}
+                      />
+                    </div>
+                    <div style={{ marginBottom: "10px" }}>
+                      <label>Upload ảnh/video mới:</label>
+                      <input
+                        type="file"
+                        accept="image/*,video/*"
+                        onChange={(e) => handleFileChange(e, "event")}
+                        ref={fileInputRef}
+                      />
+                      {uploading && <p>Đang tải lên...</p>}
+                      {editEventData.thumbnail_url && (
+                        <>
+                          {editEventData.thumbnail_url.match(
+                            /\.(mp4|webm|ogg)$/i
+                          ) ? (
+                            <video
+                              src={editEventData.thumbnail_url}
+                              controls
+                              width="240"
+                              style={{ marginTop: "10px" }}
+                            />
+                          ) : (
+                            <img
+                              src={editEventData.thumbnail_url}
+                              alt="preview"
+                              width="220"
+                              style={{ marginTop: "10px" }}
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                      <button type="submit" disabled={uploading}>
+                        💾 {uploading ? "Đang lưu..." : "Lưu lại"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setEditingEventId(null)}
+                        disabled={uploading}
+                      >
+                        ❌ Hủy
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            )
+          )}
         </div>
       </div>
     </section>
   );
 }
-
-
 
 // Chi tiết cẩm nang nghề nghiệp
 export function TipDetail() {
@@ -917,30 +982,35 @@ export function TipDetail() {
     {
       id: "1",
       title: "Cách viết CV nổi bật",
-      description: "Những mẹo đơn giản để tạo một bản CV ấn tượng trong mắt nhà tuyển dụng.",
+      description:
+        "Những mẹo đơn giản để tạo một bản CV ấn tượng trong mắt nhà tuyển dụng.",
       imageUrl: "https://source.unsplash.com/600x400/?cv,resume",
     },
     {
       id: "2",
       title: "Phỏng vấn thành công",
-      description: "Chuẩn bị và ứng xử đúng cách để ghi điểm tuyệt đối trong buổi phỏng vấn.",
+      description:
+        "Chuẩn bị và ứng xử đúng cách để ghi điểm tuyệt đối trong buổi phỏng vấn.",
       imageUrl: "https://source.unsplash.com/600x400/?interview,job",
     },
     {
       id: "3",
       title: "Kỹ năng mềm quan trọng",
-      description: "Phát triển kỹ năng giao tiếp, làm việc nhóm và quản lý thời gian hiệu quả.",
+      description:
+        "Phát triển kỹ năng giao tiếp, làm việc nhóm và quản lý thời gian hiệu quả.",
       imageUrl: "https://source.unsplash.com/600x400/?skills,communication",
     },
   ];
 
-  const tip = tips.find(t => t.id === tipId);
+  const tip = tips.find((t) => t.id === tipId);
 
-  if (!tip) return <p>{useI18n().t('short.not_found_story')}</p>;
+  if (!tip) return <p>{t("short.not_found_story")}</p>;
 
   return (
     <section className="detail-tip section">
-      <button onClick={() => navigate(-1)} className="back-btn">{useI18n().t('short.back')}</button>
+      <button onClick={() => navigate(-1)} className="back-btn">
+        {t("short.back")}
+      </button>
       <div className="detail-card">
         <img src={tip.imageUrl} alt={tip.title} className="detail-image" />
         <h2 className="detail-title">{tip.title}</h2>
@@ -961,7 +1031,8 @@ export function EventDetail() {
       title: "Hội thảo định hướng nghề nghiệp 2025",
       date: "20/10/2025",
       location: "TP.HCM",
-      description: "Tham gia hội thảo để định hướng phát triển sự nghiệp trong tương lai.",
+      description:
+        "Tham gia hội thảo để định hướng phát triển sự nghiệp trong tương lai.",
       imageUrl: "https://source.unsplash.com/600x400/?career,event",
     },
     {
@@ -969,31 +1040,35 @@ export function EventDetail() {
       title: "Workshop viết CV chuyên nghiệp",
       date: "10/11/2025",
       location: "Hà Nội",
-      description: "Học cách viết CV chuyên nghiệp để gây ấn tượng với nhà tuyển dụng.",
+      description:
+        "Học cách viết CV chuyên nghiệp để gây ấn tượng với nhà tuyển dụng.",
       imageUrl: "https://source.unsplash.com/600x400/?workshop,resume",
     },
   ];
 
-  const event = events.find(e => e.id === eventId);
+  const event = events.find((e) => e.id === eventId);
 
-  if (!event) return <p>{useI18n().t('short.not_found_story')}</p>;
+  if (!event) return <p>{t("short.not_found_story")}</p>;
 
   return (
     <section className="detail-event section">
-      <button onClick={() => navigate(-1)} className="back-btn">{useI18n().t('short.back')}</button>
+      <button onClick={() => navigate(-1)} className="back-btn">
+        {t("short.back")}
+      </button>
       <div className="detail-card">
         <img src={event.imageUrl} alt={event.title} className="detail-image" />
         <h2 className="detail-title">{event.title}</h2>
-        <p><strong>Thời gian:</strong> {event.date}</p>
-        <p><strong>Địa điểm:</strong> {event.location}</p>
+        <p>
+          <strong>Thời gian:</strong> {event.date}
+        </p>
+        <p>
+          <strong>Địa điểm:</strong> {event.location}
+        </p>
         <p className="detail-desc">{event.description}</p>
       </div>
     </section>
   );
 }
-
-
-
 
 export function BecomeCollaborator() {
   const [showPopup, setShowPopup] = useState(false);
@@ -1020,12 +1095,14 @@ export function BecomeCollaborator() {
         border: "1px solid #ddd",
         borderRadius: "8px",
         textAlign: "center",
-        background:"linear-gradient(135deg, #e3f2fd, #f9fbff)",
+        background: "linear-gradient(135deg, #e3f2fd, #f9fbff)",
         transition: "transform 0.3s ease, box-shadow 0.3s ease",
       }}
     >
-      <h2 className="section-becomecollab-title">{t('short.become_collaborator.title')}</h2>
-      <p>{t('short.become_collaborator.description')}</p>
+      <h2 className="section-becomecollab-title">
+        {t("short.become_collaborator.title")}
+      </h2>
+      <p>{t("short.become_collaborator.description")}</p>
       <button
         onClick={handleRegisterClick}
         style={{
@@ -1038,7 +1115,7 @@ export function BecomeCollaborator() {
           borderRadius: "5px",
         }}
       >
-        {t('short.become_collaborator.register_now')}
+        {t("short.become_collaborator.register_now")}
       </button>
 
       {showPopup && (
@@ -1056,8 +1133,11 @@ export function BecomeCollaborator() {
             maxWidth: "300px",
           }}
         >
-          <strong>{t('short.become_collaborator.greeting') || 'Hello!'}</strong>
-          <p>{t('short.become_collaborator.popup_text') || 'Do you want to become a collaborator? Click Signup now to join!'}</p>
+          <strong>{t("short.become_collaborator.greeting") || "Hello!"}</strong>
+          <p>
+            {t("short.become_collaborator.popup_text") ||
+              "Do you want to become a collaborator? Click Signup now to join!"}
+          </p>
           <button
             onClick={handleRegisterClick}
             style={{
@@ -1070,7 +1150,7 @@ export function BecomeCollaborator() {
               marginRight: "10px",
             }}
           >
-            {t('short.become_collaborator.register_now')}
+            {t("short.become_collaborator.register_now")}
           </button>
           <button
             onClick={() => setShowPopup(false)}
@@ -1082,12 +1162,10 @@ export function BecomeCollaborator() {
               cursor: "pointer",
             }}
           >
-            {t('short.become_collaborator.close')}
+            {t("short.become_collaborator.close")}
           </button>
         </div>
       )}
     </section>
   );
 }
-
-

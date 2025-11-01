@@ -1,9 +1,25 @@
 /* ===========================
    🎯 LAYOUT TỔNG THỂ
 =========================== */
-.programm-detail { display: flex; flex-direction: column; margin-top: 20px; background: #fafafa; color: #222; font-family: "Inter", sans-serif; }
-.programm-detail-header { display: flex; flex-direction: column; margin: 25px 2rem 0 2rem; }
-.programm-detail-header h1 { margin: 0; font-size: 1.8rem; font-weight: 600; color: #FFA500; }
+.programm-detail {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  background: #fafafa;
+  color: #222;
+  font-family: "Inter", sans-serif;
+}
+.programm-detail-header {
+  display: flex;
+  flex-direction: column;
+  margin: 25px 2rem 0 2rem;
+}
+.programm-detail-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #ffa500;
+}
 
 /* Hiển thị 3 component xếp dọc 1 cột */
 .column-layout {
@@ -21,7 +37,6 @@
   padding: 24px;
 }
 
-
 /* ===========================
    🏷️ TAGS / SLIDER TỰ ĐỘNG + MANUAL
 =========================== */
@@ -35,38 +50,52 @@
   cursor: grab;
   user-select: none;
   -webkit-overflow-scrolling: touch;
-  animation: autoScroll 60s linear infinite;
 }
-.programm-tags-slider::-webkit-scrollbar { display: none; }
-.programm-tags-slider:hover { animation-play-state: paused; }
-
-.tag {
-  flex: 0 0 auto;
-  background: rgba(0,0,0,0.05);
-  border-radius: 6px;
-  font-size: 0.85rem;
-  padding: 4px 10px;
-  white-space: nowrap;
-  color: #374151;
-  cursor: default;
-  transition: transform 0.2s ease;
+.programm-tags-slider::-webkit-scrollbar {
+  display: none;
 }
-.tag:hover { transform: scale(1.05); }
 
 .programm-tags-special {
   display: flex;
   gap: 5px;
 }
-@keyframes autoScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.tags-track {
+  display: flex;
+  gap: 8px;
+  will-change: transform; /* tối ưu animation */
+  animation: scrollLeft 36s linear infinite;
 }
 
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  } /* duplicate nội dung track */
+}
+.programm-tags-slider:hover .tags-track {
+  animation-play-state: paused;
+}
+
+.tag {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
 /* ===========================
    PHẦN THÂN, FORM, INFO BOXES...
 =========================== */
 /* giữ nguyên toàn bộ CSS body, sidebar, form... như bản bạn gửi trước */
-
 
 /* ===========================
    🧱 PHẦN THÂN CHÍNH
@@ -91,7 +120,6 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   min-width: 250px;
 }
-
 
 /* ===========================
    📄 FORM ỨNG TUYỂN GỌN NHẸ
@@ -129,7 +157,7 @@
 .apply-form input:focus,
 .apply-form textarea:focus {
   outline: none;
-  border-color: #FFA500;
+  border-color: #ffa500;
   background: #fff;
 }
 
@@ -141,7 +169,7 @@
 }
 
 .apply-form button {
-  background: #FFA500;
+  background: #ffa500;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -153,13 +181,13 @@
 }
 
 .apply-form button:hover {
-  background: #FFA500;
+  background: #ffa500;
 }
 
 .section h2 {
   margin-bottom: 0.8rem;
   font-size: 1.15rem;
-  color: #FFA500;
+  color: #ffa500;
   font-weight: 600;
 }
 
@@ -175,6 +203,9 @@
 
 .info-box {
   flex: 1;
+  display: flex; /* thêm */
+  flex-direction: column; /* sắp xếp các dòng dọc */
+  row-gap: 4px; /* khoảng cách giữa các dòng */
   background: #f9fafb;
   border-radius: 8px;
   padding: 1rem;
@@ -182,20 +213,22 @@
   border: 1px solid #e5e7eb;
 }
 
-
 /* ===========================
    🧾 NỘI DUNG CHƯƠNG TRÌNH
 =========================== */
 .programm-main section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* khoảng cách giữa các dòng */
   margin-bottom: 2rem;
+  font-size: 1.1rem;
 }
 
 .programm-main h2 {
-  color: #FFA500;
+  color: #ffa500;
   margin-bottom: 0.75rem;
   font-weight: 600;
 }
-
 
 /* ===========================
    🧭 LỘ TRÌNH CHƯƠNG TRÌNH
@@ -214,8 +247,7 @@
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 1.8rem;
-  color: #FFA500;
-
+  color: #ffa500;
 }
 
 .journey-detail section {
@@ -225,7 +257,7 @@
 .journey-detail h3 {
   font-size: 1.2rem;
   margin-bottom: 0.8rem;
-  color: #FFA500;
+  color: #ffa500;
   font-weight: 600;
 }
 
@@ -284,7 +316,6 @@
   color: #374151;
 }
 
-
 /* ===========================
    🤝 THÔNG TIN ĐỐI TÁC
 =========================== */
@@ -301,7 +332,7 @@
 .partner-programm-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #FFA500;
+  color: #ffa500;
   margin-bottom: 1.5rem;
 }
 
@@ -342,14 +373,14 @@
 
 .partner-description {
   background: #f0f9ff;
-  border-left: 4px solid #FFA500;
+  border-left: 4px solid #ffa500;
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 2rem;
 }
 
 .partner-description h4 {
-  color: #FFA500;
+  color: #ffa500;
   font-weight: 600;
   margin-bottom: 6px;
 }
@@ -365,7 +396,7 @@
 
 .partner-reviews-container h2 {
   font-size: 1.2rem;
-  color: #FFA500;
+  color: #ffa500;
   margin-bottom: 12px;
   font-weight: 600;
 }
@@ -394,7 +425,7 @@
 }
 
 .footer-btn {
-  background: #FFA500;
+  background: #ffa500;
   color: white;
   border: none;
   border-radius: 8px;
@@ -407,12 +438,13 @@
 }
 
 .footer-btn:hover {
-  background: #FFA500;
+  background: #ffa500;
   transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
-  .journey-detail, .partner-programm-container {
+  .journey-detail,
+  .partner-programm-container {
     padding: 20px;
     margin: 1rem;
   }
@@ -494,9 +526,9 @@
   margin-top: 6px;
   background: #f0f9ff;
   padding: 6px 10px;
-  border-left: 3px solid #FFA500;
+  border-left: 3px solid #ffa500;
   border-radius: 6px;
-  color: #FFA500;
+  color: #ffa500;
 }
 
 .review-date {
@@ -543,7 +575,7 @@
 }
 
 .footer-btn {
-  background: #FFA500;
+  background: #ffa500;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -554,12 +586,12 @@
 }
 
 .footer-btn:hover {
-  background: #FFA500;
+  background: #ffa500;
   transform: translateY(-1px);
 }
 
 .footer-btn.active {
-  background: #FFA500;
+  background: #ffa500;
   color: #fff;
 }
 

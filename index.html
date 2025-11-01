@@ -1,45 +1,15 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google" content="notranslate" />
     <title>AloWork</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
+    <!-- Google Translate -->
     <div id="root"></div>
-
-    <!-- Google Translate container -->
-    <!-- <div id="google_translate_element" style="display: none;"></div> -->
-
-    <!-- Google Translate API -->
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {
-            pageLanguage: "auto",
-            includedLanguages: "vi,en,de",
-          },
-          "google_translate_element"
-        );
-      }
-    </script>
-
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-    <script>
-      // 🔹 Chỉ mở dropdown khi người dùng thật sự bấm vào icon 🌐
-      document.addEventListener("click", (e) => {
-        if (e.target.closest("#google_translate_element")) {
-          const combo = document.querySelector(
-            "#google_translate_element select.goog-te-combo"
-          );
-          if (combo) combo.focus(); // Mở menu chọn ngôn ngữ hợp lệ
-        }
-      });
-    </script>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

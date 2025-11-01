@@ -1,82 +1,4 @@
 /* === GOOGLE TRANSLATE WIDGET – MATCH NAVBAR STYLE === */
-#google_translate_element {
-  position: relative !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: linear-gradient(90deg, #D97706, #F59E0B) !important; /* Cam đồng bộ navbar */
-  border-radius: 8px !important;
-  padding: 6px 14px !important;
-  gap: 8px !important;
-  cursor: pointer !important;
-  transition: all 0.25s ease-in-out !important;
-  font-family: "Inter", sans-serif !important;
-  font-weight: 500 !important;
-  color: #fff !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
-}
-
-#google_translate_element:hover {
-  background: linear-gradient(90deg, #E68508, #FBBF24) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25) !important;
-}
-
-/* Ẩn logo + text "Powered by Google" */
-.goog-logo-link,
-.goog-te-gadget span {
-  display: none !important;
-}
-
-/* Căn chỉnh bố cục bên trong */
-.goog-te-gadget-simple {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
-
-/* Dropdown ngôn ngữ */
-.goog-te-combo {
-  border: none !important;
-  background: transparent !important;
-  color: black !important;
-  font-size: 14.5px !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  padding-right: 20px !important;
-  appearance: none !important;
-  outline: none !important;
-  text-transform: capitalize !important;
-}
-
-/* Icon mũi tên */
-#google_translate_element::after {
-  font-size: 10px;
-  color: linear-gradient(90deg, #E68508, #FBBF24);
-  opacity: 0.9;
-  margin-left: 4px;
-  pointer-events: none;
-}
-
-/* Ẩn khung popup nền của Google menu */
-.goog-te-menu-frame.skiptranslate,
-.goog-te-menu2 {
-  background: linear-gradient(90deg, #E68508, #FBBF24) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25) !important;
-  border: none !important;
-  color: #333 !important;
-}
-
-/* Dropdown focus (chỉ khi bấm mở) */
-#google_translate_element select.goog-te-combo:focus {
-  outline: none !important;
-}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -86,14 +8,13 @@
   }
 }
 
-
 /* === NAVBAR === */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 24px;
-  background: linear-gradient(90deg, #D97706, #F59E0B, #F59E0B);
+  background: linear-gradient(90deg, #d97706, #f59e0b, #f59e0b);
   color: white;
   gap: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -123,20 +44,6 @@
 }
 
 /* === Translator Flag Button (nếu dùng) === */
-.translator-btn {
-  display: flex;
-  align-items: center;
-  padding: 4px;
-  cursor: pointer;
-  height: 32px;
-}
-
-.translator-btn img {
-  height: 100%;
-  width: auto;
-  object-fit: contain;
-  border-radius: 5px;
-}
 
 /* === Profile Icons === */
 .nav-loggedIn {
@@ -157,7 +64,7 @@
 }
 
 .profile-icon.active {
-  color: #FFD700;
+  color: #ffd700;
 }
 
 /* === Nav Buttons === */
@@ -216,7 +123,7 @@
   border: 1px solid #ddd;
   border-top: none;
   border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   max-height: 250px;
   overflow-y: auto;
@@ -279,7 +186,7 @@
   height: 16px;
   border-radius: 2px;
   object-fit: cover;
-  box-shadow: 0 0 2px rgba(0,0,0,0.2);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar-links {
@@ -358,8 +265,6 @@
 
 /* === Responsive === */
 @media (max-width: 768px) {
-  
- 
   .search-input {
     width: 120px;
   }

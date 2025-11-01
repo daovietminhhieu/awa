@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { requestASharedLink, sendFilledInformationsForm } from "../api";
 import { useI18n } from "../i18n";
 import { useAuth } from "../context/AuthContext";
+import TranslatableText from "../TranslateableText";
 
-export function ApplicationForm({ to, translator}) {
-  
+export function ApplicationForm({ to, translator }) {
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -45,9 +45,9 @@ export function ApplicationForm({ to, translator}) {
 
   return (
     <div className="programm-sidebar">
-      <h2>{translator('applyform.title')}</h2>
+      <h2>{translator("applyform.title")}</h2>
       <form className="apply-form" onSubmit={handleSubmit}>
-        <label>{translator('applyform.name')}</label>
+        <label>{translator("applyform.name")}</label>
         <input
           type="text"
           name="fullName"
@@ -63,7 +63,7 @@ export function ApplicationForm({ to, translator}) {
           value={form.email}
           onChange={handleChange}
         />
-        <label>{translator('applyform.phone')}</label>
+        <label>{translator("applyform.phone")}</label>
         <input
           type="tel"
           name="phone"
@@ -71,22 +71,22 @@ export function ApplicationForm({ to, translator}) {
           value={form.phone}
           onChange={handleChange}
         />
-        <label>{translator('applyform.cover')}</label>
+        <label>{translator("applyform.cover")}</label>
         <textarea
           name="coverLetter"
           rows={4}
           value={form.coverLetter}
           onChange={handleChange}
         />
-        <label>{translator('applyform.resume')}</label>
+        <label>{translator("applyform.resume")}</label>
         <input
           type="text"
           name="resumeFile"
-          placeholder={translator('applyform.enter_resume')}
+          placeholder={translator("applyform.enter_resume")}
           value={form.resumeFile}
           onChange={handleChange}
         />
-        <button type="submit">{translator('applyform.submit')}</button>
+        <button type="submit">{translator("applyform.submit")}</button>
       </form>
     </div>
   );
@@ -94,49 +94,71 @@ export function ApplicationForm({ to, translator}) {
 
 // src/components/ProgrammOverview.js
 export default function ProgrammOverview({ programm, role, to }) {
-  const {t} = useI18n();
+  const { t, lang } = useI18n();
   const { user: currentUser } = useAuth();
   const tags = [
     { label: t("programm.detail.overview.duration"), value: programm.duration },
     { label: t("programm.detail.overview.degrees"), value: programm.degrees },
-    { 
-      label: t("programm.detail.overview.type_category"), 
-      value: programm.type_category === "job" ? t("programm.detail.overview.job") : t("programm.detail.overview.studium") 
+    {
+      label: t("programm.detail.overview.type_category"),
+      value:
+        programm.type_category === "job"
+          ? t("programm.detail.overview.job")
+          : t("programm.detail.overview.studium"),
     },
     { label: t("programm.detail.overview.type"), value: programm.type },
-    { 
-      label: programm.type_category === "job" 
-        ? t("programm.detail.overview.expected_salary") 
-        : t("programm.detail.overview.fee"),
-      value: programm.type_category === "job" 
-        ? programm.expected_salary 
-        : programm.fee 
+    {
+      label:
+        programm.type_category === "job"
+          ? t("programm.detail.overview.expected_salary")
+          : t("programm.detail.overview.fee"),
+      value:
+        programm.type_category === "job"
+          ? programm.expected_salary
+          : programm.fee,
     },
-    { 
-      label: t("programm.detail.overview.status"), 
-      value: programm.completed === "true" ? t("programm.detail.overview.enough") : t('programm.detail.overview.hire') 
+    {
+      label: t("programm.detail.overview.status"),
+      value:
+        programm.completed === "true"
+          ? t("programm.detail.overview.enough")
+          : t("programm.detail.overview.hire"),
     },
-    { 
-      label: t("programm.detail.overview.public_day"), 
-      value: new Date(programm.public_day).toLocaleDateString() 
+    {
+      label: t("programm.detail.overview.public_day"),
+      value: new Date(programm.public_day).toLocaleDateString(),
     },
-    { 
-      label: t("programm.detail.overview.deadline"), 
-      value: new Date(programm.deadline).toLocaleDateString() 
+    {
+      label: t("programm.detail.overview.deadline"),
+      value: new Date(programm.deadline).toLocaleDateString(),
     },
   ];
 
-
   const specialTags = [];
-  if ((role === "recruiter" || role === "admin") && programm.bonus) specialTags.push({ label: t("programm.detail.overview.bonus"), value: programm.bonus, bg: "#ff9800" });
-  if (programm.vacancies) specialTags.push({ label: t("programm.detail.overview.vacancies"), value: programm.vacancies, bg: "#4caf50" });
-  if (programm.hired) specialTags.push({ label: t("programm.detail.overview.hired"), value: programm.hired, bg: "#4caf50" });
+  if ((role === "recruiter" || role === "admin") && programm.bonus)
+    specialTags.push({
+      label: t("programm.detail.overview.bonus"),
+      value: programm.bonus,
+      bg: "#ff9800",
+    });
+  if (programm.vacancies)
+    specialTags.push({
+      label: t("programm.detail.overview.vacancies"),
+      value: programm.vacancies,
+      bg: "#4caf50",
+    });
+  if (programm.hired)
+    specialTags.push({
+      label: t("programm.detail.overview.hired"),
+      value: programm.hired,
+      bg: "#4caf50",
+    });
 
   const handleShareReferrals = async () => {
     console.log(programm._id);
-      const res = await requestASharedLink(programm._id);
-      console.log(res.data);
-  }
+    const res = await requestASharedLink(programm._id);
+    console.log(res.data);
+  };
 
   return (
     <>
@@ -170,15 +192,17 @@ export default function ProgrammOverview({ programm, role, to }) {
             slider.scrollLeft = slider.scrollLeftStart - walk;
           }}
         >
-          {tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="tag"
-              style={{ background: tag.bg || "rgba(0,0,0,0.05)" }}
-            >
-              <b>{tag.label}:</b> {tag.value}
-            </span>
-          ))}
+          <div className="tags-track">
+            {[...tags, ...tags].map((tag, idx) => (
+              <span
+                key={idx}
+                className="tag"
+                style={{ background: tag.bg || "rgba(0,0,0,0.05)" }}
+              >
+                <b>{tag.label}:</b> {tag.value}
+              </span>
+            ))}
+          </div>
         </div>
         {/* Tag đặc biệt hiển thị riêng */}
         {specialTags.length > 0 && (
@@ -192,16 +216,15 @@ export default function ProgrammOverview({ programm, role, to }) {
         )}
       </div>
 
-
       <div className="programm-body">
         <div className="programm-main">
           <div className="programm-info-boxes">
             <div className="info-box">
-              <b>{t('programm.detail.overview.company')}</b>
+              <b>{t("programm.detail.overview.company")}</b>
               <p>{programm.company}</p>
             </div>
             <div className="info-box">
-              <b>{t('programm.detail.overview.land')}</b>
+              <b>{t("programm.detail.overview.land")}</b>
               <p>{programm.land}</p>
             </div>
             {currentUser?.role === "recruiter" && (
@@ -209,49 +232,82 @@ export default function ProgrammOverview({ programm, role, to }) {
                 <b>Chia sẻ chương trình này</b>
                 <p
                   style={{ textDecoration: "underline", cursor: "pointer" }}
-                  onClick={handleShareReferrals}  // ✅ Corrected here
+                  onClick={handleShareReferrals} // ✅ Corrected here
                 >
                   Bấm vào đây để chia sẻ chương trình này
                 </p>
               </div>
             )}
-
           </div>
 
           <section>
-            <h2>{t('programm.detail.overview.overview')}</h2>
+            <h2>{t("programm.detail.overview.overview")}</h2>
             <ul>
-              <li><p>{programm.details?.overview || "Không có mô tả."}</p></li>
-              <li><p>{programm.details?.other}</p></li>
+              <li>
+                <TranslatableText
+                  text={programm.details?.overview || "Không có mô tả."}
+                  lang={lang}
+                />
+              </li>
+              <li>
+                <TranslatableText text={programm.details?.other} lang={lang} />
+              </li>
             </ul>
           </section>
 
           <section>
-            <h2>{t('programm.detail.overview.requirements')}</h2>
+            <h2>{t("programm.detail.overview.requirements")}</h2>
             <ul>
-              <li>🎂 {t('programm.detail.overview.age')}: {programm.requirement?.age}</li>
-              <li>🎓 {t('programm.detail.overview.education')}: {programm.requirement?.education}</li>
-              <li>📜 {t('programm.detail.overview.certificate')}: {programm.requirement?.certificate}</li>
-              <li>❤️ {t('programm.detail.overview.health')}: {programm.requirement?.health}</li>
+              <li>
+                🎂 {t("programm.detail.overview.age")}:{" "}
+                {programm.requirement?.age}
+              </li>
+              <li>
+                🎓 {t("programm.detail.overview.education")}:{" "}
+                <TranslatableText
+                  text={programm.requirement?.education}
+                  lang={lang}
+                />
+              </li>
+              <li>
+                📜 {t("programm.detail.overview.certificate")}:{" "}
+                <TranslatableText
+                  text={programm.requirement?.certificate}
+                  lang={lang}
+                />
+              </li>
+              <li>
+                ❤️ {t("programm.detail.overview.health")}:{" "}
+                <TranslatableText
+                  text={programm.requirement?.health}
+                  lang={lang}
+                />
+              </li>
             </ul>
           </section>
 
           <section>
-            <h2>{t('programm.detail.overview.benefit')}</h2>
+            <h2>{t("programm.detail.overview.benefit")}</h2>
             <ul>
-              <li>{programm.benefit}</li>
+              <li>
+                <TranslatableText text={programm.benefit} lang={lang} />{" "}
+              </li>
             </ul>
           </section>
 
           <section>
-            <h2>{t('programm.detail.overview.other')}</h2>
+            <h2>{t("programm.detail.overview.other")}</h2>
             <ul>
-              <li>...</li>
+              <li>
+                <TranslatableText text={programm.other} lang={lang} />{" "}
+              </li>
             </ul>
           </section>
         </div>
 
-        {role === "externeCandidate" && <ApplicationForm to={to} translator={t}/>}
+        {role === "externeCandidate" && (
+          <ApplicationForm to={to} translator={t} />
+        )}
       </div>
     </>
   );

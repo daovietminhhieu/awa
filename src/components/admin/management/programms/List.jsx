@@ -7,7 +7,7 @@ import {
   upFileToStorage,
 } from "../../../../api";
 import { useI18n } from "../../../../i18n";
-
+import TranslatableText from "../../../../TranslateableText";
 // ==========================
 // 🛠️ Modal Form for Editing
 // ==========================
@@ -187,7 +187,13 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
           {/* 📄 DETAILS */}
           <h4>Details</h4>
           {renderInput("Overview", "details.overview", "text", "", "textarea")}
-          {renderInput("Other Details", "details.other", "text", "", "textarea")}
+          {renderInput(
+            "Other Details",
+            "details.other",
+            "text",
+            "",
+            "textarea"
+          )}
 
           {/* 🧾 REQUIREMENTS */}
           <h4>Requirements</h4>
@@ -198,10 +204,18 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
 
           {/* ✅ BUTTONS */}
           <div className="admin-form-buttons">
-            <button type="submit" className="admin-edit-btn" disabled={uploading}>
+            <button
+              type="submit"
+              className="admin-edit-btn"
+              disabled={uploading}
+            >
               {uploading ? "⏳ Uploading..." : "Save"}
             </button>
-            <button type="button" className="admin-delete-btn" onClick={onClose}>
+            <button
+              type="button"
+              className="admin-delete-btn"
+              onClick={onClose}
+            >
               Cancel
             </button>
           </div>
@@ -220,7 +234,7 @@ export default function AdminProgrammsList({
   toggleSaveProgramm,
   onProgrammsUpdated,
 }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [editingProgramm, setEditingProgramm] = useState(null);
   const [loadingIds, setLoadingIds] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -268,28 +282,31 @@ export default function AdminProgrammsList({
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <div className="admin-program-header">
-                  <h3>{p.title}</h3>
+                  <h3>
+                    <TranslatableText text={p.title} lang={lang} />
+                  </h3>
                 </div>
 
                 <ul className="admin-program-info">
                   <li>
-                    <b>Duration:</b> {p.duration}
-                  </li>
-                  <li>
-                    <b>Deadline:</b> {p.deadline}
+                    <b>Duration:</b>{" "}
+                    <TranslatableText text={p.duration} lang={lang} />
                   </li>
                   <li>
                     <b>Status:</b>{" "}
-                    {new Date(p.deadline) >= new Date() ? "Open" : "Closed"}
+                    <TranslatableText
+                      text={
+                        new Date(p.deadline) >= new Date() ? "Open" : "Closed"
+                      }
+                      lang={lang}
+                    />
                   </li>
                 </ul>
 
                 <div className="admin-program-extra">
                   <p className="bonus-tag">
-                    <b>Bonus:</b> {p.bonus || ""}
-                  </p>
-                  <p className="vacancy-tag">
-                    <b>Applicants:</b> {p.vacancies || 0}
+                    <b>Bonus:</b>{" "}
+                    <TranslatableText text={p.bonus || ""} lang={lang} />
                   </p>
                 </div>
               </Link>
@@ -303,7 +320,9 @@ export default function AdminProgrammsList({
                     if (!isLoading) handleSaveToggle(p);
                   }}
                 >
-                  {isSaved ? "Unsave" : "Save"}
+                  {isSaved
+                    ? "Unsave"
+                    : t("admin.programms.edit.save_admin") || "Save"}
                 </button>
 
                 <button
@@ -314,7 +333,7 @@ export default function AdminProgrammsList({
                     setEditingProgramm(p);
                   }}
                 >
-                  Edit
+                  {t("admin.programms.edit.edit_admin") || "Edit"}
                 </button>
 
                 <button
@@ -327,7 +346,7 @@ export default function AdminProgrammsList({
                     }
                   }}
                 >
-                  Delete
+                  {t("admin.programms.edit.delete_admin") || "Delete"}
                 </button>
               </div>
             </div>
