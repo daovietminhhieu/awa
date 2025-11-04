@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <!-- Google Translate -->
+    <!-- Google Translate
     <div id="google_translate_element">
       <span style="font-size: 18px">🌐</span>
     </div>
@@ -17,8 +17,8 @@
       function googleTranslateElementInit() {
         new google.translate.TranslateElement(
           {
-            pageLanguage: "auto",
-            includedLanguages: "vi,en,de",
+            pageLanguage: "en",
+            includedLanguages: "vi,en",
           },
           "google_translate_element"
         );
@@ -28,7 +28,7 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Script điều chỉnh vị trí -->
-    <script>
+    <!-- <script>
       // Đợi banner Google Translate load xong rồi điều chỉnh
       const adjustLayout = () => {
         const banner = document.querySelector(".goog-te-banner-frame");
@@ -62,7 +62,7 @@
 
       // Chạy ngay lập tức
       adjustLayout();
-    </script>
+    </script> --> -->
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

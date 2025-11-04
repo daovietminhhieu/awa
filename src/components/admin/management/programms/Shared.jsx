@@ -236,9 +236,7 @@ export default function ListOfSharedProgramms() {
                       <option value="completed">Mark Completed</option>
                       <option value="rejected">Mark Rejected</option>
                     </optgroup>
-                    <optgroup label="Payment">
-                      <option value="paid">Pay</option>
-                    </optgroup>
+                    
                   </select>
                 </td>
               </tr>

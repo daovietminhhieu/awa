@@ -24,26 +24,7 @@
   margin-top: 10px;
 }
 
-.info-box {
-  flex: 1;
-  min-width: 200px;
-  background: #f9f9f9;
-  padding: 14px 18px;
-  border: 1px solid #eee;
-  border-radius: 12px;
-}
 
-.info-box .label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #666;
-}
-.info-box .value {
-  font-size: 16px;
-  font-weight: 700;
-  color: #222;
-  margin-top: 4px;
-}
 
 .section {
   margin-bottom: 30px;

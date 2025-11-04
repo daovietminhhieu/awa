@@ -1,791 +1,595 @@
 /* ==============================
-   CẤU TRÚC CHUNG CHO TOÀN TRANG
-   ============================== */
-
-   .section {
-    padding: 2rem 1.5rem;
-    max-width: 1100px;
-    margin: 3rem auto;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.1);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #0d3c61;
-  }
-  
-  .section-title {
-    text-align: center;
-  }
-
-  .section-becomecollab-title {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: #0d3c61;
-    margin-bottom: 2rem;
-    letter-spacing: 0.05em;
-  }
-  
-  /* ==============================
-     CÂU CHUYỆN THÀNH CÔNG
-     ============================== */
-  
-  .stories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-
-  .success-stories-swiper {
-    padding-bottom: 50px; /* tạo chỗ trống cho pagination/navigation */
-  }
-  .success-stories-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
-  }
-  .section-stories-title {
-    width: 1100px;
-    text-align: center;
-  }
-
-  .success-stories-content {
-    display: flex;
-  }
-
-  .success-story-card {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    overflow: hidden;
-    transition: transform 0.25s ease;
-  }
-
-  .edit-form label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .edit-form input,
-  .edit-form textarea {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .save-btn, .cancel-btn {
-    padding: 8px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .save-btn {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .cancel-btn {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  
-  .success-story-card:hover {
-    transform: translateY(-3px);
-  }
-  
-  .story-title {
-    text-align: center;
-  }
-
-  .story-content {
-    text-align: center;
-  }
-
-  .story-left {
-    flex: 1;
-    max-width: 45%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f7f9fc;
-    cursor: pointer;
-  }
-  
-  .story-media {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .story-right {
-    flex: 1;
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left;
-    background-color: #fdfdfd; /* nền sáng nhẹ */
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    color: #333;
-    line-height: 1.6;
-    font-size: 16px;
-  }
-  
-  
-  .story-title {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-    color: #222;
-  }
-  
-  .story-title.clickable {
-    cursor: pointer;
-  }
-  
-  .story-content {
-    font-size: 1rem;
-    color: #444;
-    line-height: 1.6;
-    overflow: hidden;
-    max-height: 140px;
-    text-align: justify;
-    transition: max-height 0.3s ease;
-  }
-  
-  .story-content.expanded {
-    max-height: none;
-  }
-  
-  .story-btn {
-    margin-top: 12px;
-    align-self: center;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 0.95rem;
-    cursor: pointer;
-  }
-  
-  .story-btn:hover {
-    background: #005ec7;
-  }
-  
-  /* Swiper pagination/navigation */
-  .success-stories-swiper {
-    padding-bottom: 50px;
-  }
-  
-  .swiper-button-next,
-  .swiper-button-prev {
-    bottom: 5px;
-    top: auto;
-    transform: translateY(100%);
-    color: #007bff;
-  }
-  
-
-  /* ==============================
-     LÝ DO CHỌN
-     ============================== */
-  
-  .reasons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 1.8rem 2.5rem;
-  }
-  
-  .reason-card {
-    display: flex;
-    gap: 1.4rem;
-    background: #f0f7ff;
-    border-radius: 14px;
-    padding: 1.5rem 1.8rem;
-    box-shadow: 0 6px 18px rgba(25, 118, 210, 0.15);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-    align-items: flex-start;
-    cursor: default;
-  }
-  
-  .reason-card:hover {
-    box-shadow: 0 12px 35px rgba(25, 118, 210, 0.28);
-    transform: translateY(-5px);
-  }
-  
-  .reason-icon {
-    font-size: 2.8rem;
-    color: #1976d2;
-    flex-shrink: 0;
-    user-select: none;
-    line-height: 1;
-  }
-  
-  .reason-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .reason-title {
-    margin: 0 0 0.4rem 0;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #0d3c61;
-  }
-  
-  .reason-desc {
-    margin: 0;
-    font-size: 1.05rem;
-    color: #444;
-    line-height: 1.45;
-  }
-  
-  /* ==============================
-   🌐 PARTNER DETAIL SECTION
-   ============================== */
-
-.partner-detail-section {
-  max-width: 1100px;
-  margin: 4rem auto;
-  padding: 3rem 2rem;
+ 🌐 GLOBAL STYLE
+============================== */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #0d3c61;
+  background: #f3f6fb;
+  margin: 0;
+  padding: 0;
 }
 
-.partner-detail-container {
-  background: #ffffff;
-  border-radius: 16px;
+.section {
+  padding: 2rem 1.5rem;
+  max-width: 1100px;
+  margin: 3rem auto;
+  background: #fff;
+  border-radius: 14px;
   box-shadow: 0 8px 25px rgba(25, 118, 210, 0.1);
-  padding: 2.5rem 2rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0d3c61;
+  margin-bottom: 2rem;
+}
+
+/* ==============================
+ 📖 DETAIL PAGE
+============================== */
+.detail-page {
+  padding: 20px;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.detail-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.detail-card img,
+.editor-content img,
+.tip-detail img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  margin: 12px auto;
+  object-fit: contain;
+}
+
+.detail-card iframe,
+.editor-content iframe,
+.editor-content video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 16px auto;
+}
+
+/* ==============================
+ 🏆 SUCCESS STORIES
+============================== */
+.success-stories {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 40px 20px;
+}
+
+.success-story-card {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  align-items: center;
-  color: #0d3c61;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-.partner-detail-container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 35px rgba(25, 118, 210, 0.18);
+.success-story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.partner-detail-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  text-align: center;
-  color: #0d3c61;
-  margin-bottom: 0.5rem;
-}
-
-.partner-divider {
-  width: 100%;
-  border: none;
-  border-top: 2px solid rgba(25, 118, 210, 0.2);
-}
-
-.partner-detail-content {
+.success-stories-content {
   display: flex;
-  justify-content: space-between;
-  gap: 3rem;
-  width: 100%;
   flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }
 
-/* Thông tin bên trái */
-.partner-info {
-  flex: 1;
-  min-width: 250px;
-  background: #f9fbff;
-  border-radius: 10px;
-  padding: 1.5rem 1.8rem;
-  box-shadow: inset 0 0 0 1px rgba(25, 118, 210, 0.08);
+.story-left,
+.story-right {
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.info-item {
-  margin-bottom: 1rem;
-  font-size: 1.05rem;
+.story-right {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.story-media {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.story-title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #1d3557;
+  text-align: center;
+}
+
+/* ==============================
+ 💡 STORY TEXT + XEM THÊM/ẨN BỚT
+============================== */
+.story-text {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+/* Khi thu gọn */
+.story-text.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* số dòng hiển thị */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-height: 8em;
+}
+
+/* Gradient mờ dần ở cuối đoạn thu gọn */
+.story-text.collapsed::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3em;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+}
+
+/* Khi mở rộng */
+.story-text.expanded {
+  max-height: none;
+  overflow: visible;
+}
+
+/* Nút Xem thêm / Ẩn bớt */
+.read-more-btn {
+  margin: 8px auto 0;
+  display: block;
+  border: none;
+  background: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  text-align: right;
+  width: 100%;
+  padding: 0 10px 5px;
+}
+
+.read-more-btn:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+/* ==============================
+ 🌐 FULL PAGE DETAIL RESTYLE
+============================== */
+
+.detail-wrapper {
+  width: 100%;
+  max-width: 2200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.08);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #1976d2;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #0d47a1;
+}
+
+.detail-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.detail-main-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1.2rem 0;
+  color: #0d3c61;
+}
+
+.event-meta {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 0.3rem;
+}
+
+.detail-media-full {
+  width: 100%;
+  max-height: 600px;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.detail-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #222;
+  text-align: left;
+  padding: 1rem 0;
+}
+
+.detail-content img,
+.detail-content video {
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.detail-content h1,
+.detail-content h2,
+.detail-content h3 {
+  color: #0d3c61;
+  margin-top: 1.5rem;
+}
+
+.detail-content p {
+  margin: 1rem 0;
+}
+
+/* Loading & Error */
+.loading-text,
+.error-text {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+@media (max-width: 768px) {
+  .detail-wrapper {
+    padding: 1rem;
+  }
+  .detail-main-title {
+    font-size: 1.5rem;
+  }
+}
+
+
+/* ==============================
+ 💼 SHARED STORY GRID (Tips & Events)
+============================== */
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.story-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  min-height: 450px;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.story-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.story-card img,
+.story-card video {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.story-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 12px 10px 6px;
+  color: #1a1a1a;
+  text-align: center;
+  line-height: 1.4;
+  height: 48px;
+  overflow: hidden;
+}
+
+.story-card p {
+  padding: 0 14px 10px;
+  color: #555;
+  font-size: 0.95rem;
   line-height: 1.5;
 }
 
-.info-item strong {
-  color: #1976d2;
-  display: inline-block;
-  min-width: 100px;
-}
-
-/* Lời chào bên phải */
-.partner-message {
-  flex: 1;
-  min-width: 250px;
-  background: linear-gradient(135deg, #e3f2fd, #f9fbff);
-  border-radius: 10px;
-  padding: 2rem;
+.section-stories-title {
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 0 0 1px rgba(25, 118, 210, 0.08);
 }
 
-.partner-goodbye {
+/* ==============================
+ 💼 CAREER TIPS
+============================== */
+.career-tips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  padding: 50px 30px;
+  background: #f9fafb;
+  border-radius: 16px;
+}
+
+.tip-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+}
+
+.tip-image {
+  width: 100%;
+  height: 220px;
+}
+
+.tip-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tip-content {
+  padding: 20px;
+}
+
+.tip-content h4 {
+  font-size: 1.15rem;
   font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.tip-content p {
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* ==============================
+ 📍 LOCATION EVENTS
+============================== */
+.location-events {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  padding: 50px 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.event-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
+}
+
+.event-image {
+  width: 100%;
+  height: 220px;
+}
+
+.event-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.event-details {
+  padding: 20px;
+}
+
+.event-details h4 {
   font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.event-details p {
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* ==============================
+ 🤝 PARTNER SECTION
+============================== */
+.partner-section {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #e3f2fd, #ffffff);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.12);
+  max-width: 1000px;
+  margin: 4rem auto;
+}
+
+.partner-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #0d3c61;
+  margin-bottom: 1rem;
+}
+
+.partner-desc {
+  font-size: 1.05rem;
+  color: #334155;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.partner-cta-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.partner-cta-btn:hover {
+  background: #0d47a1;
+  transform: translateY(-2px);
+}
+
+/* ==============================
+ 🧩 REASONS SECTION
+============================== */
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.8rem 2.5rem;
+}
+
+.reason-card {
+  display: flex;
+  gap: 1.4rem;
+  background: #f0f7ff;
+  border-radius: 14px;
+  padding: 1.5rem 1.8rem;
+  box-shadow: 0 6px 18px rgba(25, 118, 210, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  align-items: flex-start;
+  cursor: default;
+}
+
+.reason-card:hover {
+  box-shadow: 0 12px 35px rgba(25, 118, 210, 0.28);
+  transform: translateY(-5px);
+}
+
+.reason-icon {
+  font-size: 2.8rem;
+  color: #1976d2;
+  flex-shrink: 0;
+  user-select: none;
+  line-height: 1;
+}
+
+.reason-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.reason-title {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: #0d3c61;
 }
 
-/* Responsive */
+.reason-desc {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #444;
+  line-height: 1.45;
+}
+
+/* ==============================
+ 📱 RESPONSIVE
+============================== */
 @media (max-width: 768px) {
-  .partner-detail-container {
-    padding: 2rem 1.5rem;
+  .section {
+    padding: 1.5rem;
   }
 
-  .partner-detail-title {
-    font-size: 1.8rem;
-  }
-
-  .partner-detail-content {
+  .success-stories-content {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
   }
 
-  .partner-info,
-  .partner-message {
-    width: 100%;
+  .tip-image,
+  .event-image {
+    height: 180px;
+  }
+
+  .partner-title {
+    font-size: 1.7rem;
+  }
+
+  .partner-desc {
+    font-size: 0.95rem;
+  }
+
+  .partner-cta-btn {
+    font-size: 0.95rem;
+    padding: 10px 22px;
   }
 }
 
 @media (max-width: 480px) {
-  .partner-detail-title {
+  .section-title {
     font-size: 1.6rem;
   }
 
-  .info-item strong {
-    display: block;
-    margin-bottom: 4px;
+  .tip-content h4,
+  .event-details h4 {
+    font-size: 1rem;
   }
 
-  .partner-goodbye {
-    font-size: 1rem;
+  .tip-content p,
+  .event-details p {
+    font-size: 0.9rem;
   }
 }
-
-  /* ==============================
-     PARTNER SECTION (Styled again)
-     ============================== */
-  
-  .partner-section {
-    background: linear-gradient(135deg, #e3f2fd, #f9fbff);
-    box-shadow: 0 10px 35px rgba(25, 118, 210, 0.08);
-    border-radius: 20px;
-    padding: 4rem 2rem;
-    max-width: 1100px;
-    margin: 4rem auto;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .partner-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(25, 118, 210, 0.15);
-  }
-  
-  .partner-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.8rem;
-  }
-  
-  .partner-title {
-    font-size: 2.3rem;
-    color: #0d3c61;
-    margin-bottom: 0.5rem;
-  }
-  
-  .partner-desc {
-    font-size: 1.15rem;
-    color: #374151;
-    line-height: 1.7;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-  
-  .partner-cta-btn {
-    margin-top: 1.5rem;
-    background: linear-gradient(135deg, #1976d2, #1565c0);
-    color: #fff;
-    border: none;
-    padding: 1rem 2.5rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(25, 118, 210, 0.25);
-  }
-  
-  .partner-cta-btn:hover {
-    background: linear-gradient(135deg, #1565c0, #0d47a1);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.35);
-  }
-  
-  /* ==============================
-     RESPONSIVE
-     ============================== */
-  
-  @media (max-width: 768px) {
-    .partner-section {
-      padding: 3rem 1.5rem;
-    }
-  
-    .partner-title {
-      font-size: 2rem;
-    }
-  
-    .partner-desc {
-      font-size: 1.05rem;
-    }
-  
-    .partner-cta-btn {
-      padding: 0.9rem 2rem;
-      font-size: 1rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .partner-title {
-      font-size: 1.7rem;
-    }
-  
-    .partner-desc {
-      font-size: 0.95rem;
-    }
-  }
-  
-  
-  .partner-benefits {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 2rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .partner-benefits li {
-    font-size: 1.1rem;
-    color: #2563eb;
-    font-weight: 600;
-    padding-left: 1.5rem;
-    position: relative;
-  }
-  
-  .partner-benefits li::before {
-    content: "✔";
-    position: absolute;
-    left: 0;
-    color: #2563eb;
-    font-weight: 700;
-  }
-  
-  
-  
-  /* ==============================
-     TRANG CHI TIẾT CÂU CHUYỆN
-     ============================== */
-  
-  .detail-story {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-  }
-  
-  .back-btn {
-    background: transparent;
-    border: none;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-bottom: 1.5rem;
-    text-align: left;
-  }
-  
-  .detail-card {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-  }
-  
-  .detail-image {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-  }
-  
-  .detail-title {
-    font-size: 1.8rem;
-    margin-bottom: 0.8rem;
-  }
-  
-  .detail-desc {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #555;
-  }
-  
-  
-  /* ==============================
-     TIPS & EVENTS SECTION
-     ============================== */
-  
-  .tips-events {
-    padding: 2rem 1.5rem;
-    max-width: 1100px;
-    margin: 3rem auto;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(25, 118, 210, 0.1);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #222;
-  }
-  
-  .tips-events .section-title {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #0d3c61;
-    margin-bottom: 2rem;
-    letter-spacing: 0.05em;
-  }
-  
-  /* Grid layout chung cho tips & events */
-  .tips-events .stories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.8rem;
-  }
-  
-  /* Card item */
-  .tips-events .story-card {
-    background: #f9fbff;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .tips-events .story-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 18px rgba(25, 118, 210, 0.25);
-  }
-  
-  .tips-events .story-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    display: block;
-    border: 2px solid #0d3c61;
-  }
-  
-  .tips-events .story-card h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #144a82;
-    padding: 1rem 1rem 0.5rem;
-  }
-  
-  .tips-events .story-card p {
-    font-size: 0.98rem;
-    color: #555;
-    line-height: 1.45;
-  }
-  
-  /* Tips section */
-  .tips-events .tips-guide {
-    margin-bottom: 3rem;
-  }
-  
-  /* Event section */
-  .tips-events .event-section h3 {
-    color: #0d3c61;
-  }
-  
-  .tips-events .event-section p strong {
-    color: #1976d2;
-  }
-
-  
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .tips-events {
-      padding: 1.5rem;
-    }
-  
-    .tips-events .section-title {
-      font-size: 1.8rem;
-    }
-  
-    .tips-events .story-card img {
-      height: 160px;
-    }
-  
-    .tips-events .story-card h3 {
-      font-size: 1.1rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .tips-events .section-title {
-      font-size: 1.6rem;
-    }
-  
-    .tips-events .story-card h3 {
-      font-size: 1rem;
-    }
-  
-    .tips-events .story-card p {
-      font-size: 0.9rem;
-    }
-  }
-  
-  
-  /* ==============================
-     RESPONSIVE
-     ============================== */
-  
-     @media (max-width: 768px) {
-      .form-detail-partner {
-        height: auto;
-        flex-direction: column;
-        padding: 2rem 1.2rem;
-        gap: 2rem;
-      }
-    
-      .partner-sections {
-        flex-direction: column;
-        text-align: center;
-        padding: 2rem 1.5rem;
-      }
-    
-      .partner-title {
-        font-size: 1.8rem;
-      }
-    
-      .partner-desc {
-        font-size: 1.05rem;
-      }
-    
-      .partner-benefits {
-        align-items: center;
-      }
-    
-      .success-story-card img,
-      .success-story-card video {
-        width: 120px;
-        height: 120px;
-      }
-    
-      .reason-card {
-        flex-direction: row;
-      }
-
-      .partner-detail-title {
-        font-size: 1.6rem;
-        width: 100%;
-        text-align: center;
-      }
-    
-      .partner-detail-content {
-        flex-direction: column;
-        gap: 2rem;
-        align-items: center;
-        text-align: center;
-      }
-    
-      .left, .right {
-        width: 100%;
-      }
-    
-      .partner-detail-info .info-item {
-        margin-bottom: 1rem;
-      }
-    
-      .partner-goodbye {
-        font-size: 1rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
-
-    
-      .form-detail-partner {
-        margin: 0; /* Xóa margin cũ */
-        height: auto; /* Cho phép co giãn chiều cao */
-        width: 90%; /* Hoặc 100%, tùy ý */
-        max-width: 400px;
-      }
-      .partner-detail-title {
-        font-size: 1.4rem;
-      }
-    
-      .partner-detail-desc {
-        font-size: 1rem;
-      }
-    
-      .partner-goodbye {
-        font-size: 0.95rem;
-      }
-    
-      .partner-detail-info strong {
-        display: block;
-        margin-bottom: 4px;
-      }
-    
-      .partner-detail-info span {
-        display: block;
-        color: #333;
-      }
-
-      .reason-card {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-    
-      .reason-icon {
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-      }
-    
-      .reason-content {
-        align-items: center;
-      }
-    
-      .success-story-card p {
-        font-size: 0.95rem;
-      }
-    
-      .story-btn {
-        font-size: 0.95rem;
-      }
-    }
-    
-

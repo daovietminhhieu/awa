@@ -1,67 +1,158 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { upFileToStorage, getProgrammsList } from "../api";
 import "./PostEditor.css";
-import { upFileToStorage } from "../api";
 
+// ================= Reusable PostCard =================
+const PostCard = ({ title, thumbnail, fileType, content, type, location, eventDate }) => {
+  return (
+    <div className="post-card">
+      {thumbnail && (
+        <div className="post-card-media">
+          {fileType === "image" ? (
+            <img src={thumbnail} alt={title} />
+          ) : (
+            <video src={thumbnail} controls />
+          )}
+        </div>
+      )}
+
+      <h2 className="post-card-title">{title}</h2>
+
+      {type === "upcoming_event" && (
+        <p className="post-card-event">
+          📍 {location} — 📅 {eventDate}
+        </p>
+      )}
+
+      {content && (
+        <div
+          className="post-card-content ql-editor"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      )}
+    </div>
+  );
+};
+
+// ================= FileUpload =================
+const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
+  const fileInputRef = useRef(null);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const isVideo = file.type.startsWith("video/");
+    const isImage = file.type.startsWith("image/");
+
+    if (!isImage && !isVideo) {
+      alert("❌ Chỉ hỗ trợ file ảnh hoặc video!");
+      return;
+    }
+
+    onFileChange(file, isVideo ? "video" : "image");
+  };
+
+  return (
+    <div className="thumbnail-upload">
+      <label>Ảnh hoặc Video:</label>
+      <input
+        type="file"
+        accept="image/*,video/*"
+        onChange={handleFileChange}
+        ref={fileInputRef}
+      />
+
+      {uploading && <p className="uploading-text">Đang tải lên...</p>}
+
+      {thumbnail && (
+        <div className="preview-container">
+          {fileType === "image" ? (
+            <img src={thumbnail} alt="Preview" className="preview-img" />
+          ) : (
+            <video src={thumbnail} controls className="preview-video" />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ================= ProgramSelect =================
+const ProgramSelect = ({ programms, selectedProgram, onProgramSelect }) => (
+  <div className="program-search">
+    <label>Chọn chương trình:</label>
+    <select value={selectedProgram} onChange={(e) => onProgramSelect(e.target.value)}>
+      <option value="">-- Chọn chương trình --</option>
+      {programms.map((p) => (
+        <option key={p._id} value={p._id}>
+          {p.title}
+        </option>
+      ))}
+    </select>
+  </div>
+);
+
+// ================= Main PostEditor =================
 export default function PostEditor({ onSave }) {
   const [type, setType] = useState("success_story");
   const [title, setTitle] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [fileType, setFileType] = useState(""); // 🆕 ảnh hoặc video
-  const [file, setFile] = useState(null);
+  const [fileType, setFileType] = useState("");
   const [uploading, setUploading] = useState(false);
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
   const [eventDate, setEventDate] = useState("");
+  const [programms, setProgramms] = useState([]);
+  const [selectedProgram, setSelectedProgram] = useState("");
 
-  const fileInputRef = useRef(null);
+  useEffect(() => {
+    const loadPrograms = async () => {
+      try {
+        const res = await getProgrammsList();
+        setProgramms(res.data);
+      } catch (err) {
+        console.warn("⚠️ Lỗi tải chương trình:", err);
+      }
+    };
+    loadPrograms();
+  }, []);
 
-  // 🟩 Khi chọn file (ảnh hoặc video)
-  const handleFileChange = async (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
-
-    const isVideo = selectedFile.type.startsWith("video/");
-    const isImage = selectedFile.type.startsWith("image/");
-    if (!isVideo && !isImage) {
-      alert("Vui lòng chọn file ảnh hoặc video hợp lệ!");
-      return;
-    }
-
+  // === Upload handler ===
+  const handleFileChange = async (file, type) => {
     setUploading(true);
     try {
-      const result = await upFileToStorage(selectedFile);
-      if (!result) throw new Error("Upload failed: no URL returned");
-
-      setThumbnail(result);
-      setFileType(isVideo ? "video" : "image");
-      setFile(selectedFile);
-      console.log("📦 Upload result:", result);
-    } catch (err) {
-      alert("Upload thất bại: " + err.message);
+      const url = await upFileToStorage(file);
+      setThumbnail(url);
+      setFileType(type);
+      alert("✅ Upload thành công!");
+    } catch {
+      alert("❌ Upload thất bại!");
     } finally {
       setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
-  // 🟩 Gửi bài
-  const handleSubmit = async (e) => {
+  // === Reset form ===
+  const resetForm = () => {
+    setType("success_story");
+    setTitle("");
+    setThumbnail("");
+    setFileType("");
+    setContent("");
+    setLocation("");
+    setEventDate("");
+    setSelectedProgram("");
+  };
+
+  // === Submit form ===
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!title || !thumbnail) {
-      alert("Vui lòng nhập tiêu đề và tải file bìa (ảnh hoặc video)!");
-      return;
-    }
-
-    if ((type === "success_story" || type === "career_tip") && !content) {
-      alert("Nội dung không được để trống!");
-      return;
-    }
-
-    if (type === "upcoming_event" && (!location || !eventDate)) {
-      alert("Cần nhập địa điểm và ngày tổ chức!");
+    if (!title || !thumbnail || !selectedProgram) {
+      alert("⚠️ Vui lòng nhập đủ thông tin và tải file!");
       return;
     }
 
@@ -69,111 +160,105 @@ export default function PostEditor({ onSave }) {
       type,
       title,
       thumbnail_url: thumbnail,
-      file_type: fileType, // 🆕 thêm loại file
+      file_type: fileType,
       content: type !== "upcoming_event" ? content : "",
       location: type === "upcoming_event" ? location : undefined,
       eventDate: type === "upcoming_event" ? eventDate : undefined,
+      progId: selectedProgram,
     };
 
     if (onSave) onSave(postData);
 
-    // Reset form
-    setTitle("");
-    setThumbnail("");
-    setFile(null);
-    setFileType("");
-    setContent("");
-    setLocation("");
-    setEventDate("");
-    if (fileInputRef.current) fileInputRef.current.value = "";
+    alert("✅ Bài viết đã được đăng!");
+    resetForm();
   };
 
   return (
-    <form className="post-editor" onSubmit={handleSubmit}>
-      <h2 className="post-editor-title">📝 New Post</h2>
+    <div className="editor-container">
+      {/* ==== BÊN TRÁI: Soạn thảo ==== */}
+      <form className="post-editor" onSubmit={handleSubmit}>
+        <h2 className="post-editor-title">📝 Tạo Bài Viết</h2>
 
-      <select value={type} onChange={(e) => setType(e.target.value)}>
-        <option value="success_story">Success Story</option>
-        <option value="career_tip">Career Tip</option>
-        <option value="upcoming_event">Upcoming Event</option>
-      </select>
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="success_story">Success Story</option>
+          <option value="career_tip">Career Tip</option>
+          <option value="upcoming_event">Upcoming Event</option>
+        </select>
 
-      <input
-        className="post-title-input"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-
-      {/* Upload ảnh hoặc video */}
-      <div className="thumbnail-upload">
-        <label>Thumbnail / Video:</label>
         <input
-          type="file"
-          accept="image/*,video/*"
-          onChange={handleFileChange}
-          ref={fileInputRef}
+          type="text"
+          placeholder="Tiêu đề bài viết"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
-        {uploading && <p>Đang tải file lên...</p>}
 
-        {thumbnail && (
-          <div style={{ marginTop: "8px" }}>
-            {fileType === "image" ? (
-              <img
-                src={thumbnail}
-                alt="Preview"
-                style={{
-                  width: "220px",
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                }}
-              />
-            ) : (
-              <video
-                src={thumbnail}
-                controls
-                style={{
-                  width: "240px",
-                  borderRadius: "8px",
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                }}
-              />
-            )}
-          </div>
+        <FileUpload
+          onFileChange={handleFileChange}
+          uploading={uploading}
+          thumbnail={thumbnail}
+          fileType={fileType}
+        />
+
+        <ProgramSelect
+          programms={programms}
+          selectedProgram={selectedProgram}
+          onProgramSelect={setSelectedProgram}
+        />
+
+        {(type === "success_story" || type === "career_tip") && (
+          <ReactQuill
+            className="post-editor-quill"
+            theme="snow"
+            value={content}
+            onChange={setContent}
+            modules={{
+              toolbar: [
+                [{ header: "1" }, { header: "2" }, { header: "3" }, { font: [] }],
+                [{ list: "ordered" }, { list: "bullet" }],
+                ["bold", "italic", "underline"],
+                [{ align: [] }],
+                ["link", "image"],
+              ],
+            }}
+          />
         )}
-      </div>
 
-      {(type === "success_story" || type === "career_tip") && (
-        <ReactQuill
-          className="post-editor-quill"
-          value={content}
-          onChange={setContent}
+        {type === "upcoming_event" && (
+          <>
+            <input
+              type="text"
+              placeholder="Địa điểm tổ chức"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+            <input
+              type="date"
+              value={eventDate}
+              onChange={(e) => setEventDate(e.target.value)}
+            />
+          </>
+        )}
+
+        <div className="editor-actions">
+          <button type="submit" disabled={uploading}>
+            {uploading ? "Đang tải lên..." : "Đăng bài"}
+          </button>
+        </div>
+      </form>
+
+      {/* ==== BÊN PHẢI: Xem trước ==== */}
+      <div className="post-preview">
+        <h3>👁️ Xem trước</h3>
+        <PostCard
+          title={title}
+          thumbnail={thumbnail}
+          fileType={fileType}
+          content={content}
+          type={type}
+          location={location}
+          eventDate={eventDate}
         />
-      )}
-
-      {type === "upcoming_event" && (
-        <>
-          <input
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          />
-          <input
-            type="date"
-            value={eventDate}
-            onChange={(e) => setEventDate(e.target.value)}
-            required
-          />
-        </>
-      )}
-
-      <div className="editor-actions">
-        <button type="submit" disabled={uploading}>
-          {uploading ? "Đang tải file..." : "Đăng bài"}
-        </button>
       </div>
-    </form>
+    </div>
   );
 }

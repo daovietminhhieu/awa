@@ -11,11 +11,11 @@ export default function ProgrammJourney({ programm }) {
       {/* === GIAI ĐOẠN ĐÀO TẠO === */}
       <section>
         <h3>{t("programm.detail.journey.training_phase")}</h3>
-        <ol>
+        <ul>
           {Object.keys(t("programm.detail.journey.steps")).map((key) => (
             <li key={key}>{t(`programm.detail.journey.steps.${key}`)}</li>
           ))}
-        </ol>
+        </ul>
       </section>
 
       {/* === BẢNG CHI PHÍ === */}

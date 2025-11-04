@@ -312,7 +312,7 @@ export async function createPost(data) {
       "Content-Type": "application/json",
       ...authHeaders(),
     };
-
+    console.log(headers);
     const response = await fetch(`${API_BASE}/user/`, {
       method: "POST",
       headers,
@@ -333,11 +333,51 @@ export async function createPost(data) {
   }
 }
 
-export async function getPosts() {
-  const res = await fetch(`${API_BASE}/user/posts`);
-  const result = await res.json();
-  if (!res.ok || !result.success) throw new Error(result.message);
-  return result;
+// Assuming you have an API_BASE constant defined somewhere in your code that points to the server base URL.
+export async function getPostById(id) {
+  try {
+    const res = await fetch(`${API_BASE}/user/post/${id}`, {
+      method: "GET", // Method type, GET is used to fetch data
+      headers: {
+        "Content-Type": "application/json", // Content type as JSON
+        ...authHeaders()
+      },
+    });
+
+    const result = await res.json(); // Parse the response body as JSON
+
+    if (!res.ok || !result.success) {
+      // If the response is not OK or the success flag is false, throw an error
+      throw new Error(result.message || "Failed to fetch post");
+    }
+
+    // Return the fetched post data
+    return result;
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    throw error; // Rethrow the error to handle it in the calling function
+  }
+}
+
+// Lấy danh sách posts
+export async function getPostsList() {
+  const res = await fetch(`${API_BASE}/user/posts`, {
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) throw new Error(`Error fetching posts: ${res.statusText}`);
+  return await res.json();
+}
+
+// Xóa post theo id
+export async function deletePostById(id) {
+  const res = await fetch(`${API_BASE}/user/posts/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) throw new Error(`Error deleting post: ${res.statusText}`);
+  return await res.json();
 }
 
 export async function getPostsByType(type) {
@@ -444,4 +484,8 @@ export async function sendProgrammReview(programmId, reviewData) {
     console.error("❌ sendProgrammReview failed:", err);
     throw err;
   }
+}
+
+export async function sendProgrammQA() {
+  
 }

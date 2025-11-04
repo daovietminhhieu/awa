@@ -1,109 +1,222 @@
 import React, { useState } from "react";
 import { useI18n } from "../i18n";
-import { sendProgrammReview } from "../api";
-
+import { sendProgrammReview, sendProgrammQA } from "../api";
+import './ProgrammPartner.css'
 export default function ProgrammPartner({ programm }) {
   const { t } = useI18n();
-
-  // State quản lý câu hỏi và đánh giá
-  const [question, setQuestion] = useState("");
-  const [content, setContent] = useState(""); // Đổi từ 'review' → 'content' để khớp backend
-  const [rate, setRate] = useState(5);
-  const [loading, setLoading] = useState(false);
-
   const id = programm?._id;
 
-  // --- Xử lý gửi câu hỏi ---
-  const handleQuestionSubmit = (e) => {
-    e.preventDefault();
-    if (!question.trim()) {
-      alert("Vui lòng nhập câu hỏi!");
-      return;
-    }
-    alert(`${t("programm.detail.partner.qa.question_prefix")} ${question}`);
-    setQuestion("");
-  };
+  const [reviews, setReviews] = useState(programm?.reviews || []);
+  const [qaList, setQaList] = useState(programm?.qa || programm?.questions || []);
 
-  // --- Xử lý gửi review ---
+  const [loading, setLoading] = useState(false);
+  const [rate, setRate] = useState(5);
+  const [content, setContent] = useState("");
+  const [question, setQuestion] = useState("");
+
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [showQAForm, setShowQAForm] = useState(false);
+
+  // 🔹 Thêm trạng thái accordion
+  const [showReviews, setShowReviews] = useState(false);
+  const [showQA, setShowQA] = useState(false);
+
+  // === Gửi đánh giá ===
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-
-    if (!content.trim()) {
-      alert("Vui lòng nhập nội dung đánh giá!");
-      return;
-    }
-
+    if (!content.trim()) return alert("Vui lòng nhập nội dung đánh giá!");
     setLoading(true);
-    console.log("📤 Program ID:", id);
-
     try {
-      const payload = {
-        rate: Number(rate),
-        content, // 👈 gửi đúng field backend mong đợi
-      };
-
-      const res = await sendProgrammReview(id, payload);
-      console.log("✅ Review added:", res);
-
-      alert(
-        `${t("programm.detail.partner.review.stars")}: ${rate}\n${content}`
-      );
-
-      // Reset form
-      setContent("");
-      setRate(5);
+      const res = await sendProgrammReview(id, { rate: Number(rate), content });
+      if (res.success) {
+        const newReview = res.data || { rate, content, createdAt: new Date() };
+        setReviews((prev) => [newReview, ...prev]);
+        setShowReviewForm(false);
+        setContent("");
+        setRate(5);
+      }
     } catch (err) {
-      console.error("❌ Error adding review:", err);
-      alert("Cập nhật đánh giá thất bại!");
+      console.error(err);
+      alert("❌ Gửi đánh giá thất bại!");
     } finally {
       setLoading(false);
     }
   };
 
+  // === Gửi câu hỏi ===
+  const handleQASubmit = async (e) => {
+    e.preventDefault();
+    if (!question.trim()) return alert("Vui lòng nhập câu hỏi!");
+    setLoading(true);
+    try {
+      const res = await sendProgrammQA(id, { question });
+      if (res.success) {
+        const newQA = res.data || { question, answer: null };
+        setQaList((prev) => [newQA, ...prev]);
+        setShowQAForm(false);
+        setQuestion("");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("❌ Gửi câu hỏi thất bại!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderStars = (num) => "⭐".repeat(num);
+
   return (
     <div className="partner-programm-container">
-      <h1 className="partner-programm-title">
-        {t("programm.detail.partner.title")}
-      </h1>
-
-      {/* === MÔ TẢ ĐỐI TÁC === */}
+      {/* === Giới thiệu đối tác === */}
       <div className="partner-description">
         <h4>{t("programm.detail.partner.intro_title")}</h4>
         <p>{programm?.partner_description || "Đang cập nhật..."}</p>
       </div>
 
-      {/* === FORM ĐÁNH GIÁ === */}
-      <div className="partner-reviews-container">
-        <h2>{t("programm.detail.partner.review.title")}</h2>
-        <form onSubmit={handleReviewSubmit} className="review-form">
-          <label>
-            {t("programm.detail.partner.review.select_label")}{" "}
-            <select
-              value={rate}
-              onChange={(e) => setRate(e.target.value)}
-              disabled={loading}
-            >
-              {[5, 4, 3, 2, 1].map((s) => (
-                <option key={s} value={s}>
-                  {s} {t("programm.detail.partner.review.stars")}
-                </option>
-              ))}
-            </select>
-          </label>
+      {/* === Accordion: Đánh giá === */}
+      <div className="accordion-section">
+        <div
+          className="accordion-header"
+          onClick={() => setShowReviews(!showReviews)}
+        >
+          <h2>Đánh giá của khách hàng</h2>
+          <span>{showReviews ? "▲" : "▼"}</span>
+        </div>
 
-          <textarea
-            placeholder={t("programm.detail.partner.review.placeholder")}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            disabled={loading}
-          />
+        {showReviews && (
+          <div className="accordion-content">
+            {reviews?.length > 0 ? (
+              <ul className="review-list">
+                {reviews.map((rev, idx) => (
+                  <li key={idx} className="review-item">
+                    <div className="review-header">
+                      <div className="review-avatar">🧑</div>
+                      <div>
+                        <div className="review-name">
+                          {rev.user?.name || "Người dùng ẩn danh"}
+                        </div>
+                        <div className="review-stars">{renderStars(rev.rate)}</div>
+                        {rev.createdAt && (
+                          <small className="review-date">
+                            {new Date(rev.createdAt).toLocaleDateString("vi-VN")}
+                          </small>
+                        )}
+                      </div>
+                    </div>
+                    <p className="review-content">{rev.content}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Chưa có đánh giá nào.</p>
+            )}
 
-          <button type="submit" className="footer-btn" disabled={loading}>
-            {loading
-              ? t("programm.detail.partner.review.submitting")
-              : t("programm.detail.partner.review.button")}
-          </button>
-        </form>
+            {!showReviewForm ? (
+              <button
+                className="footer-btn"
+                onClick={() => setShowReviewForm(true)}
+              >
+                ➕ Viết đánh giá
+              </button>
+            ) : (
+              <form onSubmit={handleReviewSubmit} className="review-form">
+                <label>
+                  Chọn số sao:{" "}
+                  <select
+                    value={rate}
+                    onChange={(e) => setRate(e.target.value)}
+                    disabled={loading}
+                  >
+                    {[5, 4, 3, 2, 1].map((s) => (
+                      <option key={s} value={s}>
+                        {s} ⭐
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <textarea
+                  placeholder="Chia sẻ trải nghiệm của bạn..."
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  disabled={loading}
+                />
+                <div className="form-actions">
+                  <button type="submit" disabled={loading}>
+                    {loading ? "Đang gửi..." : "Gửi đánh giá"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => setShowReviewForm(false)}
+                  >
+                    Hủy
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* === Accordion: Hỏi & Đáp === */}
+      <div className="accordion-section">
+        <div
+          className="accordion-header"
+          onClick={() => setShowQA(!showQA)}
+        >
+          <h2>Hỏi & Đáp</h2>
+          <span>{showQA ? "▲" : "▼"}</span>
+        </div>
+
+        {showQA && (
+          <div className="accordion-content">
+            {qaList?.length > 0 ? (
+              <ul className="qa-list">
+                {qaList.map((q, idx) => (
+                  <li key={idx} className="qa-item">
+                    <p><b>❓ {q.user?.name || "Khách"} hỏi:</b> {q.question}</p>
+                    {q.answer && (
+                      <p className="qa-answer">💬 {q.answer}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Chưa có câu hỏi nào.</p>
+            )}
+
+            {!showQAForm ? (
+              <button
+                className="footer-btn"
+                onClick={() => setShowQAForm(true)}
+              >
+                💬 Đặt câu hỏi
+              </button>
+            ) : (
+              <form onSubmit={handleQASubmit} className="qa-form">
+                <textarea
+                  placeholder="Nhập câu hỏi của bạn..."
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  disabled={loading}
+                />
+                <div className="form-actions">
+                  <button type="submit" disabled={loading}>
+                    {loading ? "Đang gửi..." : "Gửi câu hỏi"}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-cancel"
+                    onClick={() => setShowQAForm(false)}
+                  >
+                    Hủy
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

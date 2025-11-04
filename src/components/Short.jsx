@@ -19,74 +19,59 @@ export function SuccessStories() {
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingStory, setEditingStory] = useState(null);
-  const [editData, setEditData] = useState({
-    title: "",
-    content: "",
-    thumbnail_url: "",
-  });
-  const [file, setFile] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editData, setEditData] = useState({ title: "", content: "", thumbnail_url: "" });
   const [fileType, setFileType] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
+  // 📦 Lấy dữ liệu
   useEffect(() => {
-    async function fetchStories() {
+    (async () => {
       try {
         const result = await getPostsByType("success_story");
-        const enriched = result.data.map((story) => ({
-          ...story,
-          expanded: false,
-        }));
-        setStories(enriched);
+        setStories(result.data.map((s) => ({ ...s, expanded: false })));
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
-    }
-    fetchStories();
+    })();
   }, []);
 
-  const toggleExpand = (id) => {
-    setStories((prev) =>
-    prev.map((story) =>
-        story._id === id ? { ...story, expanded: !story.expanded } : story
-      )
-    );
+  const getFileTypeFromUrl = (url) => {
+    if (!url) return null;
+    const ext = url.split(".").pop().toLowerCase().split(/\#|\?/)[0];
+    if (["mp4", "webm", "ogg"].includes(ext)) return "video";
+    if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)) return "image";
+    return null;
   };
 
+  const toggleExpand = (id) =>
+    setStories((prev) =>
+      prev.map((s) => (s._id === id ? { ...s, expanded: !s.expanded } : s))
+    );
+
   const startEdit = (story) => {
-    setEditingStory(story._id);
-    setEditData({
-      title: story.title,
-      content: story.content,
-      thumbnail_url: story.thumbnail_url,
-    });
-    setFile(null);
+    setEditingId(story._id);
+    setEditData(story);
     setFileType(getFileTypeFromUrl(story.thumbnail_url));
   };
 
   const handleFileChange = async (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const isVideo = selectedFile.type.startsWith("video/");
-    const isImage = selectedFile.type.startsWith("image/");
-    if (!isVideo && !isImage) {
+    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
       alert("Chỉ chấp nhận ảnh hoặc video!");
       return;
     }
 
     setUploading(true);
     try {
-      const url = await upFileToStorage(selectedFile);
-      setEditData((prev) => ({
-        ...prev,
-        thumbnail_url: url,
-      }));
-      setFileType(isVideo ? "video" : "image");
-      setFile(selectedFile);
+      const url = await upFileToStorage(file);
+      setEditData((prev) => ({ ...prev, thumbnail_url: url }));
+      setFileType(file.type.startsWith("video/") ? "video" : "image");
     } catch (err) {
       alert("Tải file thất bại: " + err.message);
     } finally {
@@ -95,37 +80,18 @@ export function SuccessStories() {
     }
   };
 
-  const handleUpdateSuccessStories = async (id, updates) => {
+  const handleUpdate = async (id) => {
     try {
-      await updatePost(id, updates);
+      await updatePost(id, editData);
       alert("Cập nhật thành công!");
       setStories((prev) =>
-        prev.map((story) => (story._id === id ? { ...story, ...updates } : story))
+        prev.map((s) => (s._id === id ? { ...s, ...editData } : s))
       );
-      setEditingStory(null);
-    } catch (err) {
+      setEditingId(null);
+    } catch {
       alert("Cập nhật thất bại.");
     }
   };
-
-  const handleRemoveSuccessStories = async (id) => {
-    try {
-      await removePost(id);
-      alert("Xóa thành công");
-      setStories((prev) => prev.filter((story) => story._id !== id));
-      if (editingStory === id) setEditingStory(null);
-    } catch (err) {
-      alert("Xóa thất bại");
-    }
-  };
-
-  function getFileTypeFromUrl(url) {
-    if (!url) return null;
-    const ext = url.split(".").pop().toLowerCase().split(/\#|\?/)[0];
-    if (["mp4", "webm", "ogg"].includes(ext)) return "video";
-    if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)) return "image";
-    return null;
-  }
 
   if (loading) return <p>{t("loading") || "Loading..."}</p>;
   if (error) return <p>{t("error_fetching_data") || "Error loading data"}</p>;
@@ -141,140 +107,107 @@ export function SuccessStories() {
         loop={stories.length > 1}
         className="success-stories-swiper"
       >
-        {stories.map(({ _id, title, content, thumbnail_url, expanded }) => (
-          <SwiperSlide key={_id}>
+        {stories.map((story) => (
+          <SwiperSlide key={story._id}>
             <article className="success-story-card">
               <div className="success-stories-header">
                 <h2 className="section-stories-title">
                   🎓 {t("short.stories.title") || "Câu chuyện thành công"}
                 </h2>
-          
-                {currentUser?.role === "recruiter" && (
-                  <div style={{ display: "flex", textAlign: "right", marginBottom: "10px", gap: "5px" }}>
-                  <button onClick={() => startEdit({ _id, title, content, thumbnail_url })}>
-                    📝 Edit
-                  </button>
-                  <button onClick={() => handleRemoveSuccessStories(_id)}>
-                    ❌ Remove
-                  </button>
-                </div>
-                )}
+               
               </div>
 
-              <div className="success-stories-content">
+              <div 
+                className="success-stories-content"
+                onClick={() => navigate(`/success-story-detail/${story._id}`)}
+              >
                 <div
                   className="story-left clickable"
-                  onClick={() =>
-                    navigate(`/success-story-detail/${_id}`, {
-                      state: { story: { _id, title, content, thumbnail_url } },
-                    })
-                  }
+                  onClick={() => navigate(`/success-story-detail/${story._id}`)}
                 >
-                  {(() => {
-                    const fileType = getFileTypeFromUrl(thumbnail_url);
-                    if (fileType === "video") {
-                      return (
-                        <video
-                          src={thumbnail_url}
-                          controls
-                          className="story-media"
-                          onError={(e) => {
-                            e.target.outerHTML = '<img src="https://placehold.co/600x400?text=No+Video" class="story-media" />';
-                          }}
-                        />
-                      );
-                    }
-                    return (
-                      <img
-                        src={thumbnail_url || "https://placehold.co/600x400?text=No+Image"}
-                        alt={title}
-                        className="story-media"
-                        onError={(e) =>
-                          (e.target.src = "https://placehold.co/600x400?text=No+Image")
-                        }
-                      />
-                    );
-                  })()}
+                  {getFileTypeFromUrl(story.thumbnail_url) === "video" ? (
+                    <video
+                      src={story.thumbnail_url}
+                      controls
+                      className="story-media"
+                      onError={(e) =>
+                        (e.target.outerHTML =
+                          '<img src="https://placehold.co/600x400?text=No+Video" class="story-media" />')
+                      }
+                    />
+                  ) : (
+                    <img
+                      src={
+                        story.thumbnail_url ||
+                        "https://placehold.co/600x400?text=No+Image"
+                      }
+                      alt={story.title}
+                      className="story-media"
+                      onError={(e) =>
+                        (e.target.src =
+                          "https://placehold.co/600x400?text=No+Image")
+                      }
+                    />
+                  )}
                 </div>
 
                 <div className="story-right">
                   <h3
                     className="story-title clickable"
                     onClick={() =>
-                      navigate(`/success-story-detail/${_id}`, {
-                        state: { story: { _id, title, content, thumbnail_url } },
-                      })
+                      navigate(`/success-story-detail/${story._id}`)
                     }
                   >
-                    {title}
+                    {story.title}
                   </h3>
-
-                  <div
-                    className={`story-content ${expanded ? "expanded" : ""}`}
-                    dangerouslySetInnerHTML={{
-                      __html: expanded
-                        ? content
-                        : content?.length > 400
-                        ? content.slice(0, 400) + "..."
-                        : content,
-                    }}
-                    style={{ textAlign: "center" }}
-                  ></div>
-
-                  {content?.length > 400 && (
-                    <button
-                      className="story-btn"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        toggleExpand(_id);
-                      }}
-                    >
-                      {expanded ? "Thu gọn" : "Xem thêm"}
-                    </button>
-                  )}
+  
+                  <div className="story-content">
+                    <div
+                      className={`story-text ${
+                        story.expanded ? "expanded ql-editor" : "collapsed"
+                      }`}
+                      dangerouslySetInnerHTML={{ __html: story.content }}
+                    />
+                    {story.content.length > 400 && (
+                      <button
+                        className="read-more-btn"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleExpand(story._id)
+                          }
+                        }
+                      >
+                        {story.expanded ? "Ẩn bớt" : "Xem thêm"}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-
-              {/* 👉 FORM CHỈNH SỬA */}
-              {editingStory === _id && (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleUpdateSuccessStories(_id, editData);
-                  }}
-                  className="edit-form"
-                  style={{
-                    alignSelf:"center",
-                    marginTop: "20px",
-                    background: "#f9f9f9",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Tiêu đề:</label>
-                    <input
-                      type="text"
-                      value={editData.title}
-                      onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Nội dung:</label>
-                    <ReactQuill
-                      theme="snow"
-                      value={editData.content}
-                      onChange={(val) => setEditData({ ...editData, content: val })}
-                      style={{ backgroundColor: "white" }}
-                    />
-                  </div>
-
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Upload ảnh/video mới:</label>
+  
+              {editingId === story._id && (
+                <div className="edit-form">
+                  <h4>🛠 Chỉnh sửa bài viết</h4>
+  
+                  <input
+                    type="text"
+                    className="input"
+                    value={editData.title}
+                    onChange={(e) =>
+                      setEditData((prev) => ({ ...prev, title: e.target.value }))
+                    }
+                    placeholder="Tiêu đề"
+                  />
+  
+                  <ReactQuill
+                    theme="snow"
+                    value={editData.content}
+                    onChange={(content) =>
+                      setEditData((prev) => ({ ...prev, content }))
+                    }
+                    className="editor"
+                  />
+  
+                  <div className="upload-section">
                     <input
                       type="file"
                       accept="image/*,video/*"
@@ -283,68 +216,52 @@ export function SuccessStories() {
                     />
                     {uploading && <p>Đang tải lên...</p>}
                     {editData.thumbnail_url && (
-                      <>
+                      <div className="preview">
                         {fileType === "video" ? (
-                          <video src={editData.thumbnail_url} controls width="240" />
+                          <video
+                            src={editData.thumbnail_url}
+                            controls
+                            className="story-media"
+                          />
                         ) : (
-                          <img src={editData.thumbnail_url} alt="preview" width="220" />
+                          <img
+                            src={editData.thumbnail_url}
+                            alt="Preview"
+                            className="story-media"
+                          />
                         )}
-                      </>
+                      </div>
                     )}
                   </div>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button type="submit" disabled={uploading}>
-                      💾 {uploading ? "Đang lưu..." : "Lưu lại"}
+  
+                  <div className="form-actions">
+                    <button
+                      className="btn-save"
+                      onClick={() => handleUpdate(story._id)}
+                      disabled={uploading}
+                    >
+                      💾 Lưu thay đổi
                     </button>
-                    <button type="button" onClick={() => setEditingStory(null)}>
+                    <button
+                      className="btn-cancel"
+                      onClick={() => setEditingId(null)}
+                    >
                       ❌ Hủy
                     </button>
                   </div>
-                </form>
+                </div>
               )}
             </article>
           </SwiperSlide>
         ))}
       </Swiper>
     </section>
-  );
-
-}
-
-
+    );
+  }
+  
 
 
 import { useLocation } from "react-router-dom";
-
-export function DetailSuccessStory() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { t } = useI18n();
-
-  const story = location.state?.story;
-  const render = null;
-
-  if (!story) return <p>{t('short.not_found_story')}</p>;
-
-  return (
-    <>
-      <h3 style={{maxWidth:"900px", height:"600px",margin:"100px auto", display:"flex", justifyContent:"center", alignItems:"center"}}>{t('programm.detail.loading_programm')}</h3>
-      {render && <>
-        <section className="detail-story section">
-          <button onClick={() => navigate(-1)} className="back-btn">
-            {t('short.back')}
-          </button>
-          <div className="detail-card">
-            <img src={story.imageUrl} alt={story.title} className="detail-image" />
-            <h2 className="detail-title">{story.title}</h2>
-            <p className="detail-desc">{story.description}</p>
-          </div>
-        </section>
-      </>}
-    
-    </>
-  );
-}
 
 
 
@@ -410,7 +327,7 @@ export function Partner() {
 
 
 import Footer from "./Footer";
-import { getPostsByType, removePost, updatePost, upFileToStorage } from "../api";
+import { getPostById, getPostsByType, removePost, updatePost, upFileToStorage } from "../api";
 import { useAuth } from "../context/AuthContext";
 
 export function PartnerDetail() {
@@ -462,7 +379,6 @@ export function TipsAndEventsSection() {
   const { user: currentUser } = useAuth();
   const { t } = useI18n();
 
-  // State chính
   const [tips, setTips] = useState([]);
   const [events, setEvents] = useState([]);
   const [loadingTips, setLoadingTips] = useState(true);
@@ -470,35 +386,25 @@ export function TipsAndEventsSection() {
   const [errorTips, setErrorTips] = useState(null);
   const [errorEvents, setErrorEvents] = useState(null);
 
-  // State chỉnh sửa
-  const [editingTipId, setEditingTipId] = useState(null);
   const [editingEventId, setEditingEventId] = useState(null);
-
-  const [editTipData, setEditTipData] = useState({
-    title: "",
-    content: "",
-    thumbnail_url: "",
-  });
-
   const [editEventData, setEditEventData] = useState({
     title: "",
     location: "",
     createdAt: "",
     thumbnail_url: "",
   });
-
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Load tips & events
   useEffect(() => {
     async function fetchTips() {
       try {
         const result = await getPostsByType("career_tip");
-        const sortedTips = result.data
+        const sorted = result.data
           .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-          .slice(0, 3);
-        setTips(sortedTips);
+          .slice(0, 3)
+          .map((t) => ({ ...t, expanded: false }));
+        setTips(sorted);
       } catch (err) {
         setErrorTips(err.message);
       } finally {
@@ -509,10 +415,11 @@ export function TipsAndEventsSection() {
     async function fetchEvents() {
       try {
         const result = await getPostsByType("upcoming_event");
-        const sortedEvents = result.data
+        const sorted = result.data
           .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-          .slice(0, 3);
-        setEvents(sortedEvents);
+          .slice(0, 3)
+          .map((e) => ({ ...e, expanded: false }));
+        setEvents(sorted);
       } catch (err) {
         setErrorEvents(err.message);
       } finally {
@@ -524,11 +431,21 @@ export function TipsAndEventsSection() {
     fetchEvents();
   }, []);
 
-  // Upload file handler (dùng chung cho cả tips và events)
-  const handleFileChange = async (e, type = "tip") => {
+  const getPlainText = (html) => {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    return div.textContent || div.innerText || "";
+  };
+
+  const toggleTipsExpande = (id) => {
+    setTips((prev) =>
+      prev.map((t) => (t._id === id ? { ...t, expanded: !t.expanded } : t))
+    );
+  };
+
+  const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (!selectedFile) return;
-
     const isVideo = selectedFile.type.startsWith("video/");
     const isImage = selectedFile.type.startsWith("image/");
     if (!isVideo && !isImage) {
@@ -539,11 +456,7 @@ export function TipsAndEventsSection() {
     setUploading(true);
     try {
       const url = await upFileToStorage(selectedFile);
-      if (type === "tip") {
-        setEditTipData((prev) => ({ ...prev, thumbnail_url: url }));
-      } else {
-        setEditEventData((prev) => ({ ...prev, thumbnail_url: url }));
-      }
+      setEditEventData((prev) => ({ ...prev, thumbnail_url: url }));
     } catch (err) {
       alert("Tải file thất bại: " + err.message);
     } finally {
@@ -552,17 +465,6 @@ export function TipsAndEventsSection() {
     }
   };
 
-  // Bắt đầu chỉnh sửa tip
-  const startEditTip = (tip) => {
-    setEditingTipId(tip._id);
-    setEditTipData({
-      title: tip.title,
-      content: tip.content,
-      thumbnail_url: tip.thumbnail_url,
-    });
-  };
-
-  // Bắt đầu chỉnh sửa event
   const startEditEvent = (event) => {
     setEditingEventId(event._id);
     setEditEventData({
@@ -573,21 +475,6 @@ export function TipsAndEventsSection() {
     });
   };
 
-  // Lưu chỉnh sửa tip
-  const handleUpdateTip = async (id) => {
-    try {
-      await updatePost(id, editTipData);
-      alert("Cập nhật thành công!");
-      setTips((prev) =>
-        prev.map((tip) => (tip._id === id ? { ...tip, ...editTipData } : tip))
-      );
-      setEditingTipId(null);
-    } catch {
-      alert("Cập nhật thất bại.");
-    }
-  };
-
-  // Lưu chỉnh sửa event
   const handleUpdateEvent = async (id) => {
     try {
       await updatePost(id, editEventData);
@@ -603,27 +490,12 @@ export function TipsAndEventsSection() {
     }
   };
 
-  // Xóa tip
-  const handleRemoveTip = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa mục này không?")) return;
-    try {
-      await removePost(id);
-      alert("Xóa thành công");
-      setTips((prev) => prev.filter((tip) => tip._id !== id));
-      if (editingTipId === id) setEditingTipId(null);
-    } catch {
-      alert("Xóa thất bại");
-    }
-  };
-
-  // Xóa event
   const handleRemoveEvent = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xóa mục này không?")) return;
     try {
       await removePost(id);
       alert("Xóa thành công");
       setEvents((prev) => prev.filter((event) => event._id !== id));
-      if (editingEventId === id) setEditingEventId(null);
     } catch {
       alert("Xóa thất bại");
     }
@@ -636,151 +508,70 @@ export function TipsAndEventsSection() {
 
   return (
     <section className="tips-events section">
-      {/* Cẩm nang nghề nghiệp */}
+      {/* --------- CẨM NANG NGHỀ NGHIỆP --------- */}
       <div className="tips-guide">
         <h2 className="section-title">{t("short.career_guide")}</h2>
         <div className="stories-grid">
-          {tips.map(({ _id, title, content, thumbnail_url }, idx) => (
-            <div
-              key={_id}
-              className="story-card"
-              style={{ cursor: "pointer", position: "relative" }}
-            >
-              <img src={thumbnail_url} alt={title} loading="lazy" />
-              <h3 style={{ textAlign: "center" }}>{title}</h3>
+          {tips.map((tip) => {
+            const plainText = getPlainText(tip.content);
+            return (
               <div
-                dangerouslySetInnerHTML={{ __html: content }}
-                style={{ textAlign: "center" }}
-              ></div>
+                key={tip._id}
+                className="story-card"
+                style={{ cursor: "pointer", position: "relative" }}
+                onClick={() => navigate(`/tip-detail/${tip._id}`)}
+              >
+                <img src={tip.thumbnail_url} alt={tip.title} loading="lazy" />
+                <h3 style={{ textAlign: "center" }}>{tip.title}</h3>
 
-              {/* Chức năng chỉnh sửa & xóa chỉ cho recruiter */}
-              {currentUser?.role === "recruiter" && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "5px",
-                    right: "5px",
-                    display: "flex",
-                    gap: "5px",
-                  }}
-                >
-                  <button onClick={() => startEditTip({ _id, title, content, thumbnail_url })}>
-                    📝
-                  </button>
-                  <button onClick={() => handleRemoveTip(_id)}>❌</button>
-                </div>
-              )}
+                <div>
+                  <div
+                    className={`story-text ${
+                      tip.expanded ? "expanded ql-editor" : "collapsed"
+                    }`}
+                    dangerouslySetInnerHTML={{ __html: tip.content }}
+                  ></div>
 
-              {/* Form chỉnh sửa tip */}
-              {editingTipId === _id && (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleUpdateTip(_id);
-                  }}
-                  style={{
-                    marginTop: "10px",
-                    background: "#f9f9f9",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                  }}
-                >
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Tiêu đề:</label>
-                    <input
-                      type="text"
-                      value={editTipData.title}
-                      onChange={(e) =>
-                        setEditTipData({ ...editTipData, title: e.target.value })
-                      }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Nội dung:</label>
-                    <ReactQuill
-                      theme="snow"
-                      value={editTipData.content}
-                      onChange={(val) => setEditTipData({ ...editTipData, content: val })}
-                      style={{ backgroundColor: "white" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Upload ảnh/video mới:</label>
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      onChange={(e) => handleFileChange(e, "tip")}
-                      ref={fileInputRef}
-                    />
-                    {uploading && <p>Đang tải lên...</p>}
-                    {editTipData.thumbnail_url && (
-                      <>
-                        {editTipData.thumbnail_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                          <video
-                            src={editTipData.thumbnail_url}
-                            controls
-                            width="240"
-                            style={{ marginTop: "10px" }}
-                          />
-                        ) : (
-                          <img
-                            src={editTipData.thumbnail_url}
-                            alt="preview"
-                            width="220"
-                            style={{ marginTop: "10px" }}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button type="submit" disabled={uploading}>
-                      💾 {uploading ? "Đang lưu..." : "Lưu lại"}
-                    </button>
+                  {plainText.length > 400 && (
                     <button
-                      type="button"
-                      onClick={() => setEditingTipId(null)}
-                      disabled={uploading}
+                      className="read-more-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleTipsExpande(tip._id);
+                      }}
                     >
-                      ❌ Hủy
+                      {tip.expanded ? "Ẩn bớt" : "Xem thêm"}
                     </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          ))}
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Sự kiện sắp tới */}
+      {/* --------- SỰ KIỆN --------- */}
       <div className="event-section" style={{ marginTop: "40px" }}>
         <h2 className="section-title">{t("short.events")}</h2>
         <div className="stories-grid">
-          {events.map(({ _id, title, location, createdAt, thumbnail_url }, idx) => (
+          {events.map((event) => (
             <div
-              key={_id}
+              key={event._id}
               className="story-card"
               style={{ cursor: "pointer", position: "relative" }}
+              onClick={() => navigate(`/event-detail/${event._id}`)}
             >
-              <img src={thumbnail_url} alt={title} loading="lazy" />
-              <h3 style={{ textAlign: "center" }}>{title}</h3>
+              <img src={event.thumbnail_url} alt={event.title} loading="lazy" />
+              <h3 style={{ textAlign: "center" }}>{event.title}</h3>
               <p style={{ textAlign: "center" }}>
-                <strong>{t("short.event-location")}:</strong> {location}
+                <strong>{t("short.event-location")}:</strong> {event.location}
               </p>
               <p style={{ textAlign: "center" }}>
                 <strong>{t("short.event-date")}:</strong>{" "}
-                {new Date(createdAt).toLocaleDateString("vi-VN", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                })}
+                {new Date(event.createdAt).toLocaleDateString("vi-VN")}
               </p>
 
-              {/* Chức năng chỉnh sửa & xóa chỉ cho recruiter */}
-              {currentUser?.role === "recruiter" && (
+              {currentUser?.role === "admin" && (
                 <div
                   style={{
                     position: "absolute",
@@ -790,109 +581,72 @@ export function TipsAndEventsSection() {
                     gap: "5px",
                   }}
                 >
-                  <button
-                    onClick={() =>
-                      startEditEvent({ _id, title, location, createdAt, thumbnail_url })
-                    }
-                  >
-                    📝
-                  </button>
-                  <button onClick={() => handleRemoveEvent(_id)}>❌</button>
+                  <button onClick={() => startEditEvent(event)}>📝</button>
+                  <button onClick={() => handleRemoveEvent(event._id)}>❌</button>
                 </div>
               )}
 
-              {/* Form chỉnh sửa event */}
-              {editingEventId === _id && (
+              {editingEventId === event._id && (
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    handleUpdateEvent(_id);
+                    handleUpdateEvent(event._id);
                   }}
-                  style={{
-                    marginTop: "10px",
-                    background: "#f9f9f9",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-                  }}
+                  className="edit-form"
                 >
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Tiêu đề:</label>
-                    <input
-                      type="text"
-                      value={editEventData.title}
-                      onChange={(e) =>
-                        setEditEventData({ ...editEventData, title: e.target.value })
-                      }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
+                  <label>Tiêu đề:</label>
+                  <input
+                    type="text"
+                    value={editEventData.title}
+                    onChange={(e) =>
+                      setEditEventData({
+                        ...editEventData,
+                        title: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Địa điểm:</label>
+                  <input
+                    type="text"
+                    value={editEventData.location}
+                    onChange={(e) =>
+                      setEditEventData({
+                        ...editEventData,
+                        location: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Ngày tổ chức:</label>
+                  <input
+                    type="date"
+                    value={editEventData.createdAt.slice(0, 10)}
+                    onChange={(e) =>
+                      setEditEventData({
+                        ...editEventData,
+                        createdAt: e.target.value,
+                      })
+                    }
+                  />
+                  <label>Upload ảnh/video mới:</label>
+                  <input
+                    type="file"
+                    accept="image/*,video/*"
+                    onChange={handleFileChange}
+                    ref={fileInputRef}
+                  />
+                  {uploading && <p>Đang tải lên...</p>}
+                  {editEventData.thumbnail_url && (
+                    <img
+                      src={editEventData.thumbnail_url}
+                      alt="preview"
+                      width="200"
+                      style={{ marginTop: "10px" }}
                     />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Địa điểm:</label>
-                    <input
-                      type="text"
-                      value={editEventData.location}
-                      onChange={(e) =>
-                        setEditEventData({ ...editEventData, location: e.target.value })
-                      }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Ngày tổ chức:</label>
-                    <input
-                      type="date"
-                      value={editEventData.createdAt.slice(0, 10)} // format yyyy-mm-dd
-                      onChange={(e) =>
-                        setEditEventData({
-                          ...editEventData,
-                          createdAt: e.target.value,
-                        })
-                      }
-                      required
-                      style={{ width: "100%", padding: "8px" }}
-                    />
-                  </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <label>Upload ảnh/video mới:</label>
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      onChange={(e) => handleFileChange(e, "event")}
-                      ref={fileInputRef}
-                    />
-                    {uploading && <p>Đang tải lên...</p>}
-                    {editEventData.thumbnail_url && (
-                      <>
-                        {editEventData.thumbnail_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                          <video
-                            src={editEventData.thumbnail_url}
-                            controls
-                            width="240"
-                            style={{ marginTop: "10px" }}
-                          />
-                        ) : (
-                          <img
-                            src={editEventData.thumbnail_url}
-                            alt="preview"
-                            width="220"
-                            style={{ marginTop: "10px" }}
-                          />
-                        )}
-                      </>
-                    )}
-                  </div>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button type="submit" disabled={uploading}>
-                      💾 {uploading ? "Đang lưu..." : "Lưu lại"}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setEditingEventId(null)}
-                      disabled={uploading}
-                    >
+                  )}
+
+                  <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+                    <button type="submit">💾 Lưu</button>
+                    <button type="button" onClick={() => setEditingEventId(null)}>
                       ❌ Hủy
                     </button>
                   </div>
@@ -908,89 +662,6 @@ export function TipsAndEventsSection() {
 
 
 
-// Chi tiết cẩm nang nghề nghiệp
-export function TipDetail() {
-  const { tipId } = useParams();
-  const navigate = useNavigate();
-  const { t } = useI18n();
-  const tips = [
-    {
-      id: "1",
-      title: "Cách viết CV nổi bật",
-      description: "Những mẹo đơn giản để tạo một bản CV ấn tượng trong mắt nhà tuyển dụng.",
-      imageUrl: "https://source.unsplash.com/600x400/?cv,resume",
-    },
-    {
-      id: "2",
-      title: "Phỏng vấn thành công",
-      description: "Chuẩn bị và ứng xử đúng cách để ghi điểm tuyệt đối trong buổi phỏng vấn.",
-      imageUrl: "https://source.unsplash.com/600x400/?interview,job",
-    },
-    {
-      id: "3",
-      title: "Kỹ năng mềm quan trọng",
-      description: "Phát triển kỹ năng giao tiếp, làm việc nhóm và quản lý thời gian hiệu quả.",
-      imageUrl: "https://source.unsplash.com/600x400/?skills,communication",
-    },
-  ];
-
-  const tip = tips.find(t => t.id === tipId);
-
-  if (!tip) return <p>{useI18n().t('short.not_found_story')}</p>;
-
-  return (
-    <section className="detail-tip section">
-      <button onClick={() => navigate(-1)} className="back-btn">{useI18n().t('short.back')}</button>
-      <div className="detail-card">
-        <img src={tip.imageUrl} alt={tip.title} className="detail-image" />
-        <h2 className="detail-title">{tip.title}</h2>
-        <p className="detail-desc">{tip.description}</p>
-      </div>
-    </section>
-  );
-}
-
-// Chi tiết sự kiện
-export function EventDetail() {
-  const { eventId } = useParams();
-  const navigate = useNavigate();
-  const { t } = useI18n();
-  const events = [
-    {
-      id: "1",
-      title: "Hội thảo định hướng nghề nghiệp 2025",
-      date: "20/10/2025",
-      location: "TP.HCM",
-      description: "Tham gia hội thảo để định hướng phát triển sự nghiệp trong tương lai.",
-      imageUrl: "https://source.unsplash.com/600x400/?career,event",
-    },
-    {
-      id: "2",
-      title: "Workshop viết CV chuyên nghiệp",
-      date: "10/11/2025",
-      location: "Hà Nội",
-      description: "Học cách viết CV chuyên nghiệp để gây ấn tượng với nhà tuyển dụng.",
-      imageUrl: "https://source.unsplash.com/600x400/?workshop,resume",
-    },
-  ];
-
-  const event = events.find(e => e.id === eventId);
-
-  if (!event) return <p>{useI18n().t('short.not_found_story')}</p>;
-
-  return (
-    <section className="detail-event section">
-      <button onClick={() => navigate(-1)} className="back-btn">{useI18n().t('short.back')}</button>
-      <div className="detail-card">
-        <img src={event.imageUrl} alt={event.title} className="detail-image" />
-        <h2 className="detail-title">{event.title}</h2>
-        <p><strong>Thời gian:</strong> {event.date}</p>
-        <p><strong>Địa điểm:</strong> {event.location}</p>
-        <p className="detail-desc">{event.description}</p>
-      </div>
-    </section>
-  );
-}
 
 
 
@@ -1091,3 +762,153 @@ export function BecomeCollaborator() {
 }
 
 
+/* ===============================
+  📖 DETAIL PAGE (Restyled)
+================================= */
+
+export function DetailSuccessStory() {
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [story, setStory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getPostById(id);
+        setStory(res.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [id]);
+
+  if (loading) return <p className="loading-text">{t("loading")}</p>;
+  if (error || !story) return <p className="error-text">{t("short.not_found_story")}</p>;
+
+  return (
+    <section className="detail-wrapper">
+      <button onClick={() => navigate(-1)} className="back-btn">
+        ← {t("short.back")}
+      </button>
+
+      <div className="detail-header">
+        {story.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
+          <video src={story.thumbnail_url} controls className="detail-media-full" />
+        ) : (
+          <img src={story.thumbnail_url} alt={story.title} className="detail-media-full" />
+        )}
+        <h1 className="detail-main-title">{story.title}</h1>
+      </div>
+
+      <div
+        className="detail-content ql-editor"
+        dangerouslySetInnerHTML={{ __html: story.content }}
+      />
+    </section>
+  );
+}
+
+/* ----- TIP DETAIL ----- */
+export function TipDetail() {
+  const { tipId } = useParams();
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  const [tip, setTip] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getPostById(tipId);
+        setTip(res.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [tipId]);
+
+  if (loading) return <p className="loading-text">{t("loading")}</p>;
+  if (error || !tip) return <p className="error-text">{t("short.not_found_story")}</p>;
+
+  return (
+    <section className="detail-wrapper">
+      <button onClick={() => navigate(-1)} className="back-btn">
+        ← {t("short.back")}
+      </button>
+
+      <div className="detail-header">
+        {tip.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
+          <video src={tip.thumbnail_url} controls className="detail-media-full" />
+        ) : (
+          <img src={tip.thumbnail_url} alt={tip.title} className="detail-media-full" />
+        )}
+        <h1 className="detail-main-title">{tip.title}</h1>
+      </div>
+
+      <div
+        className="detail-content ql-editor"
+        dangerouslySetInnerHTML={{ __html: tip.content }}
+      />
+    </section>
+  );
+}
+
+/* ----- EVENT DETAIL ----- */
+export function EventDetail() {
+  const { eventId } = useParams();
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await getPostById(eventId);
+        setEvent(res.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [eventId]);
+
+  if (loading) return <p className="loading-text">{t("loading")}</p>;
+  if (error || !event) return <p className="error-text">{t("short.not_found_story")}</p>;
+
+  return (
+    <section className="detail-wrapper">
+      <button onClick={() => navigate(-1)} className="back-btn">
+        ← {t("short.back")}
+      </button>
+
+      <div className="detail-header">
+        {event.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
+          <video src={event.thumbnail_url} controls className="detail-media-full" />
+        ) : (
+          <img src={event.thumbnail_url} alt={event.title} className="detail-media-full" />
+        )}
+        <h1 className="detail-main-title">{event.title}</h1>
+        <p className="event-meta">
+          📍 {event.location} | 📅{" "}
+          {new Date(event.createdAt).toLocaleDateString("vi-VN")}
+        </p>
+      </div>
+
+      <div
+        className="detail-content ql-editor"
+        dangerouslySetInnerHTML={{ __html: event.content }}
+      />
+    </section>
+  );
+}
