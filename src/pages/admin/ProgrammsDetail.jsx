@@ -1,14 +1,15 @@
 import { useLocation, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useI18n } from "../../i18n";
-import { getProgrammById } from "../../api"; // giả sử bạn có api này để lấy detail theo id
+import { getProgrammById } from "../../api";
 import "./ProgrammsDetail.css";
 import ProgrammDetail from "../Detail";
+import { useI18n } from "../../i18n";
 
 export default function ProgrammsDetail() {
+  // ✅ Call useI18n ONCE at the top
+  const { t } = useI18n();
   const location = useLocation();
   const { id } = useParams();
-  const { t } = useI18n();
 
   // Nếu đã được truyền programm qua location.state thì dùng luôn
   const initialProgramm = location.state?.programm;
@@ -32,11 +33,15 @@ export default function ProgrammsDetail() {
     }
   }, [id, programm]);
 
-  if (loading) return <p>Loading programm detail...</p>;
-  if (error) return <p style={{color: 'red'}}>{`Error: ${error}`}</p>;
-  if (!programm) return <p>{t('admin.programms.no_selected') || 'No programm selected'}</p>;
+  // ✅ Single set of conditional returns using the translation
+  if (loading) return <p>{t("pages.recruiter.loading_programms")}</p>;
+  if (error)
+    return (
+      <p style={{ color: "red" }}>
+        {t("pages.recruiter.error_prefix")} {error}
+      </p>
+    );
+  if (!programm) return <p>{t("detail.not_found")}</p>;
 
-  return (
-      <ProgrammDetail role="admin"/>
-  );
+  return <ProgrammDetail role="recruiter" programm={programm} />;
 }

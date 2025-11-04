@@ -12,8 +12,8 @@ export default function ProgrammDetail({ role }) {
   const [programm, setProgramm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { t } = useI18n();
 
+  const { t } = useI18n();
   useEffect(() => {
     async function fetchProgramm() {
       try {
@@ -26,42 +26,47 @@ export default function ProgrammDetail({ role }) {
         setLoading(false);
       }
     }
+
     fetchProgramm();
   }, [id]);
 
   if (loading)
     return (
-      <div className="programm-loading">
+      <p
+        style={{
+          maxWidth: "900px",
+          height: "600px",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {t("programm.detail.loading_programm")}
-      </div>
+      </p>
     );
-
-  if (error)
-    return (
-      <div className="programm-loading" style={{ color: "red" }}>
-        ❌ {error}
-      </div>
-    );
-
+  //if (error) return <p style={{ color: "red" }}>❌ {error}</p>;
   if (!programm)
     return (
-      <div className="programm-loading">
+      <p
+        style={{
+          maxWidth: "900px",
+          height: "600px",
+          margin: "100px auto",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         {t("programm.detail.loading_programm")}
-      </div>
+      </p>
     );
 
   return (
-    <div className="programm-map-layout">
-      {/* === CỘT TRÁI: Q&A + Reviews === */}
-      <aside className="programm-left-panel">
-        <ProgrammPartner programm={programm} />
-      </aside>
-
-      {/* === CỘT PHẢI: Thông tin chương trình === */}
-      <main className="programm-right-panel">
-        <ProgrammOverview programm={programm} role={role} />
-        <ProgrammJourney programm={programm} />
-      </main>
+    <div className="programm-detail column-layout">
+      <ProgrammOverview programm={programm} role={role} />
+      <ProgrammJourney programm={programm} />
+      <ProgrammPartner programm={programm} />
     </div>
   );
 }

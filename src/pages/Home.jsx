@@ -4,29 +4,28 @@ import Footer from "../components/Footer";
 
 import partners from "../mocks/logo";
 import TopProgramme from "../components/TopProgramme";
-import { SuccessStories, WhyChoose, Partner, TipsAndEventsSection, BecomeCollaborator } from "../components/Short";
-
-
-
+import {
+  SuccessStories,
+  WhyChoose,
+  Partner,
+  TipsAndEventsSection,
+  BecomeCollaborator,
+} from "../components/Short";
 
 export default function HomePage() {
-  
   return (
     <>
       <div className="page-container">
-
-
-        <TopProgramme /> 
-        <WhyChoose />  
+        <TopProgramme />
+        <WhyChoose />
         <Divider />
-        <SuccessStories />  
+        <SuccessStories />
         <TipsAndEventsSection />
-        <Partner /> 
+        <Partner />
         <AutoSlider logos={partners} />
-        <BecomeCollaborator />  {/* Thêm mục CTV vào đây */}
-      
+        <BecomeCollaborator /> {/* Thêm mục CTV vào đây */}
       </div>
-     <Footer />
+      <Footer />
     </>
   );
 }
