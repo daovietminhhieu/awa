@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import { useI18n } from "../i18n";
 import { sendProgrammReview, sendProgrammQA } from "../api";
-import './ProgrammPartner.css'
+import "./ProgrammPartner.css";
+
 export default function ProgrammPartner({ programm }) {
   const { t } = useI18n();
   const id = programm?._id;
 
   const [reviews, setReviews] = useState(programm?.reviews || []);
-  const [qaList, setQaList] = useState(programm?.qa || programm?.questions || []);
+  const [qaList, setQaList] = useState(
+    Array.isArray(programm?.qa)
+      ? programm.qa
+      : Array.isArray(programm?.questions)
+      ? programm.questions
+      : []
+  );
 
   const [loading, setLoading] = useState(false);
   const [rate, setRate] = useState(5);
@@ -17,7 +24,6 @@ export default function ProgrammPartner({ programm }) {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showQAForm, setShowQAForm] = useState(false);
 
-  // 🔹 Thêm trạng thái accordion
   const [showReviews, setShowReviews] = useState(false);
   const [showQA, setShowQA] = useState(false);
 
@@ -112,59 +118,16 @@ export default function ProgrammPartner({ programm }) {
               <p>Chưa có đánh giá nào.</p>
             )}
 
-            {!showReviewForm ? (
-              <button
-                className="footer-btn"
-                onClick={() => setShowReviewForm(true)}
-              >
-                ➕ Viết đánh giá
-              </button>
-            ) : (
-              <form onSubmit={handleReviewSubmit} className="review-form">
-                <label>
-                  Chọn số sao:{" "}
-                  <select
-                    value={rate}
-                    onChange={(e) => setRate(e.target.value)}
-                    disabled={loading}
-                  >
-                    {[5, 4, 3, 2, 1].map((s) => (
-                      <option key={s} value={s}>
-                        {s} ⭐
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <textarea
-                  placeholder="Chia sẻ trải nghiệm của bạn..."
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  disabled={loading}
-                />
-                <div className="form-actions">
-                  <button type="submit" disabled={loading}>
-                    {loading ? "Đang gửi..." : "Gửi đánh giá"}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cancel"
-                    onClick={() => setShowReviewForm(false)}
-                  >
-                    Hủy
-                  </button>
-                </div>
-              </form>
-            )}
+            <button className="footer-btn" onClick={() => setShowReviewForm(true)}>
+              ➕ Viết đánh giá
+            </button>
           </div>
         )}
       </div>
 
       {/* === Accordion: Hỏi & Đáp === */}
       <div className="accordion-section">
-        <div
-          className="accordion-header"
-          onClick={() => setShowQA(!showQA)}
-        >
+        <div className="accordion-header" onClick={() => setShowQA(!showQA)}>
           <h2>Hỏi & Đáp</h2>
           <span>{showQA ? "▲" : "▼"}</span>
         </div>
@@ -175,49 +138,94 @@ export default function ProgrammPartner({ programm }) {
               <ul className="qa-list">
                 {qaList.map((q, idx) => (
                   <li key={idx} className="qa-item">
-                    <p><b>❓ {q.user?.name || "Khách"} hỏi:</b> {q.question}</p>
-                    {q.answer && (
-                      <p className="qa-answer">💬 {q.answer}</p>
-                    )}
+                    <p>
+                      <b>❓ {q.user?.name || "Khách"} hỏi:</b> {q.question}
+                    </p>
+                    {q.answer && <p className="qa-answer">💬 {q.answer}</p>}
                   </li>
                 ))}
               </ul>
             ) : (
               <p>Chưa có câu hỏi nào.</p>
             )}
-
-            {!showQAForm ? (
-              <button
-                className="footer-btn"
-                onClick={() => setShowQAForm(true)}
-              >
-                💬 Đặt câu hỏi
-              </button>
-            ) : (
-              <form onSubmit={handleQASubmit} className="qa-form">
-                <textarea
-                  placeholder="Nhập câu hỏi của bạn..."
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  disabled={loading}
-                />
-                <div className="form-actions">
-                  <button type="submit" disabled={loading}>
-                    {loading ? "Đang gửi..." : "Gửi câu hỏi"}
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cancel"
-                    onClick={() => setShowQAForm(false)}
-                  >
-                    Hủy
-                  </button>
-                </div>
-              </form>
-            )}
+            <button className="footer-btn" onClick={() => setShowQAForm(true)}>
+              💬 Đặt câu hỏi
+            </button>
           </div>
         )}
       </div>
+
+      {/* === MODAL FORM: REVIEW === */}
+      {showReviewForm && (
+        <div className="modal-overlay" onClick={() => setShowReviewForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Viết đánh giá</h3>
+            <form onSubmit={handleReviewSubmit}>
+              <label>
+                Chọn số sao:{" "}
+                <select
+                  value={rate}
+                  onChange={(e) => setRate(e.target.value)}
+                  disabled={loading}
+                >
+                  {[5, 4, 3, 2, 1].map((s) => (
+                    <option key={s} value={s}>
+                      {s} ⭐
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <textarea
+                placeholder="Chia sẻ trải nghiệm của bạn..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                disabled={loading}
+              />
+              <div className="form-actions">
+                <button type="submit" disabled={loading}>
+                  {loading ? "Đang gửi..." : "Gửi đánh giá"}
+                </button>
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={() => setShowReviewForm(false)}
+                >
+                  Hủy
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* === MODAL FORM: QA === */}
+      {showQAForm && (
+        <div className="modal-overlay" onClick={() => setShowQAForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Đặt câu hỏi</h3>
+            <form onSubmit={handleQASubmit}>
+              <textarea
+                placeholder="Nhập câu hỏi của bạn..."
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                disabled={loading}
+              />
+              <div className="form-actions">
+                <button type="submit" disabled={loading}>
+                  {loading ? "Đang gửi..." : "Gửi câu hỏi"}
+                </button>
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={() => setShowQAForm(false)}
+                >
+                  Hủy
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
