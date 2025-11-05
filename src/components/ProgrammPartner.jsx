@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { useI18n } from "../i18n";
 import { sendProgrammReview, sendProgrammQA } from "../api";
 import "./ProgrammPartner.css";
+import TranslatableText from "../TranslateableText";
 
 export default function ProgrammPartner({ programm }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const id = programm?._id;
 
   const [reviews, setReviews] = useState(programm?.reviews || []);
@@ -27,7 +28,6 @@ export default function ProgrammPartner({ programm }) {
   const [showReviews, setShowReviews] = useState(false);
   const [showQA, setShowQA] = useState(false);
 
-  // === Gửi đánh giá ===
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim()) return alert("Vui lòng nhập nội dung đánh giá!");
@@ -49,7 +49,6 @@ export default function ProgrammPartner({ programm }) {
     }
   };
 
-  // === Gửi câu hỏi ===
   const handleQASubmit = async (e) => {
     e.preventDefault();
     if (!question.trim()) return alert("Vui lòng nhập câu hỏi!");
@@ -86,7 +85,7 @@ export default function ProgrammPartner({ programm }) {
           className="accordion-header"
           onClick={() => setShowReviews(!showReviews)}
         >
-          <h2>Đánh giá của khách hàng</h2>
+          <h2>{t("programm.detail.partner.review.title")}</h2>
           <span>{showReviews ? "▲" : "▼"}</span>
         </div>
 
@@ -100,7 +99,7 @@ export default function ProgrammPartner({ programm }) {
                       <div className="review-avatar">🧑</div>
                       <div>
                         <div className="review-name">
-                          {rev.user?.name || "Người dùng ẩn danh"}
+                          <TranslatableText text={rev.user?.name || "Người dùng ẩn danh"} lang={lang} />
                         </div>
                         <div className="review-stars">{renderStars(rev.rate)}</div>
                         {rev.createdAt && (
@@ -110,16 +109,16 @@ export default function ProgrammPartner({ programm }) {
                         )}
                       </div>
                     </div>
-                    <p className="review-content">{rev.content}</p>
+                    <p className="review-content"><TranslatableText text={rev.content} lang={lang}/></p>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>Chưa có đánh giá nào.</p>
+              <p>{t("programm.detail.partner.review.empty") || "Chưa có đánh giá nào."}</p>
             )}
 
             <button className="footer-btn" onClick={() => setShowReviewForm(true)}>
-              ➕ Viết đánh giá
+              ➕ {t("programm.detail.partner.review.write")}
             </button>
           </div>
         )}
@@ -128,7 +127,7 @@ export default function ProgrammPartner({ programm }) {
       {/* === Accordion: Hỏi & Đáp === */}
       <div className="accordion-section">
         <div className="accordion-header" onClick={() => setShowQA(!showQA)}>
-          <h2>Hỏi & Đáp</h2>
+          <h2>{t("programm.detail.partner.qa.title")}</h2>
           <span>{showQA ? "▲" : "▼"}</span>
         </div>
 
@@ -139,17 +138,22 @@ export default function ProgrammPartner({ programm }) {
                 {qaList.map((q, idx) => (
                   <li key={idx} className="qa-item">
                     <p>
-                      <b>❓ {q.user?.name || "Khách"} hỏi:</b> {q.question}
+                      <b>{t("programm.detail.partner.qa.question_prefix")} </b>
+                      {q.user?.name || "Khách"}: {q.question}
                     </p>
-                    {q.answer && <p className="qa-answer">💬 {q.answer}</p>}
+                    {q.answer && (
+                      <p className="qa-answer">
+                        {t("programm.detail.partner.qa.answer_prefix")} {q.answer}
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p>Chưa có câu hỏi nào.</p>
+              <p>{t("programm.detail.partner.qa.empty") || "Chưa có câu hỏi nào."}</p>
             )}
             <button className="footer-btn" onClick={() => setShowQAForm(true)}>
-              💬 Đặt câu hỏi
+              💬 {t("programm.detail.partner.qa.button")}
             </button>
           </div>
         )}
@@ -159,10 +163,10 @@ export default function ProgrammPartner({ programm }) {
       {showReviewForm && (
         <div className="modal-overlay" onClick={() => setShowReviewForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Viết đánh giá</h3>
+            <h3>{t("programm.detail.partner.review.write")}</h3>
             <form onSubmit={handleReviewSubmit}>
               <label>
-                Chọn số sao:{" "}
+                {t("programm.detail.partner.review.select_stars") || "Chọn số sao:"}
                 <select
                   value={rate}
                   onChange={(e) => setRate(e.target.value)}
@@ -176,21 +180,21 @@ export default function ProgrammPartner({ programm }) {
                 </select>
               </label>
               <textarea
-                placeholder="Chia sẻ trải nghiệm của bạn..."
+                placeholder={t("programm.detail.partner.review.placeholder") || "Chia sẻ trải nghiệm của bạn..."}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 disabled={loading}
               />
               <div className="form-actions">
                 <button type="submit" disabled={loading}>
-                  {loading ? "Đang gửi..." : "Gửi đánh giá"}
+                  {loading ? "Đang gửi..." : t("programm.detail.partner.review.button") || "Gửi đánh giá"}
                 </button>
                 <button
                   type="button"
                   className="btn-cancel"
                   onClick={() => setShowReviewForm(false)}
                 >
-                  Hủy
+                  {t("common.cancel") || "Hủy"}
                 </button>
               </div>
             </form>
@@ -202,24 +206,24 @@ export default function ProgrammPartner({ programm }) {
       {showQAForm && (
         <div className="modal-overlay" onClick={() => setShowQAForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Đặt câu hỏi</h3>
+            <h3>{t("programm.detail.partner.qa.button")}</h3>
             <form onSubmit={handleQASubmit}>
               <textarea
-                placeholder="Nhập câu hỏi của bạn..."
+                placeholder={t("programm.detail.partner.qa.placeholder")}
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 disabled={loading}
               />
               <div className="form-actions">
                 <button type="submit" disabled={loading}>
-                  {loading ? "Đang gửi..." : "Gửi câu hỏi"}
+                  {loading ? "Đang gửi..." : t("programm.detail.partner.qa.button")}
                 </button>
                 <button
                   type="button"
                   className="btn-cancel"
                   onClick={() => setShowQAForm(false)}
                 >
-                  Hủy
+                  {t("common.cancel") || "Hủy"}
                 </button>
               </div>
             </form>

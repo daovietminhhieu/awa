@@ -616,19 +616,17 @@
                 "address": "Địa chỉ",
                 "country": "Quốc gia",
                 "qa": {
-                    "title": "💬 Hỏi đáp đối tác",
+                    "title": "💬 Hỏi đáp",
                     "placeholder": "Đặt câu hỏi cho đối tác...",
                     "button": "Gửi câu hỏi",
                     "question_prefix": "❓ Hỏi:",
                     "answer_prefix": "💡 Trả lời:"
                 },
                 "review": {
-                    "title": "⭐ Đánh giá đối tác",
-                    "select_label": "Chọn số sao:",
-                    "placeholder": "Viết đánh giá...",
-                    "button": "Gửi đánh giá",
-                    "stars": "sao"
+                  "title": "Đánh giá của khách hàng",
+                  "write": "Viết đánh giá"
                 }
+
         }
     }
   },

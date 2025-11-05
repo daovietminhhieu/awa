@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useI18n } from "../i18n";
 import { useAuth } from "../context/AuthContext";
 import { getPostById, requestASharedLink, sendFilledInformationsForm } from "../api";
-
+import TranslateableText from "../TranslateableText";
 // -------------------------------------------------
 // 📌 Application Form
 // -------------------------------------------------
@@ -137,7 +137,7 @@ function ProgrammTags({ tags }) {
 // -------------------------------------------------
 // 📌 ProgrammHeader
 // -------------------------------------------------
-function ProgrammHeader({ programm, role, t }) {
+function ProgrammHeader({ programm, role, t, lang }) {
   const tags = [
     { label: t("programm.detail.overview.duration"), value: programm.duration },
     { label: t("programm.detail.overview.degrees"), value: programm.degrees },
@@ -198,7 +198,7 @@ function ProgrammHeader({ programm, role, t }) {
 
   return (
     <div className="programm-detail-header">
-      <h1 className="programm-detail-title">{programm.title}</h1>
+      <h1 className="programm-detail-title"><TranslateableText text={programm.title} lang={lang}/></h1>
       <ProgrammTags tags={tags} />
       {specialTags.length > 0 && (
         <div className="programm-tags-special">
@@ -216,7 +216,7 @@ function ProgrammHeader({ programm, role, t }) {
 // -------------------------------------------------
 // 📌 ProgrammInfoBoxes
 // -------------------------------------------------
-function ProgrammInfoBoxes({ programm, currentUser, onShare, t }) {
+function ProgrammInfoBoxes({ programm, currentUser, onShare, t, lang }) {
   return (
     <div className="programm-info-boxes">
       <div className="info-box">
@@ -265,7 +265,7 @@ function ProgrammSection({ title, content }) {
 // 📌 Main Component
 // -------------------------------------------------
 export default function ProgrammOverview({ programm, role, to }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { user: currentUser } = useAuth();
   const [postTitles, setPostTitles] = useState([]);
 
@@ -320,14 +320,14 @@ export default function ProgrammOverview({ programm, role, to }) {
 
   return (
     <div>
-      <ProgrammHeader programm={programm} role={role} t={t} />
+      <ProgrammHeader programm={programm} role={role} t={t}  lang={lang}/>
 
       <div className="programm-main">
         <ProgrammInfoBoxes
           programm={programm}
           currentUser={currentUser}
           onShare={handleShareReferrals}
-          t={t}
+          t={t} lang={lang}
         />
 
         <ProgrammSection
@@ -338,16 +338,31 @@ export default function ProgrammOverview({ programm, role, to }) {
         <ProgrammSection
           title={t("programm.detail.overview.requirements")}
           content={[
-            `🎂 ${t("programm.detail.overview.age")}: ${programm.requirement?.age}`,
-            `🎓 ${t("programm.detail.overview.education")}: ${programm.requirement?.education}`,
-            `📜 ${t("programm.detail.overview.certificate")}: ${programm.requirement?.certificate}`,
-            `❤️ ${t("programm.detail.overview.health")}: ${programm.requirement?.health}`,
+            <>
+             🎂 {t("programm.detail.overview.age")}:{" "}
+              <TranslateableText text={programm.requirement?.age} lang={lang}/>
+            </>,
+            
+            <> 
+              🎓{t("programm.detail.overview.education")}:{" "} 
+              {programm.requirement?.education}
+            </>,
+
+            <>
+              📜 {t("programm.detail.overview.certificate")}: 
+              <TranslateableText text={programm.requirement?.certificate} lang={lang}/>
+            </>,
+            
+            <>
+              ❤️ {t("programm.detail.overview.health")}:
+              <TranslateableText text={programm.requirement?.health} lang={lang}/>
+            </>
           ]}
         />
 
         <ProgrammSection
           title={t("programm.detail.overview.benefit")}
-          content={[programm.benefit]}
+          content={[<TranslateableText text={programm.benefit} lang={lang}/>]}
         />
 
         <section>

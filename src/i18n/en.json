@@ -651,11 +651,12 @@
             "answer_prefix": "💡 Answer:"
             },
             "review": {
-            "title": "⭐ Partner reviews",
-            "select_label": "Select rating:",
-            "placeholder": "Write your review...",
-            "button": "Submit review",
-            "stars": "stars"
+                "title": "⭐ Partner reviews",
+                "select_label": "Select rating:",
+                "placeholder": "Write your review...",
+                "button": "Submit review",
+                "stars": "stars",
+                "write": "Write a review"
             }
         }
         }
