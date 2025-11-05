@@ -173,7 +173,8 @@ export function SuccessStories() {
                         className="read-more-btn"
                         onClick={(e) => {
                             e.stopPropagation();
-                            toggleExpand(story._id)
+                            // toggleExpand(story._id)
+                            navigate(`/success-story-detail/${story._id}`)
                           }
                         }
                       >
@@ -537,7 +538,8 @@ export function TipsAndEventsSection() {
                       className="read-more-btn"
                       onClick={(e) => {
                         e.stopPropagation();
-                        toggleTipsExpande(tip._id);
+                        // toggleTipsExpande(tip._id);
+                        navigate(`/tip-detail/${tip._id}`)
                       }}
                     >
                       {tip.expanded ? "Ẩn bớt" : "Xem thêm"}
@@ -571,87 +573,9 @@ export function TipsAndEventsSection() {
                 {new Date(event.createdAt).toLocaleDateString("vi-VN")}
               </p>
 
-              {currentUser?.role === "admin" && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "5px",
-                    right: "5px",
-                    display: "flex",
-                    gap: "5px",
-                  }}
-                >
-                  <button onClick={() => startEditEvent(event)}>📝</button>
-                  <button onClick={() => handleRemoveEvent(event._id)}>❌</button>
-                </div>
-              )}
+             
 
-              {editingEventId === event._id && (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleUpdateEvent(event._id);
-                  }}
-                  className="edit-form"
-                >
-                  <label>Tiêu đề:</label>
-                  <input
-                    type="text"
-                    value={editEventData.title}
-                    onChange={(e) =>
-                      setEditEventData({
-                        ...editEventData,
-                        title: e.target.value,
-                      })
-                    }
-                  />
-                  <label>Địa điểm:</label>
-                  <input
-                    type="text"
-                    value={editEventData.location}
-                    onChange={(e) =>
-                      setEditEventData({
-                        ...editEventData,
-                        location: e.target.value,
-                      })
-                    }
-                  />
-                  <label>Ngày tổ chức:</label>
-                  <input
-                    type="date"
-                    value={editEventData.createdAt.slice(0, 10)}
-                    onChange={(e) =>
-                      setEditEventData({
-                        ...editEventData,
-                        createdAt: e.target.value,
-                      })
-                    }
-                  />
-                  <label>Upload ảnh/video mới:</label>
-                  <input
-                    type="file"
-                    accept="image/*,video/*"
-                    onChange={handleFileChange}
-                    ref={fileInputRef}
-                  />
-                  {uploading && <p>Đang tải lên...</p>}
-                  {editEventData.thumbnail_url && (
-                    <img
-                      src={editEventData.thumbnail_url}
-                      alt="preview"
-                      width="200"
-                      style={{ marginTop: "10px" }}
-                    />
-                  )}
-
-                  <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-                    <button type="submit">💾 Lưu</button>
-                    <button type="button" onClick={() => setEditingEventId(null)}>
-                      ❌ Hủy
-                    </button>
-                  </div>
-                </form>
-              )}
+                
             </div>
           ))}
         </div>

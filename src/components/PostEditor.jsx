@@ -1,47 +1,49 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { upFileToStorage, getProgrammsList } from "../api";
 import "./PostEditor.css";
 
-// ================= Reusable PostCard =================
-const PostCard = ({ title, thumbnail, fileType, content, type, location, eventDate }) => {
-  return (
-    <div className="post-card">
-      {thumbnail && (
-        <div className="post-card-media">
-          {fileType === "image" ? (
-            <img src={thumbnail} alt={title} />
-          ) : (
-            <video src={thumbnail} controls />
-          )}
-        </div>
-      )}
+/* =========================================================
+   📦 COMPONENT: PostCard - Hiển thị xem trước bài viết
+========================================================= */
+const PostCard = ({ title, thumbnail, fileType, content, type, location, eventDate }) => (
+  <div className="post-card">
+    {thumbnail && (
+      <div className="post-card-media">
+        {fileType === "image" ? (
+          <img src={thumbnail} alt={title} />
+        ) : (
+          <video src={thumbnail} controls />
+        )}
+      </div>
+    )}
 
-      <h2 className="post-card-title">{title}</h2>
+    <h2 className="post-card-title">{title}</h2>
 
-      {type === "upcoming_event" && (
-        <p className="post-card-event">
-          📍 {location} — 📅 {eventDate}
-        </p>
-      )}
+    {type === "upcoming_event" && (
+      <p className="post-card-event">
+        📍 {location} — 📅 {eventDate}
+      </p>
+    )}
 
-      {content && (
-        <div
-          className="post-card-content ql-editor"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
-      )}
-    </div>
-  );
-};
+    {content && (
+      <div
+        className="post-card-content ql-editor"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    )}
+  </div>
+);
 
-// ================= FileUpload =================
+/* =========================================================
+   📤 COMPONENT: FileUpload - Upload ảnh hoặc video
+========================================================= */
 const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
   const fileInputRef = useRef(null);
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+  const handleFileSelect = async (e) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
     const isVideo = file.type.startsWith("video/");
@@ -61,8 +63,8 @@ const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
       <input
         type="file"
         accept="image/*,video/*"
-        onChange={handleFileChange}
         ref={fileInputRef}
+        onChange={handleFileSelect}
       />
 
       {uploading && <p className="uploading-text">Đang tải lên...</p>}
@@ -80,11 +82,13 @@ const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
   );
 };
 
-// ================= ProgramSelect =================
-const ProgramSelect = ({ programms, selectedProgram, onProgramSelect }) => (
+/* =========================================================
+   📚 COMPONENT: ProgramSelect - Dropdown chọn chương trình
+========================================================= */
+const ProgramSelect = ({ programms, selectedProgram, onChange }) => (
   <div className="program-search">
     <label>Chọn chương trình:</label>
-    <select value={selectedProgram} onChange={(e) => onProgramSelect(e.target.value)}>
+    <select value={selectedProgram} onChange={(e) => onChange(e.target.value)}>
       <option value="">-- Chọn chương trình --</option>
       {programms.map((p) => (
         <option key={p._id} value={p._id}>
@@ -95,61 +99,73 @@ const ProgramSelect = ({ programms, selectedProgram, onProgramSelect }) => (
   </div>
 );
 
-// ================= Main PostEditor =================
+/* =========================================================
+   🧩 COMPONENT CHÍNH: PostEditor
+========================================================= */
 export default function PostEditor({ onSave }) {
-  const [type, setType] = useState("success_story");
-  const [title, setTitle] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [fileType, setFileType] = useState("");
+  const [form, setForm] = useState({
+    type: "success_story",
+    title: "",
+    thumbnail: "",
+    fileType: "",
+    content: "",
+    location: "",
+    eventDate: "",
+    selectedProgram: "",
+  });
   const [uploading, setUploading] = useState(false);
-  const [content, setContent] = useState("");
-  const [location, setLocation] = useState("");
-  const [eventDate, setEventDate] = useState("");
   const [programms, setProgramms] = useState([]);
-  const [selectedProgram, setSelectedProgram] = useState("");
 
+  /* --- Load danh sách chương trình --- */
   useEffect(() => {
-    const loadPrograms = async () => {
+    (async () => {
       try {
         const res = await getProgrammsList();
         setProgramms(res.data);
       } catch (err) {
         console.warn("⚠️ Lỗi tải chương trình:", err);
       }
-    };
-    loadPrograms();
+    })();
   }, []);
 
-  // === Upload handler ===
-  const handleFileChange = async (file, type) => {
+  /* --- Upload file --- */
+  const handleFileChange = useCallback(async (file, type) => {
     setUploading(true);
     try {
       const url = await upFileToStorage(file);
-      setThumbnail(url);
-      setFileType(type);
+      setForm((prev) => ({ ...prev, thumbnail: url, fileType: type }));
       alert("✅ Upload thành công!");
     } catch {
       alert("❌ Upload thất bại!");
     } finally {
       setUploading(false);
     }
+  }, []);
+
+  /* --- Cập nhật trường form --- */
+  const updateField = (key, value) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  // === Reset form ===
+  /* --- Reset form --- */
   const resetForm = () => {
-    setType("success_story");
-    setTitle("");
-    setThumbnail("");
-    setFileType("");
-    setContent("");
-    setLocation("");
-    setEventDate("");
-    setSelectedProgram("");
+    setForm({
+      type: "success_story",
+      title: "",
+      thumbnail: "",
+      fileType: "",
+      content: "",
+      location: "",
+      eventDate: "",
+      selectedProgram: "",
+    });
   };
 
-  // === Submit form ===
+  /* --- Submit --- */
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const { type, title, thumbnail, selectedProgram, fileType, content, location, eventDate } = form;
 
     if (!title || !thumbnail || !selectedProgram) {
       alert("⚠️ Vui lòng nhập đủ thông tin và tải file!");
@@ -167,19 +183,18 @@ export default function PostEditor({ onSave }) {
       progId: selectedProgram,
     };
 
-    if (onSave) onSave(postData);
-
+    onSave?.(postData);
     alert("✅ Bài viết đã được đăng!");
     resetForm();
   };
 
   return (
-    <div className="editor-container">
-      {/* ==== BÊN TRÁI: Soạn thảo ==== */}
-      <form className="post-editor" onSubmit={handleSubmit}>
-        <h2 className="post-editor-title">📝 Tạo Bài Viết</h2>
+    <div className="add-container">
+      {/* ==== BÊN TRÁI: Form soạn bài ==== */}
+      <form className="post-add" onSubmit={handleSubmit}>
+        <h2 className="post-add-title">📝 Tạo Bài Viết</h2>
 
-        <select value={type} onChange={(e) => setType(e.target.value)}>
+        <select value={form.type} onChange={(e) => updateField("type", e.target.value)}>
           <option value="success_story">Success Story</option>
           <option value="career_tip">Career Tip</option>
           <option value="upcoming_event">Upcoming Event</option>
@@ -188,29 +203,29 @@ export default function PostEditor({ onSave }) {
         <input
           type="text"
           placeholder="Tiêu đề bài viết"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={form.title}
+          onChange={(e) => updateField("title", e.target.value)}
         />
 
         <FileUpload
           onFileChange={handleFileChange}
           uploading={uploading}
-          thumbnail={thumbnail}
-          fileType={fileType}
+          thumbnail={form.thumbnail}
+          fileType={form.fileType}
         />
 
         <ProgramSelect
           programms={programms}
-          selectedProgram={selectedProgram}
-          onProgramSelect={setSelectedProgram}
+          selectedProgram={form.selectedProgram}
+          onChange={(value) => updateField("selectedProgram", value)}
         />
 
-        {(type === "success_story" || type === "career_tip") && (
+        {["success_story", "career_tip"].includes(form.type) && (
           <ReactQuill
             className="post-editor-quill"
             theme="snow"
-            value={content}
-            onChange={setContent}
+            value={form.content}
+            onChange={(value) => updateField("content", value)}
             modules={{
               toolbar: [
                 [{ header: "1" }, { header: "2" }, { header: "3" }, { font: [] }],
@@ -223,18 +238,18 @@ export default function PostEditor({ onSave }) {
           />
         )}
 
-        {type === "upcoming_event" && (
+        {form.type === "upcoming_event" && (
           <>
             <input
               type="text"
               placeholder="Địa điểm tổ chức"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              value={form.location}
+              onChange={(e) => updateField("location", e.target.value)}
             />
             <input
               type="date"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
+              value={form.eventDate}
+              onChange={(e) => updateField("eventDate", e.target.value)}
             />
           </>
         )}
@@ -250,13 +265,13 @@ export default function PostEditor({ onSave }) {
       <div className="post-preview">
         <h3>👁️ Xem trước</h3>
         <PostCard
-          title={title}
-          thumbnail={thumbnail}
-          fileType={fileType}
-          content={content}
-          type={type}
-          location={location}
-          eventDate={eventDate}
+          title={form.title}
+          thumbnail={form.thumbnail}
+          fileType={form.fileType}
+          content={form.content}
+          type={form.type}
+          location={form.location}
+          eventDate={form.eventDate}
         />
       </div>
     </div>

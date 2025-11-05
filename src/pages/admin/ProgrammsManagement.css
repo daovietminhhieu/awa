@@ -14,7 +14,6 @@
      ========================================================= */
   .tabs {
     display: flex;
-    flex-direction: row;
     align-items: flex-start;
     gap: 10px;
     padding: 10px 12px;
@@ -39,7 +38,6 @@
      ========================================================= */
   .programm-toolbar {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
@@ -60,7 +58,6 @@
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    align-self: self-end;
     margin-right: 50px;
   }
   
@@ -111,9 +108,9 @@
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+    transition: transform 0.2s ease;
   }
-
+  
   .post-item:hover {
     transform: translateY(-6px);
   }
@@ -131,13 +128,23 @@
     margin-left: 15px;
   }
   
+  .delete-btn,
+  .edit-btn {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .edit-btn {
+    background: #facc15;
+    color: #1f2937;
+  }
+  
   .delete-btn {
     background: #dc3545;
     color: white;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
   }
   
   /* =========================================================
@@ -152,74 +159,111 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+  }
+  
+  .editor-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #dbeafe, #bfdbfe);
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-bottom: 16px;
   }
   
   .cancel-btn-top {
-    background: transparent;
+    background: #e0f2fe;
     border: none;
-    color: #007bff;
-    font-weight: bold;
+    color: #2563eb;
+    font-weight: 600;
     cursor: pointer;
     font-size: 16px;
+    border-radius: 6px;
+    padding: 6px 12px;
+    transition: 0.2s;
   }
   
   .cancel-btn-top:hover {
-    text-decoration: underline;
+    background: #bfdbfe;
   }
   
-  /* Layout hai cột: form (trái) + preview (phải) */
   .post-editor-body {
     display: flex;
-    flex-direction: row;
+    gap: 28px;
     align-items: flex-start;
-    gap: 30px;
   }
   
-  /* Form bên trái */
   .post-editor {
     flex: 1;
     min-width: 420px;
   }
   
-  /* Preview bên phải */
+  .post-editor label {
+    font-weight: 600;
+    color: #1e3a8a;
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 6px 10px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+  
+  .quill-container {
+    border: 2px solid #93c5fd;
+    border-radius: 8px;
+    padding: 6px;
+    background-color: #f8fafc;
+  }
+  
+  .ql-toolbar {
+    background-color: #eff6ff;
+    border-radius: 8px 8px 0 0;
+    border-color: #bfdbfe;
+  }
+  
+  .ql-container {
+    border: 1px solid #bfdbfe !important;
+    border-radius: 0 0 8px 8px;
+    background: #ffffff;
+  }
+  
   .post-preview {
-    flex: 1;
+    flex: 0 0 420px;
     max-width: 420px;
-    background: #fff;
+    background: #f0f9ff;
     padding: 12px;
     border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border: 2px solid #60a5fa;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.15);
   }
   
   .post-preview h3 {
-    margin-bottom: 10px;
+    background: #2563eb;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
   }
   
-  /* Media trong preview */
+  /* ✅ Ảnh & video luôn hiển thị đúng tỉ lệ */
   .post-card-media img,
-  .post-card-media video {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    border-radius: 8px;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 10px;
-  }
-  
-  /* Media trong upload preview */
+  .post-card-media video,
   .preview-container img,
-  .preview-container video {
-    width: 100%;
-    max-width: 400px;
-    border-radius: 8px;
-    object-fit: cover;
+  .preview-container video,
+  .ql-editor img,
+  .ql-editor video {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: scale-down;
     display: block;
-    margin-top: 8px;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
   
-  /* Nội dung trong preview */
   .post-card-content {
     margin-top: 10px;
     font-size: 0.95rem;
@@ -227,7 +271,6 @@
     color: #1e293b;
   }
   
-  /* Editor actions */
   .editor-actions {
     margin-top: 15px;
     display: flex;
@@ -245,12 +288,13 @@
   }
   
   .editor-actions button[type="submit"] {
-    background: #2563eb;
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
     color: white;
+    box-shadow: 0 3px 6px rgba(37, 99, 235, 0.25);
   }
   
   .editor-actions button[type="submit"]:hover {
-    background: #1d4ed8;
+    transform: scale(1.03);
   }
   
   .editor-actions button[type="button"] {
@@ -259,14 +303,11 @@
   }
   
   /* =========================================================
-     💬 MODAL FORM (Add New Programm)
+     💬 MODAL FORM (Add/Edit)
      ========================================================= */
   .edit-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0, 0, 0, 0.45);
     display: flex;
     justify-content: center;
@@ -283,7 +324,6 @@
     padding: 24px 28px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
     animation: fadeInModal 0.25s ease-out;
-    position: relative;
   }
   
   @keyframes fadeInModal {
@@ -297,101 +337,12 @@
     }
   }
   
-  /* Form nội dung */
-  .edit-form h2 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 20px;
-  }
-  
-  .edit-form label {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-    color: #334155;
-  }
-  
-  .edit-form input,
-  .edit-form textarea,
-  .edit-form select {
-    padding: 8px 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    margin-top: 4px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .edit-form input:focus,
-  .edit-form textarea:focus,
-  .edit-form select:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-  }
-  
-  /* Nút trong form */
-  .form-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 10px;
-  }
-  
-  .form-buttons button {
-    flex: 1;
-    padding: 10px 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: background 0.2s ease, transform 0.1s ease;
-  }
-  
-  .form-buttons button[type="button"] {
-    background: #f1f5f9;
-    color: #475569;
-  }
-  
-  .form-buttons button[type="button"]:hover {
-    background: #e2e8f0;
-  }
-  
-  .form-buttons button[type="submit"] {
-    color: white;
-    background: #2563eb;
-  }
-  
-  .form-buttons button[type="submit"]:hover {
-    transform: translateY(-1px);
-  }
-  
-  /* Nút đóng */
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    color: #475569;
-    cursor: pointer;
-    transition: color 0.2s ease;
-  }
-  
-  .close-btn:hover {
-    color: #1e293b;
-  }
-  
   /* =========================================================
      📱 RESPONSIVE
      ========================================================= */
   @media (max-width: 768px) {
     .programm-toolbar {
       flex-direction: column;
-      align-items: stretch;
       gap: 10px;
     }
   
@@ -421,56 +372,35 @@
       margin-top: 20px;
     }
   }
-  /* === FORCE: đồng nhất kích thước media giữa Editor upload và Preview === */
-.post-editor-body { align-items: flex-start; gap: 28px; }
 
-/* Buộc cột preview có kích thước cố định (không flex-grow) */
-.post-preview {
-  flex: 0 0 420px;      /* fixed 420px width */
-  max-width: 420px;
-  box-sizing: border-box;
-}
+  
 
-/* Buộc cột form chiếm phần còn lại */
-.post-editor {
-  flex: 1 1 auto;
-  min-width: 420px;
-  box-sizing: border-box;
-}
-
-/* Các media trong cả 2 vùng */
-.post-card-media img,
-.post-card-media video,
-.preview-container img,
-.preview-container video,
-.ql-editor img,
-.ql-editor video {
-  width: 100%;           /* chiếm full width của cha (420px ở preview) */
-  max-width: 420px;      /* giới hạn tối đa bằng nhau */
-  height: auto !important;
-  object-fit: contain;   /* contain để không bị crop */
-  display: block;
-  margin: 0 auto;
-}
-
-/* Nếu có rule height cố định từ nơi khác, override */
-.post-card-media img,
-.preview-container img,
+  /* ✅ Sửa lỗi ảnh tràn và không căn giữa trong phần preview & editor */
+.post-preview .ql-editor img,
+.post-preview img,
 .ql-editor img {
-  max-height: none !important;
+  display: block;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 400px !important;
+  margin: 12px auto !important;
+  object-fit: scale-down !important;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Tránh overflow ẩn làm mất phần hiển thị */
-.post-preview, .post-card, .post-card-media, .preview-container {
-  overflow: visible;
-}
 
-/* Quill editor: tránh style nội tuyến hoặc .ql-editor img bị giới hạn */
-.ql-editor {
-  box-sizing: border-box;
-  max-width: 100%;
+/* ✅ Fix video tương tự ảnh */
+.post-preview .ql-editor video,
+.post-preview video,
+.ql-editor video {
+  display: block;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: 400px !important;
+  margin: 12px auto !important;
+  object-fit: contain !important;
+  border-radius: 8px;
 }
-.ql-editor img { display: block; margin: 8px auto; }
-
-/* Nếu bạn muốn 2 bên có chiều rộng pixel giống hệt:
-   (nếu muốn thay 420 -> 360 đổi tại cả 2 chỗ) */

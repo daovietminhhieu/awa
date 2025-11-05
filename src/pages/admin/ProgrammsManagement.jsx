@@ -11,9 +11,9 @@ import {
   addNewProgramm,
   createPost,
   getPostsList,
-  deletePostById,
   updatePost,
   upFileToStorage,
+  removePost,
 } from "../../api";
 
 import ProgrammsList from "../../components/admin/management/programms/List";
@@ -45,7 +45,7 @@ export default function ProgrammsManagement() {
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [showAddPost, setShowAddPost] = useState(false);
-  const [editingPost, setEditingPost] = useState(null); // post đang edit
+  const [editingPost, setEditingPost] = useState(null);
 
   // -------------------- Load Data --------------------
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function ProgrammsManagement() {
   const handleDeletePost = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xoá bài viết này?")) return;
     try {
-      await deletePostById(id);
+      await removePost(id);
       alert("✅ Đã xoá bài viết");
       loadPosts();
     } catch {
@@ -149,6 +149,12 @@ export default function ProgrammsManagement() {
 
   const handleSelectProgramm = (programm) =>
     navigate(`/programm/${programm._id}`, { state: { programm } });
+
+  const handleNavigatePost = (post) => {
+    if (post.type === "success_story") navigate(`/success-story-detail/${post._id}`);
+    else if (post.type === "career_tip") navigate(`/tip-detail/${post._id}`);
+    else if (post.type === "upcoming_event") navigate(`/event-detail/${post._id}`);
+  };
 
   const savedProgramsList = programms.filter((p) => savedProgramsMap[p._id]);
   const displayedProgramms = useMemo(() => filteredProgramms, [filteredProgramms]);
@@ -277,7 +283,7 @@ export default function ProgrammsManagement() {
           {/* List of Posts */}
           {!showAddPost && !editingPost && (
             <div className="post-list-container">
-              <h3>📋 Danh sách bài viết</h3>
+              <h3 style={{ marginBottom: 40 }}>📋 Danh sách bài viết</h3>
               {loadingPosts ? (
                 <p>Đang tải...</p>
               ) : posts.length === 0 ? (
@@ -285,7 +291,12 @@ export default function ProgrammsManagement() {
               ) : (
                 <div className="post-list">
                   {posts.map((p) => (
-                    <div key={p._id} className="post-item">
+                    <div
+                      key={p._id}
+                      className="post-item"
+                      onClick={() => handleNavigatePost(p)}
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="post-thumb">
                         {p.thumbnail_url?.endsWith(".mp4") ? (
                           <video controls width="220" style={{ borderRadius: "8px" }}>
@@ -307,8 +318,24 @@ export default function ProgrammsManagement() {
                         {p.eventDate && <p>📅 {p.eventDate}</p>}
                       </div>
                       <div className="post-actions">
-                        <button onClick={() => setEditingPost(p)} className="edit-btn">✏️</button>
-                        <button onClick={() => handleDeletePost(p._id)} className="delete-btn">🗑️</button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingPost(p);
+                          }}
+                          className="edit-btn"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeletePost(p._id);
+                          }}
+                          className="delete-btn"
+                        >
+                          🗑️
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -322,7 +349,9 @@ export default function ProgrammsManagement() {
   );
 }
 
-/* ========================= EditPostForm ========================= */
+/* =========================================================
+   ✏️ EDIT POST FORM
+   ========================================================= */
 export function EditPostForm({ post, onClose, onSaved }) {
   const [type, setType] = useState(post?.type || "success_story");
   const [title, setTitle] = useState(post?.title || "");
@@ -335,10 +364,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
   const [programms, setProgramms] = useState([]);
   const [selectedProgram, setSelectedProgram] = useState(post?.progId || "");
 
-  // Trạng thái để kiểm tra xem form có thay đổi hay không
   const [hasChanged, setHasChanged] = useState(false);
-
-  // Khi người dùng thay đổi bất kỳ input nào => setHasChanged(true)
   const markChanged = () => setHasChanged(true);
 
   useEffect(() => {
@@ -409,7 +435,6 @@ export function EditPostForm({ post, onClose, onSaved }) {
 
   return (
     <div className="editor-container">
-      {/* Thanh tiêu đề và nút quay lại */}
       <div className="editor-header">
         <h2>✏️ Chỉnh sửa bài viết</h2>
         <button className="cancel-btn-top" onClick={handleCancel}>
@@ -419,8 +444,9 @@ export function EditPostForm({ post, onClose, onSaved }) {
 
       <div className="post-editor-body">
         <form className="post-editor" onSubmit={handleSubmit}>
-          <label>Loại bài viết</label>
+          <label style={{marginRight:10}}>Loại bài viết</label>
           <select
+            style={{marginRight:10, borderRadius:5, height:20}}
             value={type}
             onChange={(e) => {
               setType(e.target.value);
@@ -434,6 +460,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
 
           <label>Tiêu đề</label>
           <input
+            style={{marginRight:10, borderRadius:5, height:20}}
             type="text"
             placeholder="Tiêu đề bài viết"
             value={title}
@@ -442,7 +469,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
               markChanged();
             }}
           />
-
+          <br />
           <FileUpload
             onFileChange={handleFileChange}
             uploading={uploading}
@@ -472,7 +499,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
                 }}
                 modules={{
                   toolbar: [
-                    [{ header: "1" }, { header: "2" }, { font: [] }],
+                    [{ header: "1" }, { header: "2" },{ header: "3" }, { font: [] }],
                     [{ list: "ordered" }, { list: "bullet" }],
                     ["bold", "italic", "underline"],
                     [{ align: [] }],
@@ -554,59 +581,51 @@ export function EditPostForm({ post, onClose, onSaved }) {
   );
 }
 
-
-/* ========================= Sub Components ========================= */
-const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
-  const fileInputRef = useRef(null);
-
-  const handleFileChange = async (e) => {
+/* =========================================================
+   🔼 FILE UPLOAD + PROGRAM SELECT (rút gọn)
+   ========================================================= */
+function FileUpload({ onFileChange, uploading, thumbnail, fileType }) {
+  const handleChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const isVideo = file.type.startsWith("video/");
-    const isImage = file.type.startsWith("image/");
-
-    if (!isImage && !isVideo) {
-      alert("❌ Chỉ hỗ trợ file ảnh hoặc video!");
-      return;
-    }
-
-    onFileChange(file, isVideo ? "video" : "image");
+    const type = file.type.startsWith("image/") ? "image" : "video";
+    await onFileChange(file, type);
   };
 
   return (
-    <div className="thumbnail-upload">
-      <label>Ảnh hoặc Video:</label>
-      <input
-        type="file"
-        accept="image/*,video/*"
-        onChange={handleFileChange}
-        ref={fileInputRef}
-      />
-      {uploading && <p className="uploading-text">Đang tải lên...</p>}
+    <>
+      <label>Ảnh hoặc video thumbnail</label>
+      <input type="file" accept="image/*,video/*" onChange={handleChange} />
+      {uploading && <p>Đang tải lên...</p>}
       {thumbnail && (
-        <div className="preview-container">
+        <div className="post-card-media">
           {fileType === "image" ? (
-            <img src={thumbnail} alt="Preview" className="preview-img" />
+            <img src={thumbnail} alt="preview" />
           ) : (
-            <video src={thumbnail} controls className="preview-video" />
+            <video src={thumbnail} controls />
           )}
         </div>
       )}
-    </div>
+    </>
   );
-};
+}
 
-const ProgramSelect = ({ programms, selectedProgram, onProgramSelect }) => (
-  <div className="program-search">
-    <label>Chọn chương trình:</label>
-    <select value={selectedProgram} onChange={(e) => onProgramSelect(e.target.value)}>
-      <option value="">-- Chọn chương trình --</option>
-      {programms.map((p) => (
-        <option key={p._id} value={p._id}>
-          {p.title}
-        </option>
-      ))}
-    </select>
-  </div>
-);
-
+function ProgramSelect({ programms, selectedProgram, onProgramSelect }) {
+  return (
+    <>
+      <label>Chọn chương trình liên quan</label>
+      <select
+        style={{marginRight:10, borderRadius:5, height:25}}
+        value={selectedProgram}
+        onChange={(e) => onProgramSelect(e.target.value)}
+      >
+        <option value="">-- Chọn chương trình --</option>
+        {programms.map((p) => (
+          <option key={p._id} value={p._id}>
+            {p.title}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+}

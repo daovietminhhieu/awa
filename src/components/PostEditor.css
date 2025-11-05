@@ -1,45 +1,81 @@
-.editor-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+/* ====== LAYOUT CHUNG ====== */
+.add-container {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
   align-items: flex-start;
+  padding: 20px;
+  flex-wrap: wrap;
 }
 
-.post-editor {
-  background: #fff;
+.post-add,
+.post-preview {
+  flex: 1;
+  min-width: 320px;
+}
+
+/* ====== FORM SOẠN BÀI ====== */
+.post-add {
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
-.post-editor select,
-.post-editor input {
+.post-add-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0b3558;
+  margin-bottom: 20px;
+}
+
+/* ====== INPUTS / SELECTS ====== */
+.post-add select,
+.post-add input {
   width: 100%;
   padding: 10px 14px;
-  font-size: 16px;
+  font-size: 15px;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   margin-bottom: 12px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+.post-add select:focus,
+.post-add input:focus {
+  border-color: #0366d6;
+  box-shadow: 0 0 0 2px rgba(3, 102, 214, 0.2);
+}
+
+/* ====== UPLOAD ====== */
 .thumbnail-upload label {
   display: block;
   font-weight: 600;
   margin-bottom: 6px;
+  color: #0b3558;
 }
 
 .thumbnail-upload input[type="file"] {
-  padding: 6px;
+  width: 100%;
+  padding: 8px;
   border: 1px dashed #94a3b8;
   border-radius: 8px;
   cursor: pointer;
-  width: 100%;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.thumbnail-upload input[type="file"]:hover {
+  border-color: #0366d6;
+  background-color: #f0f8ff;
 }
 
 .uploading-text {
   font-style: italic;
   color: #0366d6;
+  margin-top: 6px;
+  font-size: 14px;
 }
 
 .preview-container {
@@ -51,9 +87,10 @@
 .preview-video {
   width: 240px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* ====== QUILL EDITOR ====== */
 .post-editor-quill {
   border-radius: 8px;
   overflow: hidden;
@@ -64,6 +101,7 @@
   min-height: 200px;
 }
 
+/* ====== NÚT HÀNH ĐỘNG ====== */
 .editor-actions {
   display: flex;
   justify-content: flex-end;
@@ -73,84 +111,90 @@
 .editor-actions button {
   background-color: #0366d6;
   color: white;
-  padding: 8px 18px;
+  padding: 10px 22px;
   border: none;
   border-radius: 6px;
   font-weight: 500;
+  font-size: 15px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.15s;
 }
 
 .editor-actions button:hover {
   background-color: #024eaa;
+  transform: translateY(-1px);
 }
 
-/* ===== Preview panel ===== */
+/* ====== XEM TRƯỚC BÀI VIẾT ====== */
 .post-preview {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 20px;
-  height: fit-content;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-.preview-card img,
-.preview-card video {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 12px;
+.post-preview h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0b3558;
+  margin-bottom: 16px;
 }
 
-.preview-card h2 {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-
-.preview-content {
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.placeholder-text {
-  color: #94a3b8;
-  text-align: center;
-  margin-top: 40px;
-}
-
-.event-info {
-  font-style: italic;
-  color: #475569;
-}
 .post-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
   text-align: center;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .post-card-media img,
 .post-card-media video {
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  border-radius: 8px;
+  margin-bottom: 12px;
 }
 
 .post-card-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #0b3558;
-  margin: 12px 0;
+  margin-bottom: 8px;
 }
 
 .post-card-event {
-  color: #666;
+  color: #64748b;
   font-size: 0.95rem;
+  margin-bottom: 10px;
 }
 
 .post-card-content {
   text-align: left;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1e293b;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .add-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .post-add,
+  .post-preview {
+    width: 100%;
+  }
+
+  .preview-img,
+  .preview-video {
+    width: 100%;
+  }
+
+  .editor-actions {
+    justify-content: center;
+  }
 }
