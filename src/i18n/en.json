@@ -278,6 +278,7 @@
                     "enter_certificate":"IELTS, TestDaF, C1 Goethe,....",
                     
                     "overview":"Overview", "enter_details_overview": "description with 100 -> 200 words",
+                    "requirement":"Requirement","enter_details_requirement":"description with 100 -> 200 words",
                     "other":"Other", "enter_details_other":"description with 100 -> 200 words",
                     "fee":"Fee",
                     "public_day":"Public Day",
@@ -310,6 +311,9 @@
                     "video":"Video URL",
                     "bonus":"Bonus",
                     "public_day":"Public Day"},
+                    "detail":"Details",
+                    "overview":"Overview",
+                    "requirement":"Requirement",
                 "save": "Save",
                 "cancel": "Cancel"
                 
@@ -319,15 +323,15 @@
                     "previous": "Previous",
                     "next": "Next"
             },
-            "toolbar": {"add_program":"Add Program","filter":"Filter","search_placeholder":"Search by title or company..."},
+            "toolbar": {"add_new":"Add Program","filter":"Filter","search_placeholder":"Search by title or company..."},
             "card": {
-                "duration_label":"Duration:",
-                "deadline_label":"Deadline:",
-                "status_label":"Status:",
+                "duration_label":"Duration",
+                "deadline_label":"Deadline",
+                "status_label":"Status",
                 "status_open":"Open",
                 "status_closed":"Closed",
-                "bonus_label":"Bonus:",
-                "vacancy_label":"Applicants:",
+                "bonus_label":"Bonus",
+                "vacancy_label":"Applicants",
                 "save":"Save",
                 "unsave":"Unsave",
                 "edit":"Edit",

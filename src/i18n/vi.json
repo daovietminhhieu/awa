@@ -276,6 +276,7 @@
                 "enter_certificate":"C1 Goethe, IELTS, TestDaF,...",
 
                 "overview":"Tổng quan", "enter_details_overview":"Mô tả khoảng 100->200 ký tự",
+                "requirement":"Yêu cầu","enter_details_requirement":"Mô tả khoảng 100->200 ký tự",
                 "other":"Khác", "enter_details_other":"Mô tả khoảng 100->200 ký tự",
                 "fee":"Phí",
                 "expected_salary":"Mức lương kỳ vọng",
@@ -307,7 +308,10 @@
                 "review":"Đánh giá",
                 "video":"Video giới thiệu",
                 "bonus":"Thưởng",
-                "public_day":"Ngày đăng"
+                "public_day":"Ngày đăng",
+                "detail":"Chi tiết",
+                "overview":"Tổng quan",
+                "requirement":"Yêu cầu"
             },
             "save":"Lưu",
             "cancel":"Hủy"
@@ -396,8 +400,8 @@
         "setnewpassword":" Nhập mật khẩu mới"
     },
     "candidates": {
-        "title": "Quản lý ứng viên",
-        "completed_title": "Danh sách hoàn thành",
+        "title": "Danh sách hoàn thành",
+        "completed_title": "Danh sách từ chối",
         "table": {
             "candidate":"Ứng viên",
             "programm":"Chương trình",
@@ -438,8 +442,8 @@
             }
     },
     "candidates": {
-      "tracking": "Danh sách ứng viên",
-      "completed": "Danh sách hoàn thành",
+      "tracking": "Danh sách hoàn thành",
+      "completed": "Danh sách từ chối",
       "table": {
         "candidate": "Ứng cử viên",
         "programm": "Chương trình",

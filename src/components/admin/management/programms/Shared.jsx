@@ -7,6 +7,7 @@ import {
 } from "../../../../api";
 import "./Shared.css";
 import { useI18n } from "../../../../i18n";
+import TranslatableText from "../../../../TranslateableText";
 
 function formatDateTime(dateStr) {
   const date = new Date(dateStr);
@@ -20,7 +21,7 @@ function formatDateTime(dateStr) {
 }
 
 export default function ListOfSharedProgramms() {
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
   const [sharedProgramms, setSharedProgramms] = useState([]);
   const [checkedSteps, setCheckedSteps] = useState({});
   const [loading, setLoading] = useState(false);
@@ -141,7 +142,7 @@ export default function ListOfSharedProgramms() {
                 className={`shared-row ${expandedRows[prog._id] ? "expanded" : ""}`}
               >
                 <td data-label="ID">...</td>
-                <td data-label="Program">{prog.programm?.title || "N/A"}</td>
+                <td data-label="Program"><TranslatableText text={prog.programm?.title} lang={lang}/></td>
                 <td data-label="Recruiter">{prog.recruiter?.name || "N/A"}</td>
                 <td data-label="Candidate">
                   {prog.candidate?.name ||
@@ -149,7 +150,7 @@ export default function ListOfSharedProgramms() {
                     "N/A"}
                 </td>
                 <td data-label="Status" className={`status-badge ${prog.status?.toLowerCase()}`}>
-                  {prog.status}
+                  <TranslatableText text={prog.status} lang={lang}/>
                 </td>
                 <td data-label="Bonus">💰 {prog.bonus || 0}</td>
                 <td data-label="Expires">{formatDateTime(prog.expiresAt)}</td>

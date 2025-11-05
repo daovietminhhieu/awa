@@ -24,6 +24,7 @@
 .admin-program-card {
   width: 100%;
   max-width: 360px;
+  height: 250px;
   background: #fff;
   border: 1px solid #eee;
   border-radius: 12px;

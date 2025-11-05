@@ -7,12 +7,13 @@ import {
   upFileToStorage,
 } from "../../../../api";
 import { useI18n } from "../../../../i18n";
+import TranslatableText from "../../../../TranslateableText";
 
 // ==========================
 // 🛠️ Modal Form for Editing
 // ==========================
 export function EditProgramForm({ programm, onClose, onSubmit }) {
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
   const [formData, setFormData] = useState({ ...programm });
   const [uploading, setUploading] = useState(false);
   const [fileType, setFileType] = useState("");
@@ -130,23 +131,21 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
         <h2>{t("admin.programms.edit.title") || "Edit Program"}</h2>
 
         <form onSubmit={handleSubmit} className="admin-form-grid">
-          {/* 🧩 BASIC INFO */}
-          <h4>Basic Information</h4>
-          {renderInput("Title", "title")}
-          {renderInput("Company", "company")}
-          {renderInput("Program Type", "type")}
-          {renderInput("Type Category (job/studium)", "type_category")}
-          {renderInput("Degrees", "degrees")}
-          {renderInput("Duration", "duration")}
-          {renderInput("Location", "land")}
-          {renderInput("Fee", "fee")}
-          {renderInput("Expected Salary", "expected_salary")}
-          {renderInput("Deadline", "deadline", "date")}
-          {renderInput("Vacancies", "vacancies", "number")}
-          {renderInput("Hired", "hired", "number")}
-          {renderInput("Benefit", "benefit")}
-          {renderInput("Bonus", "bonus")}
-          {renderInput("Public Day", "public_day", "date")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.title')} lang={lang}/>, "title")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.company')} lang={lang}/>, "company")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.type')} lang={lang}/>, "type")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.title')} lang={lang}/>, "type_category")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.degrees')} lang={lang}/>, "degrees")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.duration')} lang={lang}/>, "duration")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.land')} lang={lang}/>, "land")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.fee')} lang={lang}/>, "fee")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.expected_salary')} lang={lang}/>, "expected_salary")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.date')} lang={lang}/>, "deadline", "date")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.vacancies')} lang={lang}/>, "vacancies", "number")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.hired')} lang={lang}/>, "hired", "number")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.benefit')} lang={lang}/>, "benefit")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.bonus')} lang={lang}/>, "bonus")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.public_day')} lang={lang}/>, "public_day", "date")}
 
           {/* 🖼️ Upload ảnh/video */}
           <div className="form-group">
@@ -185,16 +184,15 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
           </div>
 
           {/* 📄 DETAILS */}
-          <h4>Details</h4>
-          {renderInput("Overview", "details.overview", "text", "", "textarea")}
-          {renderInput("Other Details", "details.other", "text", "", "textarea")}
+          <h4><TranslatableText text={t('admin.programms.edit.labels.detail')} lang={lang}/></h4>
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.overview')} lang={lang}/>, "details.overview", "text", "", "textarea")}
 
           {/* 🧾 REQUIREMENTS */}
-          <h4>Requirements</h4>
-          {renderInput("Age", "requirement.age")}
-          {renderInput("Health", "requirement.health")}
-          {renderInput("Education", "requirement.education")}
-          {renderInput("Certificate", "requirement.certificate")}
+          <h4><TranslatableText text={t('admin.programms.edit.labels.requirement')} lang={lang}/></h4>
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.age')} lang={lang}/>, "requirement.age")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.health')} lang={lang}/>, "requirement.health")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.education')} lang={lang}/>, "requirement.education")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.certificate')} lang={lang}/>, "requirement.certificate")}
 
           {/* ✅ BUTTONS */}
           <div className="admin-form-buttons">
@@ -220,7 +218,7 @@ export default function AdminProgrammsList({
   toggleSaveProgramm,
   onProgrammsUpdated,
 }) {
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
   const [editingProgramm, setEditingProgramm] = useState(null);
   const [loadingIds, setLoadingIds] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -268,28 +266,31 @@ export default function AdminProgrammsList({
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <div className="admin-program-header">
-                  <h3>{p.title}</h3>
+                  <h3>
+                    <TranslatableText text={p.title} lang={lang}/>
+                  </h3>
                 </div>
 
                 <ul className="admin-program-info">
                   <li>
-                    <b>Duration:</b> {p.duration}
+                    <b><TranslatableText text={t('admin.programms.card.duration_label')} lang={lang}/>:</b> <TranslatableText text={p.duration} lang={lang}/>
                   </li>
                   <li>
-                    <b>Deadline:</b> {p.deadline}
+                    <b><TranslatableText text={t('admin.programms.card.deadline_label')} lang={lang}/>:</b> {p.deadline}
                   </li>
                   <li>
-                    <b>Status:</b>{" "}
-                    {new Date(p.deadline) >= new Date() ? "Open" : "Closed"}
+                    <b><TranslatableText text={t('admin.programms.card.status_label')} lang={lang}/>:</b>{" "}
+                    {new Date(p.deadline) >= new Date() ? <TranslatableText text={t('admin.programms.card.status_open')} lang={lang}/> : <TranslatableText text={t('admin.programms.status_closed')} lang={lang}/>}
                   </li>
                 </ul>
 
                 <div className="admin-program-extra">
                   <p className="bonus-tag">
-                    <b>Bonus:</b> {p.bonus || ""}
+                    <b><TranslatableText text={t('admin.programms.card.bonus_label')} lang={lang}/>:</b> <TranslatableText text={p.bonus} lang={lang}/>
                   </p>
                   <p className="vacancy-tag">
-                    <b>Applicants:</b> {p.vacancies || 0}
+                    <b><TranslatableText text={t('admin.programms.card.vacancy_label')} lang={lang}/>:</b> 
+                    <TranslatableText text={p.vacancies} lang={lang}/>
                   </p>
                 </div>
               </Link>
@@ -303,7 +304,7 @@ export default function AdminProgrammsList({
                     if (!isLoading) handleSaveToggle(p);
                   }}
                 >
-                  {isSaved ? "Unsave" : "Save"}
+                  {isSaved ? <TranslatableText text={t('admin.programms.card.unsave')} lang={lang}/> : <TranslatableText text={t('admin.programms.card.save')} lang={lang}/>}
                 </button>
 
                 <button
@@ -314,7 +315,7 @@ export default function AdminProgrammsList({
                     setEditingProgramm(p);
                   }}
                 >
-                  Edit
+                  <TranslatableText text={t('admin.programms.card.edit')} lang={lang}/>
                 </button>
 
                 <button
@@ -327,7 +328,7 @@ export default function AdminProgrammsList({
                     }
                   }}
                 >
-                  Delete
+                  <TranslatableText text={t('admin.programms.card.delete')} lang={lang}/>
                 </button>
               </div>
             </div>

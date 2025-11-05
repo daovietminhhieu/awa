@@ -107,6 +107,9 @@ export default function ProgrammsManagement() {
     }
   };
 
+
+
+
   const handleDeletePost = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xoá bài viết này?")) return;
     try {
@@ -193,7 +196,7 @@ export default function ProgrammsManagement() {
               onSelectProgramm={handleSelectProgramm}
             />
             <button className="add-btn" onClick={() => setShowAddForm(true)}>
-              + Add New Program
+              <TranslatableText text={t("admin.programms.toolbar.add_new")} lang={lang}/>
             </button>
           </div>
 
@@ -366,7 +369,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
   const [eventDate, setEventDate] = useState(post?.eventDate || "");
   const [programms, setProgramms] = useState([]);
   const [selectedProgram, setSelectedProgram] = useState(post?.progId || "");
-
+  const {t,lang} = useI18n();
   const [hasChanged, setHasChanged] = useState(false);
   const markChanged = () => setHasChanged(true);
 
