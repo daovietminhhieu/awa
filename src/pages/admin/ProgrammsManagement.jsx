@@ -24,13 +24,14 @@ import AddProgramForm from "../../components/admin/management/programms/Form";
 import { useI18n } from "../../i18n";
 
 import "./ProgrammsManagement.css";
+import TranslatableText from "../../TranslateableText";
 
 /* =========================================================
    🟦 MAIN MANAGEMENT PAGE
    ========================================================= */
 export default function ProgrammsManagement() {
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const { t, lang} = useI18n();
 
   // -------------------- Programms --------------------
   const [programms, setProgramms] = useState([]);
@@ -177,7 +178,7 @@ export default function ProgrammsManagement() {
             className={`tab-item ${activePage === tab.id ? "active" : ""}`}
             onClick={() => setActivePage(tab.id)}
           >
-            {tab.label}
+            <TranslatableText text={tab.label} lang={lang} />
           </div>
         ))}
       </div>
@@ -204,6 +205,7 @@ export default function ProgrammsManagement() {
               programms={displayedProgramms}
               savedPrograms={savedProgramsMap}
               toggleSaveProgramm={toggleSaveProgramm}
+              lang={lang}
             />
           )}
           {showAddForm && (
@@ -232,11 +234,12 @@ export default function ProgrammsManagement() {
           programms={savedProgramsList}
           savedPrograms={savedProgramsMap}
           toggleSaveProgramm={toggleSaveProgramm}
+          lang={lang}
         />
       )}
 
       {/* ========================= SHARED ========================= */}
-      {activePage === "shared" && <ListOfSharedProgramms />}
+      {activePage === "shared" && <ListOfSharedProgramms lang={lang}/>}
 
       {/* ========================= POST ========================= */}
       {activePage === "post" && (

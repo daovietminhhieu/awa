@@ -10,7 +10,7 @@ export default function TranslatableText({ text, lang }) {
         const target = lang === "vi" ? "vi" : "en";
 
         const res = await fetch(
-          `https://translation.googleapis.com/language/translate/v2?key=YOUR_API_KEY`,
+          `https://translation.googleapis.com/language/translate/v2?key=AIzaSyAGk0V5ElpYTU7Y5iCNzawfSRWrZodHMVI`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

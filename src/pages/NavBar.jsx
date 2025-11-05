@@ -215,7 +215,9 @@ export default function Navbar() {
     setSearchText("");
     setShowSearch(false);
   };
-
+  const handleTranslate = (langTarget) => {
+    changeLang(langTarget); // Dịch UI i18n
+  };
   return (
     <header className="navbar">
       <div className="navbar-left">
@@ -223,6 +225,15 @@ export default function Navbar() {
           <span className="logo">AloWork</span>
         </div>
         {/* <!-- 🌐 Google Translate Button --> */}
+                {/* <!-- 🌐 Google Translate Button --> */}
+        <div className="translator-btn">
+          <button
+            className="translate-button"
+            onClick={() => handleTranslate(lang === "vi" ? "en" : "vi")}
+          >
+            {lang === "en" ? "ENG" : "VIE"}
+          </button>
+        </div>
       </div>
 
       <div className="navbar-right">
