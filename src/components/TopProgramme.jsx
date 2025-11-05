@@ -8,12 +8,13 @@ import 'swiper/css/autoplay';
 import { useI18n } from '../i18n';
 import { useNavigate } from 'react-router-dom';
 import { getProgrammsList } from '../api';
+import TranslatableText from "../TranslateableText";
 
 function TopProgrammeSlider() {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [programs, setPrograms] = useState([]);
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
 
   const getShortDesc = (text, maxLength = 250) => {
     if (!text) return '';
@@ -96,7 +97,7 @@ function TopProgrammeSlider() {
                   <img src={item.logoL} alt={item.title} loading="lazy" />
                   <div className="content-right">
                     <div className="title-star-row">
-                      <h3 className="program-title">{item.title}</h3>
+                      <h3 className="program-title"><TranslatableText text={item.title} lang={lang}/></h3>
                       <div className="stars" aria-label={`Rating ${roundedRate} stars`}>
                         <span className="star-icons">
                           {'★'.repeat(roundedRate)}
@@ -113,7 +114,7 @@ function TopProgrammeSlider() {
                     <p className="description">
                       {expandedIndex === idx
                         ? item.details?.overview
-                        : getShortDesc(item.details?.overview)}
+                        : <TranslatableText text={getShortDesc(item.details?.overview)} lang={lang}/> }
                     </p>
 
                     {item.details?.overview?.length > 250 && (
@@ -135,7 +136,7 @@ function TopProgrammeSlider() {
                 {topReview?.content && (
                   <footer className="top-review">
                     <h4>🌟 {t('short.review_title') || 'Featured Review'}</h4>
-                    <blockquote>"{topReview.content}"</blockquote>
+                    <blockquote>"<TranslatableText text={topReview.content} lang={lang}/>"</blockquote>
                     </footer>
                 )}
               </article>

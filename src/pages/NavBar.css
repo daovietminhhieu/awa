@@ -27,6 +27,9 @@
   align-items: center;
   gap: 12px;
 }
+.translate-button {
+  border: 1px inset white;
+}
 
 .navbar-left .logo {
   font-size: 1.4rem;

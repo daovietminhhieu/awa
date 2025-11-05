@@ -335,7 +335,7 @@ export function PartnerDetail() {
   const { t } = useI18n();
 
   return (
-    <div>
+    <div className="partner-detail-wrapper">
       <section className="partner-detail-section">
         <div className="partner-detail-container">
           <h2 className="partner-detail-title">
@@ -367,6 +367,7 @@ export function PartnerDetail() {
           </div>
         </div>
       </section>
+
       <Footer />
     </div>
   );
