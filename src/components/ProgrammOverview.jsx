@@ -332,7 +332,13 @@ export default function ProgrammOverview({ programm, role, to }) {
 
         <ProgrammSection
           title={t("programm.detail.overview.overview")}
-          content={[programm.details?.overview || t("programm.detail.no_description")]}
+          content={[
+            <>
+              <TranslateableText text={programm.details?.overview || t("programm.detail.no_description")} lang={lang}/>
+            </>
+        
+          ]}
+
         />
 
         <ProgrammSection
@@ -344,17 +350,17 @@ export default function ProgrammOverview({ programm, role, to }) {
             </>,
             
             <> 
-              🎓{t("programm.detail.overview.education")}:{" "} 
+              🎓 {t("programm.detail.overview.education")}:{" "} 
               {programm.requirement?.education}
             </>,
 
             <>
-              📜 {t("programm.detail.overview.certificate")}: 
+              📜 {t("programm.detail.overview.certificate")}:{" "} 
               <TranslateableText text={programm.requirement?.certificate} lang={lang}/>
             </>,
             
             <>
-              ❤️ {t("programm.detail.overview.health")}:
+              ❤️ {t("programm.detail.overview.health")}:{" "} 
               <TranslateableText text={programm.requirement?.health} lang={lang}/>
             </>
           ]}

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
 import {
@@ -9,22 +8,18 @@ import {
   saveProgrammById,
   unsaveProgrammById,
   addNewProgramm,
-  createPost,
-  getPostsList,
-  updatePost,
-  upFileToStorage,
-  removePost,
+  
 } from "../../api";
 
 import ProgrammsList from "../../components/admin/management/programms/List";
 import ListOfSharedProgramms from "../../components/admin/management/programms/Shared";
 import FilterSearch from "../../components/FilterSearch";
-import PostEditor from "../../components/PostEditor";
 import AddProgramForm from "../../components/admin/management/programms/Form";
 import { useI18n } from "../../i18n";
 
 import "./ProgrammsManagement.css";
 import TranslatableText from "../../TranslateableText";
+import PostManagement from "../../components/admin/management/posts/PostManagement";
 
 /* =========================================================
    🟦 MAIN MANAGEMENT PAGE
@@ -43,20 +38,12 @@ export default function ProgrammsManagement() {
   const [showAddForm, setShowAddForm] = useState(false);
 
   // -------------------- Posts --------------------
-  const [posts, setPosts] = useState([]);
-  const [loadingPosts, setLoadingPosts] = useState(false);
-  const [showAddPost, setShowAddPost] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
 
   // -------------------- Load Data --------------------
   useEffect(() => {
     loadProgramms();
     loadSavedPrograms();
   }, []);
-
-  useEffect(() => {
-    if (activePage === "post") loadPosts();
-  }, [activePage]);
 
   const loadProgramms = async () => {
     setLoading(true);
@@ -83,17 +70,6 @@ export default function ProgrammsManagement() {
     }
   };
 
-  const loadPosts = async () => {
-    setLoadingPosts(true);
-    try {
-      const res = await getPostsList();
-      setPosts(Array.isArray(res) ? res : res.data || []);
-    } catch (err) {
-      console.error("❌ Lỗi tải bài viết:", err);
-    } finally {
-      setLoadingPosts(false);
-    }
-  };
 
   // -------------------- Handlers --------------------
   const handleAddNewProgramm = async (newData) => {
@@ -110,16 +86,7 @@ export default function ProgrammsManagement() {
 
 
 
-  const handleDeletePost = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xoá bài viết này?")) return;
-    try {
-      await removePost(id);
-      alert("✅ Đã xoá bài viết");
-      loadPosts();
-    } catch {
-      alert("❌ Lỗi khi xoá bài viết");
-    }
-  };
+    
 
   const toggleSaveProgramm = async (programmId, isSaved) => {
     setSavedProgramsMap((prev) => {
@@ -154,11 +121,7 @@ export default function ProgrammsManagement() {
   const handleSelectProgramm = (programm) =>
     navigate(`/programm/${programm._id}`, { state: { programm } });
 
-  const handleNavigatePost = (post) => {
-    if (post.type === "success_story") navigate(`/success-story-detail/${post._id}`);
-    else if (post.type === "career_tip") navigate(`/tip-detail/${post._id}`);
-    else if (post.type === "upcoming_event") navigate(`/event-detail/${post._id}`);
-  };
+ 
 
   const savedProgramsList = programms.filter((p) => savedProgramsMap[p._id]);
   const displayedProgramms = useMemo(() => filteredProgramms, [filteredProgramms]);
@@ -167,7 +130,7 @@ export default function ProgrammsManagement() {
     { id: "my", label: "My Programms" },
     { id: "saved", label: "Saved Programms" },
     { id: "shared", label: "Shared Programms" },
-    { id: "post", label: "Post" },
+    { id: "post", label: "Posts" },
   ];
 
   // -------------------- RENDER --------------------
@@ -245,393 +208,8 @@ export default function ProgrammsManagement() {
       {activePage === "shared" && <ListOfSharedProgramms lang={lang}/>}
 
       {/* ========================= POST ========================= */}
-      {activePage === "post" && (
-        <div className="post-management-section">
-          <div className="post-toolbar">
-            <button
-              className={`toggle-btn ${showAddPost ? "active" : ""}`}
-              onClick={() => {
-                if (editingPost) setEditingPost(null);
-                else setShowAddPost((prev) => !prev);
-              }}
-            >
-              {showAddPost ? "📜 Xem danh sách bài viết" : "➕ Tạo bài viết mới"}
-            </button>
-          </div>
-
-          {/* Add Post */}
-          {showAddPost && !editingPost && (
-            <PostEditor
-              onSave={async (post) => {
-                try {
-                  await createPost(post);
-                  alert("✅ Bài viết đã lưu");
-                  setShowAddPost(false);
-                  loadPosts();
-                } catch (error) {
-                  console.error(error);
-                  alert("❌ Lỗi khi tạo bài viết mới");
-                }
-              }}
-              onCancel={() => setShowAddPost(false)}
-            />
-          )}
-
-          {/* Edit Post */}
-          {editingPost && (
-            <EditPostForm
-              post={editingPost}
-              onClose={() => setEditingPost(null)}
-              onSaved={() => loadPosts()}
-            />
-          )}
-
-          {/* List of Posts */}
-          {!showAddPost && !editingPost && (
-            <div className="post-list-container">
-              <h3 style={{ marginBottom: 40 }}>📋 Danh sách bài viết</h3>
-              {loadingPosts ? (
-                <p>Đang tải...</p>
-              ) : posts.length === 0 ? (
-                <p>Chưa có bài viết nào</p>
-              ) : (
-                <div className="post-list">
-                  {posts.map((p) => (
-                    <div
-                      key={p._id}
-                      className="post-item"
-                      onClick={() => handleNavigatePost(p)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <div className="post-thumb">
-                        {p.thumbnail_url?.endsWith(".mp4") ? (
-                          <video controls width="220" style={{ borderRadius: "8px" }}>
-                            <source src={p.thumbnail_url} type="video/mp4" />
-                          </video>
-                        ) : p.thumbnail_url ? (
-                          <img
-                            src={p.thumbnail_url}
-                            alt={p.title}
-                            style={{ width: "220px", borderRadius: "8px" }}
-                          />
-                        ) : (
-                          <p>No media available</p>
-                        )}
-                      </div>
-                      <div className="post-info">
-                        <h2>{p.type}</h2>
-                        <h4>{p.title}</h4>
-                        {p.eventDate && <p>📅 {p.eventDate}</p>}
-                      </div>
-                      <div className="post-actions">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEditingPost(p);
-                          }}
-                          className="edit-btn"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeletePost(p._id);
-                          }}
-                          className="delete-btn"
-                        >
-                          🗑️
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+      {activePage === "post" && <PostManagement/>}
     </div>
   );
 }
 
-/* =========================================================
-   ✏️ EDIT POST FORM
-   ========================================================= */
-export function EditPostForm({ post, onClose, onSaved }) {
-  const [type, setType] = useState(post?.type || "success_story");
-  const [title, setTitle] = useState(post?.title || "");
-  const [thumbnail, setThumbnail] = useState(post?.thumbnail_url || "");
-  const [fileType, setFileType] = useState(post?.file_type || "");
-  const [uploading, setUploading] = useState(false);
-  const [content, setContent] = useState(post?.content || "");
-  const [location, setLocation] = useState(post?.location || "");
-  const [eventDate, setEventDate] = useState(post?.eventDate || "");
-  const [programms, setProgramms] = useState([]);
-  const [selectedProgram, setSelectedProgram] = useState(post?.progId || "");
-  const {t,lang} = useI18n();
-  const [hasChanged, setHasChanged] = useState(false);
-  const markChanged = () => setHasChanged(true);
-
-  useEffect(() => {
-    const loadPrograms = async () => {
-      try {
-        const res = await getProgrammsList();
-        setProgramms(res.data);
-      } catch (err) {
-        console.warn("⚠️ Lỗi tải chương trình:", err);
-      }
-    };
-    loadPrograms();
-  }, []);
-
-  const handleFileChange = async (file, type) => {
-    setUploading(true);
-    try {
-      const url = await upFileToStorage(file);
-      setThumbnail(url);
-      setFileType(type);
-      setHasChanged(true);
-      alert("✅ Upload thành công!");
-    } catch {
-      alert("❌ Upload thất bại!");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (hasChanged) {
-      const confirmCancel = window.confirm(
-        "Bạn có chắc muốn hủy? Mọi thay đổi sẽ không được lưu."
-      );
-      if (!confirmCancel) return;
-    }
-    onClose && onClose();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!title || !thumbnail || !selectedProgram) {
-      alert("⚠️ Vui lòng nhập đủ thông tin và tải file!");
-      return;
-    }
-
-    const postData = {
-      type,
-      title,
-      thumbnail_url: thumbnail,
-      file_type: fileType,
-      content: type !== "upcoming_event" ? content : "",
-      location: type === "upcoming_event" ? location : undefined,
-      eventDate: type === "upcoming_event" ? eventDate : undefined,
-      progId: selectedProgram,
-    };
-
-    try {
-      await updatePost(post._id, postData);
-      alert("✅ Bài viết đã được cập nhật!");
-      if (onSaved) onSaved();
-      onClose && onClose();
-    } catch (err) {
-      console.error(err);
-      alert("❌ Lỗi khi cập nhật bài viết");
-    }
-  };
-
-  return (
-    <div className="editor-container">
-      <div className="editor-header">
-        <h2>✏️ Chỉnh sửa bài viết</h2>
-        <button className="cancel-btn-top" onClick={handleCancel}>
-          ← Quay lại
-        </button>
-      </div>
-
-      <div className="post-editor-body">
-        <form className="post-editor" onSubmit={handleSubmit}>
-          <label style={{marginRight:10}}>Loại bài viết</label>
-          <select
-            style={{marginRight:10, borderRadius:5, height:20}}
-            value={type}
-            onChange={(e) => {
-              setType(e.target.value);
-              markChanged();
-            }}
-          >
-            <option value="success_story">Success Story</option>
-            <option value="career_tip">Career Tip</option>
-            <option value="upcoming_event">Upcoming Event</option>
-          </select>
-
-          <label>Tiêu đề</label>
-          <input
-            style={{marginRight:10, borderRadius:5, height:20}}
-            type="text"
-            placeholder="Tiêu đề bài viết"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              markChanged();
-            }}
-          />
-          <br />
-          <FileUpload
-            onFileChange={handleFileChange}
-            uploading={uploading}
-            thumbnail={thumbnail}
-            fileType={fileType}
-          />
-
-          <ProgramSelect
-            programms={programms}
-            selectedProgram={selectedProgram}
-            onProgramSelect={(value) => {
-              setSelectedProgram(value);
-              markChanged();
-            }}
-          />
-
-          {(type === "success_story" || type === "career_tip") && (
-            <div className="quill-container">
-              <label>Nội dung bài viết</label>
-              <ReactQuill
-                className="post-editor-quill"
-                theme="snow"
-                value={content}
-                onChange={(v) => {
-                  setContent(v);
-                  markChanged();
-                }}
-                modules={{
-                  toolbar: [
-                    [{ header: "1" }, { header: "2" },{ header: "3" }, { font: [] }],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    ["bold", "italic", "underline"],
-                    [{ align: [] }],
-                    ["link", "image"],
-                  ],
-                }}
-              />
-            </div>
-          )}
-
-          {type === "upcoming_event" && (
-            <>
-              <label>Địa điểm tổ chức</label>
-              <input
-                type="text"
-                placeholder="Nhập địa điểm"
-                value={location}
-                onChange={(e) => {
-                  setLocation(e.target.value);
-                  markChanged();
-                }}
-              />
-
-              <label>Ngày diễn ra sự kiện</label>
-              <input
-                type="date"
-                value={eventDate}
-                onChange={(e) => {
-                  setEventDate(e.target.value);
-                  markChanged();
-                }}
-              />
-            </>
-          )}
-
-          <div className="editor-actions">
-            <button type="submit" disabled={uploading}>
-              {uploading ? "Đang tải..." : "💾 Lưu thay đổi"}
-            </button>
-            <button
-              type="button"
-              onClick={handleCancel}
-              style={{ marginLeft: "10px", backgroundColor: "#ccc" }}
-            >
-              Hủy
-            </button>
-          </div>
-        </form>
-
-        {/* Preview */}
-        <div className="post-preview">
-          <h3>👁️ Xem trước</h3>
-          <div className="post-card">
-            {thumbnail && (
-              <div className="post-card-media">
-                {fileType === "image" ? (
-                  <img src={thumbnail} alt={title} />
-                ) : (
-                  <video src={thumbnail} controls />
-                )}
-              </div>
-            )}
-            <h2 className="post-card-title">{title}</h2>
-            {type === "upcoming_event" && (
-              <p className="post-card-event">
-                📍 {location} — 📅 {eventDate}
-              </p>
-            )}
-            {content && (
-              <div
-                className="post-card-content ql-editor"
-                dangerouslySetInnerHTML={{ __html: content }}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* =========================================================
-   🔼 FILE UPLOAD + PROGRAM SELECT (rút gọn)
-   ========================================================= */
-function FileUpload({ onFileChange, uploading, thumbnail, fileType }) {
-  const handleChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const type = file.type.startsWith("image/") ? "image" : "video";
-    await onFileChange(file, type);
-  };
-
-  return (
-    <>
-      <label>Ảnh hoặc video thumbnail</label>
-      <input type="file" accept="image/*,video/*" onChange={handleChange} />
-      {uploading && <p>Đang tải lên...</p>}
-      {thumbnail && (
-        <div className="post-card-media">
-          {fileType === "image" ? (
-            <img src={thumbnail} alt="preview" />
-          ) : (
-            <video src={thumbnail} controls />
-          )}
-        </div>
-      )}
-    </>
-  );
-}
-
-function ProgramSelect({ programms, selectedProgram, onProgramSelect }) {
-  return (
-    <>
-      <label>Chọn chương trình liên quan</label>
-      <select
-        style={{marginRight:10, borderRadius:5, height:25}}
-        value={selectedProgram}
-        onChange={(e) => onProgramSelect(e.target.value)}
-      >
-        <option value="">-- Chọn chương trình --</option>
-        {programms.map((p) => (
-          <option key={p._id} value={p._id}>
-            {p.title}
-          </option>
-        ))}
-      </select>
-    </>
-  );
-}

@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { upFileToStorage, getProgrammsList } from "../api";
+import { upFileToStorage, getProgrammsList, createPost } from "../api";
 import "./PostEditor.css";
+import { useI18n } from "../i18n";
+import TranslatableText from "../TranslateableText";
 
 /* =========================================================
    📦 COMPONENT: PostCard - Hiển thị xem trước bài viết
@@ -39,7 +41,7 @@ const PostCard = ({ title, thumbnail, fileType, content, type, location, eventDa
 /* =========================================================
    📤 COMPONENT: FileUpload - Upload ảnh hoặc video
 ========================================================= */
-const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
+const FileUpload = ({ onFileChange, uploading, thumbnail, fileType, t, lang}) => {
   const fileInputRef = useRef(null);
 
   const handleFileSelect = async (e) => {
@@ -59,7 +61,7 @@ const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
 
   return (
     <div className="thumbnail-upload">
-      <label>Ảnh hoặc Video:</label>
+      <label><TranslatableText text={t('admin.post.add_form.media_select')} lang={lang}/></label>
       <input
         type="file"
         accept="image/*,video/*"
@@ -67,7 +69,7 @@ const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
         onChange={handleFileSelect}
       />
 
-      {uploading && <p className="uploading-text">Đang tải lên...</p>}
+      {uploading && <p className="uploading-text"><TranslatableText text={t('admin.post.uploading')} lang={lang}/></p>}
 
       {thumbnail && (
         <div className="preview-container">
@@ -85,14 +87,14 @@ const FileUpload = ({ onFileChange, uploading, thumbnail, fileType }) => {
 /* =========================================================
    📚 COMPONENT: ProgramSelect - Dropdown chọn chương trình
 ========================================================= */
-const ProgramSelect = ({ programms, selectedProgram, onChange }) => (
+const ProgramSelect = ({ programms, selectedProgram, onChange, t, lang }) => (
   <div className="program-search">
-    <label>Chọn chương trình:</label>
+    <label><TranslatableText text={t('admin.post.add_form.relevant_programms')} lang={lang}/></label>
     <select value={selectedProgram} onChange={(e) => onChange(e.target.value)}>
-      <option value="">-- Chọn chương trình --</option>
+      <option value=""><TranslatableText text={t('admin.post.add_form.programms_select')} lang={lang}/></option>
       {programms.map((p) => (
         <option key={p._id} value={p._id}>
-          {p.title}
+          <TranslatableText text={p.title} lang={lang}/>
         </option>
       ))}
     </select>
@@ -103,6 +105,7 @@ const ProgramSelect = ({ programms, selectedProgram, onChange }) => (
    🧩 COMPONENT CHÍNH: PostEditor
 ========================================================= */
 export default function PostEditor({ onSave }) {
+  const {t, lang} = useI18n();
   const [form, setForm] = useState({
     type: "success_story",
     title: "",
@@ -162,47 +165,60 @@ export default function PostEditor({ onSave }) {
   };
 
   /* --- Submit --- */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { type, title, thumbnail, selectedProgram, fileType, content, location, eventDate } = form;
-
+  
     if (!title || !thumbnail || !selectedProgram) {
       alert("⚠️ Vui lòng nhập đủ thông tin và tải file!");
       return;
     }
-
+  
     const postData = {
       type,
       title,
       thumbnail_url: thumbnail,
       file_type: fileType,
-      content: type !== "upcoming_event" ? content : "",
-      location: type === "upcoming_event" ? location : undefined,
-      eventDate: type === "upcoming_event" ? eventDate : undefined,
+      content: content,
       progId: selectedProgram,
+      eventDate: type === "upcoming_event"
+        ? {
+            date: form.eventDate || "",
+            startTime: form.startTime || "",
+            endTime: form.endTime || "",
+          }
+        : undefined,
+      location: type === "upcoming_event" ? location : undefined,
     };
-
-    onSave?.(postData);
-    alert("✅ Bài viết đã được đăng!");
-    resetForm();
+    
+    console.log(postData);
+    try {
+      const result = await createPost(postData); // gọi đúng hàm
+      alert("✅ Bài viết đã được đăng!");
+      resetForm();
+      console.log("Post created:", result.data);
+    } catch (err) {
+      alert("❌ Lỗi khi tạo bài viết: " + err.message);
+    }
   };
+  
 
   return (
     <div className="add-container">
       {/* ==== BÊN TRÁI: Form soạn bài ==== */}
       <form className="post-add" onSubmit={handleSubmit}>
-        <h2 className="post-add-title">📝 Tạo Bài Viết</h2>
+        <h2 className="post-add-title"><TranslatableText text={t('admin.post.add_form.title')} lang={lang}/></h2>
 
         <select value={form.type} onChange={(e) => updateField("type", e.target.value)}>
-          <option value="success_story">Success Story</option>
-          <option value="career_tip">Career Tip</option>
-          <option value="upcoming_event">Upcoming Event</option>
+          <option value="success_story"><TranslatableText text={t('admin.post.add_form.category.success_story')} lang={lang}/></option>
+          <option value="career_tip"><TranslatableText text={t('admin.post.add_form.category.career_tip')} lang={lang}/></option>
+          <option value="upcoming_event"><TranslatableText text={t('admin.post.add_form.category.upcoming_event')} lang={lang}/></option>
         </select>
 
         <input
           type="text"
-          placeholder="Tiêu đề bài viết"
+          placeholder={t('admin.post.add_form.enter_title')}
           value={form.title}
           onChange={(e) => updateField("title", e.target.value)}
         />
@@ -212,58 +228,146 @@ export default function PostEditor({ onSave }) {
           uploading={uploading}
           thumbnail={form.thumbnail}
           fileType={form.fileType}
+          t={t} lang={lang}
         />
 
         <ProgramSelect
           programms={programms}
           selectedProgram={form.selectedProgram}
           onChange={(value) => updateField("selectedProgram", value)}
+          t={t} lang={lang}
         />
 
-        {["success_story", "career_tip"].includes(form.type) && (
+        {["success_story", "career_tip", "upcoming_event"].includes(form.type) && (
           <ReactQuill
             className="post-editor-quill"
             theme="snow"
             value={form.content}
             onChange={(value) => updateField("content", value)}
             modules={{
-              toolbar: [
-                [{ header: "1" }, { header: "2" }, { header: "3" }, { font: [] }],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["bold", "italic", "underline"],
-                [{ align: [] }],
-                ["link", "image"],
-              ],
+              toolbar: {
+                container: [
+                  [{ header: "1" }, { header: "2" }, { header: "3" }, { font: [] }],
+                  [{ list: "ordered" }, { list: "bullet" }],
+                  ["bold", "italic", "underline"],
+                  [{ align: [] }],
+                  ["link", "image", "video"],
+                ],
+                handlers: {
+                  video: async function () {
+                    const choice = window.prompt(
+                      "🎥 Dán link YouTube hoặc bấm Cancel để tải video từ máy:"
+                    );
+          
+                    const range = this.quill.getSelection(true);
+          
+                    if (choice && choice.startsWith("http")) {
+                      // ✅ Nhúng YouTube
+                      const youtubeMatch = choice.match(
+                        /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/
+                      );
+                      if (youtubeMatch) {
+                        const embedUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+                        this.quill.insertEmbed(range.index, "video", embedUrl);
+                      } else {
+                        alert("⚠️ Link không hợp lệ. Hãy nhập đúng link YouTube!");
+                      }
+                      return;
+                    }
+          
+                    // 🟢 Nếu không nhập link → upload từ máy
+                    const fileInput = document.createElement("input");
+                    fileInput.setAttribute("type", "file");
+                    fileInput.setAttribute("accept", "video/*");
+                    fileInput.click();
+          
+                    fileInput.onchange = async () => {
+                      const file = fileInput.files[0];
+                      if (!file) return;
+          
+                      this.quill.insertText(range.index, "⏳ Đang tải video...", "italic", true);
+                      try {
+                        const url = await upFileToStorage(file);
+                        this.quill.deleteText(range.index, "⏳ Đang tải video...".length);
+                        this.quill.insertEmbed(range.index, "video", url);
+                        alert("✅ Video đã tải lên thành công!");
+                      } catch (err) {
+                        console.error(err);
+                        alert("❌ Lỗi tải video!");
+                        this.quill.deleteText(range.index, "⏳ Đang tải video...".length);
+                      }
+                    };
+                  },
+                 
+                },
+              },
             }}
+            formats={[
+              "header",
+              "font",
+              "list",
+              "bullet",
+              "bold",
+              "italic",
+              "underline",
+              "align",
+              "link",
+              "image",
+              "video",
+            ]}
           />
+        
         )}
 
         {form.type === "upcoming_event" && (
-          <>
+          <div className="event-info">
             <input
               type="text"
-              placeholder="Địa điểm tổ chức"
+              placeholder={t('admin.post.add_form.enter_location')}
               value={form.location}
               onChange={(e) => updateField("location", e.target.value)}
             />
-            <input
-              type="date"
-              value={form.eventDate}
-              onChange={(e) => updateField("eventDate", e.target.value)}
-            />
-          </>
+
+            <div className="event-time-group">
+              <label>🕓 {t('admin.post.add_form.event_time') || "Thời gian"}:</label>
+              <div className="time-inputs">
+                <input
+                  type="time"
+                  value={form.startTime || ""}
+                  onChange={(e) => updateField("startTime", e.target.value)}
+                />
+                <span>–</span>
+                <input
+                  type="time"
+                  value={form.endTime || ""}
+                  onChange={(e) => updateField("endTime", e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="event-date-group">
+              <label>📅 {t('admin.post.add_form.event_date') || "Ngày diễn ra"}:</label>
+              <input
+                type="date"
+                value={form.eventDate || ""}
+                onChange={(e) => updateField("eventDate", e.target.value)}
+              />
+            </div>
+          </div>
         )}
 
         <div className="editor-actions">
           <button type="submit" disabled={uploading}>
-            {uploading ? "Đang tải lên..." : "Đăng bài"}
+            {uploading ?  <>{<TranslatableText text={t('admin.post.add_form.uploading')} lang={lang}/>} </>
+                                : 
+                          <>{<TranslatableText text={t('admin.post.add_form.posting')} lang={lang}/>} </>}
           </button>
         </div>
       </form>
 
       {/* ==== BÊN PHẢI: Xem trước ==== */}
       <div className="post-preview">
-        <h3>👁️ Xem trước</h3>
+        <h3><TranslatableText text={t('admin.post.add_form.preview')} lang={lang}/></h3>
         <PostCard
           title={form.title}
           thumbnail={form.thumbnail}

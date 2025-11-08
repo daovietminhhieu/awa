@@ -1,29 +1,23 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import './Short.css'
 import { useNavigate, useParams } from "react-router-dom";
 import { useI18n } from "../i18n";
-import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import TranslatableText from "../TranslateableText";
 
 export function SuccessStories() {
   const navigate = useNavigate();
-  const { user: currentUser } = useAuth();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
 
   const [stories, setStories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ title: "", content: "", thumbnail_url: "" });
-  const [fileType, setFileType] = useState("");
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef(null);
 
   // 📦 Lấy dữ liệu
   useEffect(() => {
@@ -41,56 +35,10 @@ export function SuccessStories() {
 
   const getFileTypeFromUrl = (url) => {
     if (!url) return null;
-    const ext = url.split(".").pop().toLowerCase().split(/\#|\?/)[0];
+    const ext = url.split(".").pop().toLowerCase().split(/#|\?/)[0];
     if (["mp4", "webm", "ogg"].includes(ext)) return "video";
     if (["jpg", "jpeg", "png", "gif", "bmp", "webp"].includes(ext)) return "image";
     return null;
-  };
-
-  const toggleExpand = (id) =>
-    setStories((prev) =>
-      prev.map((s) => (s._id === id ? { ...s, expanded: !s.expanded } : s))
-    );
-
-  const startEdit = (story) => {
-    setEditingId(story._id);
-    setEditData(story);
-    setFileType(getFileTypeFromUrl(story.thumbnail_url));
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
-      alert("Chỉ chấp nhận ảnh hoặc video!");
-      return;
-    }
-
-    setUploading(true);
-    try {
-      const url = await upFileToStorage(file);
-      setEditData((prev) => ({ ...prev, thumbnail_url: url }));
-      setFileType(file.type.startsWith("video/") ? "video" : "image");
-    } catch (err) {
-      alert("Tải file thất bại: " + err.message);
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  };
-
-  const handleUpdate = async (id) => {
-    try {
-      await updatePost(id, editData);
-      alert("Cập nhật thành công!");
-      setStories((prev) =>
-        prev.map((s) => (s._id === id ? { ...s, ...editData } : s))
-      );
-      setEditingId(null);
-    } catch {
-      alert("Cập nhật thất bại.");
-    }
   };
 
   if (loading) return <p>{t("loading") || "Loading..."}</p>;
@@ -114,15 +62,14 @@ export function SuccessStories() {
                 <h2 className="section-stories-title">
                   🎓 {t("short.stories.title") || "Câu chuyện thành công"}
                 </h2>
-               
               </div>
 
-              <div 
+              <div
                 className="success-stories-content"
                 onClick={() => navigate(`/success-story-detail/${story._id}`)}
               >
                 <div
-                  className="story-left clickable"
+                  className="story-left"
                   onClick={() => navigate(`/success-story-detail/${story._id}`)}
                 >
                   {getFileTypeFromUrl(story.thumbnail_url) === "video" ? (
@@ -153,30 +100,37 @@ export function SuccessStories() {
 
                 <div className="story-right">
                   <h3
-                    className="story-title clickable"
+                    className="story-title"
                     onClick={() =>
                       navigate(`/success-story-detail/${story._id}`)
                     }
                   >
-                    {story.title}
+                    <TranslatableText text={story.title} lang={lang} />
                   </h3>
-  
+
                   <div className="story-content">
+                    {/* Dịch nội dung HTML */}
+                    {/* <TranslatedHtml
+                      html={story.content}
+                      lang={lang}
+                      className={`story-text ${
+                        story.expanded ? "expanded ql-editor" : "collapsed"
+                      }`}
+                    /> */}
                     <div
                       className={`story-text ${
                         story.expanded ? "expanded ql-editor" : "collapsed"
                       }`}
                       dangerouslySetInnerHTML={{ __html: story.content }}
                     />
+
                     {story.content.length > 400 && (
                       <button
                         className="read-more-btn"
                         onClick={(e) => {
-                            e.stopPropagation();
-                            // toggleExpand(story._id)
-                            navigate(`/success-story-detail/${story._id}`)
-                          }
-                        }
+                          e.stopPropagation();
+                          navigate(`/success-story-detail/${story._id}`);
+                        }}
                       >
                         {story.expanded ? "Ẩn bớt" : "Xem thêm"}
                       </button>
@@ -184,85 +138,163 @@ export function SuccessStories() {
                   </div>
                 </div>
               </div>
-  
-              {editingId === story._id && (
-                <div className="edit-form">
-                  <h4>🛠 Chỉnh sửa bài viết</h4>
-  
-                  <input
-                    type="text"
-                    className="input"
-                    value={editData.title}
-                    onChange={(e) =>
-                      setEditData((prev) => ({ ...prev, title: e.target.value }))
-                    }
-                    placeholder="Tiêu đề"
-                  />
-  
-                  <ReactQuill
-                    theme="snow"
-                    value={editData.content}
-                    onChange={(content) =>
-                      setEditData((prev) => ({ ...prev, content }))
-                    }
-                    className="editor"
-                  />
-  
-                  <div className="upload-section">
-                    <input
-                      type="file"
-                      accept="image/*,video/*"
-                      onChange={handleFileChange}
-                      ref={fileInputRef}
-                    />
-                    {uploading && <p>Đang tải lên...</p>}
-                    {editData.thumbnail_url && (
-                      <div className="preview">
-                        {fileType === "video" ? (
-                          <video
-                            src={editData.thumbnail_url}
-                            controls
-                            className="story-media"
-                          />
-                        ) : (
-                          <img
-                            src={editData.thumbnail_url}
-                            alt="Preview"
-                            className="story-media"
-                          />
-                        )}
-                      </div>
-                    )}
-                  </div>
-  
-                  <div className="form-actions">
-                    <button
-                      className="btn-save"
-                      onClick={() => handleUpdate(story._id)}
-                      disabled={uploading}
-                    >
-                      💾 Lưu thay đổi
-                    </button>
-                    <button
-                      className="btn-cancel"
-                      onClick={() => setEditingId(null)}
-                    >
-                      ❌ Hủy
-                    </button>
-                  </div>
-                </div>
-              )}
             </article>
           </SwiperSlide>
         ))}
       </Swiper>
     </section>
+  );
+}
+
+  
+  export function TipsAndEventsSection() {
+    const navigate = useNavigate();
+    const { t, lang } = useI18n();
+  
+    const [tips, setTips] = useState([]);
+    const [events, setEvents] = useState([]);
+    const [loadingTips, setLoadingTips] = useState(true);
+    const [loadingEvents, setLoadingEvents] = useState(true);
+    const [errorTips, setErrorTips] = useState(null);
+    const [errorEvents, setErrorEvents] = useState(null);
+  
+  
+  
+    useEffect(() => {
+      async function fetchTips() {
+        try {
+          const result = await getPostsByType("career_tip");
+          const sorted = result.data
+            .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+            .slice(0, 3)
+            .map((t) => ({ ...t, expanded: false }));
+          setTips(sorted);
+        } catch (err) {
+          setErrorTips(err.message);
+        } finally {
+          setLoadingTips(false);
+        }
+      }
+  
+      async function fetchEvents() {
+        try {
+          const result = await getPostsByType("upcoming_event");
+          const sorted = result.data
+            .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+            .slice(0, 3)
+            .map((e) => ({ ...e, expanded: false }));
+          setEvents(sorted);
+        } catch (err) {
+          setErrorEvents(err.message);
+        } finally {
+          setLoadingEvents(false);
+        }
+      }
+  
+      fetchTips();
+      fetchEvents();
+    }, []);
+  
+    const getPlainText = (html) => {
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent || div.innerText || "";
+    };
+  
+   
+  
+    if (loadingTips || loadingEvents)
+      return <p>{t("loading") || "Loading..."}</p>;
+    if (errorTips || errorEvents)
+      return <p>{t("error_fetching_data") || "Error loading data"}</p>;
+  
+    return (
+      <section className="tips-events section">
+        {/* --------- CẨM NANG NGHỀ NGHIỆP --------- */}
+        <div className="tips-guide">
+          <h2 className="section-title">{t("short.career_guide")}</h2>
+          <div className="stories-grid">
+            {tips.map((tip) => {
+              const plainText = getPlainText(tip.content);
+              return (
+                <div
+                  key={tip._id}
+                  className="story-card"
+                  style={{ cursor: "pointer", position: "relative" }}
+                  onClick={() => navigate(`/tip-detail/${tip._id}`)}
+                >
+                  <img src={tip.thumbnail_url} alt={tip.title} loading="lazy" />
+                  <h3 style={{ textAlign: "center" }}><TranslatableText text={tip.title} lang={lang}/></h3>
+  
+                  <div>
+                    {/* <TranslatedHtml
+                      html={tip.content}
+                      lang={lang}
+                      className={`story-text ${
+                        tip.expanded ? "expanded ql-editor" : "collapsed"
+                      }`}
+                    /> */}
+                      <div
+                      className={`story-text ${
+                        tip.expanded ? "expanded ql-editor" : "collapsed"
+                      }`}
+                      dangerouslySetInnerHTML={{ __html: tip.content }}
+                    />
+                    {plainText.length > 400 && (
+                      <button
+                        className="read-more-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // toggleTipsExpande(tip._id);
+                          navigate(`/tip-detail/${tip._id}`)
+                        }}
+                      >
+                        {tip.expanded ? "Ẩn bớt" : "Xem thêm"}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+  
+        {/* --------- SỰ KIỆN --------- */}
+        <div className="event-section" style={{ marginTop: "40px" }}>
+          <h2 className="section-title">{t("short.events")}</h2>
+          <div className="stories-grid">
+            {events.map((event) => (
+              <div
+                key={event._id}
+                className="story-card"
+                style={{ cursor: "pointer", position: "relative" }}
+                onClick={() => navigate(`/event-detail/${event._id}`)}
+              >
+                <img src={event.thumbnail_url} alt={event.title} loading="lazy" />
+                <h3 style={{ textAlign: "center" }}>
+                  <TranslatableText text={event.title} lang={lang} />
+                </h3>
+                <p style={{ textAlign: "center" }}>
+                  <strong>{t("short.event-location")}</strong> {event.location}
+                </p>
+                <p style={{ textAlign: "center" }}>
+                  <strong>{t("short.event-date")}</strong>{" "}
+                  {new Date(event.createdAt).toLocaleDateString("vi-VN")}
+                </p>
+  
+               
+  
+                  
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     );
   }
   
 
 
-import { useLocation } from "react-router-dom";
 
 
 
@@ -328,8 +360,8 @@ export function Partner() {
 
 
 import Footer from "./Footer";
-import { getPostById, getPostsByType, removePost, updatePost, upFileToStorage } from "../api";
-import { useAuth } from "../context/AuthContext";
+import { getPostById, getPostsByType  } from "../api";
+
 
 export function PartnerDetail() {
   const { t } = useI18n();
@@ -372,224 +404,6 @@ export function PartnerDetail() {
     </div>
   );
 }
-
-
-
-
-export function TipsAndEventsSection() {
-  const navigate = useNavigate();
-  const { user: currentUser } = useAuth();
-  const { t } = useI18n();
-
-  const [tips, setTips] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [loadingTips, setLoadingTips] = useState(true);
-  const [loadingEvents, setLoadingEvents] = useState(true);
-  const [errorTips, setErrorTips] = useState(null);
-  const [errorEvents, setErrorEvents] = useState(null);
-
-  const [editingEventId, setEditingEventId] = useState(null);
-  const [editEventData, setEditEventData] = useState({
-    title: "",
-    location: "",
-    createdAt: "",
-    thumbnail_url: "",
-  });
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    async function fetchTips() {
-      try {
-        const result = await getPostsByType("career_tip");
-        const sorted = result.data
-          .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-          .slice(0, 3)
-          .map((t) => ({ ...t, expanded: false }));
-        setTips(sorted);
-      } catch (err) {
-        setErrorTips(err.message);
-      } finally {
-        setLoadingTips(false);
-      }
-    }
-
-    async function fetchEvents() {
-      try {
-        const result = await getPostsByType("upcoming_event");
-        const sorted = result.data
-          .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-          .slice(0, 3)
-          .map((e) => ({ ...e, expanded: false }));
-        setEvents(sorted);
-      } catch (err) {
-        setErrorEvents(err.message);
-      } finally {
-        setLoadingEvents(false);
-      }
-    }
-
-    fetchTips();
-    fetchEvents();
-  }, []);
-
-  const getPlainText = (html) => {
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    return div.textContent || div.innerText || "";
-  };
-
-  const toggleTipsExpande = (id) => {
-    setTips((prev) =>
-      prev.map((t) => (t._id === id ? { ...t, expanded: !t.expanded } : t))
-    );
-  };
-
-  const handleFileChange = async (e) => {
-    const selectedFile = e.target.files[0];
-    if (!selectedFile) return;
-    const isVideo = selectedFile.type.startsWith("video/");
-    const isImage = selectedFile.type.startsWith("image/");
-    if (!isVideo && !isImage) {
-      alert("Chỉ chấp nhận ảnh hoặc video!");
-      return;
-    }
-
-    setUploading(true);
-    try {
-      const url = await upFileToStorage(selectedFile);
-      setEditEventData((prev) => ({ ...prev, thumbnail_url: url }));
-    } catch (err) {
-      alert("Tải file thất bại: " + err.message);
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  };
-
-  const startEditEvent = (event) => {
-    setEditingEventId(event._id);
-    setEditEventData({
-      title: event.title,
-      location: event.location,
-      createdAt: event.createdAt,
-      thumbnail_url: event.thumbnail_url,
-    });
-  };
-
-  const handleUpdateEvent = async (id) => {
-    try {
-      await updatePost(id, editEventData);
-      alert("Cập nhật thành công!");
-      setEvents((prev) =>
-        prev.map((event) =>
-          event._id === id ? { ...event, ...editEventData } : event
-        )
-      );
-      setEditingEventId(null);
-    } catch {
-      alert("Cập nhật thất bại.");
-    }
-  };
-
-  const handleRemoveEvent = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa mục này không?")) return;
-    try {
-      await removePost(id);
-      alert("Xóa thành công");
-      setEvents((prev) => prev.filter((event) => event._id !== id));
-    } catch {
-      alert("Xóa thất bại");
-    }
-  };
-
-  if (loadingTips || loadingEvents)
-    return <p>{t("loading") || "Loading..."}</p>;
-  if (errorTips || errorEvents)
-    return <p>{t("error_fetching_data") || "Error loading data"}</p>;
-
-  return (
-    <section className="tips-events section">
-      {/* --------- CẨM NANG NGHỀ NGHIỆP --------- */}
-      <div className="tips-guide">
-        <h2 className="section-title">{t("short.career_guide")}</h2>
-        <div className="stories-grid">
-          {tips.map((tip) => {
-            const plainText = getPlainText(tip.content);
-            return (
-              <div
-                key={tip._id}
-                className="story-card"
-                style={{ cursor: "pointer", position: "relative" }}
-                onClick={() => navigate(`/tip-detail/${tip._id}`)}
-              >
-                <img src={tip.thumbnail_url} alt={tip.title} loading="lazy" />
-                <h3 style={{ textAlign: "center" }}>{tip.title}</h3>
-
-                <div>
-                  <div
-                    className={`story-text ${
-                      tip.expanded ? "expanded ql-editor" : "collapsed"
-                    }`}
-                    dangerouslySetInnerHTML={{ __html: tip.content }}
-                  ></div>
-
-                  {plainText.length > 400 && (
-                    <button
-                      className="read-more-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // toggleTipsExpande(tip._id);
-                        navigate(`/tip-detail/${tip._id}`)
-                      }}
-                    >
-                      {tip.expanded ? "Ẩn bớt" : "Xem thêm"}
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* --------- SỰ KIỆN --------- */}
-      <div className="event-section" style={{ marginTop: "40px" }}>
-        <h2 className="section-title">{t("short.events")}</h2>
-        <div className="stories-grid">
-          {events.map((event) => (
-            <div
-              key={event._id}
-              className="story-card"
-              style={{ cursor: "pointer", position: "relative" }}
-              onClick={() => navigate(`/event-detail/${event._id}`)}
-            >
-              <img src={event.thumbnail_url} alt={event.title} loading="lazy" />
-              <h3 style={{ textAlign: "center" }}>{event.title}</h3>
-              <p style={{ textAlign: "center" }}>
-                <strong>{t("short.event-location")}:</strong> {event.location}
-              </p>
-              <p style={{ textAlign: "center" }}>
-                <strong>{t("short.event-date")}:</strong>{" "}
-                {new Date(event.createdAt).toLocaleDateString("vi-VN")}
-              </p>
-
-             
-
-                
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
-
-
-
-
 
 export function BecomeCollaborator() {
   const [showPopup, setShowPopup] = useState(false);
@@ -692,8 +506,7 @@ export function BecomeCollaborator() {
 ================================= */
 
 export function DetailSuccessStory() {
-  const { t } = useI18n();
-  const navigate = useNavigate();
+  const { t, lang } = useI18n();
   const { id } = useParams();
   const [story, setStory] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -717,32 +530,59 @@ export function DetailSuccessStory() {
 
   return (
     <section className="detail-wrapper">
-      <button onClick={() => navigate(-1)} className="back-btn">
-        ← {t("short.back")}
-      </button>
-
+      {/* Video or Image as Thumbnail */}
       <div className="detail-header">
         {story.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
           <video src={story.thumbnail_url} controls className="detail-media-full" />
         ) : (
           <img src={story.thumbnail_url} alt={story.title} className="detail-media-full" />
         )}
-        <h1 className="detail-main-title">{story.title}</h1>
       </div>
 
-      <div
-        className="detail-content ql-editor"
-        dangerouslySetInnerHTML={{ __html: story.content }}
-      />
+      {/* Title */}
+      <h1 className="detail-main-title">{story.title}</h1>
+
+      {/* Content */}
+      <div className="detail-content ql-editor">
+        <div dangerouslySetInnerHTML={{ __html: story.content }} />
+      </div>
+
+      {/* Program Information */}
+      {story.progId && (
+        <div className="detail-program">
+          <label>{t("admin.post.edit_form.program")}</label>
+          <p>{story.program?.title || t("admin.post.edit_form.select_program")}</p>
+        </div>
+      )}
+
+      {/* Event Date and Location (only for upcoming events) */}
+      {story.type === "upcoming_event" && story.eventDate && (
+        <div className="detail-event">
+          <p>
+            <strong>{t("admin.post.edit_form.location")}: </strong>{story.location || "N/A"}
+          </p>
+          <p>
+            <strong>{t("admin.post.edit_form.event_date")}: </strong>
+            {new Date(story.eventDate.date).toLocaleDateString("vi-VN")}
+          </p>
+          <p>
+            <strong>{t("admin.post.edit_form.start_time")}: </strong>
+            {story.eventDate.startTime || "??:??"}
+          </p>
+          <p>
+            <strong>{t("admin.post.edit_form.end_time")}: </strong>
+            {story.eventDate.endTime || "??:??"}
+          </p>
+        </div>
+      )}
     </section>
   );
 }
 
-/* ----- TIP DETAIL ----- */
+
 export function TipDetail() {
   const { tipId } = useParams();
-  const { t } = useI18n();
-  const navigate = useNavigate();
+  const { t, lang } = useI18n();
   const [tip, setTip] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -765,9 +605,9 @@ export function TipDetail() {
 
   return (
     <section className="detail-wrapper">
-      <button onClick={() => navigate(-1)} className="back-btn">
+      {/* <button onClick={() => navigate(-1)} className="back-btn">
         ← {t("short.back")}
-      </button>
+      </button> */}
 
       <div className="detail-header">
         {tip.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
@@ -778,19 +618,18 @@ export function TipDetail() {
         <h1 className="detail-main-title">{tip.title}</h1>
       </div>
 
-      <div
-        className="detail-content ql-editor"
-        dangerouslySetInnerHTML={{ __html: tip.content }}
-      />
+      {/* Tip Description */}
+      <div className="detail-content ql-editor">
+        <div dangerouslySetInnerHTML={{ __html: tip.content }} />
+      </div>
     </section>
   );
 }
 
-/* ----- EVENT DETAIL ----- */
+
 export function EventDetail() {
   const { eventId } = useParams();
-  const { t } = useI18n();
-  const navigate = useNavigate();
+  const { t, lang } = useI18n();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -813,9 +652,9 @@ export function EventDetail() {
 
   return (
     <section className="detail-wrapper">
-      <button onClick={() => navigate(-1)} className="back-btn">
+      {/* <button onClick={() => navigate(-1)} className="back-btn">
         ← {t("short.back")}
-      </button>
+      </button> */}
 
       <div className="detail-header">
         {event.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
@@ -823,17 +662,18 @@ export function EventDetail() {
         ) : (
           <img src={event.thumbnail_url} alt={event.title} className="detail-media-full" />
         )}
-        <h1 className="detail-main-title">{event.title}</h1>
+        <h1 className="detail-main-title"><TranslatableText text={event.title} lang={lang}/></h1>
         <p className="event-meta">
-          📍 {event.location} | 📅{" "}
-          {new Date(event.createdAt).toLocaleDateString("vi-VN")}
+          📍 {t('short.event-location')} <TranslatableText text={event.location} lang={lang}/> | 📅 {t('short.event-date')} 
+          {new Date(event.eventDate.date).toLocaleDateString("vi-VN")}
         </p>
       </div>
 
-      <div
-        className="detail-content ql-editor"
-        dangerouslySetInnerHTML={{ __html: event.content }}
-      />
+      {/* Event Description */}
+      <div className="detail-content ql-editor">
+        <div dangerouslySetInnerHTML={{ __html: event.content }} />
+      </div>
+
     </section>
   );
 }

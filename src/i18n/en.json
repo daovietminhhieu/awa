@@ -106,8 +106,8 @@
         },     
         "career_guide": "Career Tips",
         "events": "Upcoming Events",
-        "event-location": "Location",
-        "event-date": "Date",
+        "event-location": "Location: ",
+        "event-date": "Date: ",
         "tips": [
         {
             "id": "tip-1",
@@ -380,7 +380,58 @@
                 "mark_rejected": "Mark as Not Completed"
             }
         },
-           
+        "post": {
+            "title":"📋 Posts list",
+            "loading":"Loading...",
+            "emptylist": "Posts list is empty",
+            "nomedia": "No Available Media",
+            "show_post_list":"📜 Show posts list",
+            "create_post": "➕ Create new post",
+            "add_form": {
+                "title":"📝 Create New Post",
+                "category": {
+                  "success_story":"Success stories",
+                  "career_tip":"Tips",
+                  "upcoming_event":"Upcoming events"
+                },
+                "enter_title":"Enter title",
+                "enter_location":"Enter location",
+                "uploading":"Uploading...",
+                "posting":"Post",
+                "preview":"👁️ Preview",
+                "media_select":"Thumbnail image or video",
+                "relevant_programms":"Select relevanted program",
+                "programms_select":"-- Select a program --"
+            },
+            "edit_form": {
+                "title": "Edit Post",
+                "back": "Go Back",
+                "type": "Post Type",
+                "category": {
+                    "success_story": "Success Story",
+                    "career_tip": "Career Tip",
+                    "upcoming_event": "Upcoming Event"
+                },
+                "title_label": "Title",
+                "enter_title": "Enter post title",
+                "content": "Content",
+                "enter_videos": "Enter the YouTube link of the video",
+                "invalid_videos": "Invalid video link",
+                "location": "Location",
+                "enter_location": "Enter location",
+                "event_date": "Event Date",
+                "uploading": "Uploading...",
+                "save": "Save",
+                "cancel": "Cancel",
+                "media_select": "Thumbnail image or video",
+                "relevant_programms": "Select related program",
+                "programms_select": "-- Select a program --",
+                "update_success":"Succesfully updated",
+                "update_error":"Fail updated",
+                "start_time":"Start time",
+                "end_time":"End time"
+            }
+        },  
         "candidates": {
             "title": "Completed",
             "completed_title": "Rejected",

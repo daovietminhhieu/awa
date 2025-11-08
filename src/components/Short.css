@@ -25,6 +25,181 @@ body {
   color: #0d3c61;
   margin-bottom: 2rem;
 }
+/* ==============================
+🏆 SUCCESS STORIES — UPDATED LAYOUT
+============================== */
+.success-stories-swiper {
+  width: 100%;
+  padding: 40px 0;
+}
+
+.success-story-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.success-story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.success-stories-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.story-left,
+.story-right {
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.story-left {
+  max-width: 400px; /* giữ ảnh cố định */
+}
+
+.story-right {
+  width: 100px;
+  overflow: hidden; 
+}
+
+.story-media {
+  width: 400px;
+  height: 250px; /* chiều cao cố định */
+  object-fit: cover; /* ảnh không bị méo */
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+.section-stories-title {
+  text-align: center;
+}
+.story-title {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #1d3557;
+  text-align: center;
+}
+
+.story-text {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  text-align: center;
+  max-height: 120px; /* cố định nội dung */
+  overflow: hidden;
+  position: relative;
+}
+
+.story-text.expanded {
+  max-height: none;
+}
+
+.story-text.collapsed::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5em;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+}
+
+.read-more-btn {
+  display: block;
+  margin: 8px auto 0;
+  border: none;
+  background: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ==============================
+💡 TIPS & EVENTS SECTION — UPDATED LAYOUT
+============================== */
+.tips-events .stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.tips-events .story-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tips-events .story-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.tips-events .story-card img {
+  width: 100%;
+  height: 180px; /* chiều cao cố định */
+  object-fit: cover; /* ảnh không bị méo */
+}
+
+.tips-events .story-card h3 {
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 10px 0;
+  color: #1d3557;
+}
+
+.tips-events .story-card p {
+  font-size: 0.95rem;
+  text-align: center;
+  margin: 0 10px 10px;
+  color: #555;
+}
+
+/* ==============================
+📱 RESPONSIVE
+============================== */
+@media (max-width: 1024px) {
+  .story-left,
+  .story-right {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .story-media {
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .story-media {
+    height: 180px;
+  }
+  .tips-events .story-card img {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .story-media {
+    height: 140px;
+  }
+  .tips-events .story-card img {
+    height: 120px;
+  }
+}
 
 /* ==============================
  📖 DETAIL PAGE
@@ -62,394 +237,244 @@ body {
   margin: 16px auto;
 }
 
-/* ==============================
- 🏆 SUCCESS STORIES
-============================== */
-.success-stories {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-  padding: 40px 20px;
-}
 
-.success-story-card {
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  overflow: hidden;
-  cursor: pointer;
-}
 
-.success-story-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.success-stories-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
-}
-
-.story-left,
-.story-right {
-  flex: 1 1 45%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.story-right {
-  display: flex;
-  flex-direction: column;
-  height: fit-content;
-}
-
-.story-media {
-  width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 12px;
-}
-
-.story-title {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: #1d3557;
-  text-align: center;
-}
 
 /* ==============================
- 💡 STORY TEXT + XEM THÊM/ẨN BỚT
+ 🌐 FULL PAGE DETAIL RESTYLE — UPDATED
 ============================== */
-.story-text {
-  font-size: 1rem;
-  color: #333;
-  line-height: 1.6;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-}
-
-/* Khi thu gọn */
-.story-text.collapsed {
-  display: -webkit-box;
-  -webkit-line-clamp: 5; /* số dòng hiển thị */
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  max-height: 8em;
-}
-
-/* Gradient mờ dần ở cuối đoạn thu gọn */
-.story-text.collapsed::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3em;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
-}
-
-/* Khi mở rộng */
-.story-text.expanded {
-  max-height: none;
-  overflow: visible;
-}
-
-/* Nút Xem thêm / Ẩn bớt */
-.read-more-btn {
-  margin: 8px auto 0;
-  display: block;
-  border: none;
-  background: none;
-  color: #1976d2;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: color 0.3s ease;
-  text-align: right;
-  width: 100%;
-  padding: 0 10px 5px;
-}
-
-.read-more-btn:hover {
-  color: #0d47a1;
-  text-decoration: underline;
-}
-
-/* ==============================
- 🌐 FULL PAGE DETAIL RESTYLE
-============================== */
-
 .detail-wrapper {
   width: 100%;
-  max-width: 2200px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 3rem 2.5rem;
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(25, 118, 210, 0.08);
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  color: #1976d2;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  transition: color 0.2s;
-}
-
-.back-btn:hover {
-  color: #0d47a1;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(25, 118, 210, 0.08);
+  text-align: left;
+  transition: all 0.3s ease;
 }
 
 .detail-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .detail-main-title {
-  font-size: 2rem;
+  font-size: 2.3rem;
   font-weight: 700;
-  margin: 1.2rem 0;
   color: #0d3c61;
+  margin-top: 1.2rem;
+  margin-bottom: 0.8rem;
+  line-height: 1.3;
 }
 
-.event-meta {
-  font-size: 1rem;
-  color: #555;
-  margin-top: 0.3rem;
-}
+/* .detail-subtitle {
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 800px;
+  margin: 0.5rem auto 1.5rem auto;
+  text-align: center;
+}  */
 
 .detail-media-full {
   width: 100%;
-  max-height: 600px;
-  border-radius: 12px;
+  max-height: 520px;
   object-fit: contain;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  margin: 1.8rem auto;
+  display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.detail-content {
-  font-size: 1.1rem;
-  line-height: 1.8;
+/* .detail-content {
+  font-size: 1.15rem;
+  line-height: 1.85;
   color: #222;
-  text-align: left;
-  padding: 1rem 0;
-}
+  text-align: justify;
+  max-width: 880px;
+  margin: 0 auto;
+} */
 
 .detail-content img,
-.detail-content video {
-  max-width: 100%;
-  height: auto;
-  margin: 20px auto;
+.detail-content video,
+.detail-content iframe {
   display: block;
-  border-radius: 12px;
-}
-
-.detail-content h1,
-.detail-content h2,
-.detail-content h3 {
-  color: #0d3c61;
-  margin-top: 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 100%;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
 .detail-content p {
-  margin: 1rem 0;
+  margin-bottom: 1.2rem;
 }
 
-/* Loading & Error */
-.loading-text,
-.error-text {
-  text-align: center;
-  padding: 3rem;
-  font-size: 1.2rem;
-  color: #555;
+/* ==============================
+ 📱 RESPONSIVE UPDATED
+============================== */
+@media (max-width: 1024px) {
+  .detail-wrapper {
+    max-width: 90%;
+    padding: 2rem;
+  }
+
+  .detail-main-title {
+    font-size: 2rem;
+  }
+
+  .detail-content {
+    font-size: 1.05rem;
+  }
+
+  .detail-media-full {
+    max-height: 420px;
+  }
 }
 
 @media (max-width: 768px) {
   .detail-wrapper {
-    padding: 1rem;
+    max-width: 95%;
+    padding: 1.2rem;
+  }
+
+  .detail-main-title {
+    font-size: 1.6rem;
+  }
+
+  .detail-subtitle {
+    font-size: 1rem;
+  }
+
+  .detail-content {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .detail-media-full {
+    max-height: 320px;
+  }
+}
+
+
+/* ==============================
+ 🧩 REASONS SECTION
+============================== */
+.reasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.8rem 2.5rem;
+}
+
+.reason-card {
+  display: flex;
+  gap: 1.4rem;
+  background: #f0f7ff;
+  border-radius: 14px;
+  padding: 1.5rem 1.8rem;
+  box-shadow: 0 6px 18px rgba(25, 118, 210, 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  align-items: flex-start;
+}
+
+.reason-card:hover {
+  box-shadow: 0 12px 35px rgba(25, 118, 210, 0.28);
+  transform: translateY(-5px);
+}
+
+.reason-icon {
+  font-size: 2.8rem;
+  color: #1976d2;
+  flex-shrink: 0;
+}
+
+.reason-content {
+  flex: 1;
+}
+
+.reason-title {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0d3c61;
+}
+
+.reason-desc {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #444;
+  line-height: 1.45;
+}
+
+/* ==============================
+ 📱 RESPONSIVE
+============================== */
+@media (max-width: 768px) {
+  .detail-wrapper {
+    padding: 1.5rem;
+  }
+
+  .detail-main-title {
+    font-size: 1.7rem;
+  }
+
+  .detail-content {
+    font-size: 1rem;
+  }
+
+  .detail-media-full {
+    max-height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-wrapper {
+    width: 480px;
   }
   .detail-main-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 }
-
-
 /* ==============================
- 💼 SHARED STORY GRID (Tips & Events)
+📱 MOBILE VERSION — SUCCESS STORIES
 ============================== */
-.stories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-top: 20px;
-}
 
-.story-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-  min-height: 450px;
-  height: fit-content;
-  overflow: hidden;
-}
+/* Tablet & Mobile */
+@media (max-width: 768px) {
+  .success-stories-content {
+    flex-direction: column; /* Ảnh lên trên, nội dung xuống dưới */
+    align-items: center;
+    text-align: center;
+  }
 
-.story-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
+  .story-left,
+  .story-right {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding: 10px 0;
+  }
 
-.story-card img,
-.story-card video {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-bottom: 1px solid #eee;
-}
+  .story-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.story-card h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 12px 10px 6px;
-  color: #1a1a1a;
-  text-align: center;
-  line-height: 1.4;
-  height: 48px;
-  overflow: hidden;
-}
+  .story-media {
+    width: 90%;
+    height: 220px;
+  }
 
-.story-card p {
-  padding: 0 14px 10px;
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
+  .story-title {
+    font-size: 1.2rem;
+  }
 
-.section-stories-title {
-  text-align: center;
+  .story-text {
+    font-size: 0.95rem;
+    max-height: 100px;
+  }
 }
-
-/* ==============================
- 💼 CAREER TIPS
-============================== */
-.career-tips {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 28px;
-  padding: 50px 30px;
-  background: #f9fafb;
-  border-radius: 16px;
-}
-
-.tip-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-  transition: all 0.25s ease;
-  overflow: hidden;
-}
-
-.tip-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
-}
-
-.tip-image {
-  width: 100%;
-  height: 220px;
-}
-
-.tip-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.tip-content {
-  padding: 20px;
-}
-
-.tip-content h4 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 10px;
-}
-
-.tip-content p {
-  font-size: 1rem;
-  color: #475569;
-  line-height: 1.6;
-}
-
-/* ==============================
- 📍 LOCATION EVENTS
-============================== */
-.location-events {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 28px;
-  padding: 50px 30px;
-  background: #fff;
-  border-radius: 16px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.event-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-  transition: all 0.25s ease;
-  overflow: hidden;
-}
-
-.event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.1);
-}
-
-.event-image {
-  width: 100%;
-  height: 220px;
-}
-
-.event-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.event-details {
-  padding: 20px;
-}
-
-.event-details h4 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 8px;
-}
-
-.event-details p {
-  font-size: 1rem;
-  color: #475569;
-  line-height: 1.6;
-}
-
 /* ==============================
  🤝 PARTNER DETAIL SECTION
 ============================== */
@@ -530,138 +555,110 @@ body {
   text-align: justify;
 }
 
-/* --- Responsive --- */
+
+/* ==============================
+📱 MOBILE VERSION — SUCCESS STORIES (FULL WIDTH, HEIGHT LIMITED)
+============================== */
+
+/* Tablet & Mobile */
 @media (max-width: 768px) {
-  .partner-detail-section {
-    padding: 50px 16px;
+  .success-stories-content {
+    flex-direction: column; /* ảnh trên, nội dung dưới */
+    align-items: center;
+    text-align: center;
+    gap: 10px;
   }
 
-  .partner-detail-content {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 25px;
-  }
-
-  .partner-info,
-  .partner-message {
+  .story-left,
+  .story-right {
     flex: 1 1 100%;
+    width: 100%; /* ✅ full chiều rộng */
+    max-width: 100%;
+    padding: 10px 0;
+    border: none; /* bỏ border */
   }
 
-  .info-item strong {
-    width: 110px;
+  .story-media {
+    width: 100%;
+    max-width: 420px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
   }
 
-  .partner-goodbye {
-    font-size: 1rem;
-  }
-}
-/* ✅ Chỉ áp dụng riêng cho PartnerDetail */
-.partner-detail-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 95vh; /* Chiều cao tối thiểu = full màn hình */
-}
-
-.partner-detail-section {
-  flex: 1; /* chiếm hết phần còn lại, đẩy footer xuống */
-}
-/* ==============================
- 🧩 REASONS SECTION
-============================== */
-.reasons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 1.8rem 2.5rem;
-}
-
-.reason-card {
-  display: flex;
-  gap: 1.4rem;
-  background: #f0f7ff;
-  border-radius: 14px;
-  padding: 1.5rem 1.8rem;
-  box-shadow: 0 6px 18px rgba(25, 118, 210, 0.15);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  align-items: flex-start;
-  cursor: default;
-}
-
-.reason-card:hover {
-  box-shadow: 0 12px 35px rgba(25, 118, 210, 0.28);
-  transform: translateY(-5px);
-}
-
-.reason-icon {
-  font-size: 2.8rem;
-  color: #1976d2;
-  flex-shrink: 0;
-  user-select: none;
-  line-height: 1;
-}
-
-.reason-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.reason-title {
-  margin: 0 0 0.4rem 0;
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: #0d3c61;
-}
-
-.reason-desc {
-  margin: 0;
-  font-size: 1.05rem;
-  color: #444;
-  line-height: 1.45;
-}
-
-/* ==============================
- 📱 RESPONSIVE
-============================== */
-@media (max-width: 768px) {
-  .section {
-    padding: 1.5rem;
+  .story-title {
+    font-size: 1.2rem;
+    margin-top: 10px;
   }
 
+  .story-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding: 0 15px;
+    text-align: center;
+    max-height: 120px; /* ✅ vẫn giới hạn chiều cao */
+    overflow: hidden;
+    position: relative;
+  }
+
+  .story-text::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5em;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+  }
+
+  .read-more-btn {
+    font-size: 0.9rem;
+    margin-top: 8px;
+  }
+}
+
+
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
   .success-stories-content {
     flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
   }
 
-  .tip-image,
-  .event-image {
-    height: 180px;
+  .story-left,
+  .story-right {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
   }
 
-  .partner-title {
-    font-size: 1.7rem;
+  .story-media {
+    width: 100%;
+    height: 200px;
   }
 
-  .partner-desc {
-    font-size: 0.95rem;
-  }
-
-  .partner-cta-btn {
-    font-size: 0.95rem;
-    padding: 10px 22px;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 1.6rem;
-  }
-
-  .tip-content h4,
-  .event-details h4 {
+  .story-title {
     font-size: 1rem;
+    margin: 6px 0;
   }
 
-  .tip-content p,
-  .event-details p {
+  .story-text {
     font-size: 0.9rem;
+    padding: 0 10px;
+    max-height: 100px; /* ✅ thu gọn hơn cho mobile nhỏ */
+    overflow: hidden;
+    line-height: 1.6;
+  }
+
+  .story-text::after {
+    height: 2em;
+  }
+
+  .read-more-btn {
+    font-size: 0.85rem;
   }
 }
+

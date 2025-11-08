@@ -104,8 +104,8 @@
     },
     "career_guide": "Bí quyết nghề nghiệp",
     "events": "Sự kiện sắp tới",
-    "event-location": "Địa điểm",
-    "event-date": "Ngày",
+    "event-location": "Địa điểm:",
+    "event-date": "Ngày: ",
     "tips": [
       {
         "id": "tip-1",
@@ -399,6 +399,59 @@
         "setemail":" Nhập email",
         "setnewpassword":" Nhập mật khẩu mới"
     },
+    "post": {
+      "title":"📋 Danh sách bài viết",
+      "loading":"Đang tải...",
+      "emptylist": "Chưa có danh sách nào được tải lên",
+      "nomedia": "Chưa có tập tin nào được tải lên",
+      "show_post_list":"📜 Xem danh sách bài viết",
+      "create_post": "➕ Tạo bài viết mới",
+      "add_form": {
+        "title":"📝 Tạo Bài Viết",
+        "category": {
+          "success_story":"Câu chuyện thành công",
+          "career_tip":"Cẩm nang",
+          "upcoming_event":"Sự kiện sắp tới"
+        },
+        "enter_title":"Điền tiêu đề",
+        "enter_location":"Điền địa điểm",
+        "uploading":"Đang tải",
+        "posting":"Đăng",
+        "preview":"👁️ Xem trước",
+        "media_select":"Ảnh hoặc video thumbnail",
+        "relevant_programms":"Chọn chương trình liên quan",
+        "programms_select":"-- Chọn chương trình --"
+      },
+      "edit_form": {
+        "title":"Chỉnh sửa bài đăng",
+        "back":"Quay lại",
+        "type":"Kiểu bài đăng",
+        "category":{
+          "success_story":"Câu chuyện thành công",
+          "career_tip":"Cẩm nang",
+          "upcoming_event":"Sự kiện sắp tới"
+        },
+        "title_label":"Tiêu đề",
+        "enter_title":"Nhập tiêu đề bài đăng",
+        "content":"Nội dung",
+        "enter_videos":"Nhập link youtube của video",
+        "invalid_videos":"Video không hợp lệ",
+        "location":"Địa điểm",
+        "enter_location":"Nhập địa điểm",
+        "event_date":"Ngày diễn ra sự kiện",
+        "uploading":"Đang tải",
+        "save":"Lưu",
+        "cancel":"Hủy",
+        "media_select":"Ảnh hoặc video thumbnail",
+        "relevant_programms":"Chọn chương trình liên quan",
+        "programms_select":"-- Chọn chương trình --",
+        "update_success":"Cập nhật thành công",
+        "update_error":"Cập nhật thất bại",
+        "start_time":"Ngày bắt đầu",
+        "end_time":"Ngày kết thúc"
+      }
+      
+    },
     "candidates": {
         "title": "Danh sách hoàn thành",
         "completed_title": "Danh sách từ chối",
@@ -418,7 +471,7 @@
             "time":"Thời gian ứng tuyển",
             "statusvalue": {"completed":"Hoàn thành","notcompleted":"Chưa hoàn thành"}
     }
-}
+    }
   },
   "recruiter": {
     "programms": {
