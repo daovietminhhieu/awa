@@ -20,6 +20,7 @@ import { useI18n } from "../../i18n";
 import "./ProgrammsManagement.css";
 import TranslatableText from "../../TranslateableText";
 import PostManagement from "../../components/admin/management/posts/PostManagement";
+import Footer from "../../components/Footer";
 
 /* =========================================================
    🟦 MAIN MANAGEMENT PAGE
@@ -135,7 +136,8 @@ export default function ProgrammsManagement() {
 
   // -------------------- RENDER --------------------
   return (
-    <div className="container">
+    <div>
+      <div className="container">
       {/* Tabs */}
       <div className="tabs">
         {tabs.map((tab) => (
@@ -209,6 +211,7 @@ export default function ProgrammsManagement() {
 
       {/* ========================= POST ========================= */}
       {activePage === "post" && <PostManagement/>}
+    </div> <Footer/>
     </div>
   );
 }

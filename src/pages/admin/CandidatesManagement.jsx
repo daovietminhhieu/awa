@@ -4,6 +4,7 @@ import Divider from '../../components/Divider';
 import { useI18n } from "../../i18n";
 import { getPotentialsList } from "../../api";
 import './CandidatesManagement.css';
+import Footer from "../../components/Footer";
 
 export default function CandidateManagement() {
   const { t } = useI18n();
@@ -95,7 +96,8 @@ export default function CandidateManagement() {
   };
 
   return (
-    <div className="admin-table-wrapper">
+    <div>
+      <div className="admin-table-wrapper">
       <h2 style={{ textAlign: "center", marginTop: "50px", marginBottom: "20px" }}>
         {t('admin.candidates.title') || 'Candidate Management'}
       </h2>
@@ -156,6 +158,7 @@ export default function CandidateManagement() {
           Next »
         </button>
       </div>
+    </div>
     </div>
   );
 }

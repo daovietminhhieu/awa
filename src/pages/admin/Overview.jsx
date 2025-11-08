@@ -5,12 +5,14 @@ import Pie from "../../components/plots/Pie";
 import "./Overview.css";
 import DigitalClock from "../../components/DigitalClock";
 import { useI18n } from "../../i18n";
+import Footer from "../../components/Footer";
 
 export default function Overview() {
   const { t } = useI18n();
 
     return (
-      <div
+      <div>
+        <div
         className="main-layout"
       >
         {/* Main Content */}
@@ -65,6 +67,8 @@ export default function Overview() {
           <DigitalClock />
         </div>
 
+      </div>
+      <Footer/>
       </div>
     );
   }

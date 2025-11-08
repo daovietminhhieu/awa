@@ -6,6 +6,7 @@ import ProgrammOverview from "../components/ProgrammOverview";
 import ProgrammJourney from "../components/ProgrammJourney";
 import ProgrammPartner from "../components/ProgrammPartner";
 import { useI18n } from "../i18n";
+import Footer from "../components/Footer";
 
 export default function ProgrammDetail({ role }) {
   const { id } = useParams();
@@ -51,7 +52,8 @@ export default function ProgrammDetail({ role }) {
     );
 
   return (
-    <div className="programm-map-layout">
+    <div>
+      <div className="programm-map-layout">
       {/* === CỘT TRÁI: Q&A + Reviews === */}
       <aside className="programm-left-panel">
         <ProgrammPartner programm={programm} />
@@ -62,6 +64,9 @@ export default function ProgrammDetail({ role }) {
         <ProgrammOverview programm={programm} role={role} />
         <ProgrammJourney programm={programm} />
       </main>
+      
+      </div>
+      <Footer/>
     </div>
   );
 }

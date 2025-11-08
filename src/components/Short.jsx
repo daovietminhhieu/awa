@@ -529,7 +529,8 @@ export function DetailSuccessStory() {
   if (error || !story) return <p className="error-text">{t("short.not_found_story")}</p>;
 
   return (
-    <section className="detail-wrapper">
+    <div>
+      <section className="detail-wrapper">
       {/* Video or Image as Thumbnail */}
       <div className="detail-header">
         {story.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
@@ -576,6 +577,8 @@ export function DetailSuccessStory() {
         </div>
       )}
     </section>
+    <Footer/>
+    </div>
   );
 }
 
@@ -604,7 +607,8 @@ export function TipDetail() {
   if (error || !tip) return <p className="error-text">{t("short.not_found_story")}</p>;
 
   return (
-    <section className="detail-wrapper">
+    <div>
+      <section className="detail-wrapper">
       {/* <button onClick={() => navigate(-1)} className="back-btn">
         ← {t("short.back")}
       </button> */}
@@ -623,6 +627,8 @@ export function TipDetail() {
         <div dangerouslySetInnerHTML={{ __html: tip.content }} />
       </div>
     </section>
+    <Footer />
+    </div>
   );
 }
 
@@ -651,7 +657,8 @@ export function EventDetail() {
   if (error || !event) return <p className="error-text">{t("short.not_found_story")}</p>;
 
   return (
-    <section className="detail-wrapper">
+    <div>
+      <section className="detail-wrapper">
       {/* <button onClick={() => navigate(-1)} className="back-btn">
         ← {t("short.back")}
       </button> */}
@@ -674,6 +681,8 @@ export function EventDetail() {
         <div dangerouslySetInnerHTML={{ __html: event.content }} />
       </div>
 
-    </section>
+      </section>
+      <Footer/>
+    </div>
   );
 }
