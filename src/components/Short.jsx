@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import TranslatableText from "../TranslateableText";
+import TranslatedHtml from "../TranslatedHtml";
 
 export function SuccessStories() {
   const navigate = useNavigate();
@@ -110,19 +111,14 @@ export function SuccessStories() {
 
                   <div className="story-content">
                     {/* Dịch nội dung HTML */}
-                    {/* <TranslatedHtml
+                    <TranslatedHtml
                       html={story.content}
                       lang={lang}
                       className={`story-text ${
                         story.expanded ? "expanded ql-editor" : "collapsed"
                       }`}
-                    /> */}
-                    <div
-                      className={`story-text ${
-                        story.expanded ? "expanded ql-editor" : "collapsed"
-                      }`}
-                      dangerouslySetInnerHTML={{ __html: story.content }}
-                    />
+                    /> 
+                   
 
                     {story.content.length > 400 && (
                       <button
@@ -234,12 +230,9 @@ export function SuccessStories() {
                         tip.expanded ? "expanded ql-editor" : "collapsed"
                       }`}
                     /> */}
-                      <div
-                      className={`story-text ${
+                    <TranslatedHtml html={tip.content} lang={lang} className={`story-text ${
                         tip.expanded ? "expanded ql-editor" : "collapsed"
-                      }`}
-                      dangerouslySetInnerHTML={{ __html: tip.content }}
-                    />
+                      }`}/>
                     {plainText.length > 400 && (
                       <button
                         className="read-more-btn"
@@ -545,9 +538,7 @@ export function DetailSuccessStory() {
       <h1 className="detail-main-title">{story.title}</h1>
 
       {/* Content */}
-      <div className="detail-content ql-editor">
-        <div dangerouslySetInnerHTML={{ __html: story.content }} />
-      </div>
+      <TranslatedHtml html={story.content} lang={lang} className="detail-content ql-editor"/>
 
       {/* Program Information */}
       {story.progId && (
@@ -624,9 +615,7 @@ export function TipDetail() {
       </div>
 
       {/* Tip Description */}
-      <div className="detail-content ql-editor">
-        <div dangerouslySetInnerHTML={{ __html: tip.content }} />
-      </div>
+      <TranslatedHtml html={tip.content} lang={lang} className="detail-content ql-editor"/>
     </section>
     <Footer />
     </div>
@@ -678,9 +667,7 @@ export function EventDetail() {
       </div>
 
       {/* Event Description */}
-      <div className="detail-content ql-editor">
-        <div dangerouslySetInnerHTML={{ __html: event.content }} />
-      </div>
+      <TranslatedHtml html={event.content} lang={lang} className="detail-content ql-editor"/>
 
       </section>
       <Footer/>
