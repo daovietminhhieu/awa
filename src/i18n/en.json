@@ -1,6 +1,10 @@
 {
     "common": {"not_provided": "Not provided","cancel":"Cancel","save":"Save","close":"Close","hide":"Hide","show":"Show","show_more":"Expand","hide_less":"Collapse"},
     "short": {
+        "button":{
+            "hide": "Hide",
+            "more": "More"
+        },
         "review_title": "Featured Review",
         "hide":"hide",
         "more":"more",

@@ -128,7 +128,7 @@ export function SuccessStories() {
                           navigate(`/success-story-detail/${story._id}`);
                         }}
                       >
-                        {story.expanded ? "Ẩn bớt" : "Xem thêm"}
+                        {story.expanded ? t('short.button.hide') : t('short.button.more')}
                       </button>
                     )}
                   </div>
@@ -242,7 +242,7 @@ export function SuccessStories() {
                           navigate(`/tip-detail/${tip._id}`)
                         }}
                       >
-                        {tip.expanded ? "Ẩn bớt" : "Xem thêm"}
+                        {tip.expanded ? t('short.button.hide') : t('short.button.more')}
                       </button>
                     )}
                   </div>
@@ -268,7 +268,7 @@ export function SuccessStories() {
                   <TranslatableText text={event.title} lang={lang} />
                 </h3>
                 <p style={{ textAlign: "center" }}>
-                  <strong>{t("short.event-location")}</strong> {event.location}
+                  <strong>{t("short.event-location")}</strong> <TranslatableText text={event.location} lang={lang}/>
                 </p>
                 <p style={{ textAlign: "center" }}>
                   <strong>{t("short.event-date")}</strong>{" "}
@@ -535,7 +535,7 @@ export function DetailSuccessStory() {
       </div>
 
       {/* Title */}
-      <h1 className="detail-main-title">{story.title}</h1>
+      <h1 className="detail-main-title"><TranslatableText text={story.title} lang={lang}/></h1>
 
       {/* Content */}
       <TranslatedHtml html={story.content} lang={lang} className="detail-content ql-editor"/>
@@ -611,7 +611,7 @@ export function TipDetail() {
         ) : (
           <img src={tip.thumbnail_url} alt={tip.title} className="detail-media-full" />
         )}
-        <h1 className="detail-main-title">{tip.title}</h1>
+        <h1 className="detail-main-title"><TranslatableText text={tip.title} lang={lang}/></h1>
       </div>
 
       {/* Tip Description */}

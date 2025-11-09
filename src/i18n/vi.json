@@ -8,6 +8,10 @@
     "hide_less":"Hiển thị ít hơn"
   },
   "short": {
+    "button": {
+      "hide": "Ẩn bớt",
+      "more": "Xem thêm"
+    },
     "review_title": "Đánh giá nổi bật",
     "hide":"ẩn",
     "more":"thêm",
