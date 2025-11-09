@@ -459,6 +459,374 @@ button {
   animation: fadeIn 0.3s ease;
 }
 
+/* ============ Q&A Layout ============ */
+.qa-thread-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.qa-thread {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.qa-question,
+.qa-answer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.qa-question {
+  justify-content: flex-start;
+}
+
+.qa-answer {
+  justify-content: flex-end;
+}
+
+.qa-avatar {
+  font-size: 20px;
+}
+
+.qa-bubble {
+  background: #f3f3f3;
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 70%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.qa-bubble.answer {
+  background: #e6f4ff;
+  border-left: 3px solid #2a7ae4;
+}
+
+.qa-bubble small {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.qa-reply-btn {
+  margin-left: 48px;
+  background: none;
+  border: none;
+  color: #2a7ae4;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.qa-answer-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.qa-answer-form textarea {
+  width: 70%;
+  min-height: 60px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.qa-form-actions {
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+}
+
+.qa-form-actions button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.qa-form-actions .btn-cancel {
+  background: #ddd;
+}
+/* Nút trả lời mới */
+.qa-reply-btn-modern {
+  margin-left: 52px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, #2a7ae4, #00b4d8);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qa-reply-btn-modern:hover {
+  background: linear-gradient(90deg, #1b66c9, #0096c7);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.qa-reply-btn-modern:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Modal overlay (giống review & question form) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content h3 {
+  margin-bottom: 10px;
+  color: #2a7ae4;
+  text-align: center;
+}
+
+.modal-content textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.form-actions button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+  background: #2a7ae4;
+  color: white;
+}
+
+.form-actions .btn-cancel {
+  background: #ddd;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* Bong bóng Q&A tổng thể */
+.qa-bubble {
+  background: #f6f8fa;
+  border-radius: 12px;
+  padding: 10px 14px;
+  max-width: 90%;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.qa-question {
+  margin-bottom: 12px;
+}
+
+.qa-answer {
+  justify-content: flex-end;
+}
+
+.qa-bubble.answer {
+  background: #eef7ff;
+  border-left: 3px solid #2a7ae4;
+}
+
+/* Nút “Trả lời” nhẹ nhàng */
+.qa-reply-btn-soft {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid #2a7ae4;
+  color: #2a7ae4;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 13px;
+  margin-left: 46px;
+  margin-top: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.qa-reply-btn-soft:hover {
+  background: #2a7ae4;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.qa-reply-btn-soft:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+.qa-reply-btn-soft .icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Cải thiện spacing trong danh sách */
+.qa-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.qa-avatar {
+  font-size: 18px;
+}
+
+.qa-thread {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+/* Danh sách Q&A tổng thể */
+.qa-fb-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.qa-fb-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.qa-fb-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.qa-fb-body {
+  flex: 1;
+}
+
+/* Nội dung bình luận */
+.qa-fb-content {
+  background: #f0f2f5;
+  border-radius: 18px;
+  padding: 8px 12px;
+  max-width: 90%;
+}
+
+.qa-fb-name {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.qa-fb-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Metadata */
+.qa-fb-meta {
+  margin-top: 4px;
+  margin-left: 8px;
+  font-size: 12px;
+  color: #65676b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Nút "Trả lời" kiểu Facebook */
+.qa-fb-reply {
+  background: none;
+  border: none;
+  color: #65676b;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.qa-fb-reply:hover {
+  text-decoration: underline;
+  color: #1877f2;
+}
+
+/* Thread trả lời (reply comment) */
+.qa-fb-reply-thread {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 6px;
+  margin-left: 44px;
+}
+
+.qa-fb-avatar.reply {
+  background: #cde3ff;
+}
+
+.qa-fb-content.reply {
+  background: #e7f3ff;
+}
+
+.qa-fb-body.reply {
+  flex: 1;
+}
+
+/* Hover hiệu ứng nhẹ */
+.qa-fb-content:hover {
+  background: #ebedf0;
+  transition: background 0.2s;
+}
+
 /* === Mobile: mặc định ẩn, chỉ hiển thị khi mở === */
 @media (max-width: 768px) {
   .partner-reviews-list,

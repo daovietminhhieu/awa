@@ -56,7 +56,7 @@ export default function ProgrammDetail({ role }) {
       <div className="programm-map-layout">
       {/* === CỘT TRÁI: Q&A + Reviews === */}
       <aside className="programm-left-panel">
-        <ProgrammPartner programm={programm} />
+        <ProgrammPartner programm={programm} currentUser={role}/>
       </aside>
 
       {/* === CỘT PHẢI: Thông tin chương trình === */}

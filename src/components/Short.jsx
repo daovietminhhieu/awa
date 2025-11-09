@@ -373,6 +373,7 @@ export function PartnerDetail() {
           <h2 className="partner-detail-title">
             {t("short.partners.detail.title")}
           </h2>
+          
           <hr className="partner-divider" />
 
           <div className="partner-detail-content">

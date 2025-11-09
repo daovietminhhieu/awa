@@ -46,6 +46,7 @@ import { useI18n } from "../i18n";
 export function AutoSlider({ logos }) {
     const {t} = useI18n();  
 
+
     return (
       <section className="partner-section">
         <div>
@@ -68,10 +69,11 @@ export function AutoSlider({ logos }) {
               <SwiperSlide key={idx} className="partner-slide">
                 <div className="partner-card">
                   <img src={logo} alt={`Partner ${idx}`} className="partner-logo" />
-              
+                  <button>Delete</button>
                 </div>
               </SwiperSlide>
-            ))}
+              
+            ))}<button style={{marginTop:30}}>Add more picture</button>
           </Swiper>
         </div>
       </section>

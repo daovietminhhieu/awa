@@ -430,6 +430,34 @@ export async function upFileToStorage(file) {
   return data.publicUrl;
 }
 
+export async function upFileToStorage1(file) {
+  if (!file) throw new Error("No file provided");
+
+  // FormData chứa file
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // Gọi API upload
+  const res = await fetch(`${API_BASE}/db/upload1`, {
+    method: "POST",
+    headers: {
+      ...authHeaders(), // nếu cần xác thực token
+      // ❌ KHÔNG thêm Content-Type, fetch sẽ tự set multipart boundary
+    },
+    body: formData,
+  });
+
+  const data = await res.json();
+  console.log(data);
+  if (!res.ok || !data.success) {
+    console.error("❌ Upload failed:", data);
+    throw new Error(data.message || "Failed to upload file");
+  }
+
+  // Backend nên trả về: { success: true, file_url: "https://..." }
+  return data.publicUrl;
+}
+
 export async function updatePost(id, updates) {
     const headers = {
       'Content-Type': 'application/json',
@@ -486,6 +514,59 @@ export async function sendProgrammReview(programmId, reviewData) {
   }
 }
 
-export async function sendProgrammQA() {
-  
+/* =======================
+   GỬI Q&A CHO PROGRAMM
+======================= */
+export async function sendProgrammQA(programmId, payload) {
+  try {
+    const res = await fetch(`${API_BASE}/user/${programmId}/sendQa`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to send QA");
+    return data; // { success: true, data: ... }
+  } catch (err) {
+    console.error("❌ sendProgrammQA error:", err);
+    return { success: false, message: err.message };
+  }
+}
+
+export async function answerProgrammQA(programmId, qaId, payload) {
+  try {
+    console.log("Trong api function:");
+    console.log("pi:",programmId);
+    console.log("qaId",qaId);
+    const res = await fetch(`${API_BASE}/user/${programmId}/qa/${qaId}/answer`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to send QA");
+    return data; // { success: true, data: ... }
+  } catch (err) {
+    console.error("❌ sendProgrammQA error:", err);
+    return { success: false, message: err.message };
+  }
+}
+
+
+/* =======================
+   LẤY DANH SÁCH Q&A
+======================= */
+export async function getProgrammQAList(programmId) {
+  try {
+    const res = await fetch(`${API_BASE}/user/${programmId}/qaList`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || "Failed to fetch QA list");
+    return data; // { success: true, data: [...] }
+  } catch (err) {
+    console.error("❌ getProgrammQAList error:", err);
+    return { success: false, message: err.message };
+  }
 }

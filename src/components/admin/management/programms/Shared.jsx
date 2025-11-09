@@ -166,14 +166,15 @@ export default function ListOfSharedProgramms() {
                         <ul className="shared-steps">
                           {prog.steps.map((step) => (
                             <li key={step.step} className="shared-step-item">
-                              <p className="step-name">
-                                <b>Step {step.step}:</b> {step.name}
-                              </p>
+                              <div className="step-name">
+                                <b className="stepStep">Step {step.step}:</b> <span>{step.name}</span>
+                              </div>
                               <div className="steps-footer">
                                 <span className={`step-status ${step.status}`}>
                                   {step.status.replace("_", " ")}
                                 </span>
                                 <input
+                                  style={{height:"fit-content"}}
                                   type="checkbox"
                                   checked={
                                     checkedSteps[prog._id]?.includes(step.step) || false
