@@ -69,11 +69,12 @@ export function AutoSlider({ logos }) {
               <SwiperSlide key={idx} className="partner-slide">
                 <div className="partner-card">
                   <img src={logo} alt={`Partner ${idx}`} className="partner-logo" />
-                  <button>Delete</button>
+                  {/* <button>Delete</button> */}
                 </div>
               </SwiperSlide>
               
-            ))}<button style={{marginTop:30}}>Add more picture</button>
+            ))}
+            {/* <button style={{marginTop:30}}>Add more picture</button> */}
           </Swiper>
         </div>
       </section>
