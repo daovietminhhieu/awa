@@ -129,7 +129,7 @@ export default function ProgrammPartner({ programm }) {
     <div className="partner-programm-container">
       <div className="partner-description">
         <h4>{t("programm.detail.partner.intro_title")}</h4>
-        <p>{programm?.partner_description || "Đang cập nhật..."}</p>
+        <p>{programm?.partner_description}</p>
       </div>
 
       {/* Accordion: Reviews */}
@@ -165,7 +165,7 @@ export default function ProgrammPartner({ programm }) {
                 ))}
               </ul>
             ) : (
-              <p>{t("programm.detail.partner.review.empty") || "Chưa có đánh giá nào."}</p>
+              <p>{t("programm.detail.partner.review.no_review") || "Chưa có đánh giá nào."}</p>
             )}
             <button className="footer-btn" onClick={() => setShowReviewForm(true)}>
               ➕ {t("programm.detail.partner.review.write")}
@@ -204,7 +204,7 @@ export default function ProgrammPartner({ programm }) {
                             className="qa-fb-reply"
                             onClick={() => handleShowAnswerForm(q._id)}
                           >
-                            Trả lời
+                            {t('programm.detail.partner.qa.reply')}
                           </button>
                         )}
                     </div>
@@ -219,7 +219,7 @@ export default function ProgrammPartner({ programm }) {
                             <p className="qa-fb-text">{q.answer}</p>
                           </div>
                           <div className="qa-fb-meta">
-                            <span className="qa-fb-time">Đã trả lời</span>
+                            <span className="qa-fb-time">{t('programm.detail.partner.replied')}</span>
                             <span>{new Date(q.createdAt).toLocaleDateString("vi-VN")}</span>
                           </div>
                         </div>
@@ -232,7 +232,7 @@ export default function ProgrammPartner({ programm }) {
             
             
             ) : (
-              <p>{t("programm.detail.partner.qa.empty") || "Chưa có câu hỏi nào."}</p>
+              <p>{t("programm.detail.partner.qa.no_answer") || "Chưa có câu hỏi nào."}</p>
             )}
             <button className="footer-btn" onClick={() => setShowQAForm(true)}>
               💬 {t("programm.detail.partner.qa.button")}
@@ -272,14 +272,14 @@ export default function ProgrammPartner({ programm }) {
               />
               <div className="form-actions">
                 <button type="submit" disabled={loading}>
-                  {loading ? "Đang gửi..." : "Gửi đánh giá"}
+                  {loading ? t('programm.detail.partner.review.sending') : t('programm.detail.partner.review.send_review')}
                 </button>
                 <button
                   type="button"
                   className="btn-cancel"
                   onClick={() => setShowReviewForm(false)}
                 >
-                  Hủy
+                  {t('programm.detail.partner.review.cancel')}
                 </button>
               </div>
             </form>
@@ -300,14 +300,14 @@ export default function ProgrammPartner({ programm }) {
               />
               <div className="form-actions">
                 <button type="submit" disabled={loading}>
-                  {loading ? "Đang gửi..." : t("programm.detail.partner.qa.button")}
+                  {loading ? t('programm.detail.partner.review.sending'): t("programm.detail.partner.qa.button")}
                 </button>
                 <button
                   type="button"
                   className="btn-cancel"
                   onClick={() => setShowQAForm(false)}
                 >
-                  Hủy
+                 {t('programm.detail.partner.review.cancel')}
                 </button>
               </div>
             </form>

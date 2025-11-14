@@ -174,6 +174,8 @@ export default function ViewProfile() {
        
       </div>
     </div>
+    
+    <Footer/>
     </div>
   );
 }

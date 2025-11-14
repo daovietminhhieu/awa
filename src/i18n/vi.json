@@ -15,6 +15,12 @@
     "review_title": "Đánh giá nổi bật",
     "hide":"ẩn",
     "more":"thêm",
+    "topprogramme": "Chương trình nổi bật",
+    "why": "Tại sao chọn chúng tôi",
+    "suc": "Câu chuyện thành công",
+    "tae": "Mẹo & Sự kiện",
+    "prts": "Đối tác",
+    "bop": "Trở thành đối tác của chúng tôi",
     "topprogramm": {
         "title":"Chương trình nổi bật",
         "list": [
@@ -677,11 +683,21 @@
                     "placeholder": "Đặt câu hỏi cho đối tác...",
                     "button": "Gửi câu hỏi",
                     "question_prefix": "❓ Hỏi:",
-                    "answer_prefix": "💡 Trả lời:"
+                    "answer_prefix": "💡 Trả lời:",
+                    "no_answer": "Chưa có câu hỏi nào",
+                    "reply":"Trả lời",
+                    "replied":"Đã trả lời"
                 },
                 "review": {
-                  "title": "Đánh giá của khách hàng",
-                  "write": "Viết đánh giá"
+                  "title": "⭐ Đánh giá của khách hàng",
+                  "write": "Viết đánh giá",
+                  "select_stars":"Chọn số sao",
+                  "select_label": "Chọn đánh giá:",
+                  "placeholder":"Chia sẻ trả nghiệm của bạn",
+                  "no_reviews": "Chưa có đánh giá nào",
+                  "sending": "Đang gửi",
+                  "send_review":"Gửi đánh giá",
+                  "cancel":"Hủy"
                 }
 
         }

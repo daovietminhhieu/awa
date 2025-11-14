@@ -226,17 +226,19 @@ export default function Navbar() {
         </div>
         {/* <!-- 🌐 Google Translate Button --> */}
                 {/* <!-- 🌐 Google Translate Button --> */}
-        <div className="translator-btn">
+       
+      </div>
+
+      <div className="navbar-right">
+        <div className="home-translator-btn">
           <button
-            className="translate-button"
+            className="home-translate-button"
             onClick={() => handleTranslate(lang === "vi" ? "en" : "vi")}
           >
             {lang === "en" ? "ENG" : "VIE"}
           </button>
         </div>
-      </div>
-
-      <div className="navbar-right">
+       
         {/* Search */}
         <div className="search-container">
           {!showSearch ? (

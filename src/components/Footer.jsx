@@ -50,6 +50,9 @@ const styles = {
     padding: "40px 20px 20px",
     fontFamily: "Inter, sans-serif",
     borderRadius:"5px",
+    position:"sticky",
+    bottom:0,
+    width:"100%"
   },
   container: {
     display: "flex",

@@ -16,6 +16,7 @@ import FilterSearch from "../../components/FilterSearch";
 import "./ProgrammsView.css";
 import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../i18n";
+import Footer from "../../components/Footer";
 
 export default function ProgrammsManagement() {
   const navigate = useNavigate();
@@ -122,7 +123,8 @@ export default function ProgrammsManagement() {
   const { t } = useI18n();
 
   return (
-    <div className="programms-container">
+    <div className="page-wrapper">
+      <div className="programms-container">
       <div className="programms-tabs">
         <div
           className={`tab-item ${activePage === "myProgramms" ? "active" : ""}`}
@@ -174,6 +176,8 @@ export default function ProgrammsManagement() {
       )}
 
       {activePage === "sharedProgramms" && <ListOfSharedProgramms />}
+    </div>
+    <Footer />
     </div>
   );
 }

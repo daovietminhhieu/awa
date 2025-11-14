@@ -136,7 +136,7 @@ export default function ProgrammsManagement() {
 
   // -------------------- RENDER --------------------
   return (
-    <div>
+    <div className="page-wrapper">
       <div className="container">
       {/* Tabs */}
       <div className="tabs">

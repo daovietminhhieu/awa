@@ -275,6 +275,107 @@
   }
   
 
+/* ==== FONT MAPPING FOR QUILL ==== */
+.ql-font-arial {
+  font-family: Arial, sans-serif;
+}
+.ql-font-verdana {
+  font-family: Verdana, sans-serif;
+}
+.ql-font-helvetica {
+  font-family: Helvetica, sans-serif;
+}
+.ql-font-tahoma {
+  font-family: Tahoma, sans-serif;
+}
+
+/* Fix dropdown text */
+.ql-picker.ql-font .ql-picker-item[data-value=arial]::before {
+  content: "Arial";
+  font-family: Arial, sans-serif;
+}
+.ql-picker.ql-font .ql-picker-item[data-value=verdana]::before {
+  content: "Verdana";
+  font-family: Verdana, sans-serif;
+}
+.ql-picker.ql-font .ql-picker-item[data-value=helvetica]::before {
+  content: "Helvetica";
+  font-family: Helvetica, sans-serif;
+}
+.ql-picker.ql-font .ql-picker-item[data-value=tahoma]::before {
+  content: "Tahoma";
+  font-family: Tahoma, sans-serif;
+}
+
+/* Active label */
+.ql-picker.ql-font .ql-picker-label[data-value=arial]::before {
+  content: "Arial";
+}
+.ql-picker.ql-font .ql-picker-label[data-value=verdana]::before {
+  content: "Verdana";
+}
+.ql-picker.ql-font .ql-picker-label[data-value=helvetica]::before {
+  content: "Helvetica";
+}
+.ql-picker.ql-font .ql-picker-label[data-value=tahoma]::before {
+  content: "Tahoma";
+}
+/* ==== SIZE DROPDOWN FIX ==== */
+
+/* Label hiển thị trong dropdown */
+.ql-picker.ql-size .ql-picker-item[data-value="12px"]::before {
+  content: "12px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="14px"]::before {
+  content: "14px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="16px"]::before {
+  content: "16px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="18px"]::before {
+  content: "18px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
+  content: "20px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="24px"]::before {
+  content: "24px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="28px"]::before {
+  content: "28px";
+}
+.ql-picker.ql-size .ql-picker-item[data-value="32px"]::before {
+  content: "32px";
+}
+
+/* Label hiển thị khi được chọn */
+.ql-picker.ql-size .ql-picker-label[data-value="12px"]::before {
+  content: "12px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="14px"]::before {
+  content: "14px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="16px"]::before {
+  content: "16px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="18px"]::before {
+  content: "18px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="20px"]::before {
+  content: "20px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="24px"]::before {
+  content: "24px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="28px"]::before {
+  content: "28px";
+}
+.ql-picker.ql-size .ql-picker-label[data-value="32px"]::before {
+  content: "32px";
+}
+
+
+
   .ql-editor iframe {
     width: 100% !important;
     max-width: 800px;

@@ -8,6 +8,12 @@
         "review_title": "Featured Review",
         "hide":"hide",
         "more":"more",
+        "topprogramme": "Top Programs",
+        "why": "Why Choose Us",
+        "suc": "Success Stories",
+        "tae": "Tips & Events",
+        "prts": "Partners",
+        "bop": "Become Our Partner",
         "topprogramm": [
             {
                 "title": "Leadership and Effective Management",
@@ -699,19 +705,27 @@
             "address": "Address",
             "country": "Country",
             "qa": {
-            "title": "💬 Partner Q&A",
-            "placeholder": "Ask a question to the partner...",
-            "button": "Send question",
-            "question_prefix": "❓ Question:",
-            "answer_prefix": "💡 Answer:"
+                "title": "💬 Partner Q&A",
+                "placeholder": "Ask a question to the partner...",
+                "button": "Send question",
+                "question_prefix": "❓ Question:",
+                "answer_prefix": "💡 Answer:",
+                "no_answer": "No answer",
+                "reply":"Answer",
+                "replied":"Answered"
             },
             "review": {
                 "title": "⭐ Partner reviews",
                 "select_label": "Select rating:",
                 "placeholder": "Write your review...",
                 "button": "Submit review",
+                "select_stars":"Select star",
                 "stars": "stars",
-                "write": "Write a review"
+                "write": "Write a review",
+                "no_review": "No reviews",
+                "sending":"Sending",
+                "send_review":"Send review",
+                "cancel":"Cancel"
             }
         }
         }

@@ -240,6 +240,21 @@ section li {
   color: #111;
 }
 
+/* Remove bullets for lists inside the programm-main (Overview / Requirements / Benefits) */
+.programm-main ul {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.programm-main ul li {
+  margin-bottom: 0.6rem;
+}
+
+.programm-main ul li p {
+  margin: 0;
+}
+
 /* -------------------------------------------------
    📌 Application Form (giao diện bê
 

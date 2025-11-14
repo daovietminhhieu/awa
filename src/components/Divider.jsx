@@ -1,6 +1,6 @@
 const styled = {
     height: "5px",
-    width: "900px",
+    width: "100%",
     borderRadius: "25px",
     background: "linear-gradient(90deg, #ff7e5f, #feb47b)",
     border: "none",

@@ -2,7 +2,20 @@
     width: 100%;
     padding: 2rem;
   }
-  
+
+.partner-cta-btn {
+    margin-top: 1.5rem;
+    padding: 12px 24px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+  }  
+
   .news-card {
     background: #fff;
     border-radius: 12px;
@@ -58,15 +71,12 @@
     text-decoration: underline;
   }
 
-  
-
-  /* =========================================
+/* =========================================
    🤝 PARTNER SECTION (FINAL POLISHED STYLE)
    ========================================= */
 .partner-section {
-  position: relative;
   width: 100%;
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  /* background: linear-gradient(135deg, #e3f2fd, #bbdefb) fixed; */
   border-radius: 16px;
   padding: 60px 30px;
   text-align: center;
@@ -74,6 +84,7 @@
   margin: 80px auto;
   max-width: 1100px;
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .partner-section:hover {
@@ -81,50 +92,44 @@
   box-shadow: 0 10px 30px rgba(25, 118, 210, 0.12);
 }
 
-/* Inner container */
-.partner-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 /* Tiêu đề */
 .partner-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #0d47a1;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  color: #1976d2;
 }
 
-/* Mô tả */
-.partner-desc {
-  font-size: 1.1rem;
-  color: #374151;
-  line-height: 1.6;
-  max-width: 700px;
-  margin-bottom: 2rem;
+/* Partner container */
+.partner-container {
+  width: 100%;
 }
 
-/* Nút CTA */
-.partner-cta-btn {
-  display: inline-block;
-  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
-  color: #fff;
-  border: none;
+/* Partner slide */
+.partner-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Partner card */
+.partner-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 80px;
+  overflow: hidden;
   border-radius: 8px;
-  padding: 12px 32px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 86, 179, 0.25);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.partner-cta-btn:hover {
-  background: linear-gradient(90deg, #0056b3 0%, #003d80 100%);
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 86, 179, 0.35);
+/* Partner logo */
+.partner-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* Responsive */
@@ -137,24 +142,14 @@
   .partner-title {
     font-size: 1.6rem;
   }
-
-  .partner-desc {
-    font-size: 0.95rem;
-  }
-
-  .partner-cta-btn {
-    font-size: 0.95rem;
-    padding: 10px 24px;
-  }
 }
-
 
 /* Mobile: màn hình <= 640px */
 @media (max-width: 640px) {
   .partner-card {
-    width: 100px;   /* hoặc auto theo SwiperSlide */
+    width: 100px;
     height: 50px;
-    padding: 0;     /* bỏ padding để ảnh full div */
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -163,6 +158,6 @@
   .partner-logo {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* giữ tỉ lệ */
+    object-fit: contain;
   }
 }

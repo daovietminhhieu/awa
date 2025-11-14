@@ -32,11 +32,13 @@
 }
 
 .navbar-left .logo {
-  font-size: 1.4rem;
-  font-weight: 500;
+  font-size: 1.8rem;
+  font-weight: 700;
   color: #fff3e0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .navbar-right {

@@ -159,6 +159,7 @@ export default function CandidateManagement() {
         </button>
       </div>
     </div>
+    <Footer />
     </div>
   );
 }

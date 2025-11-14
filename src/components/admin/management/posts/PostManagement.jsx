@@ -1,4 +1,5 @@
 // ⚡️ src/pages/admin/programms/PostManagement.jsx
+import "./quillConfig";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -174,12 +175,14 @@ const PostCard = React.memo(({ post, onEdit, onDelete, navigate, t }) => (
   </div>
 ));
 
-/* =========================================================
-   EDIT FORM (đã cập nhật gửi cả type)
-   ========================================================= */
+// ⚡ src/pages/admin/programms/PostManagement.jsx
+// Quill: chỉ cho font sans-serif và size px
+
+
 export function EditPostForm({ post, onClose, onSaved }) {
   const { t, lang } = useI18n();
   const quillRef = useRef(null);
+
   const [title, setTitle] = useState(post?.title || "");
   const [content, setContent] = useState(post?.content || "");
   const [thumbnail, setThumbnail] = useState(post?.thumbnail_url || "");
@@ -190,22 +193,10 @@ export function EditPostForm({ post, onClose, onSaved }) {
   const [selectedType, setSelectedType] = useState(post?.type || "success_story");
 
   useEffect(() => {
-    getProgrammsList().then((res) => setProgramms(res.data)).catch(() => {});
+    getProgrammsList()
+      .then(res => setProgramms(res.data))
+      .catch(() => {});
   }, []);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const editor = quillRef.current?.root;
-      if (!editor) return;
-      const iframes = editor.querySelectorAll("iframe");
-      iframes.forEach((iframe) => {
-        iframe.style.width = "100%";
-        iframe.style.height = "400px";
-        iframe.style.borderRadius = "12px";
-      });
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [content]);
 
   const handleFileChange = async (file, type) => {
     setUploading(true);
@@ -235,7 +226,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
         file_type: fileType,
         content,
         progId: selectedProgram,
-        type: selectedType, // ✅ gửi kèm kiểu bài viết
+        type: selectedType,
       });
       alert("✅ " + t("admin.post.edit_form.update_success"));
       onSaved?.();
@@ -256,7 +247,7 @@ export function EditPostForm({ post, onClose, onSaved }) {
       </div>
 
       <form className="post-editor" onSubmit={handleSubmit}>
-        {/* Chọn loại bài viết */}
+        {/* Loại bài viết */}
         <label>{t("admin.post.edit_form.category_label")}</label>
         <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
           <option value="success_story">{t("admin.post.edit_form.category.success_story")}</option>
@@ -296,13 +287,28 @@ export function EditPostForm({ post, onClose, onSaved }) {
           onChange={setContent}
           modules={{
             toolbar: [
-              [{ header: "1" }, { header: "2" }, { header: "3" }],
-              ["bold", "italic", "underline"],
+              [{ font: ["arial", "verdana", "helvetica", "tahoma"] }], // sans-serif only
+              [{ size: ["12px","14px","16px","18px","20px","24px","28px","32px"] }], // px size
+              [{ header: [1, 2, 3, false] }],
+              ["bold", "italic", "underline", "strike"],
               [{ align: [] }],
               ["link", "image", "video"],
               ["clean"],
             ],
           }}
+          formats={[
+            "font",
+            "size",
+            "header",
+            "bold",
+            "italic",
+            "underline",
+            "strike",
+            "align",
+            "link",
+            "image",
+            "video",
+          ]}
         />
 
         <div className="editor-actions">
@@ -317,3 +323,5 @@ export function EditPostForm({ post, onClose, onSaved }) {
     </div>
   );
 }
+
+

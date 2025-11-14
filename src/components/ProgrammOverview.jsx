@@ -96,7 +96,7 @@ function ApplicationForm({ to, translator }) {
 // -------------------------------------------------
 // 📌 ProgrammTags
 // -------------------------------------------------
-function ProgrammTags({ tags }) {
+function ProgrammTags({ tags,t,lang }) {
   const handleMouse = (slider, e, type) => {
     if (type === "down") {
       slider.isDown = true;
@@ -127,7 +127,7 @@ function ProgrammTags({ tags }) {
           className="tag"
           style={{ background: tag.bg || "rgba(0,0,0,0.05)" }}
         >
-          <b>{tag.label}:</b> {tag.value}
+          <b>{tag.label}:</b> <TranslateableText text={tag.value} lang={lang} />
         </span>
       ))}
     </div>
@@ -199,7 +199,7 @@ function ProgrammHeader({ programm, role, t, lang }) {
   return (
     <div className="programm-detail-header">
       <h1 className="programm-detail-title"><TranslateableText text={programm.title} lang={lang}/></h1>
-      <ProgrammTags tags={tags} />
+      <ProgrammTags tags={tags} t={t} lang={lang}/>
       {specialTags.length > 0 && (
         <div className="programm-tags-special">
           {specialTags.map((tag, idx) => (

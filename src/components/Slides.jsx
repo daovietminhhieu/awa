@@ -1,8 +1,9 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
+import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./Slides.css";
+import { useI18n } from "../i18n";
 
 export function NewsSlider({ news }) {
   return (
@@ -13,9 +14,9 @@ export function NewsSlider({ news }) {
         navigation
         loop
         breakpoints={{
-          0: { slidesPerView: 1 },     // Mobile: chỉ 1 slide
-          640: { slidesPerView: 2 },   // Tablet nhỏ: 2 slide
-          1024: { slidesPerView: 3 },  // Desktop: 3 slide
+          0: { slidesPerView: 1 },
+          640: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
         }}
       >
         {news.map((item, index) => (
@@ -36,47 +37,34 @@ export function NewsSlider({ news }) {
   );
 }
 
-"use client";
-
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/autoplay";
-import { useI18n } from "../i18n";
-
 export function AutoSlider({ logos }) {
-    const {t} = useI18n();  
+  const { t } = useI18n();
 
-
-    return (
-      <section className="partner-section">
-        <div>
-          <h1 className="partner-title" >{t('short.partner.title')}</h1>
-        </div>
-        <div className="partner-container">
-          <Swiper
-            modules={[Autoplay]}
-            slidesPerView={5}
-            spaceBetween={40}
-            loop={true}
-            autoplay={{
-              delay: 0,
-              disableOnInteraction: false,
-            }}
-            speed={3000}
-            freeMode={true}
-          >
-            {logos.map((logo, idx) => (
-              <SwiperSlide key={idx} className="partner-slide">
-                <div className="partner-card">
-                  <img src={logo} alt={`Partner ${idx}`} className="partner-logo" />
-                  {/* <button>Delete</button> */}
-                </div>
-              </SwiperSlide>
-              
-            ))}
-            {/* <button style={{marginTop:30}}>Add more picture</button> */}
-          </Swiper>
-        </div>
-      </section>
-    );
-  }
+  return (
+    <section className="partner-section">
+      <h1 className="partner-title">{t('short.partner.title')}</h1>
+      <div className="partner-container">
+        <Swiper
+          modules={[Autoplay]}
+          slidesPerView={5}
+          spaceBetween={40}
+          loop={true}
+          autoplay={{
+            delay: 0,
+            disableOnInteraction: false,
+          }}
+          speed={3000}
+          freeMode={true}
+        >
+          {logos.map((logo, idx) => (
+            <SwiperSlide key={idx} className="partner-slide">
+              <div className="partner-card">
+                <img src={logo} alt={`Partner ${idx}`} className="partner-logo" />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </section>
+  );
+}

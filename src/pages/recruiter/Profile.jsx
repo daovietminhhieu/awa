@@ -4,6 +4,7 @@ import { FaEdit, FaSave, FaTimes, FaCreditCard, FaUser } from "react-icons/fa";
 import "./Profile.css";
 import { useI18n } from "../../i18n";
 import { updateBasicInfo, getMyProfile } from "../../api";
+import Footer from "../../components/Footer";
 
 export default function ViewProfile() {
   const { user, setUser, updateSession } = useAuth();
@@ -106,7 +107,8 @@ export default function ViewProfile() {
 
 
   return (
-    <div className="profile-container">
+    <div>
+      <div className="profile-container">
       <div className="profile-header">
         <h2>{t("recruiter.profile.title")}</h2>
 
@@ -380,6 +382,8 @@ export default function ViewProfile() {
           </div>
         )} */}
       </div>
+    </div>
+      <Footer/>
     </div>
   );
 }
