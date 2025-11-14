@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api/translate";
+const API_URL = "https://alowork.com/api/translate";
 
 class TranslationManager {
   constructor() {
