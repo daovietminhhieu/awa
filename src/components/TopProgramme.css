@@ -26,6 +26,7 @@
 .stars {
   display: inline-flex; /* 👈 giữ cùng 1 dòng */
   align-items: center;
+  justify-content: center;
   gap: 4px;
   flex-wrap: nowrap; /* 👈 tránh xuống dòng */
   font-size: 1.3rem;
