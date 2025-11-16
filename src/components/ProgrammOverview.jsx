@@ -225,7 +225,7 @@ function ProgrammInfoBoxes({ programm, currentUser, onShare, t, lang }) {
       </div>
       <div className="info-box">
         <b>{t("programm.detail.overview.land")}:</b>
-        <p>{programm.land}</p>
+        <p><TranslateableText text={programm.land} lang={lang}/></p>
       </div>
       {currentUser?.role === "recruiter" && (
         <div className="info-box">
@@ -334,7 +334,9 @@ export default function ProgrammOverview({ programm, role, to }) {
           title={t("programm.detail.overview.overview")}
           content={[
             <>
-              <TranslateableText text={programm.details?.overview || t("programm.detail.no_description")} lang={lang}/>
+              <div style={{ whiteSpace: 'pre-line' }}>
+                <TranslateableText text={programm.details?.overview || t("programm.detail.no_description")} lang={lang}/>
+              </div>
             </>
         
           ]}
@@ -345,13 +347,15 @@ export default function ProgrammOverview({ programm, role, to }) {
           title={t("programm.detail.overview.requirements")}
           content={[
             <>
-             🎂 {t("programm.detail.overview.age")}:{" "}
+              🎂 {t("programm.detail.overview.age")}:{" "}
               <TranslateableText text={programm.requirement?.age} lang={lang}/>
             </>,
             
             <> 
               🎓 {t("programm.detail.overview.education")}:{" "} 
-              {programm.requirement?.education}
+              <div style={{ whiteSpace: 'pre-line', display: 'inline-block' }}>
+                <TranslateableText text={programm.requirement?.education} lang={lang}/>
+              </div>
             </>,
 
             <>
@@ -368,7 +372,7 @@ export default function ProgrammOverview({ programm, role, to }) {
 
         <ProgrammSection
           title={t("programm.detail.overview.benefit")}
-          content={[<TranslateableText text={programm.benefit} lang={lang}/>]}
+          content={[<div style={{ whiteSpace: 'pre-line' }}><TranslateableText text={programm.benefit} lang={lang}/></div>]}
         />
 
         <section>

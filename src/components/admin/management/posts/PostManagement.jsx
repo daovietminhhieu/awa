@@ -3,6 +3,7 @@ import "./quillConfig";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+
 import {
   getPostsList,
   createPost,
@@ -11,6 +12,7 @@ import {
   getProgrammsList,
   upFileToStorage,
 } from "../../../../api";
+
 import PostEditor from "../../../../components/PostEditor";
 import TranslatableText from "../../../../TranslateableText";
 import { useI18n } from "../../../../i18n";
@@ -28,7 +30,6 @@ export default function PostManagement() {
   const [showAddPost, setShowAddPost] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
 
-  // ⚡ useCallback để không tạo lại function mỗi render
   const loadPosts = useCallback(async () => {
     setLoading(true);
     try {
@@ -129,7 +130,7 @@ export default function PostManagement() {
 }
 
 /* =========================================================
-   SUBCOMPONENTS
+   SUB COMPONENTS — Post Card
    ========================================================= */
 
 const PostCard = React.memo(({ post, onEdit, onDelete, navigate, t }) => (
@@ -161,11 +162,11 @@ const PostCard = React.memo(({ post, onEdit, onDelete, navigate, t }) => (
       <h4>{post.title}</h4>
       {post.eventDate && (
         <p>
-          🕒 {post.eventDate.startTime || "??:??"} –{" "}
-          {post.eventDate.endTime || "??:??"}, ngày{" "}
-          {new Date(post.eventDate.date).toLocaleDateString("vi-VN")}
+          🕒 {post.eventDate.startTime || "??:??"} – {post.eventDate.endTime || "??:??"},{" "}
+          ngày {new Date(post.eventDate.date).toLocaleDateString("vi-VN")}
         </p>
       )}
+      {post.location && <p>📍 {post.location}</p>}
     </div>
 
     <div className="post-actions">
@@ -175,9 +176,9 @@ const PostCard = React.memo(({ post, onEdit, onDelete, navigate, t }) => (
   </div>
 ));
 
-// ⚡ src/pages/admin/programms/PostManagement.jsx
-// Quill: chỉ cho font sans-serif và size px
-
+/* =========================================================
+   EDIT POST FORM — WITH EVENT FIELDS
+   ========================================================= */
 
 export function EditPostForm({ post, onClose, onSaved }) {
   const { t, lang } = useI18n();
@@ -191,6 +192,15 @@ export function EditPostForm({ post, onClose, onSaved }) {
   const [programms, setProgramms] = useState([]);
   const [selectedProgram, setSelectedProgram] = useState(post?.progId || "");
   const [selectedType, setSelectedType] = useState(post?.type || "success_story");
+
+  // ⭐ Event data
+  const [eventDate, setEventDate] = useState({
+    date: post?.eventDate?.date || "",
+    startTime: post?.eventDate?.startTime || "",
+    endTime: post?.eventDate?.endTime || "",
+  });
+
+  const [location, setLocation] = useState(post?.location || "");
 
   useEffect(() => {
     getProgrammsList()
@@ -212,22 +222,32 @@ export function EditPostForm({ post, onClose, onSaved }) {
     }
   };
 
+  /* =========================================================
+     SAVE POST
+     ========================================================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !thumbnail || !selectedProgram || !selectedType) {
+
+    if (!title || !thumbnail || !selectedProgram) {
       alert("⚠️ " + t("admin.post.missing_fields"));
       return;
     }
 
+    const payload = {
+      title,
+      thumbnail_url: thumbnail,
+      file_type: fileType,
+      content,
+      progId: selectedProgram,
+      type: selectedType,
+
+      // ⭐ Add event info when type = upcoming_event
+      eventDate: selectedType === "upcoming_event" ? eventDate : null,
+      location: selectedType === "upcoming_event" ? location : "",
+    };
+
     try {
-      await updatePost(post._id, {
-        title,
-        thumbnail_url: thumbnail,
-        file_type: fileType,
-        content,
-        progId: selectedProgram,
-        type: selectedType,
-      });
+      await updatePost(post._id, payload);
       alert("✅ " + t("admin.post.edit_form.update_success"));
       onSaved?.();
       onClose?.();
@@ -270,12 +290,52 @@ export function EditPostForm({ post, onClose, onSaved }) {
           ))}
         </select>
 
-        {/* Ảnh hoặc video */}
+        {/* Ảnh */}
         <label>{t("admin.post.edit_form.thumbnail")}</label>
         <input type="file" onChange={(e) => handleFileChange(e.target.files[0], "image")} />
         {uploading && <p>{t("admin.post.uploading")}</p>}
         {thumbnail && (
           <img src={thumbnail} alt="thumbnail" width="220" style={{ borderRadius: 8 }} />
+        )}
+
+        {/* ⭐ EVENT FIELDS — only if type is event */}
+        {selectedType === "upcoming_event" && (
+          <>
+            <label>{t("admin.post.edit_form.event_date")}</label>
+            <input
+              type="date"
+              value={eventDate.date}
+              onChange={(e) =>
+                setEventDate((prev) => ({ ...prev, date: e.target.value }))
+              }
+            />
+
+            <label>{t("admin.post.edit_form.start_time")}</label>
+            <input
+              type="time"
+              value={eventDate.startTime}
+              onChange={(e) =>
+                setEventDate((prev) => ({ ...prev, startTime: e.target.value }))
+              }
+            />
+
+            <label>{t("admin.post.edit_form.end_time")}</label>
+            <input
+              type="time"
+              value={eventDate.endTime}
+              onChange={(e) =>
+                setEventDate((prev) => ({ ...prev, endTime: e.target.value }))
+              }
+            />
+
+            <label>{t("admin.post.edit_form.location")}</label>
+            <input
+              type="text"
+              placeholder={t("admin.post.edit_form.enter_location")}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </>
         )}
 
         {/* Nội dung */}
@@ -287,8 +347,8 @@ export function EditPostForm({ post, onClose, onSaved }) {
           onChange={setContent}
           modules={{
             toolbar: [
-              [{ font: ["arial", "verdana", "helvetica", "tahoma"] }], // sans-serif only
-              [{ size: ["12px","14px","16px","18px","20px","24px","28px","32px"] }], // px size
+              [{ font: ["arial", "verdana", "helvetica", "tahoma"] }],
+              [{ size: ["12px","14px","16px","18px","20px","24px","28px","32px"] }],
               [{ header: [1, 2, 3, false] }],
               ["bold", "italic", "underline", "strike"],
               [{ align: [] }],
@@ -296,19 +356,6 @@ export function EditPostForm({ post, onClose, onSaved }) {
               ["clean"],
             ],
           }}
-          formats={[
-            "font",
-            "size",
-            "header",
-            "bold",
-            "italic",
-            "underline",
-            "strike",
-            "align",
-            "link",
-            "image",
-            "video",
-          ]}
         />
 
         <div className="editor-actions">
@@ -323,5 +370,3 @@ export function EditPostForm({ post, onClose, onSaved }) {
     </div>
   );
 }
-
-

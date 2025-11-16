@@ -1,6 +1,6 @@
 /* Card */
   .card {
-    background: #fff;
+    background: var(--surface);
     border: 1px solid #eee;
     border-radius: 16px;
     padding: 16px;

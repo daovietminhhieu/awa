@@ -155,6 +155,17 @@ import TranslatableText from "../../../../TranslateableText";
                 placeholder={<TranslatableText text={t('admin.programms.edit.new.enter_details_requirement')} lang={lang}/>}
               />
             </label>
+
+            <label>
+              {t("admin.programms.edit.new.benefit") || "Benefits"}:
+              <textarea
+                name="details.benefit"
+                value={formData.details?.benefit || ""}
+                onChange={handleChange}
+                placeholder={t("admin.programms.edit.new.enter_details_benefit") || "Enter benefits..."}
+                style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}
+              />
+            </label>
   
             {/* Buttons */}
             <div className="form-buttons">

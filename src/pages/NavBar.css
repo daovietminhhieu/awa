@@ -8,44 +8,45 @@
   }
 }
 
-/* === NAVBAR === */
 .navbar {
+  background: linear-gradient(
+    90deg,
+    rgb(249, 115, 22) 0%,
+    rgb(255, 159, 67) 50%,
+    rgb(249, 115, 22) 100%
+  );
+  color: white;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  background: linear-gradient(90deg, #d97706, #f59e0b, #f59e0b);
-  color: white;
-  gap: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10;
 }
+
 
 .navbar-left {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-left: 40px;
 }
 .translate-button {
   border: 1px inset white;
 }
-
 .navbar-left .logo {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #fff3e0;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.5);
+  font-size: 1.5rem;
+  font-weight: 1000;
+  color: #ffffff; /* màu chữ trắng */
+  -webkit-text-stroke: 1px rgb(249, 115, 22); /* viền cam */
   cursor: pointer;
-  letter-spacing: 0.5px;
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.6px;
 }
+
+
 
 .navbar-right {
   display: flex;
   gap: 20px;
   justify-content: center;
   align-items: center;
+  margin-right: 20px;
 }
 
 /* === Translator Flag Button (nếu dùng) === */
@@ -285,10 +286,11 @@
   }
 
   .navbar-right {
-    margin-right: 0;
+    margin-right: 20px;
   }
 
   .menu-toggle {
     display: block;
   }
+  
 }

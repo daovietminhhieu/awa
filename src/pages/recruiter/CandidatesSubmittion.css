@@ -71,7 +71,7 @@
 
   .responsive-table tr {
     display: block;
-    background: #fff;
+    background: var(--surface);
     border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 16px;

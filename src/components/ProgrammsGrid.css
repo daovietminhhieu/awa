@@ -7,7 +7,7 @@
 
 /* Thay cho inline style borderTopColor bằng CSS variable */
 .course-card {
-  background: #fff;
+  background: var(--surface);
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   padding: 1rem;

@@ -31,7 +31,7 @@
 }
 
 .tab-item.active {
-  background: #F59E0B;
+  background: rgb(249, 115, 22);
   color: white;
   font-weight: 600;
   border-bottom: 2px solid #F59E0B;

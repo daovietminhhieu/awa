@@ -1,6 +1,7 @@
 {
     "common": {"not_provided": "Not provided","cancel":"Cancel","save":"Save","close":"Close","hide":"Hide","show":"Show","show_more":"Expand","hide_less":"Collapse"},
     "short": {
+        "hello":"Hello!",
         "button":{
             "hide": "Hide",
             "more": "More"
@@ -12,8 +13,8 @@
         "why": "Why Choose Us",
         "suc": "Success Stories",
         "tae": "Tips & Events",
-        "prts": "Partners",
-        "bop": "Become Our Partner",
+        "prts": "Become Our Partner",
+        "bop": "Recruiter",
         "topprogramm": [
             {
                 "title": "Leadership and Effective Management",
@@ -316,17 +317,22 @@
                     "expected_salary":"Expected Salary",
                     "deadline":"Deadline",
                     "vacancies":"Vacancies",
+                    "hired":"Hired",
                     "benefit":"Benefit",
                     "review":"Review",
                     "video":"Video URL",
                     "bonus":"Bonus",
-                    "public_day":"Public Day"},
+                    "public_day":"Public Day",
                     "detail":"Details",
                     "overview":"Overview",
                     "requirement":"Requirement",
-                "save": "Save",
-                "cancel": "Cancel"
-                
+                    "age":"Age",
+                    "education":"Education",
+                    "health":"Health",
+                    "certificate":"Certificate",
+                    "save": "Save",
+                    "cancel": "Cancel"
+                }
             },
             "pagination": {
                     "page_info": "Page {{current}} of {{total}}",
@@ -354,10 +360,13 @@
                 "added_failed": "❌ Failed to add program"
             },
             "alert": {"updated_success":"Updated successfully!"},
+            "status_closed":"Closed",
+            "status_open":"Open",
         "form": {"course":"Course","title":"Title","university":"University","country":"Country","level":"Level","duration":"Duration","fee":"Fee","bonus":"Bonus","reward":"Reward","vacancies":"Vacancies","requirement":"Requirement","status_active":"Active","status_inactive":"Inactive"}
         },
         "shared": {
             "title":"Shared Programms Status",
+            "not_init":"Not initialized",
             "alert":{
                 "status_updated":"✅ Status updated to \"{{status}}\"",
                 "update_failed":"Failed to update status: {{error}}",
@@ -367,6 +376,7 @@
             "select_steps_required":"Please select at least one step to update.",
             "step_label":"Step {{n}}:",
             "table":{
+                "no_items":"No programs shared",
                 "id":"ID",
                 "programm":"Programm",
                 "recruiter":"Recruiter",
@@ -382,7 +392,16 @@
                 "status":"Status",
                 "steps":"Steps"            
             },
+            "step":"Step",
+            "status_values": {
+                "rejected": "Rejected",
+                "completed": "Completed",
+                "ongoing": "Ongoing",
+                "waiting_candidate":"Waiting for candidate",
+                "pending":"Pending"
+              },
             "option": {
+                "select":"-- Select --",
                 "approve": "Approved",
                 "reject": "Rejected",
                 "ongoing": "Ongoing",
@@ -541,6 +560,7 @@
             "select_steps_required": "Please select at least one step to update.",
             "step_label": "Step {{n}}:",
             "table": {
+                "no_items":"No programs shared",
                 "id": "ID",
                 "status": "Status",
                 "candidate": "Candidate",
@@ -698,14 +718,14 @@
         },
         "partner": {
             "title": "Program partner information",
-            "intro_title": "📄 Partner introduction",
+            "intro_title": "📄 Partner",
             "email": "Email",
             "phone": "Phone",
             "website": "Website",
             "address": "Address",
             "country": "Country",
             "qa": {
-                "title": "💬 Partner Q&A",
+                "title": "💬 Q&A",
                 "placeholder": "Ask a question to the partner...",
                 "button": "Send question",
                 "question_prefix": "❓ Question:",
@@ -715,7 +735,7 @@
                 "replied":"Answered"
             },
             "review": {
-                "title": "⭐ Partner reviews",
+                "title": "⭐ Reviews",
                 "select_label": "Select rating:",
                 "placeholder": "Write your review...",
                 "button": "Submit review",

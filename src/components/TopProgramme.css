@@ -6,7 +6,7 @@
   max-width: 1100px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 3rem auto;
-  background: #ffffff;
+  background: var(--surface);
   padding: 2.5rem 2rem;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(25, 118, 210, 0.12);

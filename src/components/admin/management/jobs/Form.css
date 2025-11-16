@@ -7,7 +7,7 @@
   }
   
   .modal-content {
-    background: #fff;
+    background: var(--surface);
     border-radius: 8px;
     width: 600px;
     max-height: 90vh;

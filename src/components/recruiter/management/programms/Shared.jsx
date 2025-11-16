@@ -4,7 +4,8 @@ import {
   getLinkFromReferralById,
 } from "../../../../api";
 import { useI18n } from "../../../../i18n";
-import './Shared.css';
+import "./Shared.css";
+import TranslateText from "../../../../TranslateableText";
 
 function formatDateTime(dateStr) {
   const date = new Date(dateStr);
@@ -19,12 +20,18 @@ function formatDateTime(dateStr) {
 }
 
 export default function ListOfSharedProgramms() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [sharedProgramms, setSharedProgramms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(null);
   const [expandedRows, setExpandedRows] = useState({});
+
+  // Hàm dịch status từ server
+  const translateStatus = (status) => {
+    if (!status) return t("status_values.unknown") || "Unknown";
+    return t(`admin.shared.status_values.${status.toLowerCase()}`) || status;
+  };
 
   useEffect(() => {
     loadSharedProgramms();
@@ -35,7 +42,14 @@ export default function ListOfSharedProgramms() {
     setError(null);
     try {
       const res = await getReferralsList();
-      setSharedProgramms(res.data);
+
+      const sorted = res.data.sort((a, b) => {
+        const dateA = new Date(a.updatedAt || a.createdAt);
+        const dateB = new Date(b.updatedAt || b.createdAt);
+        return dateB - dateA;
+      });
+
+      setSharedProgramms(sorted);
     } catch (err) {
       setError(err.message || "Failed to load shared programms");
     } finally {
@@ -65,7 +79,9 @@ export default function ListOfSharedProgramms() {
   const handleActionChange = (referralId, e) => {
     const value = e.target.value;
     if (!value) return;
+
     if (value === "get_link") handleGetLink(referralId);
+
     e.target.value = "";
   };
 
@@ -92,6 +108,7 @@ export default function ListOfSharedProgramms() {
             <th>{t("recruiter.shared.table.actions")}</th>
           </tr>
         </thead>
+
         <tbody>
           {sharedProgramms.map((prog) => (
             <tr
@@ -99,50 +116,73 @@ export default function ListOfSharedProgramms() {
               className={`shared-row ${expandedRows[prog._id] ? "expanded" : ""}`}
             >
               <td data-label="ID">...</td>
-              <td data-label="Status" className={`status ${prog.status?.toLowerCase()}`}>
-                {prog.status}
+
+              {/* STATUS */}
+              <td
+                data-label="Status"
+                className={`status ${prog.status?.toLowerCase()}`}
+              >
+                {translateStatus(prog.status)}
               </td>
+
+              {/* Candidate */}
               <td data-label="Candidate">
-                {prog.candidate?.name || prog.candidateInfo?.fullName || "N/A"}
+                {prog.candidate?.name ||
+                  prog.candidateInfo?.fullName ||
+                  "N/A"}
               </td>
-              <td data-label="Program">{prog.programm?.title || prog.programm}</td>
+
+              {/* Program */}
+              <td data-label="Program">
+                <TranslateText text={prog.programm?.title} lang={lang} />
+              </td>
+
               <td data-label="Bonus">{prog.bonus || "-"}</td>
               <td data-label="Created">{formatDateTime(prog.createdAt)}</td>
               <td data-label="Updated">{formatDateTime(prog.updatedAt)}</td>
               <td data-label="Expires">{formatDateTime(prog.expiresAt)}</td>
+
               <td data-label="Link">
                 {prog.link
                   ? t("recruiter.shared.table.linkavailable")
                   : t("recruiter.shared.table.linkunavailable")}
               </td>
 
-              {/* ====== Steps (with collapse) ====== */}
-              <td data-label={t("recruiter.shared.table.steps") || "Steps"}>
-                <div style={{display:"flex", flexDirection:"column"}}>
+              {/* STEPS */}
+              <td data-label={t("recruiter.shared.table.steps")}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
                   <div
-                    className={`steps-wrapper ${expandedRows[prog._id] ? "expanded" : ""}`}
+                    className={`steps-wrapper ${
+                      expandedRows[prog._id] ? "expanded" : ""
+                    }`}
                   >
                     {prog.steps?.length ? (
                       <ul className="shared-steps">
                         {prog.steps.map((step) => (
                           <li key={step.step} className="shared-step-item">
-                            <p className="step-name">
-                              <b>Step {step.step}:</b> {step.name}
-                            </p>
+                            <div className="step-name">
+                              <b>{t('admin.shared.step')} {step.step}:</b>
+                              <span><TranslateText text={step.name} lang={lang}/></span>
+                            </div>
+
                             <div className="steps-footer">
-                              <span className={`step-status ${step.status}`}>
-                                {step.status.replace("_", " ")}
+                              <span
+                                className={`step-status ${step.status}`}
+                              >
+                                {translateStatus(step.status)}
                               </span>
                             </div>
                           </li>
                         ))}
                       </ul>
                     ) : (
-                      <i>{t("recruiter.shared.not_initialized") || "Not initialized"}</i>
+                      <i>
+                        {t("recruiter.shared.not_initialized") ||
+                          "Not initialized"}
+                      </i>
                     )}
                   </div>
 
-                  {/* Nút toggle xem thêm / thu gọn */}
                   {prog.steps?.length > 2 && (
                     <button
                       className="toggle-steps-btn"
@@ -162,9 +202,12 @@ export default function ListOfSharedProgramms() {
                   onChange={(e) => handleActionChange(prog._id, e)}
                 >
                   <option value="" disabled>
-                    {t("recruiter.shared.table.select_placeholder") || "-- Select --"}
+                    {t("recruiter.shared.table.select_placeholder") ||
+                      "-- Select --"}
                   </option>
-                  <option value="get_link">{t("recruiter.shared.table.getlink")}</option>
+                  <option value="get_link">
+                    {t("recruiter.shared.table.getlink")}
+                  </option>
                 </select>
               </td>
             </tr>

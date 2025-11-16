@@ -1,43 +1,45 @@
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaLinkedin, FaGlobe } from "react-icons/fa";
+import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import { useI18n } from "../i18n";
 import { useNavigate } from "react-router-dom";
 
 export default function Footer() {
-  const {t} = useI18n();
-
+  const { t } = useI18n();
   const navigate = useNavigate();
 
-    const handleRegisterClick = () => {
+  const handleRegisterClick = () => {
     navigate("/signup");
   };
 
   return (
     <footer style={styles.footer}>
+      <div style={styles.overlay}></div>
+
       <div style={styles.container}>
         {/* Logo / Brand */}
         <div style={styles.column}>
           <h2 style={styles.logo}>AloWork</h2>
-          <p>{t('footer.subtitle')}</p>
+          <p>{t("footer.subtitle")}</p>
         </div>
 
-        {/* Liên hệ */}
+        {/* Contact */}
         <div style={styles.column}>
-          <h4>{t('footer.address')}</h4>
-          <p><FaMapMarkerAlt /> {(t('footer.street'))}</p>
+          <h4>{t("footer.address")}</h4>
+          <p><FaMapMarkerAlt /> {t("footer.street")}</p>
           <p><FaPhone /> +84817777000</p>
           <p><FaEnvelope /> alowork.com@gmail.com</p>
         </div>
 
-        {/* Kết nối */}
+        {/* Connect */}
         <div style={styles.column}>
           <h4>{t("footer.becomecollab")}</h4>
-          <button onClick={handleRegisterClick} style={styles.signupBtn}>{t('footer.signup')}</button>
+          <button onClick={handleRegisterClick} style={styles.signupBtn}>
+            {t("footer.signup")}
+          </button>
         </div>
       </div>
 
       <div style={styles.bottom}>
-
-        {t('footer.right')}
+        {t("footer.right")}
       </div>
     </footer>
   );
@@ -45,15 +47,25 @@ export default function Footer() {
 
 const styles = {
   footer: {
-    backgroundColor: "#1f2937", // Tailwind: gray-800
-    color: "#f3f4f6",           // Tailwind: gray-100
-    padding: "40px 20px 20px",
+    position: "relative",
+    color: "#f3f4f6",
+    padding: "60px 20px 30px",
     fontFamily: "Inter, sans-serif",
-    borderRadius:"5px",
-    position:"sticky",
-    bottom:0,
-    width:"100%"
+    width: "100%",
+    backgroundImage: "url('/footer_style6.svg')",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "top center",
+    borderRadius: "5px",
   },
+
+  overlay: {
+    position: "absolute",
+    inset: 0,
+    background: "rgba(0,0,0,0.25)", // giúp chữ nổi hơn trên mesh
+    zIndex: 0,
+  },
+
   container: {
     display: "flex",
     justifyContent: "space-between",
@@ -61,38 +73,42 @@ const styles = {
     gap: "20px",
     maxWidth: "1200px",
     margin: "0 auto",
+    position: "relative",
+    zIndex: 1,
   },
+
   column: {
     flex: "1",
     minWidth: "240px",
   },
+
   logo: {
-    fontSize: "24px",
+    fontSize: "26px",
     fontWeight: "bold",
     marginBottom: "10px",
-    color: "#facc15", // Tailwind: yellow-400
+    color: "rgb(249, 115, 22)",
   },
-  socials: {
-    display: "flex",
-    gap: "12px",
-    fontSize: "20px",
-    margin: "8px 0",
-  },
+
   signupBtn: {
     marginTop: "8px",
-    backgroundColor: "#f97316", // Tailwind: orange-500
+    backgroundColor: "#f97316",
     color: "#fff",
-    padding: "8px 16px",
+    padding: "10px 20px",
     border: "none",
     borderRadius: "6px",
+    fontSize: "15px",
     cursor: "pointer",
+    transition: "0.25s",
   },
+
   bottom: {
     textAlign: "center",
     paddingTop: "24px",
     fontSize: "13px",
-    color: "#9ca3af", // Tailwind: gray-400
-    borderTop: "1px solid #374151", // Tailwind: gray-700
+    color: "#d1d5db",
+    borderTop: "1px solid rgba(255,255,255,0.12)",
     marginTop: "30px",
+    position: "relative",
+    zIndex: 1,
   }
 };

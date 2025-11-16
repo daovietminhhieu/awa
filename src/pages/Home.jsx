@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import "./Home.css";
 import { AutoSlider } from "../components/Slides";
@@ -18,6 +19,7 @@ export default function HomePage() {
   const [showSidebar, setShowSidebar] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {t, lang} = useI18n();
+
   useEffect(() => {
     const handleScroll = () => {
       const bannerHeight = document.querySelector(".home-banner")?.offsetHeight || 0;
@@ -27,8 +29,6 @@ export default function HomePage() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-
 
   return (
     <div className="home-wrapper">
@@ -42,8 +42,6 @@ export default function HomePage() {
           <a href="#partners">{t('short.prts')}</a>
           <a href="#become-collaborator">{t('short.bop')}</a>
         </div>
-
-  
       </div>
 
       {/* Banner */}
@@ -61,7 +59,7 @@ export default function HomePage() {
 
       {/* Sidebar */}
       <aside className={`home-sidebar ${sidebarOpen ? "show" : ""}`}>
-        <div>Navbar</div>
+        <div>{t('short.hello')}</div>
         <Divider />
         <ul>
           <li><a href="#top-programme">{t('short.topprogramme')}</a></li>
@@ -77,32 +75,30 @@ export default function HomePage() {
       <div className="home-page-container">
         <main>
           <section id="top-programme">
-            <TopProgramme />
+            <TopProgramme /> 
           </section>
 
           <section id="why-choose">
             <WhyChoose />
           </section>
 
-          <section id="divider">
-            <Divider />
-          </section>
+            
 
           <section id="success-stories">
-            <SuccessStories />
+            <SuccessStories /> 
           </section>
 
           <section id="tips-events">
-            <TipsAndEventsSection />
+            <TipsAndEventsSection /> 
           </section>
 
           <section id="partners">
             <Partner />
-            <AutoSlider logos={partners} />
+            <AutoSlider logos={partners} /> 
           </section>
 
           <section id="become-collaborator">
-            <BecomeCollaborator />
+            <BecomeCollaborator /> 
           </section>
         </main>
       </div>

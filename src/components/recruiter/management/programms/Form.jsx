@@ -28,6 +28,7 @@ export default function CourseForm({ course, handler, buttonText, onSubmit, onCa
           <input type="text" name="vacancies" value={course.vacancies} placeholder="Vacancies" onChange={handleChange} />
           <input type="date" name="deadline" value={course.deadline} onChange={handleChange} />
           <textarea name="requirement" value={course.requirement} placeholder="Requirement" onChange={handleChange}></textarea>
+          <textarea name="benefit" value={course.benefit || ""} placeholder="Benefits" onChange={handleChange} style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}></textarea>
           <select name="status" value={course.status} onChange={handleChange}>
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>

@@ -5,8 +5,9 @@ import { Archive, ArchiveRestore } from "lucide-react";
 import { requestASharedLink } from "../../../../api";
 
 import { useI18n } from "../../../../i18n";
+import TranslateText from "../../../../TranslateableText";
 
-export function getStatusByDeadline(deadline, t) {
+function getStatusByDeadline(deadline, t) {
   const currentDate = new Date();
   const deadlineDate = new Date(deadline);
   return deadlineDate < currentDate
@@ -26,7 +27,7 @@ function formatDateTime(dateStr) {
 
 export default function ProgrammsList({ programms, savedPrograms, toggleSaveProgramm }) {
 
-  const {t} = useI18n();
+  const {t,lang} = useI18n();
 
   const [loadingIds, setLoadingIds] = useState({});
   const [error, setError] = useState(null);
@@ -101,11 +102,11 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <h3 style={{ width: 250 }}>{p.title}</h3>
+                <h3 style={{ width: 250 }}><TranslateText text={p.title} lang={lang}/></h3>
               </div>
 
               <ul className="programm-info">
-                <li><b>{t('recruiter.programms.duration')}:</b> {p.duration}</li>
+                <li><b>{t('recruiter.programms.duration')}:</b> <TranslateText text={p.duration} lang={lang}/></li>
                 <li><b>{t('recruiter.programms.status')}:</b> {getStatusByDeadline(p.deadline, t)}</li>
                 <li><b>{t('recruiter.programms.deadline')}:</b> {formatDateTime(p.deadline)}</li>
               </ul>

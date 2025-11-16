@@ -57,7 +57,6 @@
   
   .add-btn {
     color: white;
-    background-color: #2563eb;
     border: none;
     border-radius: 6px;
     padding: 8px 16px;
@@ -91,7 +90,7 @@
   }
   
   .edit-form {
-    background: #fff;
+    background: var(--surface);
     border-radius: 12px;
     width: 90%;
     max-width: 650px;

@@ -78,7 +78,7 @@ export function TranslatedHtml({
 
             // Kiểm tra nếu dịch thất bại
             if (translatedHtml === html) {
-              setError("Dịch thất bại, hiển thị bản gốc");
+              setError("");
             }
           }
         });

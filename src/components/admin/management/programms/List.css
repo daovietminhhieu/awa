@@ -25,7 +25,7 @@
   width: 100%;
   max-width: 360px;
   height: 250px;
-  background: #fff;
+  background: var(--surface);
   border: 1px solid #eee;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -135,7 +135,7 @@
 }
 
 .admin-edit-form {
-  background: #fff;
+  background: var(--surface);
   padding: 24px;
   border-radius: 12px;
   max-height: 90vh;
@@ -173,7 +173,7 @@
   border-radius: 6px;
   font-size: 14px;
   font-family: inherit;
-  background-color: #fff;
+  background-color: var(--surface-contrast);
   transition: all 0.2s ease;
   resize: vertical;
 }
@@ -211,7 +211,7 @@
 }
 
 .admin-edit-btn {
-  background-color: #007bff;
+  background-color: rgb(249, 115, 22);
   color: white;
   padding: 8px 16px;
   border: none;
@@ -222,11 +222,11 @@
 }
 
 .admin-edit-btn:hover {
-  background-color: #0056b3;
+  background-color: rgb(249, 115, 22);
 }
 
 .admin-delete-btn {
-  background-color: #F59E0B;
+  background-color: rgb(249, 115, 22);
   color: white;
   padding: 8px 16px;
   border: none;
@@ -237,7 +237,7 @@
 }
 
 .admin-delete-btn:hover {
-  background-color: #d58907;
+  background-color: rgb(249, 115, 22);
 }
 
 /* Pause button example */

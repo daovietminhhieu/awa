@@ -1,6 +1,6 @@
 /* === Partner container === */
 .partner-programm-container {
-  background: #fff;
+  background: var(--surface);
   border-radius: 12px;
   padding: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -124,7 +124,7 @@
 /* === Review form & Q&A form === */
 .review-form,
 .qa-form {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   padding: 1rem;
@@ -838,7 +838,7 @@ button {
     border: 1px solid #e5e5e5;
     border-radius: 8px;
     padding: 0.75rem;
-    background: #fff;
+    background: var(--surface);
     margin-bottom: 1rem;
   }
 

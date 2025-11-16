@@ -15,7 +15,7 @@
   
   /* Container của form */
   .modal-content {
-    background: #fff;
+    background: var(--surface);
     border-radius: 12px;
     padding: 24px;
     width: 400px; /* tùy chỉnh */
@@ -26,7 +26,7 @@
   
   /* Hộp modal */
   .modal {
-    background: #fff;
+    background: var(--surface);
     padding: 20px;
     border-radius: 12px;
     max-width: 420px;

@@ -24,14 +24,51 @@
 }
 
 
+.shared-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.shared-step-item {
+  margin-bottom: 8px;
+}
+
+.step-name {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+
+.step-name b {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.step-name span {
+  flex: 1;
+  min-width: 120px;
+}
+
 .steps-footer {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
+  margin-top: 6px;
+  gap: 10px;
 }
+
+.step-status {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #666;
+}
+
 .steps-wrapper {
   position: relative;
-  max-height: 40px !important; /* ✅ Giảm rõ rệt xuống 40px */
+  max-height: 120px;
   overflow: hidden;
   transition: max-height 0.3s ease;
 }
@@ -41,14 +78,7 @@
 }
 
 .steps-wrapper::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 20px; /* ✅ thấp hơn cho hiệu ứng mờ */
-  background: linear-gradient(to top, white, transparent);
-  pointer-events: none;
+  display: none;
 }
 
 .steps-wrapper.expanded::after {
@@ -102,7 +132,7 @@
   }
 
   .shared-table tr {
-    background: #fff;
+    background: var(--surface);
     margin-bottom: 16px;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);

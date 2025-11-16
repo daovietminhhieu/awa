@@ -21,12 +21,26 @@ function formatDateTime(dateStr) {
 }
 
 export default function ListOfSharedProgramms() {
-  const { t,lang } = useI18n();
+  const { t, lang } = useI18n();
   const [sharedProgramms, setSharedProgramms] = useState([]);
   const [checkedSteps, setCheckedSteps] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedRows, setExpandedRows] = useState({});
+
+  // 🔥 Hàm dịch chính xác status theo admin.shared.status_values
+  const translateStatus = (status) => {
+    if (!status) return t("admin.shared.status_values.unknown") || "Unknown";
+
+    const key = status.toLowerCase();
+    const translated = t(`admin.shared.status_values.${key}`);
+
+    // Nếu không tìm thấy -> trả lại nguyên bản
+    if (!translated || translated === `admin.shared.status_values.${key}`) {
+      return status;
+    }
+    return translated;
+  };
 
   const toggleRowExpansion = (id) => {
     setExpandedRows((prev) => ({
@@ -43,7 +57,13 @@ export default function ListOfSharedProgramms() {
     setLoading(true);
     try {
       const res = await getReferralsList();
-      setSharedProgramms(res.data);
+      const sorted = res.data.sort((a, b) => {
+        const dateA = new Date(a.updatedAt || a.createdAt);
+        const dateB = new Date(b.updatedAt || b.createdAt);
+        return dateB - dateA;
+      });
+      console.log(sorted);
+      setSharedProgramms(sorted);
     } catch (err) {
       setError(err.message || "Failed to load shared programms");
     } finally {
@@ -55,7 +75,7 @@ export default function ListOfSharedProgramms() {
     try {
       await updateReferralStatus(id, newStatus);
       alert(
-        t("admin.shared.alert.status_updated", { status: newStatus }) ||
+        t("admin.shared.alert.status_updated", { status: translateStatus(newStatus) }) ||
           `✅ Status updated to "${newStatus}"`
       );
     } catch (err) {
@@ -82,20 +102,16 @@ export default function ListOfSharedProgramms() {
       alert(
         t("admin.shared.alert.steps_updated", {
           count: stepsToUpdate.length,
-          step: newStep,
-        }) || `✅ Updated ${stepsToUpdate.length} step(s) to "${newStep}".`
+          step: translateStatus(newStep),
+        }) || `Updated ${stepsToUpdate.length} steps`
       );
       setCheckedSteps((prev) => ({ ...prev, [id]: [] }));
     } catch (err) {
       alert(
         t("admin.shared.alert.update_steps_failed", { error: err.message }) ||
-          "Failed to update steps: " + err.message
+          "Failed to update steps"
       );
     }
-  };
-
-  const handleUpdatePayment = async (id, amount) => {
-    console.log("id, amount: ", id, amount);
   };
 
   const handleCheckBoxChange = (referralId, stepId, checked) => {
@@ -112,12 +128,12 @@ export default function ListOfSharedProgramms() {
 
   return (
     <div className="shared-container">
-      <h3>{t("admin.shared.title") || "Shared Program Status"}</h3>
+      <h3>{t("admin.shared.title")}</h3>
 
       {loading && <p>{t("common.loading") || "Loading..."}</p>}
       {error && <p className="error-text">{error}</p>}
       {!loading && !error && sharedProgramms.length === 0 && (
-        <p>{t("admin.shared.no_items") || "No shared programms found."}</p>
+        <p style={{margin:"20px auto"}}>{t("admin.shared.table.no_items")}</p>
       )}
 
       {!loading && !error && sharedProgramms.length > 0 && (
@@ -125,38 +141,40 @@ export default function ListOfSharedProgramms() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>{t("admin.shared.table.programm") || "Program"}</th>
-              <th>{t("admin.shared.table.recruiter") || "Recruiter"}</th>
-              <th>{t("admin.shared.table.candidate") || "Candidate"}</th>
-              <th>{t("admin.shared.table.status") || "Status"}</th>
-              <th>{t("admin.shared.table.bonus") || "Bonus"}</th>
-              <th>{t("admin.shared.table.expires") || "Expires"}</th>
-              <th>{t("admin.shared.table.steps") || "Steps"}</th>
-              <th>{t("admin.shared.table.actions") || "Actions"}</th>
+              <th>{t("admin.shared.table.programm")}</th>
+              <th>{t("admin.shared.table.recruiter")}</th>
+              <th>{t("admin.shared.table.candidate")}</th>
+              <th>{t("admin.shared.table.status")}</th>
+              <th>{t("admin.shared.table.bonus")}</th>
+              <th>{t("admin.shared.table.expires")}</th>
+              <th>{t("admin.shared.table.updated")}</th>
+              <th>{t("admin.shared.table.steps")}</th>
+              <th>{t("admin.shared.table.actions")}</th>
             </tr>
           </thead>
+
           <tbody>
             {sharedProgramms.map((prog) => (
-              <tr
-                key={prog._id}
-                className={`shared-row ${expandedRows[prog._id] ? "expanded" : ""}`}
-              >
-                <td data-label="ID">...</td>
-                <td data-label="Program"><TranslatableText text={prog.programm?.title} lang={lang}/></td>
-                <td data-label="Recruiter">{prog.recruiter?.name || "N/A"}</td>
-                <td data-label="Candidate">
-                  {prog.candidate?.name ||
-                    prog.candidateInfo?.fullName ||
-                    "N/A"}
+              <tr key={prog._id}>
+                <td>...</td>
+                <td><TranslatableText text={prog.programm?.title} lang={lang} /></td>
+                <td>{prog.recruiter?.name || "N/A"}</td>
+                <td>
+                  {prog.candidate?.name || prog.candidateInfo?.fullName || "N/A"}
                 </td>
-                <td data-label="Status" className={`status-badge ${prog.status?.toLowerCase()}`}>
-                  <TranslatableText text={prog.status} lang={lang}/>
+
+                {/* STATUS — dùng translateStatus() */}
+                <td className={`status-badge ${prog.status?.toLowerCase()}`}>
+                  {translateStatus(prog.status)}
                 </td>
-                <td data-label="Bonus">💰 {prog.bonus || 0}</td>
-                <td data-label="Expires">{formatDateTime(prog.expiresAt)}</td>
+
+                <td>💰 {prog.bonus || 0}</td>
+                <td>{formatDateTime(prog.expiresAt)}</td>
+                <td>{formatDateTime(prog.updatedAt)}</td>
 
                 <td data-label="Steps">
                   <div className="steps-cell">
+
                     <div
                       className={`steps-wrapper ${
                         expandedRows[prog._id] ? "expanded" : ""
@@ -167,14 +185,19 @@ export default function ListOfSharedProgramms() {
                           {prog.steps.map((step) => (
                             <li key={step.step} className="shared-step-item">
                               <div className="step-name">
-                                <b className="stepStep">Step {step.step}:</b> <span>{step.name}</span>
+                                <b>Step {step.step}:</b>
+                                <span>
+                                  <TranslatableText text={step.name} lang={lang} />
+                                </span>
                               </div>
+
                               <div className="steps-footer">
                                 <span className={`step-status ${step.status}`}>
-                                  {step.status.replace("_", " ")}
+                                  {translateStatus(step.status)}
                                 </span>
+
                                 <input
-                                  style={{height:"fit-content"}}
+                                  style={{ height: "fit-content" }}
                                   type="checkbox"
                                   checked={
                                     checkedSteps[prog._id]?.includes(step.step) || false
@@ -192,53 +215,56 @@ export default function ListOfSharedProgramms() {
                           ))}
                         </ul>
                       ) : (
-                        <i>Not initialized</i>
+                        <i>{t("admin.shared.not_init")}</i>
                       )}
                     </div>
 
+                    {/* 🔽 nút expand / collapse */}
                     {prog.steps?.length > 2 && (
                       <button
                         className="toggle-steps-btn"
                         onClick={() => toggleRowExpansion(prog._id)}
                         aria-expanded={!!expandedRows[prog._id]}
                       >
-                        {expandedRows[prog._id] ? "▲" : "▼"}
+                        {expandedRows[prog._id] ? "." : "..."}
                       </button>
                     )}
                   </div>
                 </td>
 
-                <td data-label="Actions" className="actions-cell">
+
+                {/* ACTIONS */}
+                <td>
                   <select
                     onChange={(e) => {
                       const value = e.target.value;
+
                       if (!value) return;
 
                       const statusOptions = ["approve", "reject", "ongoing"];
                       const stepOptions = ["completed", "rejected"];
-                      const paymentOption = "paid";
 
                       if (statusOptions.includes(value)) {
                         handleUpdateStatus(prog._id, value);
                       } else if (stepOptions.includes(value)) {
                         handleUpdateSteps(prog._id, value);
-                      } else if (value === paymentOption) {
-                        handleUpdatePayment(prog._id, prog.bonus);
                       }
+
                       e.target.value = "";
                     }}
                   >
-                    <option value="">-- Select --</option>
-                    <optgroup label="Status">
-                      <option value="approve">Approve</option>
-                      <option value="reject">Reject</option>
-                      <option value="ongoing">Ongoing</option>
+                    <option value="">{t("admin.shared.option.select")}</option>
+
+                    <optgroup label={t("admin.shared.group.status")}>
+                      <option value="approve">{translateStatus("completed")}</option>
+                      <option value="reject">{translateStatus("rejected")}</option>
+                      <option value="ongoing">{translateStatus("ongoing")}</option>
                     </optgroup>
-                    <optgroup label="Steps">
-                      <option value="completed">Mark Completed</option>
-                      <option value="rejected">Mark Rejected</option>
+
+                    <optgroup label={t("admin.shared.group.steps")}>
+                      <option value="completed">{t("admin.shared.option.mark_completed")}</option>
+                      <option value="rejected">{t("admin.shared.option.mark_rejected")}</option>
                     </optgroup>
-                    
                   </select>
                 </td>
               </tr>

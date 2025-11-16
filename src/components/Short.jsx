@@ -59,13 +59,10 @@ export function SuccessStories() {
       >
         {stories.map((story) => (
           <SwiperSlide key={story._id}>
+          <h2 className="section-stories-title">
+            🎓 {t("short.stories.title") || "Câu chuyện thành công"}
+          </h2>
             <article className="success-story-card">
-              <div className="success-stories-header">
-                <h2 className="section-stories-title">
-                  🎓 {t("short.stories.title") || "Câu chuyện thành công"}
-                </h2>
-              </div>
-
               <div
                 className="success-stories-content"
                 onClick={() => navigate(`/success-story-detail/${story._id}`)}
@@ -123,17 +120,20 @@ export function SuccessStories() {
                     />
 
                     {story.content.length > 400 && (
-                      <button
-                        className="read-more-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/success-story-detail/${story._id}`);
-                        }}
-                      >
-                        {story.expanded
-                          ? t("short.hide") || "Hide"
-                          : t("short.more") || "More"}
-                      </button>
+                      <div className="read-more-ctner">
+
+                        <button
+                          className="reads-more-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/success-story-detail/${story._id}`);
+                          }}
+                        >
+                          {story.expanded
+                            ? t("short.hide") || "Hide"
+                            : t("short.more") || "More"}
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -246,18 +246,21 @@ export function TipsAndEventsSection() {
                     }`}
                   />
                   {plainText.length > 400 && (
-                    <button
-                      className="read-more-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // toggleTipsExpande(tip._id);
-                        navigate(`/tip-detail/${tip._id}`);
-                      }}
-                    >
-                      {tip.expanded
-                        ? t("short.hide") || "Hide"
-                        : t("short.more") || "More"}
-                    </button>
+                    <div className="read-more-ctner ">
+
+                      <button
+                        className="reads-more-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // toggleTipsExpande(tip._id);
+                          navigate(`/tip-detail/${tip._id}`);
+                        }}
+                      >
+                        {tip.expanded
+                          ? t("short.hide") || "Hide"
+                          : t("short.more") || "More"}
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -400,7 +403,7 @@ export function PartnerDetail() {
 export function BecomeCollaborator() {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { t } = useI18n(); // ✅ Gọi useI18n() 1 lần duy nhất ở đây
+  const { t } = useI18n();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -429,7 +432,9 @@ export function BecomeCollaborator() {
       <h2 className="section-becomecollab-title">
         {t("short.become_collaborator.title")}
       </h2>
+
       <p>{t("short.become_collaborator.description")}</p>
+
       <button
         onClick={handleRegisterClick}
         style={{
@@ -440,58 +445,100 @@ export function BecomeCollaborator() {
           color: "#fff",
           border: "none",
           borderRadius: "5px",
+          backgroundColor: "rgb(249, 115, 22)",
         }}
       >
         {t("short.become_collaborator.register_now")}
       </button>
 
+      {/* Popup */}
       {showPopup && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
-            backgroundColor: "#fff",
-            border: "1px solid #007BFF",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-            padding: "15px 20px",
-            borderRadius: "8px",
-            zIndex: 9999,
-            maxWidth: "300px",
-          }}
-        >
-          <strong>{t("short.become_collaborator.greeting") || "Hello!"}</strong>
-          <p>
-            {t("short.become_collaborator.popup_text") ||
-              "Do you want to become a collaborator? Click Signup now to join!"}
-          </p>
-          <button
-            onClick={handleRegisterClick}
+        <>
+          {/* Overlay làm mờ nền */}
+          <div
             style={{
-              marginTop: "10px",
-              color: "white",
-              border: "none",
-              padding: "6px 12px",
-              borderRadius: "5px",
-              cursor: "pointer",
-              marginRight: "10px",
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.45)",
+              backdropFilter: "blur(2px)",
+              zIndex: 9998,
             }}
-          >
-            {t("short.become_collaborator.register_now")}
-          </button>
-          <button
             onClick={() => setShowPopup(false)}
+          />
+
+          {/* Popup box */}
+          <div
             style={{
-              marginTop: "10px",
-              border: "none",
-              padding: "6px 12px",
-              borderRadius: "5px",
-              cursor: "pointer",
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "#fff",
+              border: "1px solid #007BFF",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+              padding: "20px 25px",
+              borderRadius: "10px",
+              zIndex: 9999,
+              maxWidth: "350px",
+              width: "90%",
+              textAlign: "center",
+              animation: "popupFade 0.3s ease",
             }}
           >
-            {t("short.become_collaborator.close")}
-          </button>
-        </div>
+            {/* Nút X */}
+            <button
+              onClick={() => setShowPopup(false)}
+              style={{
+                position: "absolute",
+                top: "8px",
+                right: "10px",
+                border: "none",
+                background: "transparent",
+                fontSize: "18px",
+                cursor: "pointer",
+              }}
+            >
+              ✖
+            </button>
+
+            <strong>
+              {t("short.become_collaborator.greeting") || "Hello!"}
+            </strong>
+
+            <p style={{ marginTop: "10px" }}>
+              {t("short.become_collaborator.popup_text")}
+            </p>
+
+            <button
+              onClick={handleRegisterClick}
+              style={{
+                marginTop: "15px",
+                color: "white",
+                border: "none",
+                padding: "10px 18px",
+                background: "#0d3c61",
+                borderRadius: "6px",
+                cursor: "pointer",
+                marginRight: "10px",
+              }}
+            >
+              {t("short.become_collaborator.register_now")}
+            </button>
+
+            <button
+              onClick={() => setShowPopup(false)}
+              style={{
+                marginTop: "15px",
+                border: "1px solid #ccc",
+                padding: "10px 18px",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              {t("short.become_collaborator.close")}
+            </button>
+          </div>
+        </>
       )}
     </section>
   );

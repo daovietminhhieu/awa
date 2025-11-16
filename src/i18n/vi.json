@@ -8,6 +8,7 @@
     "hide_less":"Hiển thị ít hơn"
   },
   "short": {
+    "hello":"Xin chào!",
     "button": {
       "hide": "Ẩn bớt",
       "more": "Xem thêm"
@@ -19,8 +20,8 @@
     "why": "Tại sao chọn chúng tôi",
     "suc": "Câu chuyện thành công",
     "tae": "Mẹo & Sự kiện",
-    "prts": "Đối tác",
-    "bop": "Trở thành đối tác của chúng tôi",
+    "prts": "Trở thành đối tác của chúng tôi",
+    "bop": "Cộng tác viên",
     "topprogramm": {
         "title":"Chương trình nổi bật",
         "list": [
@@ -255,6 +256,7 @@
             "create":"Tạo",
             "requirements":"Yêu cầu",
             "details":"Chi tiết",
+            "benefits":"Quyền lợi",
             "new": {
                 "title": "Tên chương trình",
                 "university": "Trường đại học", 
@@ -314,6 +316,7 @@
                 "expected_salary":"Mức lương kỳ vọng",
                 "deadline":"Hạn nộp",
                 "vacancies":"Số lượng",
+                "hired":"Đã tuyển",
                 "benefits":"Quyền lợi",
                 "review":"Đánh giá",
                 "video":"Video giới thiệu",
@@ -321,7 +324,11 @@
                 "public_day":"Ngày đăng",
                 "detail":"Chi tiết",
                 "overview":"Tổng quan",
-                "requirement":"Yêu cầu"
+                "requirement":"Yêu cầu",
+                "age":"Tuổi",
+                "education":"Trình độ học vấn",
+                "health":"Tình trạng sức khỏe",
+                "certificate":"Chứng chỉ"
             },
             "save":"Lưu",
             "cancel":"Hủy"
@@ -359,10 +366,13 @@
         "alert":{
             "updated_success":"Chương trình đã được cập nhật thành công."
 
-        }
+        },
+        "status_closed":"Đã đóng",
+        "status_open":"Đang mở"
     },
     "shared": {
         "title": "Trạng thái các chương trình đang chia sẻ",
+        "not_init":"Chưa được khởi tạo",
         "alert": {
             "status_failed":"Cập nhật trạng thái thất bại. Vui lòng thử lại.",
             "steps_updated":"Các bước đã được cập nhật thành công.",
@@ -370,8 +380,10 @@
             "status_updated":"Trạng thái đã được cập nhật thành công."
         },
         "select_steps_required":"Hãy chọn một bước để thực hiện trạng thái sang tiến hành",
+        "step":"Bước",
         "step_label":"Bước {{n}}:",
         "table": {
+            "no_items":"Chưa có chương trình nào được chia sẻ",
             "programm":"Chương trình",
             "recruiter":"Nhà tuyển dụng",
             "candidate":"Ứng viên",
@@ -387,7 +399,15 @@
             "status":"Trạng thái",
             "steps":"Các bước"
         },
+        "status_values": {
+          "rejected": "Từ chối",
+          "completed": "Hoàn thành",
+          "ongoing": "Đang tiến hành",
+          "waiting_candidate":"Đang chờ ứng cử viên",
+          "pending":"Đang chờ"
+        },
         "option": {
+            "select":"-- Chọn --",
             "approve": "Duyệt",
             "reject": "Từ chối",
             "ongoing": "Tiến hành",
@@ -672,7 +692,7 @@
             },
             "partner": {
                 "title": "Thông tin đối tác chương trình",
-                "intro_title": "📄 Giới thiệu đối tác",
+                "intro_title": "📄 Đối tác",
                 "email": "Email",
                 "phone": "Điện thoại",
                 "website": "Website",

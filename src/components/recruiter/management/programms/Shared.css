@@ -28,14 +28,56 @@
   margin-top: 8px;
 }
 
+.shared-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.shared-step-item {
+  margin-bottom: 8px;
+}
+
+.step-name {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+  line-height: 1.4;
+}
+
+.step-name b {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.step-name span {
+  flex: 1;
+  min-width: 120px;
+}
+
+.steps-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.step-status {
+  font-style: italic;
+  font-size: 0.9em;
+  color: #666;
+}
+
 .steps-wrapper {
   transition: max-height 0.3s ease;
   overflow: hidden;
-  max-height: 200px;
+  max-height: 120px;
 }
 
-.steps-wrapper.collapsed {
-  max-height: 42px;
+.steps-wrapper.expanded {
+  max-height: 2000px !important;
 }
 
 .toggle-steps-btn {
@@ -69,10 +111,10 @@
   }
 
   .shared-table tr {
-    background: #fff;
+    background: var(--surface);
     margin-bottom: 14px;
     border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
     padding: 12px;
   }
 
@@ -95,7 +137,7 @@
   }
 
   .steps-wrapper {
-    max-height: none;
+    max-height: 120px;
   }
 
   .toggle-steps-btn {

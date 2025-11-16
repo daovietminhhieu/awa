@@ -60,7 +60,7 @@
   .post-item {
     display: flex;
     align-items: center;
-    background: #fff;
+    background: var(--surface);
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -156,7 +156,7 @@
      ✏️ EDITOR FORM
      ========================================================= */
   .editor-container {
-    background: #fff;
+    background: var(--surface);
     padding: 28px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);

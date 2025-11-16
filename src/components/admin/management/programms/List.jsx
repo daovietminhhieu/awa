@@ -140,10 +140,9 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.land')} lang={lang}/>, "land")}
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.fee')} lang={lang}/>, "fee")}
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.expected_salary')} lang={lang}/>, "expected_salary")}
-          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.date')} lang={lang}/>, "deadline", "date")}
+          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.deadline')} lang={lang}/>, "deadline", "date")}
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.vacancies')} lang={lang}/>, "vacancies", "number")}
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.hired')} lang={lang}/>, "hired", "number")}
-          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.benefit')} lang={lang}/>, "benefit")}
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.bonus')} lang={lang}/>, "bonus")}
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.public_day')} lang={lang}/>, "public_day", "date")}
 
@@ -186,13 +185,15 @@ export function EditProgramForm({ programm, onClose, onSubmit }) {
           {/* 📄 DETAILS */}
           <h4><TranslatableText text={t('admin.programms.edit.labels.detail')} lang={lang}/></h4>
           {renderInput(<TranslatableText text={t('admin.programms.edit.labels.overview')} lang={lang}/>, "details.overview", "text", "", "textarea")}
+          {renderInput(t('admin.programms.edit.labels.benefit'), "benefit", "text","","textarea")}
+
 
           {/* 🧾 REQUIREMENTS */}
           <h4><TranslatableText text={t('admin.programms.edit.labels.requirement')} lang={lang}/></h4>
-          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.age')} lang={lang}/>, "requirement.age")}
-          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.health')} lang={lang}/>, "requirement.health")}
-          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.education')} lang={lang}/>, "requirement.education")}
-          {renderInput(<TranslatableText text={t('admin.programms.edit.labels.certificate')} lang={lang}/>, "requirement.certificate")}
+          {renderInput(t('admin.programms.edit.labels.age'), "requirement.age")}
+          {renderInput(t('admin.programms.edit.labels.health'), "requirement.health")}
+          {renderInput(t('admin.programms.edit.labels.education'), "requirement.education")}
+          {renderInput(t('admin.programms.edit.labels.certificate'), "requirement.certificate")}
 
           {/* ✅ BUTTONS */}
           <div className="admin-form-buttons">

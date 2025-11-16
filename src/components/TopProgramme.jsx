@@ -98,15 +98,7 @@ function TopProgrammeSlider() {
                   <div className="content-right">
                     <div className="title-star-row">
                       <h3 className="program-title"><TranslatableText text={item.title} lang={lang}/></h3>
-                      <div className="stars" aria-label={`Rating ${roundedRate} stars`}>
-                        <span className="star-icons">
-                          {'★'.repeat(roundedRate)}
-                          {'☆'.repeat(5 - roundedRate)}
-                        </span>
-                        <span className="review-count">
-                          ({item.reviews.length} {t('short.topprogramm.reviews') || 'đánh giá'})
-                        </span>
-                      </div>
+                      
 
                       <div className="reviews"></div>
                     </div>
@@ -117,19 +109,16 @@ function TopProgrammeSlider() {
                         : <TranslatableText text={getShortDesc(item.details?.overview)} lang={lang}/> }
                     </p>
 
-                    {item.details?.overview?.length > 250 && (
-                      <div className="read-more-container">
-                        <button
-                          className="read-more-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleExpand(idx);
-                          }}
-                        >
-                          {expandedIndex === idx ? t('common.hide_less') : t('common.show_more')}
-                        </button>
+                    
+                    <div className="stars" aria-label={`Rating ${roundedRate} stars`}>
+                        <span className="star-icons">
+                          {'★'.repeat(roundedRate)}
+                          {'☆'.repeat(5 - roundedRate)}
+                        </span>
+                        <span className="review-count">
+                          ({item.reviews.length} {t('short.topprogramm.reviews') || 'đánh giá'})
+                        </span>
                       </div>
-                    )}
                   </div>
                 </div>
 

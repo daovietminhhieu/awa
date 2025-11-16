@@ -11,7 +11,7 @@
 .search-wrapper { position: relative; width: 100%; }
 .search-field { width: 100%; padding: 7px 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; height: 34px; transition: border-color 0.2s, box-shadow 0.2s; }
 .search-field:focus { border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.15); outline: none; }
-.suggestions-list { position: absolute; top: 38px; left: 0; width: 100%; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; z-index: 10; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.suggestions-list { position: absolute; top: 38px; left: 0; width: 100%; background: var(--surface); border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; z-index: 10; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 .suggestion-item { display: flex; align-items: center; gap: 8px; padding: 6px 10px; cursor: pointer; font-size: 13px; }
 .suggestion-item:hover { background: #f3f4f6; }
 

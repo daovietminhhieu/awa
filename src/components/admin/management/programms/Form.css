@@ -16,7 +16,7 @@
 
 /* Hộp form chính */
 .edit-form {
-  background: #fff;
+  background: var(--surface);
   width: 90%;
   max-width: 600px;
   max-height: 85vh;
@@ -78,6 +78,7 @@
 .edit-form input[type="date"],
 .edit-form input[type="file"],
 .edit-form textarea {
+  height: fit-content;
   margin-top: 4px;
   padding: 10px 12px;
   border: 1px solid #ccc;
