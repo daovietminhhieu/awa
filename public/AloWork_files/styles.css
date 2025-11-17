@@ -1,0 +1,148 @@
+#google_translate_element {
+  position: absolute;
+  top: 6px !important;
+  left: 130px !important;
+  z-index: 10000 !important; /* giá trị cực cao, luôn trên tất cả */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e68508;
+  border-radius: 8px;
+  border: 2px inset white;
+  padding: 4px 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+:root {
+  /* Design tokens for surface colors to reduce glare */
+  --surface: #f7f9fb;
+  --surface-contrast: #ffffff;
+}
+
+#google_translate_element:hover {
+  background: linear-gradient(90deg, #e68508, #fbbf24) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ẩn logo + text "Powered by Google" */
+.goog-logo-link,
+.goog-te-gadget span {
+  display: none !important;
+}
+
+/* Căn chỉnh bố cục bên trong */
+.goog-te-gadget-simple {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+/* Dropdown ngôn ngữ */
+.goog-te-combo {
+  border: none !important;
+  background: #e68508 !important; /* màu nền cam */
+  color: #ffffff !important; /* chữ trắng */
+  font-size: 14.5px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  padding: 3px 8px !important; /* tăng padding cho dễ bấm */
+  border-radius: 6px !important; /* bo góc dropdown */
+  appearance: none !important;
+  outline: none !important;
+  text-transform: capitalize !important;
+  transition: background 0.2s ease;
+}
+
+.goog-te-gadget {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+.goog-te-gadget span {
+  display: none !important;
+}
+.goog-logo-link {
+  display: none !important;
+}
+
+/* Icon mũi tên */
+#google_translate_element::after {
+  font-size: 10px;
+  color: linear-gradient(90deg, #e68508, #fbbf24);
+  opacity: 0.9;
+  margin-left: 4px;
+  pointer-events: none;
+}
+
+/* Ẩn khung popup nền của Google menu */
+.goog-te-menu-frame.skiptranslate,
+.goog-te-menu2 {
+  background: linear-gradient(90deg, #e68508, #fbbf24) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
+  border: none !important;
+  color: #333 !important;
+}
+
+/* Dropdown focus (chỉ khi bấm mở) */
+#google_translate_element select.goog-te-combo:focus {
+  outline: none !important;
+}
+/* ==========================
+   MOBILE RESPONSIVE
+========================== */
+/* Reset Google Translate styles */
+@media (max-width: 768px) {
+  #google_translate_element {
+    position: absolute !important;
+    top: 15px !important;
+    left: 130px !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    align-items: center !important;
+    background: #e68508 !important;
+    border-radius: 4px !important;
+    padding: 1px 2px !important;
+    height: 26px !important;
+    gap: 2px !important;
+  }
+
+  /* Thêm icon nhỏ trước dropdown */
+  .goog-te-gadget:before {
+    font-size: 12px !important;
+    padding: 0 2px !important;
+  }
+
+  .goog-te-combo {
+    border: none !important;
+    background: #e68508 !important; /* màu nền cam */
+    color: #ffffff !important; /* chữ trắng */
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    padding: 3px 8px !important; /* tăng padding cho dễ bấm */
+    border-radius: 6px !important; /* bo góc dropdown */
+    appearance: none !important;
+    outline: none !important;
+    text-transform: capitalize !important;
+    transition: background 0.2s ease;
+  }
+
+  .goog-te-gadget {
+    font-size: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    color: #fff !important;
+  }
+
+  .goog-te-gadget span {
+    display: none !important;
+  }
+}

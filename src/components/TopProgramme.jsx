@@ -98,9 +98,7 @@ function TopProgrammeSlider() {
                   <div className="content-right">
                     <div className="title-star-row">
                       <h3 className="program-title"><TranslatableText text={item.title} lang={lang}/></h3>
-                      
-
-                      <div className="reviews"></div>
+                    
                     </div>
 
                     <p className="description">

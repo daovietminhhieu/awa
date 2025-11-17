@@ -44,7 +44,6 @@
 }
 
 
-
 /* Card tổng */
 .featured-card {
   background: #f9fbff;
@@ -101,6 +100,7 @@
 }
 
 .program-title {
+  text-align: center;
   font-size: 1.5rem;
   margin: 0;
   color: #0d3c61;
@@ -177,7 +177,7 @@
    RESPONSIVE
    ============================== */
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .top-programme-section {
     padding: 1.5rem 1rem;
   }
