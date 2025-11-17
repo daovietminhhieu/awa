@@ -72,35 +72,41 @@
 /* Banner */
 .home-banner {
   width: 100%;
-  height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url("/pexels-olly-3769146.jpg");
+  height: 50vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/pexels-olly-3769146.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;  /* GIỮ BANNER CỐ ĐỊNH */
+  background-attachment: fixed;  /* Giữ ảnh nền cố định */
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 0; /* Đảm bảo ảnh nền không che nội dung */
 }
 
-.home-banner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--home-banner-overlay);
-  pointer-events: none;
-  transition: background 240ms ease, filter 240ms ease;
-}
 /* Tablet */
 @media (max-width: 1024px) {
   .home-banner {
-    height: 50vh;
-    background-position: center;
-    background-attachment: fixed; /* GIỮ NGUYÊN */
+    height: 50vh; /* Điều chỉnh chiều cao của ảnh cho tablet */
   }
 }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .home-banner {
+    height: 32vh; /* Điều chỉnh chiều cao của ảnh cho mobile */
+  }
+}
+
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+  .home-banner {
+    height: 28vh; /* Điều chỉnh chiều cao cho màn hình nhỏ */
+  }
+}
+
+
 /* Navbar container (để sticky hoạt động) */
 .home-navmenu-container {
   position: relative;
