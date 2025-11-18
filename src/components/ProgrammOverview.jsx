@@ -3,9 +3,7 @@ import { useI18n } from "../i18n";
 import { useAuth } from "../context/AuthContext";
 import { getPostById, requestASharedLink, sendFilledInformationsForm } from "../api";
 import TranslateableText from "../TranslateableText";
-// -------------------------------------------------
-// 📌 Application Form
-// -------------------------------------------------
+
 function ApplicationForm({ to, translator }) {
   const [form, setForm] = useState({
     fullName: "",
@@ -93,10 +91,7 @@ function ApplicationForm({ to, translator }) {
   );
 }
 
-// -------------------------------------------------
-// 📌 ProgrammTags
-// -------------------------------------------------
-function ProgrammTags({ tags,t,lang }) {
+function ProgrammTags({ tags, t, lang }) {
   const handleMouse = (slider, e, type) => {
     if (type === "down") {
       slider.isDown = true;
@@ -134,9 +129,6 @@ function ProgrammTags({ tags,t,lang }) {
   );
 }
 
-// -------------------------------------------------
-// 📌 ProgrammHeader
-// -------------------------------------------------
 function ProgrammHeader({ programm, role, t, lang }) {
   const tags = [
     { label: t("programm.detail.overview.duration"), value: programm.duration },
@@ -198,8 +190,10 @@ function ProgrammHeader({ programm, role, t, lang }) {
 
   return (
     <div className="programm-detail-header">
-      <h1 className="programm-detail-title"><TranslateableText text={programm.title} lang={lang}/></h1>
-      <ProgrammTags tags={tags} t={t} lang={lang}/>
+      <h1 className="programm-detail-title">
+        <TranslateableText text={programm.title} lang={lang} />
+      </h1>
+      <ProgrammTags tags={tags} t={t} lang={lang} />
       {specialTags.length > 0 && (
         <div className="programm-tags-special">
           {specialTags.map((tag, idx) => (
@@ -213,10 +207,81 @@ function ProgrammHeader({ programm, role, t, lang }) {
   );
 }
 
-// -------------------------------------------------
-// 📌 ProgrammInfoBoxes
-// -------------------------------------------------
 function ProgrammInfoBoxes({ programm, currentUser, onShare, t, lang }) {
+  const [showSharePopup, setShowSharePopup] = useState(false);
+  const [copiedLink, setCopiedLink] = useState("");
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false);
+
+  async function robustCopy(text) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {}
+    }
+
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      ta.style.top = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch {}
+
+    return false;
+  }
+
+  const handleShareClick = async () => {
+    try {
+      setShowSharePopup(true);
+      setCopiedLink("");
+      setIsGeneratingLink(true);
+
+      const res = await requestASharedLink(programm._id);
+      let link = res.data.link;
+
+      if (!/^https?:\/\//i.test(link)) {
+        link = `${window.location.origin}${link}`;
+      }
+
+      setCopiedLink(link);
+      setIsGeneratingLink(false);
+
+      const success = await robustCopy(link);
+      if (!success) {
+        console.warn("Automatic copy failed, user can copy manually from popup");
+      }
+    } catch (err) {
+      console.error(err);
+      setCopiedLink("");
+      setIsGeneratingLink(false);
+      alert(t("recruiter.programms.share_failed", "Không thể tạo liên kết chia sẻ!"));
+      setShowSharePopup(false);
+    }
+  };
+
+  const handleManualCopy = async (link) => {
+    const success = await robustCopy(link);
+    if (success) {
+      alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
+    } else {
+      alert(t("recruiter.programms.copy_failed", "Không thể sao chép. Vui lòng thử lại."));
+    }
+  };
+
+  const handleInputCopy = (e) => {
+    e.stopPropagation();
+    const input = e.target as HTMLInputElement;
+    input.select();
+    document.execCommand("copy");
+    alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
+  };
+
   return (
     <div className="programm-info-boxes">
       <div className="info-box">
@@ -225,26 +290,159 @@ function ProgrammInfoBoxes({ programm, currentUser, onShare, t, lang }) {
       </div>
       <div className="info-box">
         <b>{t("programm.detail.overview.land")}:</b>
-        <p><TranslateableText text={programm.land} lang={lang}/></p>
+        <p>
+          <TranslateableText text={programm.land} lang={lang} />
+        </p>
       </div>
       {currentUser?.role === "recruiter" && (
-        <div className="info-box">
+        <div className="info-box" style={{ position: "relative" }}>
           <b>{t("programm.detail.overview.share_title") || "Chia sẻ chương trình"}:</b>
           <p
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-            onClick={onShare}
+            style={{ textDecoration: "underline", cursor: "pointer", color: "#007bff" }}
+            onClick={handleShareClick}
           >
             {t("programm.detail.overview.share_action") || "Bấm để chia sẻ"}
           </p>
+
+          {showSharePopup && (
+            <div
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              style={{
+                position: "absolute",
+                top: "60px",
+                left: "0",
+                background: "#fff",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                padding: "12px",
+                zIndex: 30,
+                minWidth: "280px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+              }}
+            >
+              {isGeneratingLink ? (
+                <p style={{ margin: "0", fontSize: "14px" }}>
+                  ⏳ {t("recruiter.programms.generating_link", "Đang tạo liên kết...")}
+                </p>
+              ) : (
+                <>
+                  <p style={{ margin: "0 0 10px 0", fontSize: "14px" }}>
+                    ✅ {t("recruiter.programms.link_ready", "Liên kết đã sẵn sàng")}
+                  </p>
+
+                  <div
+                    style={{
+                      background: "#f9f9f9",
+                      border: "1px solid #e0e0e0",
+                      borderRadius: "6px",
+                      padding: "8px",
+                      marginBottom: "10px",
+                      wordBreak: "break-all",
+                    }}
+                  >
+                    <input
+                      type="text"
+                      value={copiedLink}
+                      readOnly
+                      onClick={handleInputCopy}
+                      style={{
+                        width: "100%",
+                        border: "none",
+                        background: "transparent",
+                        fontSize: "12px",
+                        cursor: "pointer",
+                        padding: "0",
+                        fontFamily: "monospace",
+                      }}
+                    />
+                  </div>
+
+                  <p style={{ fontSize: "12px", color: "#666", margin: "0 0 10px 0" }}>
+                    {t("recruiter.programms.tap_to_copy", "Nhấn để sao chép")}
+                  </p>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "8px",
+                    }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleManualCopy(copiedLink);
+                      }}
+                      style={{
+                        flex: 1,
+                        padding: "8px 12px",
+                        background: "#28a745",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      📋 {t("recruiter.programms.copy", "Sao chép")}
+                    </button>
+
+                    <a
+                      href={copiedLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      style={{
+                        flex: 1,
+                        padding: "8px 12px",
+                        background: "#17a2b8",
+                        color: "white",
+                        textDecoration: "none",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        textAlign: "center",
+                      }}
+                    >
+                      🔗 {t("recruiter.programms.open", "Mở")}
+                    </a>
+
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setShowSharePopup(false);
+                        setCopiedLink("");
+                      }}
+                      style={{
+                        padding: "8px 12px",
+                        background: "#dc3545",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      ❌ {t("recruiter.programms.close", "Đóng")}
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 }
 
-// -------------------------------------------------
-// 📌 ProgrammSection
-// -------------------------------------------------
 function ProgrammSection({ title, content }) {
   const safeContent = Array.isArray(content) ? content : [content];
   return (
@@ -261,15 +459,11 @@ function ProgrammSection({ title, content }) {
   );
 }
 
-// -------------------------------------------------
-// 📌 Main Component
-// -------------------------------------------------
 export default function ProgrammOverview({ programm, role, to }) {
   const { t, lang } = useI18n();
   const { user: currentUser } = useAuth();
   const [postTitles, setPostTitles] = useState([]);
 
-  // 👉 Hàm loại bỏ thẻ HTML
   const stripHTML = (html) => {
     if (!html) return "";
     const tmp = document.createElement("div");
@@ -308,39 +502,31 @@ export default function ProgrammOverview({ programm, role, to }) {
     fetchPostTitles();
   }, [programm]);
 
-  const handleShareReferrals = async () => {
-    try {
-      await requestASharedLink(programm._id);
-      alert("Successfully shared this program!");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to share program.");
-    }
-  };
-
   return (
     <div>
-      <ProgrammHeader programm={programm} role={role} t={t}  lang={lang}/>
+      <ProgrammHeader programm={programm} role={role} t={t} lang={lang} />
 
       <div className="programm-main">
         <ProgrammInfoBoxes
           programm={programm}
           currentUser={currentUser}
-          onShare={handleShareReferrals}
-          t={t} lang={lang}
+          t={t}
+          lang={lang}
         />
 
         <ProgrammSection
           title={t("programm.detail.overview.overview")}
           content={[
-            <>
-              <div style={{ whiteSpace: 'pre-line' }}>
-                <TranslateableText text={programm.details?.overview || t("programm.detail.no_description")} lang={lang}/>
-              </div>
-            </>
-        
+            <div style={{ whiteSpace: "pre-line" }}>
+              <TranslateableText
+                text={
+                  programm.details?.overview ||
+                  t("programm.detail.no_description")
+                }
+                lang={lang}
+              />
+            </div>,
           ]}
-
         />
 
         <ProgrammSection
@@ -348,31 +534,44 @@ export default function ProgrammOverview({ programm, role, to }) {
           content={[
             <>
               🎂 {t("programm.detail.overview.age")}:{" "}
-              <TranslateableText text={programm.requirement?.age} lang={lang}/>
+              <TranslateableText text={programm.requirement?.age} lang={lang} />
             </>,
-            
-            <> 
-              🎓 {t("programm.detail.overview.education")}:{" "} 
-              <div style={{ whiteSpace: 'pre-line', display: 'inline-block' }}>
-                <TranslateableText text={programm.requirement?.education} lang={lang}/>
+
+            <>
+              🎓 {t("programm.detail.overview.education")}:{" "}
+              <div style={{ whiteSpace: "pre-line", display: "inline-block" }}>
+                <TranslateableText
+                  text={programm.requirement?.education}
+                  lang={lang}
+                />
               </div>
             </>,
 
             <>
-              📜 {t("programm.detail.overview.certificate")}:{" "} 
-              <TranslateableText text={programm.requirement?.certificate} lang={lang}/>
+              📜 {t("programm.detail.overview.certificate")}:{" "}
+              <TranslateableText
+                text={programm.requirement?.certificate}
+                lang={lang}
+              />
             </>,
-            
+
             <>
-              ❤️ {t("programm.detail.overview.health")}:{" "} 
-              <TranslateableText text={programm.requirement?.health} lang={lang}/>
-            </>
+              ❤️ {t("programm.detail.overview.health")}:{" "}
+              <TranslateableText
+                text={programm.requirement?.health}
+                lang={lang}
+              />
+            </>,
           ]}
         />
 
         <ProgrammSection
           title={t("programm.detail.overview.benefit")}
-          content={[<div style={{ whiteSpace: 'pre-line' }}><TranslateableText text={programm.benefit} lang={lang}/></div>]}
+          content={[
+            <div style={{ whiteSpace: "pre-line" }}>
+              <TranslateableText text={programm.benefit} lang={lang} />
+            </div>,
+          ]}
         />
 
         <section>
@@ -382,7 +581,11 @@ export default function ProgrammOverview({ programm, role, to }) {
               {postTitles.map((post, idx) => (
                 <div key={idx} className="related-post-card">
                   {post.thumbnail && (
-                    <img src={post.thumbnail} alt={post.title} className="related-post-thumb" />
+                    <img
+                      src={post.thumbnail}
+                      alt={post.title}
+                      className="related-post-thumb"
+                    />
                   )}
 
                   <span className="related-post-type">{post.type_category}</span>
@@ -415,7 +618,9 @@ export default function ProgrammOverview({ programm, role, to }) {
         </section>
       </div>
 
-      {role === "externeCandidate" && <ApplicationForm to={to} translator={t} />}
+      {role === "externeCandidate" && (
+        <ApplicationForm to={to} translator={t} />
+      )}
     </div>
   );
 }
