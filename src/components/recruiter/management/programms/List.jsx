@@ -140,29 +140,39 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                     onClick={async (e) => {
                       e.preventDefault();
                       if (isExpired) return;
-
+                    
                       try {
+                        // 1️⃣ Gọi API tạo link
                         const res = await requestASharedLink(p._id);
                         let link = res.data.link;
-                        console.log("before process relative path: " + link);
-                          // Nếu link trả về là relative path → thêm domain hiện tại
-                        if (!/^https?:\/\//i.test(link)) 
+                    
+                        // 2️⃣ Nếu server trả relative path → thêm domain
+                        if (!/^https?:\/\//i.test(link)) {
                           link = `${window.location.origin}${link}`;
-                        console.log("after process relative path:" + link);
-
-                        await navigator.clipboard.writeText(link);
-
-                        setCopiedId(p._id); // hiện popup cho card này
-                        setCopiedLink(link);     // lưu link để hiển thị trong popup
-                        console.log("Link that will set at popup: " + link);
-
-                        // Tự ẩn sau 3s
+                        }
+                    
+                        // 3️⃣ Luôn hiện popup share (kể cả khi copy fail)
+                        setCopiedId(p._id);
+                        setCopiedLink(link);
+                    
+                        // 4️⃣ Thử copy clipboard
+                        try {
+                          await navigator.clipboard.writeText(link);
+                        } catch (copyErr) {
+                          console.warn("Clipboard not allowed (iPad Safari bug), fallback only:", copyErr);
+                          // ❗ KHÔNG alert lỗi, Safari nhiều khi chặn clipboard dù user đã click
+                          // Popup vẫn mở bình thường → người dùng dễ dàng bấm "Mở liên kết"
+                        }
+                    
+                        // 5️⃣ Tự đóng popup sau 30 giây
                         setTimeout(() => setCopiedId(null), 30000);
+                    
                       } catch (err) {
-                        console.error("Error sharing link", err);
+                        console.error("Create share link failed:", err);
                         alert(t('recruiter.programms.share_failed', 'Không thể tạo liên kết chia sẻ!'));
                       }
                     }}
+                    
                   >
                     <FaShareAlt />{" "}
                     
