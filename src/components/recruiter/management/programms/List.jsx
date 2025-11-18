@@ -69,6 +69,43 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
       return copy;
     });
   };
+  // helper copy robust
+  async function copyTextToClipboard(text) {
+    // 1) Thử API hiện đại
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        console.warn("navigator.clipboard.writeText failed:", err);
+        // tiếp tục xuống fallback
+      }
+    }
+
+    // 2) Fallback: textarea + document.execCommand('copy')
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      // tránh ảnh hưởng layout
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      ta.style.top = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+
+      const successful = document.execCommand("copy");
+      document.body.removeChild(ta);
+      if (successful) return true;
+      console.warn("execCommand('copy') returned false");
+    } catch (err) {
+      console.warn("execCommand fallback failed:", err);
+    }
+
+  // 3) Nếu tới đây vẫn chưa copy được → trả về false để UI hiển thị input để user copy thủ công
+  return false;
+}
+
   const [copiedId, setCopiedId] = useState(null);
   const [copiedLink, setCopiedLink] = useState("");
 
@@ -146,25 +183,49 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                         const res = await requestASharedLink(p._id);
                         let link = res.data.link;
                     
-                        // 2️⃣ Nếu server trả relative path → thêm domain
+                        // 2️⃣ Thêm domain nếu server trả path
                         if (!/^https?:\/\//i.test(link)) {
                           link = `${window.location.origin}${link}`;
                         }
                     
-                        // 3️⃣ Luôn hiện popup share (kể cả khi copy fail)
+                        // 3️⃣ Hiện popup share luôn
                         setCopiedId(p._id);
                         setCopiedLink(link);
                     
-                        // 4️⃣ Thử copy clipboard
+                        // 4️⃣ Thử copy clipboard như bình thường
+                        let copied = false;
                         try {
-                          await navigator.clipboard.writeText(link);
-                        } catch (copyErr) {
-                          console.warn("Clipboard not allowed (iPad Safari bug), fallback only:", copyErr);
-                          // ❗ KHÔNG alert lỗi, Safari nhiều khi chặn clipboard dù user đã click
-                          // Popup vẫn mở bình thường → người dùng dễ dàng bấm "Mở liên kết"
+                          if (navigator.clipboard?.writeText) {
+                            await navigator.clipboard.writeText(link);
+                            copied = true;
+                          }
+                        } catch (err) {
+                          console.warn("Clipboard API blocked:", err);
                         }
                     
-                        // 5️⃣ Tự đóng popup sau 30 giây
+                        // 5️⃣ Nếu Safari chặn → fallback execCommand
+                        if (!copied) {
+                          try {
+                            const ta = document.createElement("textarea");
+                            ta.value = link;
+                            ta.style.position = "fixed";
+                            ta.style.left = "-9999px";
+                            ta.style.top = "0";
+                            document.body.appendChild(ta);
+                            ta.select();
+                            const ok = document.execCommand("copy");
+                            document.body.removeChild(ta);
+                            if (ok) copied = true;
+                          } catch (err) {
+                            console.warn("Fallback execCommand failed:", err);
+                          }
+                        }
+                    
+                        // 6️⃣ Không báo lỗi khi safari chặn → Popup đã có nút mở link
+                        // (Tránh làm phiền user iPad)
+                        console.log("Copy result:", copied);
+                    
+                        // 7️⃣ Tự đóng popup sau 30s
                         setTimeout(() => setCopiedId(null), 30000);
                     
                       } catch (err) {
@@ -172,6 +233,7 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                         alert(t('recruiter.programms.share_failed', 'Không thể tạo liên kết chia sẻ!'));
                       }
                     }}
+                    
                     
                   >
                     <FaShareAlt />{" "}
