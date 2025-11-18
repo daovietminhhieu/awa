@@ -141,7 +141,10 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
 
   const handleInputCopy = (e) => {
     e.stopPropagation();
-    const input = e.target as HTMLInputElement;
+  
+    /** @type {HTMLInputElement} */
+    const input = e.target;
+  
     input.select();
     document.execCommand("copy");
     alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
