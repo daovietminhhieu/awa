@@ -265,7 +265,8 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                               bottom: "20px",
                               left: "250px",
                               right: "20px",
-                              maxWidth: "calc(100% - 40px)"
+                              maxWidth: "calc(100% - 40px)",
+                              height:250
                             }
                           : {
                               top: "45px",
