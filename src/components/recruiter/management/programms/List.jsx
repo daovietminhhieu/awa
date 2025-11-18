@@ -139,6 +139,7 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
     }
   };
 
+
   const handleInputCopy = (e) => {
     e.stopPropagation();
   
@@ -258,25 +259,35 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                         e.stopPropagation();
                       }}
                       style={{
-                        position: "absolute",
-                        top: "45px",
-                        left: "0",
+                        position: isMobile ? "fixed" : "absolute",
+                        ...(isMobile
+                          ? {
+                              bottom: "20px",
+                              left: "20px",
+                              right: "20px",
+                              maxWidth: "calc(100% - 40px)"
+                            }
+                          : {
+                              top: "45px",
+                              left: "0",
+                              minWidth: "280px"
+                            }
+                        ),
                         background: "#fff",
                         border: "1px solid #ccc",
                         borderRadius: "8px",
                         padding: "12px",
-                        zIndex: 30,
-                        minWidth: "280px",
+                        zIndex: 50,
                         boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
                       }}
                     >
                       {isGeneratingLink ? (
-                        <p className="share-message" style={{ margin: "0", fontSize: "14px" }}>
+                        <p className="share-message" style={{ margin: "0", fontSize: isMobile ? "15px" : "14px", textAlign: "center" }}>
                           ⏳ {t("recruiter.programms.generating_link", "Đang tạo liên kết...")}
                         </p>
                       ) : (
                         <>
-                          <p className="share-message" style={{ margin: "0 0 10px 0", fontSize: "14px" }}>
+                          <p className="share-message" style={{ margin: "0 0 10px 0", fontSize: isMobile ? "15px" : "14px" }}>
                             ✅ {t("recruiter.programms.link_ready", "Liên kết đã sẵn sàng")}
                           </p>
 
@@ -285,9 +296,11 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                               background: "#f9f9f9",
                               border: "1px solid #e0e0e0",
                               borderRadius: "6px",
-                              padding: "8px",
+                              padding: "10px",
                               marginBottom: "10px",
-                              wordBreak: "break-all"
+                              wordBreak: "break-all",
+                              maxHeight: isMobile ? "80px" : "auto",
+                              overflowY: "auto"
                             }}
                           >
                             <input
@@ -299,15 +312,16 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                                 width: "100%",
                                 border: "none",
                                 background: "transparent",
-                                fontSize: "12px",
+                                fontSize: isMobile ? "13px" : "12px",
                                 cursor: "pointer",
                                 padding: "0",
-                                fontFamily: "monospace"
+                                fontFamily: "monospace",
+                                lineHeight: "1.4"
                               }}
                             />
                           </div>
 
-                          <p style={{ fontSize: "12px", color: "#666", margin: "0 0 10px 0" }}>
+                          <p style={{ fontSize: isMobile ? "13px" : "12px", color: "#666", margin: "0 0 10px 0" }}>
                             {t("recruiter.programms.tap_to_copy", "Nhấn để sao chép")}
                           </p>
 
@@ -315,7 +329,8 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                             style={{
                               display: "flex",
                               justifyContent: "space-between",
-                              gap: "8px"
+                              gap: "8px",
+                              flexWrap: isMobile ? "wrap" : "nowrap"
                             }}
                           >
                             <button
@@ -325,14 +340,14 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                                 handleManualCopy(copiedLink);
                               }}
                               style={{
-                                flex: 1,
-                                padding: "8px 12px",
+                                flex: isMobile ? "1 1 calc(50% - 4px)" : 1,
+                                padding: "10px 12px",
                                 background: "#28a745",
                                 color: "white",
                                 border: "none",
                                 borderRadius: "4px",
                                 cursor: "pointer",
-                                fontSize: "12px",
+                                fontSize: isMobile ? "13px" : "12px",
                                 fontWeight: "500"
                               }}
                             >
@@ -345,13 +360,13 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}
                               style={{
-                                flex: 1,
-                                padding: "8px 12px",
+                                flex: isMobile ? "1 1 calc(50% - 4px)" : 1,
+                                padding: "10px 12px",
                                 background: "#17a2b8",
                                 color: "white",
                                 textDecoration: "none",
                                 borderRadius: "4px",
-                                fontSize: "12px",
+                                fontSize: isMobile ? "13px" : "12px",
                                 fontWeight: "500",
                                 textAlign: "center"
                               }}
@@ -367,14 +382,16 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                                 setCopiedLink("");
                               }}
                               style={{
-                                padding: "8px 12px",
+                                flex: isMobile ? "1 1 100%" : "0 0 auto",
+                                padding: "10px 12px",
                                 background: "#dc3545",
                                 color: "white",
                                 border: "none",
                                 borderRadius: "4px",
                                 cursor: "pointer",
-                                fontSize: "12px",
-                                fontWeight: "500"
+                                fontSize: isMobile ? "13px" : "12px",
+                                fontWeight: "500",
+                                marginTop: isMobile ? "4px" : "0"
                               }}
                             >
                               ❌ {t("recruiter.programms.close", "Đóng")}
