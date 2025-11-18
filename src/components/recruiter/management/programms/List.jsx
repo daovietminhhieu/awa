@@ -34,6 +34,7 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
 
   const [copiedId, setCopiedId] = useState(null);
   const [copiedLink, setCopiedLink] = useState("");
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false);
 
   const itemsPerPage = 6;
   const totalPages = Math.ceil(programms.length / itemsPerPage);
@@ -72,7 +73,6 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
   };
 
   async function robustCopy(text) {
-    // Try modern API
     if (navigator.clipboard?.writeText) {
       try {
         await navigator.clipboard.writeText(text);
@@ -80,12 +80,12 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
       } catch {}
     }
 
-    // Fallback
     try {
       const ta = document.createElement("textarea");
       ta.value = text;
       ta.style.position = "fixed";
       ta.style.left = "-9999px";
+      ta.style.top = "-9999px";
       document.body.appendChild(ta);
       ta.select();
       const ok = document.execCommand("copy");
@@ -98,6 +98,10 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
 
   const handleShare = async (p) => {
     try {
+      setCopiedId(p._id);
+      setCopiedLink("");
+      setIsGeneratingLink(true);
+
       const res = await requestASharedLink(p._id);
       let link = res.data.link;
 
@@ -105,18 +109,44 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
         link = `${window.location.origin}${link}`;
       }
 
-      // Copy first (requires direct user gesture)
-      await robustCopy(link);
-
-      setCopiedId(p._id);
       setCopiedLink(link);
+      setIsGeneratingLink(false);
 
-      setTimeout(() => setCopiedId(null), 30000);
+      const success = await robustCopy(link);
+      if (!success) {
+        console.warn("Automatic copy failed, user can copy manually from popup");
+      }
+
+      setTimeout(() => {
+        setCopiedId(null);
+        setCopiedLink("");
+      }, 30000);
     } catch (err) {
       console.error(err);
+      setCopiedId(null);
+      setCopiedLink("");
+      setIsGeneratingLink(false);
       alert(t("recruiter.programms.share_failed", "Không thể tạo liên kết chia sẻ!"));
     }
   };
+
+  const handleManualCopy = async (link) => {
+    const success = await robustCopy(link);
+    if (success) {
+      alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
+    } else {
+      alert(t("recruiter.programms.copy_failed", "Không thể sao chép. Vui lòng thử lại."));
+    }
+  };
+
+  const handleInputCopy = (e) => {
+    e.stopPropagation();
+    const input = e.target as HTMLInputElement;
+    input.select();
+    document.execCommand("copy");
+    alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
+  };
+
   return (
     <div>
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -144,7 +174,6 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                 position: "relative"
               }}
             >
-              {/* 🟦 CARD LINK (KHÔNG BAO GỒM SHARE & SAVE) */}
               <Link
                 to={`/recruiter/programmsdetail/${p._id}`}
                 style={{ textDecoration: "none", color: "inherit" }}
@@ -180,7 +209,6 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                 </div>
               </Link>
 
-              {/* 🟦 FOOTER BUTTONS: SHARE + SAVE */}
               <div
                 className="programm-footer"
                 style={{
@@ -189,8 +217,7 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                   marginTop: "10px"
                 }}
               >
-                {/* SHARE BUTTON */}
-                <div style={{ position: "relative" }}>
+                <div style={{ position: "relative", flex: 1 }}>
                   <button
                     style={{
                       height: "40px",
@@ -198,13 +225,15 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                       opacity: isExpired ? 0.5 : 1,
                       display: copiedId === p._id ? "none" : "flex",
                       alignItems: "center",
+                      justifyContent: "center",
                       gap: "6px",
                       background: "#007bff",
                       color: "white",
                       border: "none",
                       borderRadius: "6px",
                       padding: "0 12px",
-                      transition: "background 0.3s ease"
+                      transition: "background 0.3s ease",
+                      width: "100%"
                     }}
                     disabled={isExpired}
                     onClick={(e) => {
@@ -218,7 +247,6 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                     {t("recruiter.programms.share")}
                   </button>
 
-                  {/* POPUP SHARE */}
                   {copiedId === p._id && (
                     <div
                       className="share-popup"
@@ -233,55 +261,128 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                         background: "#fff",
                         border: "1px solid #ccc",
                         borderRadius: "8px",
-                        padding: "10px",
+                        padding: "12px",
                         zIndex: 30,
-                        width: "250px",
+                        minWidth: "280px",
                         boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
                       }}
                     >
-                      <p className="share-message">
-                        ✅{" "}
-                        {t(
-                          "recruiter.programms.link_copied",
-                          "Liên kết đã được sao chép!"
-                        )}
-                      </p>
+                      {isGeneratingLink ? (
+                        <p className="share-message" style={{ margin: "0", fontSize: "14px" }}>
+                          ⏳ {t("recruiter.programms.generating_link", "Đang tạo liên kết...")}
+                        </p>
+                      ) : (
+                        <>
+                          <p className="share-message" style={{ margin: "0 0 10px 0", fontSize: "14px" }}>
+                            ✅ {t("recruiter.programms.link_ready", "Liên kết đã sẵn sàng")}
+                          </p>
 
-                      <div
-                        className="second-line"
-                        style={{
-                          marginTop: "10px",
-                          display: "flex",
-                          justifyContent: "space-between"
-                        }}
-                      >
-                        <div
-                          className="close-popup-btn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setCopiedId(null);
-                          }}
-                          style={{ cursor: "pointer" }}
-                        >
-                          ❌
-                        </div>
+                          <div
+                            style={{
+                              background: "#f9f9f9",
+                              border: "1px solid #e0e0e0",
+                              borderRadius: "6px",
+                              padding: "8px",
+                              marginBottom: "10px",
+                              wordBreak: "break-all"
+                            }}
+                          >
+                            <input
+                              type="text"
+                              value={copiedLink}
+                              readOnly
+                              onClick={handleInputCopy}
+                              style={{
+                                width: "100%",
+                                border: "none",
+                                background: "transparent",
+                                fontSize: "12px",
+                                cursor: "pointer",
+                                padding: "0",
+                                fontFamily: "monospace"
+                              }}
+                            />
+                          </div>
 
-                        <a
-                          href={copiedLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="share-link"
-                        >
-                          🔗{" "}
-                          {t("recruiter.programms.open_link", "Mở liên kết")}
-                        </a>
-                      </div>
+                          <p style={{ fontSize: "12px", color: "#666", margin: "0 0 10px 0" }}>
+                            {t("recruiter.programms.tap_to_copy", "Nhấn để sao chép")}
+                          </p>
+
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              gap: "8px"
+                            }}
+                          >
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleManualCopy(copiedLink);
+                              }}
+                              style={{
+                                flex: 1,
+                                padding: "8px 12px",
+                                background: "#28a745",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontSize: "12px",
+                                fontWeight: "500"
+                              }}
+                            >
+                              📋 {t("recruiter.programms.copy", "Sao chép")}
+                            </button>
+
+                            <a
+                              href={copiedLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              style={{
+                                flex: 1,
+                                padding: "8px 12px",
+                                background: "#17a2b8",
+                                color: "white",
+                                textDecoration: "none",
+                                borderRadius: "4px",
+                                fontSize: "12px",
+                                fontWeight: "500",
+                                textAlign: "center"
+                              }}
+                            >
+                              🔗 {t("recruiter.programms.open", "Mở")}
+                            </a>
+
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setCopiedId(null);
+                                setCopiedLink("");
+                              }}
+                              style={{
+                                padding: "8px 12px",
+                                background: "#dc3545",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "4px",
+                                cursor: "pointer",
+                                fontSize: "12px",
+                                fontWeight: "500"
+                              }}
+                            >
+                              ❌ {t("recruiter.programms.close", "Đóng")}
+                            </button>
+                          </div>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
 
-                {/* SAVE BUTTON */}
                 <button
                   className="save-icon"
                   onClick={(e) => {
@@ -292,15 +393,19 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
                     gap: "6px",
-                    cursor: "pointer",
+                    cursor: isLoading ? "not-allowed" : "pointer",
+                    opacity: isLoading ? 0.6 : 1,
                     color: "white",
                     background: "#6c757d",
                     border: "none",
                     borderRadius: "6px",
                     padding: "0 12px",
-                    height: "40px"
+                    height: "40px",
+                    minWidth: "100px"
                   }}
+                  disabled={isLoading}
                 >
                   {isSaved ? (
                     <>
@@ -320,7 +425,6 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
         })}
       </div>
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
         <div
           style={{
@@ -343,7 +447,9 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                   background: currentPage === 1 ? "#007bff" : "#f0f0f0",
                   color: currentPage === 1 ? "#fff" : "#333",
                   borderRadius: "5px",
-                  padding: "5px 10px"
+                  padding: "5px 10px",
+                  border: "none",
+                  cursor: "pointer"
                 }}
               >
                 1
@@ -367,7 +473,9 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                     background: i === currentPage ? "#007bff" : "#f0f0f0",
                     color: i === currentPage ? "#fff" : "#333",
                     borderRadius: "5px",
-                    padding: "5px 10px"
+                    padding: "5px 10px",
+                    border: "none",
+                    cursor: "pointer"
                   }}
                 >
                   {i}
@@ -390,7 +498,9 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
                       currentPage === totalPages ? "#007bff" : "#f0f0f0",
                     color: currentPage === totalPages ? "#fff" : "#333",
                     borderRadius: "5px",
-                    padding: "5px 10px"
+                    padding: "5px 10px",
+                    border: "none",
+                    cursor: "pointer"
                   }}
                 >
                   {totalPages}
