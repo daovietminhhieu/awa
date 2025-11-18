@@ -690,18 +690,21 @@
             "6": "Study and work overseas"
             },
             "costs": {
-            "service_fee": "Service fee",
-            "visa_fee": "Visa fee",
-            "flight_ticket": "Flight ticket",
-            "tuition": "Tuition fee",
-            "living_expenses": "Living expenses",
-            "note": {
-                "service_fee": "Payable in Vietnam",
-                "visa_fee": "Includes document assistance",
-                "flight_ticket": "One-way to Germany",
-                "tuition": "Depends on the program",
-                "living_expenses": "Around 800 EUR/month – self-funded"
-            }
+                "header_item":"Items",
+                "header_note":"Notes",
+                "actions":"Actions",
+                "service_fee": "Service fee",
+                "visa_fee": "Visa fee",
+                "flight_ticket": "Flight ticket",
+                "tuition": "Tuition fee",
+                "living_expenses": "Living expenses",
+                "note": {
+                    "service_fee": "Payable in Vietnam",
+                    "visa_fee": "Includes document assistance",
+                    "flight_ticket": "One-way to Germany",
+                    "tuition": "Depends on the program",
+                    "living_expenses": "Around 800 EUR/month – self-funded"
+                }
             },
             "documents": {
             "passport": "Passport",

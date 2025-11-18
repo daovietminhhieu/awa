@@ -570,3 +570,199 @@ export async function getProgrammQAList(programmId) {
     return { success: false, message: err.message };
   }
 }
+
+
+
+export async function getProgrammCosts(programmId) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/costs`, {
+    headers: { "Content-Type": "application/json" }
+  });
+
+  if (!res.ok) {
+    console.error("Failed to load cost table");
+    return null;
+  }
+  return await res.json(); // array
+}
+
+
+export async function addProgrammCost(programmId, costData) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/costs`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(costData),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to add cost");
+  return data;
+}
+
+
+export async function updateProgrammCost(programmId, costId, updates) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/costs/${costId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(updates),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to update cost");
+  return data;
+}
+
+
+export async function deleteProgrammCost(programmId, costId) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/costs/${costId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to delete cost");
+  return data;
+}
+
+
+export async function getProgrammDocuments(programmId) {
+  try {
+    const res = await fetch(`${API_BASE}/user/programm/${programmId}/documents`, {
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+      console.error("Failed to load documents list");
+      return null;
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Network error while loading documents:", error);
+    return null;
+  }
+}
+
+
+
+export async function addProgrammDocument(programmId, docData) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/documents`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(docData),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to add document");
+  return data;
+}
+
+
+export async function updateProgrammDocument(programmId, docId, updates) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/documents/${docId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify(updates),
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to update document");
+  return data;
+}
+
+
+export async function deleteProgrammDocument(programmId, docId) {
+  const res = await fetch(`${API_BASE}/user/programm/${programmId}/documents/${docId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+  });
+
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || "Failed to delete document");
+  return data;
+}
+
+
+// --- Get all steps of a programm
+export async function getProgrammSteps(programmId) {
+  try {
+    const res = await fetch(`${API_BASE}/user/programm/${programmId}/steps`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to fetch steps");
+    return data;
+  } catch (err) {
+    console.error("getProgrammSteps error:", err);
+    throw err;
+  }
+}
+
+// --- Add a step
+export async function addProgrammStep(programmId, stepData) {
+  try {
+    const res = await fetch(`${API_BASE}/user/programm/${programmId}/steps`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify(stepData),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to add step");
+    return data;
+  } catch (err) {
+    console.error("addProgrammStep error:", err);
+    throw err;
+  }
+}
+
+// --- Update a step
+export async function updateProgrammStep(programmId, stepId, updates) {
+  try {
+    const res = await fetch(`${API_BASE}/user/programm/${programmId}/steps/${stepId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+      body: JSON.stringify(updates),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to update step");
+    return data;
+  } catch (err) {
+    console.error("updateProgrammStep error:", err);
+    throw err;
+  }
+}
+
+// --- Delete a step
+export async function deleteProgrammStep(programmId, stepId) {
+  try {
+    const res = await fetch(`${API_BASE}/user/programm/${programmId}/steps/${stepId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to delete step");
+    return data;
+  } catch (err) {
+    console.error("deleteProgrammStep error:", err);
+    throw err;
+  }
+}
+
+// --- Get referral by slug
+export async function getReferralBySlug(slug) {
+  try {
+    const res = await fetch(`${API_BASE}/user/referrals/${slug}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch referral");
+    return data.referral;
+  } catch (err) {
+    console.error("getReferralBySlug error:", err);
+    throw err;
+  }
+}

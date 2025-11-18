@@ -652,6 +652,7 @@
         "journey": {
             "title": "🧭 Lộ trình chi tiết chương trình",
             "training_phase": "📌 Giai đoạn đào tạo",
+
             "cost_table_title": "💸 Bảng thống kê chi phí",
             "no_extra_costs": "⚖️ Cam kết không chi phí phát sinh",
             "documents_title": "📁 Hồ sơ cần chuẩn bị",
@@ -664,6 +665,9 @@
                 "6": "Quá trình học và làm việc tại nước ngoài"
             },
             "costs": {
+                "header_item":"Khoản mục",
+                "header_note":"Ghi chú",
+                "actions":"Hành động",
                 "service_fee": "Phí dịch vụ",
                 "visa_fee": "Phí visa",
                 "flight_ticket": "Vé máy bay",

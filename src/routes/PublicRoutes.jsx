@@ -12,7 +12,7 @@ export const publicRoutes = [
   { path: "/programm/:id", element: <Layout><Detail /></Layout> },
   { path: "/login", element: <Layout><Login /></Layout> },
   { path: "/signup", element: <Layout><SignUp /></Layout> },
-  { path: "programm-view/candidate-apply/:id", element: <Layout><CandidateExternSystemApply /></Layout> },
+  { path: "programm-view/candidate-apply/:slug", element: <Layout><CandidateExternSystemApply /></Layout> },
   { path: "success-story-detail/:id", element: <Layout><DetailSuccessStory /></Layout> },
   { path: "/tip-detail/:tipId", element: <Layout><TipDetail /></Layout> },
   { path: "/event-detail/:eventId", element: <Layout><EventDetail /></Layout> },

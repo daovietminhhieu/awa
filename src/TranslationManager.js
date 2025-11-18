@@ -72,7 +72,7 @@ class TranslationManager {
         return { success: true, key };
       }
 
-      console.log("🚀 Translating HTML content");
+      // console.log("🚀 Translating HTML content");
 
       // Dùng phương pháp dịch thông minh hơn
       const translatedHTML = await this.translateWithRetry(html, lang);
@@ -157,7 +157,7 @@ class TranslationManager {
       textNodes.push(node);
     }
 
-    console.log(`Found ${textNodes.length} text nodes to translate`);
+    // console.log(`Found ${textNodes.length} text nodes to translate`);
 
     // Dịch các text nodes song song
     const translationPromises = textNodes.map(async (textNode) => {
@@ -183,7 +183,7 @@ class TranslationManager {
   }
 
   async translateText(text, lang) {
-    console.log(`📤 Translating text: "${text}" to ${lang}`);
+    // console.log(`📤 Translating text: "${text}" to ${lang}`);
 
     const response = await fetch(API_URL, {
       method: "POST",
@@ -209,7 +209,7 @@ class TranslationManager {
     this.queue.clear();
     this.timer = null;
 
-    console.log(`🔄 Flushing ${items.length} translation requests`);
+    // console.log(`🔄 Flushing ${items.length} translation requests`);
 
     await this.processBatch(items);
   }

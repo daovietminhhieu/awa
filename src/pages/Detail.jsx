@@ -62,7 +62,7 @@ export default function ProgrammDetail({ role }) {
       {/* === CỘT PHẢI: Thông tin chương trình === */}
       <main className="programm-right-panel">
         <ProgrammOverview programm={programm} role={role} />
-        <ProgrammJourney programm={programm} />
+        <ProgrammJourney program={programm} />
       </main>
       
       </div>
