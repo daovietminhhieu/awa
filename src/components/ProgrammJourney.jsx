@@ -331,7 +331,7 @@ export default function ProgrammJourney({ program }) {
                         onChange={(e) => setEditingCost({ ...editingCost, note: e.target.value })}
                       />
                     ) : (
-                      row.note
+                      <TranslateText text={row.note} lang={lang}/>
                     )}
                   </td>
                   {user?.role === "admin" && (
