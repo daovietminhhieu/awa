@@ -527,7 +527,17 @@
                     "public_day":"Public Day"
                 },
                 "save": "Save",
-                "cancel": "Cancel"
+                "cancel": "Cancel",
+                "generating_link":"",
+                "link_ready":"Link ready",
+                "tap_to_copy":"Tap to copy",
+                "copy":"Copy",
+                "open":"Open",
+                "close":"Close",
+                "autoshared_failed":"Automatic copy failed, user can copy manually from popup",
+                "failed":"Can not generate shared link",
+                "link_copied":"Shared link copied",
+                "share_failed":"Cant share the link. Try again later"
             },
             "pagination": {
                 "page_info": "Page {{current}} of {{total}}",
@@ -645,115 +655,121 @@
    
     "programm": {
         "detail": {
-        "loading_programm": "Loading program...",
-        "not_found": "The program does not exist or has been deleted.",
-        "overview": {
-            "duration":"Duration",
-            "degrees": "Degree",
-            "type_category": "Program type",
-            "job": "Labor export",
-            "studium": "Study abroad",
-            "type": "Program form",
-            "expected_salary": "Expected salary",
-            "fee": "Fee",
-            "status": "Status",
-            "enough": "Full quota",
-            "hire": "Hiring",
-            "public_day": "Posted date",
-            "deadline": "Application deadline",
-            "bonus": "Bonus",
-            "vacancies": "Vacancies",
-            "hired": "Hired",
-            "company": "Company",
-            "land": "Country",
-            "overview": "Overview",
-            "requirements": "Requirements",
-            "age": "Age",
-            "education": "Education level",
-            "certificate": "Certificate",
-            "health": "Health condition",
-            "benefit": "Benefits",
-            "other": "Explore more"
-        },
-        "journey": {
-            "title": "🧭 Detailed program journey",
-            "training_phase": "📌 Training phases",
-            "cost_table_title": "💸 Cost breakdown table",
-            "no_extra_costs": "⚖️ No hidden or additional fees guaranteed",
-            "documents_title": "📁 Required documents",
-            "steps": {
-            "1": "Register in Vietnam",
-            "2": "Language training",
-            "3": "Interview",
-            "4": "Complete documentation",
-            "5": "Fly abroad",
-            "6": "Study and work overseas"
+            "loading_programm": "Loading program...",
+            "not_found": "The program does not exist or has been deleted.",
+            "overview": {
+                "duration":"Duration",
+                "degrees": "Degree",
+                "type_category": "Program type",
+                "job": "Labor export",
+                "studium": "Study abroad",
+                "type": "Program form",
+                "expected_salary": "Expected salary",
+                "fee": "Fee",
+                "status": "Status",
+                "enough": "Full quota",
+                "hire": "Hiring",
+                "public_day": "Posted date",
+                "deadline": "Application deadline",
+                "bonus": "Bonus",
+                "vacancies": "Vacancies",
+                "hired": "Hired",
+                "company": "Company",
+                "land": "Country",
+                "overview": "Overview",
+                "requirements": "Requirements",
+                "age": "Age",
+                "education": "Education level",
+                "certificate": "Certificate",
+                "health": "Health condition",
+                "benefit": "Benefits",
+                "other": "Explore more",
+                "share_title": "Share this program",
+                "share_action":"Click to share"
+                
             },
-            "costs": {
-                "header_item":"Items",
-                "header_note":"Notes",
-                "actions":"Actions",
-                "service_fee": "Service fee",
-                "visa_fee": "Visa fee",
-                "flight_ticket": "Flight ticket",
-                "tuition": "Tuition fee",
-                "living_expenses": "Living expenses",
-                "note": {
-                    "service_fee": "Payable in Vietnam",
-                    "visa_fee": "Includes document assistance",
-                    "flight_ticket": "One-way to Germany",
-                    "tuition": "Depends on the program",
-                    "living_expenses": "Around 800 EUR/month – self-funded"
+            "journey": {
+                "alert": {
+                    "error_loading_programm":"Failed",
+                    "add_cost_failed":"Failed",
+                    "update_cost_failed":"Failed",
+                    "delete_cost_failed":"Failed",
+                    "add_document_failed":"Failed",
+                    "update_document_failed":"Failed",
+                    "delete_document_failed":"Failed",
+                    "add_step_failed":"Failed",
+                    "update_step_failed":"Failed",
+                    "delete_step_failed":"Failed"
+                  },
+                "title": "🧭 Detailed program journey",
+                "training_phase": "📌 Training phases",
+                "actions": {
+                    "title":"Actions",
+                    "save":"Save",
+                    "cancel":"Cancel",
+                    "edit":"Edit",
+                    "delete":"Delete",
+                    "add":"Add"
+      
+                  },
+                  "enter_steps":"Enter steps...",
+                "cost_table_title": "💸 Cost breakdown table",
+                "no_extra_costs": "⚖️ No hidden or additional fees guaranteed",
+                "documents_title": "📁 Required documents",
+                "steps": {
+                "1": "Register in Vietnam",
+                "2": "Language training",
+                "3": "Interview",
+                "4": "Complete documentation",
+                "5": "Fly abroad",
+                "6": "Study and work overseas"
+                },
+                "costs": {
+                    "header_item":"Item:",
+                    "header_note":"Note:",
+                    "actions":"Actions",
+                    "enter_item":"Enter item",
+                    "enter_note":"Enter note"
+                },
+                "documents": {
+                    "enter_name":"Enter documents"
                 }
             },
-            "documents": {
-            "passport": "Passport",
-            "id_card": "National ID / Citizen ID",
-            "birth_certificate": "Birth certificate",
-            "household": "Household registration book",
-            "degree": "Diploma / Transcript",
-            "language_certificate": "Language certificate (Goethe / IELTS / JLPT...)",
-            "health_check": "Health certificate",
-            "photo": "3x4 photo",
-            "application_form": "Application form (study/work)",
-            "cv": "Curriculum Vitae (CV)"
-            }
-        },
-        "partner": {
-            "title": "Program partner information",
-            "intro_title": "📄 Partner",
-            "email": "Email",
-            "phone": "Phone",
-            "website": "Website",
-            "address": "Address",
-            "country": "Country",
-            "qa": {
-                "title": "💬 Q&A",
-                "placeholder": "Ask a question to the partner...",
-                "button": "Send question",
-                "question_prefix": "❓ Question:",
-                "answer_prefix": "💡 Answer:",
-                "no_answer": "No answer",
-                "reply":"Answer",
-                "replied":"Answered"
-            },
-            "review": {
-                "title": "⭐ Reviews",
-                "select_label": "Select rating:",
-                "placeholder": "Write your review...",
-                "button": "Submit review",
-                "select_stars":"Select star",
-                "stars": "stars",
-                "write": "Write a review",
-                "no_review": "No reviews",
-                "sending":"Sending",
-                "send_review":"Send review",
-                "cancel":"Cancel"
+            "partner": {
+                "title": "Program partner information",
+                "intro_title": "📄 Partner",
+                "email": "Email",
+                "phone": "Phone",
+                "website": "Website",
+                "address": "Address",
+                "country": "Country",
+                "qa": {
+                    "title": "💬 Q&A",
+                    "placeholder": "Ask a question to the partner...",
+                    "button": "Send question",
+                    "question_prefix": "❓ Question:",
+                    "answer_prefix": "💡 Answer:",
+                    "no_answer": "No answer",
+                    "reply":"Answer",
+                    "replied":"Answered"
+                },
+                "review": {
+                    "title": "⭐ Reviews",
+                    "select_label": "Select rating:",
+                    "placeholder": "Write your review...",
+                    "button": "Submit review",
+                    "select_stars":"Select star",
+                    "stars": "stars",
+                    "write": "Write a review",
+                    "no_review": "No reviews",
+                    "sending":"Sending",
+                    "send_review":"Send review",
+                    "cancel":"Cancel"
+                }
             }
         }
-        }
+        
     },
-
     "applyform" : {
         "title":"Apply Form",
         "name": "Fullname",

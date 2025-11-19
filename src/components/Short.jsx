@@ -65,11 +65,11 @@ export function SuccessStories() {
             <article className="success-story-card">
               <div
                 className="success-stories-content"
-                onClick={() => navigate(`/success-story-detail/${story._id}`)}
+                onClick={() => navigate(`/success-story-detail/${story.slug}`)}
               >
                 <div
                   className="story-left"
-                  onClick={() => navigate(`/success-story-detail/${story._id}`)}
+                  onClick={() => navigate(`/success-story-detail/${story.slug}`)}
                 >
                   {getFileTypeFromUrl(story.thumbnail_url) === "video" ? (
                     <video
@@ -101,7 +101,7 @@ export function SuccessStories() {
                   <h3
                     className="story-title"
                     onClick={() =>
-                      navigate(`/success-story-detail/${story._id}`)
+                      navigate(`/success-story-detail/${story.slug}`)
                     }
                   >
                     <TranslatableText text={story.title} lang={lang} />
@@ -126,7 +126,7 @@ export function SuccessStories() {
                           className="reads-more-btn"
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/success-story-detail/${story._id}`);
+                            navigate(`/success-story-detail/${story.slug}`);
                           }}
                         >
                           {story.expanded
@@ -216,7 +216,7 @@ export function TipsAndEventsSection() {
                 key={tip._id}
                 className="story-card"
                 style={{ cursor: "pointer", position: "relative" }}
-                onClick={() => navigate(`/tip-detail/${tip._id}`)}
+                onClick={() => navigate(`/tip-detail/${tip.slug}`)}
               >
                 <img src={tip.thumbnail_url} alt={tip.title} loading="lazy" />
                 <h3 style={{ textAlign: "center" }}>
@@ -253,7 +253,7 @@ export function TipsAndEventsSection() {
                         onClick={(e) => {
                           e.stopPropagation();
                           // toggleTipsExpande(tip._id);
-                          navigate(`/tip-detail/${tip._id}`);
+                          navigate(`/tip-detail/${tip.slug}`);
                         }}
                       >
                         {tip.expanded
@@ -278,7 +278,7 @@ export function TipsAndEventsSection() {
               key={event._id}
               className="story-card"
               style={{ cursor: "pointer", position: "relative" }}
-              onClick={() => navigate(`/event-detail/${event._id}`)}
+              onClick={() => navigate(`/event-detail/${event.slug}`)}
             >
               <img src={event.thumbnail_url} alt={event.title} loading="lazy" />
               <h3 style={{ textAlign: "center" }}>
@@ -356,7 +356,7 @@ export function Partner() {
 }
 
 import Footer from "./Footer";
-import { getPostById, getPostsByType } from "../api";
+import { getPostById, getPostBySlug, getPostsByType } from "../api";
 
 export function PartnerDetail() {
   const { t } = useI18n();
@@ -373,16 +373,14 @@ export function PartnerDetail() {
           <div className="partner-detail-content">
             <div className="partner-info">
               <div className="info-item">
-                <strong>{t("short.partners.detail.address_label")}:</strong>
-                <span>{t("short.partners.detail.address")}</span>
+                <div><b>{t("short.partners.detail.address_label")}</b>: {t("short.partners.detail.address")}</div>
+               
               </div>
               <div className="info-item">
-                <strong>{t("short.partners.detail.email_label")}:</strong>
-                <span>{t("short.partners.detail.email")}</span>
+                <div><b>{t("short.partners.detail.email_label")}:</b> {t("short.partners.detail.email")}</div>
               </div>
               <div className="info-item">
-                <strong>{t("short.partners.detail.phone_label")}:</strong>
-                <span>{t("short.partners.detail.phone")}</span>
+               <div> <b>{t("short.partners.detail.phone_label")}</b>: {t("short.partners.detail.phone")}</div>
               </div>
             </div>
 
@@ -550,7 +548,7 @@ export function BecomeCollaborator() {
 
 export function DetailSuccessStory() {
   const { t, lang } = useI18n();
-  const { id } = useParams();
+  const { slug } = useParams(); // Đổi từ id thành slug
   const [story, setStory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -558,7 +556,7 @@ export function DetailSuccessStory() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getPostById(id);
+        const res = await getPostBySlug(slug); // Đổi thành getPostBySlug
         setStory(res.data);
       } catch (err) {
         setError(err.message);
@@ -566,7 +564,7 @@ export function DetailSuccessStory() {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [slug]); // Đổi từ id thành slug
 
   if (loading) return <p className="loading-text">{t("loading")}</p>;
   if (error || !story)
@@ -598,16 +596,13 @@ export function DetailSuccessStory() {
         </h1>
 
         {/* Content and can translate to eng or vi */}
-        {/* <div className="detail-content ql-editor">
-          <TranslatedHtml html={story.content} lang={lang} className="" />
-          <div dangerouslySetInnerHTML={{ __html: story.content }} />
-        </div> */}
         <TranslatedHtml
           html={story.content}
           lang={lang}
           isExpanded={true}
           className="detail-content ql-editor"
         />
+        
         {/* Program Information */}
         {story.progId && (
           <div className="detail-program">
@@ -646,7 +641,7 @@ export function DetailSuccessStory() {
 }
 
 export function TipDetail() {
-  const { tipId } = useParams();
+  const { slug } = useParams(); // Đổi từ tipId thành slug
   const { t, lang } = useI18n();
   const [tip, setTip] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -655,7 +650,7 @@ export function TipDetail() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getPostById(tipId);
+        const res = await getPostBySlug(slug); // Đổi thành getPostBySlug
         setTip(res.data);
       } catch (err) {
         setError(err.message);
@@ -663,7 +658,7 @@ export function TipDetail() {
         setLoading(false);
       }
     })();
-  }, [tipId]);
+  }, [slug]); // Đổi từ tipId thành slug
 
   if (loading) return <p className="loading-text">{t("loading")}</p>;
   if (error || !tip)
@@ -672,10 +667,6 @@ export function TipDetail() {
   return (
     <div>
       <section className="detail-wrapper">
-        {/* <button onClick={() => navigate(-1)} className="back-btn">
-        ← {t("short.back")}
-      </button> */}
-
         <div className="detail-header">
           {tip.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
             <video
@@ -702,9 +693,6 @@ export function TipDetail() {
           isExpanded={true}
           className="detail-content ql-editor"
         />
-        {/* <div className="detail-content ql-editor">
-          <div dangerouslySetInnerHTML={{ __html: tip.content }} />
-        </div> */}
       </section>
       <Footer />
     </div>
@@ -712,7 +700,7 @@ export function TipDetail() {
 }
 
 export function EventDetail() {
-  const { eventId } = useParams();
+  const { slug } = useParams(); // Đổi từ eventId thành slug
   const { t, lang } = useI18n();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -721,7 +709,7 @@ export function EventDetail() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getPostById(eventId);
+        const res = await getPostBySlug(slug); // Đổi thành getPostBySlug
         setEvent(res.data);
       } catch (err) {
         setError(err.message);
@@ -729,7 +717,7 @@ export function EventDetail() {
         setLoading(false);
       }
     })();
-  }, [eventId]);
+  }, [slug]); // Đổi từ eventId thành slug
 
   if (loading) return <p className="loading-text">{t("loading")}</p>;
   if (error || !event)
@@ -738,10 +726,6 @@ export function EventDetail() {
   return (
     <div>
       <section className="detail-wrapper">
-        {/* <button onClick={() => navigate(-1)} className="back-btn">
-        ← {t("short.back")}
-      </button> */}
-
         <div className="detail-header">
           {event.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
             <video
@@ -775,10 +759,6 @@ export function EventDetail() {
           showProgress={true}
           className="detail-content ql-editor"
         />
-
-        {/* <div className="detail-content ql-editor">
-          <div dangerouslySetInnerHTML={{ __html: event.content }} />
-        </div> */}
       </section>
       <Footer />
     </div>

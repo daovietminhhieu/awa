@@ -374,7 +374,31 @@
   content: "32px";
 }
 
+/* Thêm vào PostManagement.css */
+.quill-toolbar-info {
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border: 1px solid #e9ecef;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  font-size: 12px;
+  color: #6c757d;
+}
 
+.ql-toolbar .ql-delete-media::before {
+  content: "🗑️";
+  font-size: 14px;
+}
+
+.ql-toolbar .ql-delete-media {
+  width: auto !important;
+  padding: 0 8px !important;
+}
+
+.ql-toolbar .ql-delete-media:hover {
+  background: #fff3cd;
+  border-radius: 3px;
+}
 
   .ql-editor iframe {
     width: 100% !important;

@@ -9,12 +9,12 @@ import Layout from "./Layout";
 
 export const publicRoutes = [
   { path: "/home", element: <Layout><HomePage /></Layout> },
-  { path: "/programm/:id", element: <Layout><Detail /></Layout> },
+  { path: "/programm/:slug", element: <Layout><Detail /></Layout> },
   { path: "/login", element: <Layout><Login /></Layout> },
   { path: "/signup", element: <Layout><SignUp /></Layout> },
   { path: "programm-view/candidate-apply/:slug", element: <Layout><CandidateExternSystemApply /></Layout> },
-  { path: "success-story-detail/:id", element: <Layout><DetailSuccessStory /></Layout> },
-  { path: "/tip-detail/:tipId", element: <Layout><TipDetail /></Layout> },
-  { path: "/event-detail/:eventId", element: <Layout><EventDetail /></Layout> },
+  { path: "success-story-detail/:slug", element: <Layout><DetailSuccessStory /></Layout> },
+  { path: "/tip-detail/:slug", element: <Layout><TipDetail /></Layout> },
+  { path: "/event-detail/:slug", element: <Layout><EventDetail /></Layout> },
   { path: "/collabor", element: <Layout><PartnerDetail /></Layout> },
 ];

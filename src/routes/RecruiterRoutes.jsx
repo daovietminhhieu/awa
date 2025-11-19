@@ -11,5 +11,5 @@ export const recruiterRoutes = [
   { path: "/recruiter/programmsview", element: <PrivateRoute role="recruiter"><Layout><ReProgrammsView /></Layout></PrivateRoute> },
   { path: "/recruiter/candidates-submittion", element: <PrivateRoute role="recruiter"><Layout><ReCandidatesSubmittion /></Layout></PrivateRoute> },
   { path: "/recruiter/profile", element: <PrivateRoute role="recruiter"><Layout><ReProfile /></Layout></PrivateRoute> },
-  { path: "/recruiter/programmsdetail/:id", element: <PrivateRoute role="recruiter"><Layout><ProgrammsDetail /></Layout></PrivateRoute> },
+  { path: "/recruiter/programmsdetail/:slug", element: <PrivateRoute role="recruiter"><Layout><ProgrammsDetail /></Layout></PrivateRoute> },
 ];

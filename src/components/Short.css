@@ -575,3 +575,157 @@ body {
     transform: translate(-50%, -50%);
   }
 }
+
+.partner-detail-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-detail-section {
+  flex: 1;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.partner-detail-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+}
+
+.partner-detail-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.partner-divider {
+  border: none;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3498db, transparent);
+  margin: 30px 0;
+}
+
+.partner-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.partner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+  transition: all 0.3s ease;
+  gap: 15px;
+}
+
+.info-item:hover {
+  background: #e3f2fd;
+  transform: translateX(5px);
+}
+
+/* QUAN TRỌNG: Đảm bảo label và value cùng hàng */
+.info-item strong {
+  min-width: 120px;
+  color: #2c3e50;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.info-item span {
+  color: #555;
+  font-size: 1rem;
+  flex: 1;
+}
+
+.partner-message {
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.partner-goodbye {
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .partner-detail-section {
+    padding: 40px 15px;
+  }
+
+  .partner-detail-container {
+    padding: 30px 20px;
+  }
+
+  .partner-detail-title {
+    font-size: 2rem;
+  }
+
+  .info-item {
+    gap: 10px;
+  }
+
+  .info-item strong {
+    min-width: 100px;
+    font-size: 0.95rem;
+  }
+
+  .info-item span {
+    font-size: 0.95rem;
+  }
+
+  .partner-message {
+    padding: 20px;
+  }
+
+  .partner-goodbye {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .partner-detail-title {
+    font-size: 1.8rem;
+  }
+  
+  .partner-detail-container {
+    padding: 20px 15px;
+  }
+  
+  .info-item {
+    padding: 12px 15px;
+    gap: 8px;
+  }
+
+  .info-item strong {
+    min-width: 80px;
+    font-size: 0.9rem;
+  }
+
+  .info-item span {
+    font-size: 0.9rem;
+  }
+}

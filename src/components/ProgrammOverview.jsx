@@ -5,6 +5,7 @@ import { getPostById, requestASharedLink, sendFilledInformationsForm } from "../
 import TranslateableText from "../TranslateableText";
 
 function ApplicationForm({ to, translator }) {
+  const {t,lang} = useI18n();
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -24,7 +25,7 @@ function ApplicationForm({ to, translator }) {
     try {
       const result = await sendFilledInformationsForm(to, form);
       if (result.success) {
-        alert("Application submitted successfully!");
+        alert(t('applyform.alert.success'));
         setForm({
           fullName: "",
           email: "",
@@ -34,11 +35,11 @@ function ApplicationForm({ to, translator }) {
           otherDocs: [],
         });
       } else {
-        alert("Submission failed: " + (result.message || "Unknown error"));
+        alert(t('applyform.failed') + (result.message || t('applyform.unknown')));
       }
     } catch (error) {
       console.error("Submit error:", error);
-      alert("Failed to submit application form. Please try again later.");
+      alert(t('applyform.error'));
     }
   };
 
@@ -122,7 +123,7 @@ function ProgrammTags({ tags, t, lang }) {
           className="tag"
           style={{ background: tag.bg || "rgba(0,0,0,0.05)" }}
         >
-          <b>{tag.label}:</b> <TranslateableText text={tag.value} lang={lang} />
+          <b><TranslateableText text={tag.label} lang={lang}/>:</b> <TranslateableText text={tag.value} lang={lang} />
         </span>
       ))}
     </div>
@@ -291,7 +292,7 @@ function ProgrammInfoBoxes({ programm, currentUser, onShare, t, lang }) {
     <div className="programm-info-boxes">
       <div className="info-box">
         <b>{t("programm.detail.overview.company")}:</b>
-        <p>{programm.company}</p>
+        <p><TranslateableText text={programm.company} lang={lang}/></p>
       </div>
       <div className="info-box">
         <b>{t("programm.detail.overview.land")}:</b>
@@ -601,11 +602,11 @@ export default function ProgrammOverview({ programm, role, to }) {
                     <a
                       href={
                         post.type_category === "tip"
-                          ? `/tip-detail/${post._id}`
+                          ? `/tip-detail/${post.slug}`
                           : post.type_category === "event"
-                          ? `/event-detail/${post._id}`
+                          ? `/event-detail/${post.slug}`
                           : post.type_category === "story"
-                          ? `/success-story-detail/${post._id}`
+                          ? `/success-story-detail/${post.slug}`
                           : post.type_category === "partner"
                           ? `/collabor?id=${post._id}`
                           : "#"

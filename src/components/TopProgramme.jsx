@@ -67,7 +67,7 @@ function TopProgrammeSlider() {
   const toggleExpand = (idx) => setExpandedIndex(expandedIndex === idx ? null : idx);
 
   const handleClickProgram = (program) => {
-    navigate(`/programm/${program._id}`, { state: { program } });
+    navigate(`/programm/${program.slug}`, { state: { program } });
   };
 
   return (

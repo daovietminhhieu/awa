@@ -262,7 +262,7 @@ export default function AdminProgrammsList({
           return (
             <div key={p._id} className="admin-program-card">
               <Link
-                to={`/admin/programmsdetail/${p._id}`}
+                to={`/admin/programmsdetail/${p.slug}`}
                 className="admin-program-link"
                 style={{ textDecoration: "none", color: "inherit" }}
               >

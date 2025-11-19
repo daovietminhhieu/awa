@@ -16,6 +16,7 @@ import {
   deleteProgrammStep,
 } from "../api";
 import { useAuth } from "../context/AuthContext";
+import TranslateText from "../TranslateableText";
 
 // Hook để theo dõi chiều rộng màn hình
 function useWindowWidth() {
@@ -29,7 +30,7 @@ function useWindowWidth() {
 }
 
 export default function ProgrammJourney({ program }) {
-  const { t } = useI18n();
+  const { t,lang } = useI18n();
   const { user } = useAuth();
   const [programm, setProgramm] = useState(null);
 
@@ -67,7 +68,7 @@ export default function ProgrammJourney({ program }) {
       setDocuments(docs || []);
       setSteps(st || []);
     } catch (error) {
-      console.error("Error loading program data:", error);
+      console.error(t('programm.journey.alert.error_loading_programm'), error);
     }
   };
 
@@ -79,7 +80,7 @@ export default function ProgrammJourney({ program }) {
       setCosts([...costs, created]);
       setNewCost({ item: "", note: "" });
     } catch (e) {
-      console.error("Add cost failed:", e);
+      console.error(t('programm.journey.alert.add_cost_failed'), e);
     }
   };
 
@@ -89,7 +90,7 @@ export default function ProgrammJourney({ program }) {
       setCosts(costs.map((c) => (c._id === updated._id ? updated : c)));
       setEditingCost(null);
     } catch (e) {
-      console.error("Update cost failed:", e);
+      console.error(t('programm.journey.alert.update_cost_failed'), e);
     }
   };
 
@@ -98,7 +99,7 @@ export default function ProgrammJourney({ program }) {
       await deleteProgrammCost(program._id, id);
       setCosts(costs.filter((c) => c._id !== id));
     } catch (e) {
-      console.error("Delete cost failed:", e);
+      console.error(t('programm.journey.alert.delete_cost_failed'), e);
     }
   };
 
@@ -110,7 +111,7 @@ export default function ProgrammJourney({ program }) {
       setDocuments([...documents, created]);
       setNewDoc({ name: "" });
     } catch (e) {
-      console.error("Add document failed:", e);
+      console.error(t('programm.journey.alert.add_document_failed'), e);
     }
   };
 
@@ -120,7 +121,7 @@ export default function ProgrammJourney({ program }) {
       setDocuments(documents.map((d) => (d._id === updated._id ? updated : d)));
       setEditingDoc(null);
     } catch (e) {
-      console.error("Update document failed:", e);
+      console.error(t('programm.journey.alert.update_document_failed'), e);
     }
   };
 
@@ -129,7 +130,7 @@ export default function ProgrammJourney({ program }) {
       await deleteProgrammDocument(program._id, id);
       setDocuments(documents.filter((d) => d._id !== id));
     } catch (e) {
-      console.error("Delete document failed:", e);
+      console.error(t('programm.journey.alert.delete_document_failed'), e);
     }
   };
 
@@ -142,7 +143,7 @@ export default function ProgrammJourney({ program }) {
       setSteps([...steps, created]);
       setNewStepName("");
     } catch (err) {
-      console.error("Add step failed:", err);
+      console.error(t('programm.journey.alert.add_step_failed'), err);
     }
   };
 
@@ -152,7 +153,7 @@ export default function ProgrammJourney({ program }) {
       setSteps(steps.map((s) => (s._id === updated._id ? updated : s)));
       setEditingStep(null);
     } catch (err) {
-      console.error("Update step failed:", err);
+      console.error(t('programm.journey.alert.update_step_failed'), err);
     }
   };
 
@@ -161,7 +162,7 @@ export default function ProgrammJourney({ program }) {
       await deleteProgrammStep(program._id, id);
       setSteps((prev) => prev.filter((s) => s._id !== id).map((s, i) => ({ ...s, step: i + 1 })));
     } catch (err) {
-      console.error("Delete step failed:", err);
+      console.error(t('programm.journey.alert.delete_step_failed'), err);
     }
   };
 
@@ -197,7 +198,7 @@ export default function ProgrammJourney({ program }) {
     <div className="programm-journey">
       {/* STEPS */}
       <section>
-        <h3>Program Steps</h3>
+        <h3>{t('programm.detail.journey.title')}</h3>
         <div style={{height:10}}></div>
         <ul style={{ display: "flex", flexDirection:"column", width:500, padding: 0, listStyleType: "disc" }}>
           {steps.map((step) => (
@@ -211,19 +212,19 @@ export default function ProgrammJourney({ program }) {
               ) : (
                 <>
                   <span style={{ marginRight: 8 }}>•</span>
-                  <span style={{ flexGrow: 1 }}>{step.name}</span></>
+                  <span style={{ flexGrow: 1 }}><TranslateText text={step.name} lang={lang}/></span></>
               )}
               {user?.role === "admin" && (
                 <span className="actions" style={{ display: "flex", gap: "5px" }}>
                   {editingStep?._id === step._id ? (
                     <>
-                      <button onClick={onUpdateStep}>Save</button>
-                      <button onClick={() => setEditingStep(null)}>Cancel</button>
+                      <button onClick={onUpdateStep}>{t('programm.detail.journey.actions.save')}</button>
+                      <button onClick={() => setEditingStep(null)}>{t('programm.detail.journey.actions.cancel')}</button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => setEditingStep(step)}>Edit</button>
-                      <button onClick={() => onDeleteStep(step._id)}>Delete</button>
+                      <button onClick={() => setEditingStep(step)}>{t('programm.detail.journey.actions.edit')}</button>
+                      <button onClick={() => onDeleteStep(step._id)}>{t('programm.detail.journey.actions.delete')}</button>
                     </>
                   )}
                 </span>
@@ -234,12 +235,12 @@ export default function ProgrammJourney({ program }) {
         {user?.role === "admin" && !editingStep && (
           <div style={addDiv}>
             <input
-              placeholder="Step name…"
+              placeholder={t('programm.detail.journey.enter_steps')}
               value={newStepName}
               onChange={(e) => setNewStepName(e.target.value)}
               style={{ padding: "4px 6px", marginRight: "8px" }}
             />
-            <button onClick={onAddStep}>Add</button>
+            <button onClick={onAddStep}>{t('programm.detail.journey.actions.add')}</button>
           </div>
         )}
       </section>
@@ -248,7 +249,7 @@ export default function ProgrammJourney({ program }) {
 
       {/* DOCUMENTS */}
       <section>
-        <h3>Required Documents</h3>
+        <h3>{t('programm.detail.journey.documents_title')}</h3>
         <div style={{height:10}}></div>
         <ul style={{ display: "flex", flexDirection:"column", width:500, flexWrap: "wrap" }}>
           {documents.map((doc) => (
@@ -261,19 +262,19 @@ export default function ProgrammJourney({ program }) {
                 />
               ) : (
                 <><span style={{ marginRight: 8 }}>•</span>
-                <span style={{ flexGrow: 1 }}>{doc.name}</span></>
+                <span style={{ flexGrow: 1 }}><TranslateText text={doc.name} lang={lang}/></span></>
               )}
               {user?.role === "admin" && (
                 <span className="actions" style={{ display: "flex", gap: "5px" }}>
                   {editingDoc?._id === doc._id ? (
                     <>
-                      <button onClick={onUpdateDocument}>Save</button>
-                      <button onClick={() => setEditingDoc(null)}>Cancel</button>
+                      <button onClick={onUpdateDocument}>{t('programm.detail.journey.actions.save')}</button>
+                      <button onClick={() => setEditingDoc(null)}>{t('programm.detail.journey.actions.cancel')}</button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => setEditingDoc(doc)}>Edit</button>
-                      <button onClick={() => onDeleteDocument(doc._id)}>Delete</button>
+                      <button onClick={() => setEditingDoc(doc)}>{t('programm.detail.journey.actions.edit')}</button>
+                      <button onClick={() => onDeleteDocument(doc._id)}>{t('programm.detail.journey.actions.delete')}</button>
                     </>
                   )}
                 </span>
@@ -285,12 +286,12 @@ export default function ProgrammJourney({ program }) {
         {user?.role === "admin" && !editingDoc && (
           <div style={addDiv}>
             <input
-              placeholder="Document name…"
+              placeholder={t('programm.detail.journey.documents.enter_name')}
               value={newDoc.name}
               onChange={(e) => setNewDoc({ ...newDoc, name: e.target.value })}
               style={{ padding: "4px 6px", marginRight: "8px" }}
             />
-            <button onClick={onAddDocument}>Add</button>
+            <button onClick={onAddDocument}>{t('programm.detail.journey.actions.add')}</button>
           </div>
         )}
       </section>
@@ -299,15 +300,15 @@ export default function ProgrammJourney({ program }) {
 
       {/* COST TABLE */}
       <section>
-        <h3>Costs</h3>
+        <h3>{t('programm.detail.journey.cost_table_title')}</h3>
         <div style={{height:10}}></div>
         {!isMobile ? (
           <table style={tableStyle}>
             <thead>
               <tr>
-                <th style={thTdStyle}>Item</th>
-                <th style={thTdStyle}>Note</th>
-                {user?.role === "admin" && <th style={thTdStyle}>Actions</th>}
+                <th style={thTdStyle}>{t('programm.detail.journey.costs.header_item')}</th>
+                <th style={thTdStyle}>{t('programm.detail.journey.costs.header_note')}</th>
+                {user?.role === "admin" && <th style={thTdStyle}>{t('programm.detail.journey.actions.title')}</th>}
               </tr>
             </thead>
             <tbody>
@@ -320,7 +321,7 @@ export default function ProgrammJourney({ program }) {
                         onChange={(e) => setEditingCost({ ...editingCost, item: e.target.value })}
                       />
                     ) : (
-                      row.item
+                      <TranslateText text={row.item} lang={lang}/>
                     )}
                   </td>
                   <td style={thTdStyle}>
@@ -337,13 +338,13 @@ export default function ProgrammJourney({ program }) {
                     <td style={{...thTdStyle, gap:5, display:"flex"}} >
                       {editingCost?._id === row._id ? (
                         <>
-                          <button onClick={onUpdateCost}>Save</button>
-                          <button onClick={() => setEditingCost(null)}>Cancel</button>
+                          <button onClick={onUpdateCost}>{t('programm.detail.journey.actions.save')}</button>
+                          <button onClick={() => setEditingCost(null)}>{t('programm.detail.journey.actions.cancel')}</button>
                         </>
                       ) : (
                         <>
-                          <button onClick={() => setEditingCost(row)}>Edit</button>
-                          <button onClick={() => onDeleteCost(row._id)}>Delete</button>
+                          <button onClick={() => setEditingCost(row)}>{t('programm.detail.journey.actions.edit')}</button>
+                          <button onClick={() => onDeleteCost(row._id)}>{t('programm.detail.journey.actions.delete')}</button>
                         </>
                       )}
                     </td>
@@ -356,20 +357,20 @@ export default function ProgrammJourney({ program }) {
                 <tr>
                   <td style={thTdStyle}>
                     <input
-                      placeholder="Item…"
+                      placeholder={t('programm.detail.journey.costs.enter_item')}
                       value={newCost.item}
                       onChange={(e) => setNewCost({ ...newCost, item: e.target.value })}
                     />
                   </td>
                   <td style={thTdStyle}>
                     <input
-                      placeholder="Note…"
+                      placeholder={t('programm.detail.journey.costs.enter_item')}
                       value={newCost.note}
                       onChange={(e) => setNewCost({ ...newCost, note: e.target.value })}
                     />
                   </td>
                   <td style={thTdStyle}>
-                    <button onClick={onAddCost}>Add</button>
+                    <button onClick={onAddCost}>{t('programm.detail.journey.actions.add')}</button>
                   </td>
                 </tr>
               )}
@@ -380,7 +381,7 @@ export default function ProgrammJourney({ program }) {
             {costs.map((row) => (
               <div key={row._id} style={mobileCostRowStyle}>
                 <div>
-                  <strong>Item:</strong> {editingCost?._id === row._id ? (
+                  <strong>{t('programm.detail.journey.costs.header_item')}</strong> {editingCost?._id === row._id ? (
                     <input
                       value={editingCost.item}
                       onChange={(e) => setEditingCost({ ...editingCost, item: e.target.value })}
@@ -391,7 +392,7 @@ export default function ProgrammJourney({ program }) {
                   )}
                 </div>
                 <div>
-                  <strong>Note:</strong> {editingCost?._id === row._id ? (
+                  <strong>{t('programm.detail.journey.costs.header_note')}</strong> {editingCost?._id === row._id ? (
                     <input
                       value={editingCost.note}
                       onChange={(e) => setEditingCost({ ...editingCost, note: e.target.value })}
@@ -405,13 +406,13 @@ export default function ProgrammJourney({ program }) {
                   <div style={{display:"flex", gap:5,}}>
                     {editingCost?._id === row._id ? (
                       <>
-                        <button onClick={onUpdateCost}>Save</button>
-                        <button onClick={() => setEditingCost(null)}>Cancel</button>
+                        <button onClick={onUpdateCost}>{t('programm.detail.journey.actions.save')}</button>
+                        <button onClick={() => setEditingCost(null)}>{t('programm.journey.actions.cancel')}</button>
                       </>
                     ) : (
                       <>
-                        <button onClick={() => setEditingCost(row)}>Edit</button>
-                        <button onClick={() => onDeleteCost(row._id)}>Delete</button>
+                        <button onClick={() => setEditingCost(row)}>{t('programm.detail.journey.actions.edit')}</button>
+                        <button onClick={() => onDeleteCost(row._id)}>{t('programm.detail.journey.actions.delete')}</button>
                       </>
                     )}
                   </div>
@@ -423,18 +424,18 @@ export default function ProgrammJourney({ program }) {
             {user?.role === "admin" && (
               <div style={{ ...mobileCostRowStyle }}>
                 <input
-                  placeholder="Item…"
+                  placeholder={t('programm.detail.journey.costs.enter_item')}
                   value={newCost.item}
                   onChange={(e) => setNewCost({ ...newCost, item: e.target.value })}
                   style={{width:"50%"}}
                 />
                 <input
-                  placeholder="Note…"
+                  placeholder={t('programm.detail.journey.costs.enter_note')}
                   value={newCost.note}
                   onChange={(e) => setNewCost({ ...newCost, note: e.target.value })}
                   style={{width:"50%"}}
                 />
-                <button style={{width:"fit-content", marginTop:5}} onClick={onAddCost}>Add</button>
+                <button style={{width:"fit-content", marginTop:5}} onClick={onAddCost}>{t('programm.detail.journey.actions.add')}</button>
               </div>
             )}
           </div>

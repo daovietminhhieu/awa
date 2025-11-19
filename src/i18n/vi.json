@@ -508,7 +508,17 @@
       "tabs": {
         "all": "Tất cả",
         "saved": "Đã lưu",
-        "shared": "Đã chia sẻ"
+        "shared": "Đã chia sẻ",
+        "generating_link":"Tạo liên kết",
+        "link_ready":"Liên kết sẵn sàng",
+        "tap_to_copy":"Bấm để sao chép",
+        "copy":"Sao chép",
+        "open":"Mở",
+        "close":"Đóng",
+        "autoshared_failed":"Tự động copy không thành công. Copy thủ công từ popup",
+        "failed":"Không thể tạo liên kết chia sẻ",
+        "link_copied":"Liên kết đã được sao chép",
+        "share_failed":"Không thể sao chép. Vui lòng thử lại sau."
       },
       "duration": "Thời gian",
       "status": "Trạng thái",
@@ -646,16 +656,42 @@
             "certificate": "Chứng chỉ",
             "health":"Tình trạng sức khỏe",
             "benefit": "Chế độ đãi ngộ",
-            "other":"Khám phá thêm"
+            "other":"Khám phá thêm",
+            "share_title":"Chia sẻ chương trình",
+            "share_action":"Bấm để chia sẻ",
+            "share_click": {
+
+          }
             
         },
         "journey": {
+            "alert": {
+              "error_loading_programm":"Tải chương trình không thành công",
+              "add_cost_failed":"Thêm không thành công",
+              "update_cost_failed":"Cập nhật không thành công",
+              "delete_cost_failed":"Xoá không thành công:",
+              "add_document_failed":"Thêm không thành công",
+              "update_document_failed":"Cập nhật không thành công",
+              "delete_document_failed":"Xoá không thành công:",
+              "add_step_failed":"Thêm không thành công",
+              "update_step_failed":"Cập nhật không thành công",
+              "delete_step_failed":"Xoá không thành công:"
+            },
             "title": "🧭 Lộ trình chi tiết chương trình",
             "training_phase": "📌 Giai đoạn đào tạo",
+            "actions": {
+              "title":"Hành động",
+              "save":"Lưu",
+              "cancel":"Hủy",
+              "edit":"Chỉnh sửa",
+              "delete":"Xóa",
+              "add":"Thêm"
 
+            },
             "cost_table_title": "💸 Bảng thống kê chi phí",
             "no_extra_costs": "⚖️ Cam kết không chi phí phát sinh",
             "documents_title": "📁 Hồ sơ cần chuẩn bị",
+            "enter_steps":"Điền tên bước...",
             "steps": {
                 "1": "Đăng ký ở Việt Nam",
                 "2": "Học tiếng",
@@ -665,33 +701,15 @@
                 "6": "Quá trình học và làm việc tại nước ngoài"
             },
             "costs": {
-                "header_item":"Khoản mục",
-                "header_note":"Ghi chú",
+                "header_item":"Khoản mục:",
+                "header_note":"Ghi chú:",
                 "actions":"Hành động",
-                "service_fee": "Phí dịch vụ",
-                "visa_fee": "Phí visa",
-                "flight_ticket": "Vé máy bay",
-                "tuition": "Học phí",
-                "living_expenses": "Chi phí sinh hoạt",
-                "note": {
-                "service_fee": "Thanh toán tại Việt Nam",
-                "visa_fee": "Bao gồm hỗ trợ hồ sơ",
-                "flight_ticket": "Một chiều sang Đức",
-                "tuition": "Tùy chương trình",
-                "living_expenses": "Khoảng 800 EUR/tháng – Tự túc"
-                }
+                "enter_item":"Điền khoản mục",
+                "enter_note":"Điền ghi chú"
             },
             "documents": {
-                "passport": "Hộ chiếu (Passport)",
-                "id_card": "CMND / CCCD",
-                "birth_certificate": "Giấy khai sinh",
-                "household": "Sổ hộ khẩu",
-                "degree": "Bằng cấp / Học bạ",
-                "language_certificate": "Chứng chỉ tiếng (Goethe / IELTS / JLPT...)",
-                "health_check": "Giấy khám sức khỏe",
-                "photo": "Ảnh thẻ 3x4",
-                "application_form": "Đơn xin nhập học / Đơn xin việc",
-                "cv": "Sơ yếu lý lịch"
+                "enter_name":"Điền tên hồ sơ"
+                
             }
             },
             "partner": {
@@ -734,7 +752,14 @@
     "cover": "Thư Ứng Tuyển",
     "resume": "Tệp Hồ Sơ",
     "enter_resume": "Nhập tệp hồ sơ",
-    "submit": "Gửi Đơn Ứng Tuyển"
+    "submit": "Gửi Đơn Ứng Tuyển",
+    "alert": {
+      "success":"Gửi đơn thành công",
+      "failed":"Gửi đơn thất bại: ",
+      "unknown":"Lỗi không xác định",
+      "error":"Gửi đơn không thành công. Hãy thử lại sau"
+    }
+    
     },
   "footer": {
     "subtitle":"Tham gia cùng chúng tôi và bắt đầu hành trình",

@@ -76,6 +76,23 @@ export async function getProgrammsList() {
   return await res.json();
 }
 
+// Lấy programm bằng slug (thay thế cho getProgrammById)
+export const getProgrammBySlug = async (slug) => {
+  try {
+    const response = await fetch(`${API_BASE}/db/programm/slug/${slug}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching programm by slug:", error);
+    throw error;
+  }
+};
+
 export async function getProgrammById(id) {
   const res = await fetch(`${API_BASE}/db/programm/${id}`);
   if (!res.ok) throw new Error("No programm found");
@@ -313,7 +330,7 @@ export async function createPost(data) {
       ...authHeaders(),
     };
     console.log(headers);
-    const response = await fetch(`${API_BASE}/user/`, {
+    const response = await fetch(`${API_BASE}/user/post`, {
       method: "POST",
       headers,
       body: JSON.stringify(data),
@@ -395,6 +412,22 @@ export async function getPostsByType(type) {
   return result; // Trả về toàn bộ object (có .data)
 }
 
+export async function getPostBySlug (slug) {
+  try {
+    const response = await fetch(`${API_BASE}/user/post/slug/${slug}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching post by slug:", error);
+    throw error;
+  }
+};
+
 // ====================== FILE UPLOAD ======================
 
 /**
@@ -464,7 +497,7 @@ export async function updatePost(id, updates) {
       ...authHeaders(),
     };
 
-    const res = await fetch(`${API_BASE}/user/update/${id}`, {
+    const res = await fetch(`${API_BASE}/user/post/update/${id}`, {
       method: "PUT",
       headers,
       body: JSON.stringify(updates),  
@@ -483,7 +516,7 @@ export async function removePost(id) {
     ...authHeaders()
   }
 
-  const res = await fetch(`${API_BASE}/user/remove/${id}`, {
+  const res = await fetch(`${API_BASE}/user/post/remove/${id}`, {
     method: "DELETE",
     headers
   });

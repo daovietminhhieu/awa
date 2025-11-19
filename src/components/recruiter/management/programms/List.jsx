@@ -179,7 +179,7 @@ export default function ProgrammsList({ programms, savedPrograms, toggleSaveProg
               }}
             >
               <Link
-                to={`/recruiter/programmsdetail/${p._id}`}
+                to={`/recruiter/programmsdetail/${p.slug}`}
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between" }}>

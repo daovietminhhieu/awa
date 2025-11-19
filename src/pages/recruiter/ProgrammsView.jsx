@@ -89,7 +89,7 @@ export default function ProgrammsManagement() {
   };
   
   const handleSelectProgramm = (programm) => {
-    navigate(`/programm/${programm._id}`, { state: { programm } });
+    navigate(`/programm/${programm.slug}`, { state: { programm } });
   };
 
 

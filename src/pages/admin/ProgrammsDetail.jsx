@@ -1,13 +1,13 @@
 import { useLocation, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useI18n } from "../../i18n";
-import { getProgrammById } from "../../api"; // giả sử bạn có api này để lấy detail theo id
+import { getProgrammBySlug } from "../../api"; // Đổi thành hàm lấy theo slug
 import "./ProgrammsDetail.css";
 import ProgrammDetail from "../Detail";
 
 export default function ProgrammsDetail() {
   const location = useLocation();
-  const { id } = useParams();
+  const { slug } = useParams(); // Đổi từ id thành slug
   const { t } = useI18n();
 
   // Nếu đã được truyền programm qua location.state thì dùng luôn
@@ -18,11 +18,15 @@ export default function ProgrammsDetail() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!programm && id) {
+    if (!programm && slug) {
       setLoading(true);
-      getProgrammById(id)
+      getProgrammBySlug(slug) // Đổi thành hàm lấy theo slug
         .then((res) => {
-          setProgramm(res.data);
+          if (res.success) {
+            setProgramm(res.data);
+          } else {
+            throw new Error(res.message || "Failed to load programm details");
+          }
           setLoading(false);
         })
         .catch((err) => {
@@ -30,7 +34,7 @@ export default function ProgrammsDetail() {
           setLoading(false);
         });
     }
-  }, [id, programm]);
+  }, [slug, programm]); // Đổi từ id thành slug
 
   if (loading) return <p>Loading programm detail...</p>;
   if (error) return <p style={{color: 'red'}}>{`Error: ${error}`}</p>;
