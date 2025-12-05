@@ -1,17 +1,16 @@
 import React from "react";
-import PrivateRoute from "./PrivateRoute";
-import Layout from "./Layout";
+import PrivateRoute from "./PrivateRoutes";
 
-import AdOverView from "../pages/admin/Overview";
-import AdCandidatesManagement from "../pages/admin/CandidatesManagement";
-import AdProgrammsManagement from "../pages/admin/ProgrammsManagement";
-import AdProfile from "../pages/admin/Profile";
-import AdProgrammsDetail from "../pages/admin/ProgrammsDetail";
+import AdOverView from "../page/overview/Overview";
+import AdCandidatesManagement from "../page/candidates_tracker/CandidatesTracker";
+import AdProgrammsManagement from "../page/programms/all/AllPrograms";
+import AdProfile from "../page/profile/Profile";
+import AdProgrammsDetail from "../page/detail/program/Detail";
 
 export const adminRoutes = [
-  { path: "/admin/overview", element: <PrivateRoute role="admin"><Layout><AdOverView /></Layout></PrivateRoute> },
-  { path: "/admin/candidates-management", element: <PrivateRoute role="admin"><Layout><AdCandidatesManagement /></Layout></PrivateRoute> },
-  { path: "/admin/programms-management", element: <PrivateRoute role="admin"><Layout><AdProgrammsManagement /></Layout></PrivateRoute> },
-  { path: "/admin/programmsdetail/:slug", element: <PrivateRoute role="admin"><Layout><AdProgrammsDetail /></Layout></PrivateRoute> },
-  { path: "/admin/profile", element: <PrivateRoute role="admin"><Layout><AdProfile /></Layout></PrivateRoute> },
+  { path: "/admin/overview", element: <PrivateRoute role="admin"><AdOverView /></PrivateRoute> },
+  { path: "/admin/candidates-management", element: <PrivateRoute role="admin"><AdCandidatesManagement /></PrivateRoute> },
+  { path: "/admin/programms-management", element: <PrivateRoute role="admin"><AdProgrammsManagement /></PrivateRoute> },
+  { path: "/admin/programmsdetail/:slug", element: <PrivateRoute role="admin"><AdProgrammsDetail /></PrivateRoute> },
+  { path: "/admin/profile", element: <PrivateRoute role="admin"><AdProfile /></PrivateRoute> },
 ];

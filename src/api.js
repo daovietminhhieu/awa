@@ -799,3 +799,20 @@ export async function getReferralBySlug(slug) {
     throw err;
   }
 }
+
+export async function deleteSharedProgramsById(id) {
+  try {
+    const res = await fetch(`${API_BASE}/user/referrals/remove/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to delete shared programm");
+    return data;
+  } catch (err) {
+    console.error("deleteSharedProgramsById error:", err);
+    throw err;
+  }
+}
+

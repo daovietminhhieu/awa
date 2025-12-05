@@ -1,0 +1,47 @@
+.color-selector-button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.color-selector-dropdown {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  width: 240px;
+  background: white;
+  border-radius: 8px;
+  padding: 8px 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  z-index: 9999;
+
+  /* 👇 thêm phần này để scroll */
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.color-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.color-item:hover {
+  background: #f0f0f0;
+}
+
+.color-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.color-check {
+  margin-left: auto;
+  color: green;
+  font-size: 14px;
+}

@@ -16,50 +16,23 @@
     "review_title": "Đánh giá nổi bật",
     "hide":"ẩn",
     "more":"thêm",
-    "topprogramme": "Chương trình nổi bật",
+    "top_programs": {
+      "title":"Chương trình hàng đầu",
+      "reviews":"đánh giá",
+      "no_reviews":"chưa có đánh giá"
+
+    },
+    "featured_news": {
+      "title":"Tin nổi bật"
+    },
     "why": "Tại sao chọn chúng tôi",
-    "suc": "Câu chuyện thành công",
+    "suc": {
+      "title": "Câu chuyện thành công"
+    },
     "tae": "Mẹo & Sự kiện",
     "prts": "Trở thành đối tác của chúng tôi",
     "bop": "Cộng tác viên",
-    "topprogramm": {
-        "title":"Chương trình nổi bật",
-        "list": [
-        
-            {
-                "title": "Lãnh đạo và Quản trị Hiệu quả",
-                "image": "https://picsum.photos/seed/leadership/300/200",
-                "description":
-                "Chương trình được thiết kế dành cho các nhà quản lý và lãnh đạo tương lai, giúp bạn phát triển kỹ năng tư duy chiến lược, giao tiếp thuyết phục và ra quyết định hiệu quả. Khóa học cung cấp các tình huống thực tế, mô phỏng doanh nghiệp và công cụ hỗ trợ giúp bạn trở thành người lãnh đạo tự tin, truyền cảm hứng và có khả năng dẫn dắt đội nhóm đạt hiệu suất cao.",
-                "rate": 5,
-                "review": "Khóa học thực sự giúp tôi thay đổi cách nhìn về lãnh đạo và quản trị. Giảng viên tận tâm, ví dụ minh họa sát với thực tế doanh nghiệp."
-            },
-            {
-                "title": "Đổi mới sáng tạo trong kỷ nguyên số",
-                "image": "https://picsum.photos/seed/innovation/300/200",
-                "description":
-                "Khóa học giúp học viên hiểu rõ vai trò của đổi mới sáng tạo trong doanh nghiệp hiện đại. Nội dung tập trung vào các xu hướng công nghệ như AI, Blockchain, Cloud và cách áp dụng chúng để tạo ra giá trị mới. Học viên sẽ được hướng dẫn qua các dự án nhóm và thực hành cùng chuyên gia đến từ các công ty công nghệ hàng đầu.",
-                "rate": 4,
-                "review": "Rất hài lòng với nội dung và cách truyền đạt. Mentor hướng dẫn chi tiết và luôn sẵn sàng hỗ trợ khi gặp khó khăn trong dự án."
-            },
-            {
-                "title": "Phân tích Dữ liệu & Ra quyết định",
-                "image": "https://picsum.photos/seed/dataanalytics/300/200",
-                "description":
-                "Khóa học trang bị kiến thức nền tảng và nâng cao về khoa học dữ liệu, thống kê, và trực quan hóa dữ liệu. Bạn sẽ được học cách khai thác dữ liệu bằng Python, SQL và sử dụng các công cụ như Power BI và Tableau. Sau khóa học, bạn có thể tự tin phân tích, trực quan hóa và đưa ra quyết định dựa trên dữ liệu trong công việc thực tế.",
-                "rate": 5,
-                "review": "Khoá học rất thực tế, giảng viên hướng dẫn kỹ lưỡng, giúp tôi áp dụng được ngay vào dự án nội bộ công ty."
-            },
-            {
-                "title": "Truyền thông & Xây dựng Thương hiệu Cá nhân",
-                "image": "https://picsum.photos/seed/branding/300/200",
-                "description":
-                "Chương trình tập trung vào kỹ năng giao tiếp, viết nội dung, sử dụng mạng xã hội và xây dựng hình ảnh cá nhân chuyên nghiệp. Học viên được hướng dẫn cách định vị bản thân, kể câu chuyện thương hiệu và tạo ảnh hưởng tích cực trong môi trường làm việc cũng như cộng đồng trực tuyến.",
-                "rate": 4,
-                "review": "Giúp tôi tự tin hơn khi chia sẻ kiến thức trên mạng xã hội và nâng cao hình ảnh cá nhân trong lĩnh vực chuyên môn."
-            }
-        ]
-    },
+    
     "partner": {
         "title": "Đối tác"
     },
@@ -247,7 +220,7 @@
       "chart_title": "Số lượng ứng tuyển hàng tháng"
     },
     "programms": {
-        "tabs":{"my":"Tất cả", "saved":"Đã lưu", "shared":"Đã chia sẻ"},
+        "tabs":{"my":"Tất cả", "saved":"Đã lưu", "shared":"Đã chia sẻ", "posts":"Bài đăng"},
         "edit":{
             "title":"Chỉnh sửa chương trình",
             "add_title":"Thêm chương trình mới",
@@ -361,7 +334,13 @@
         },
         "messages": {
           "added_success": "✅ Thêm chương trình mới thành công",
-          "added_failed": "❌ Thêm chương trình mới không thành công"
+          "added_failed": "❌ Thêm chương trình mới không thành công",
+          "delete_confirm":"Bạn có chắc muốn xóa chương trình này không?",
+          "delete_success":"Xoá thành công",
+          "delete_failed":"Xoá thất bại",
+          "shared_copied":"Chia sẻ thành công",
+          "shared_request_sent":"Yêu cầu chia sẻ đã được gửi",
+          "shared_failed":"Chia sẻ thất bại"
         },
         "alert":{
             "updated_success":"Chương trình đã được cập nhật thành công."
@@ -377,7 +356,9 @@
             "status_failed":"Cập nhật trạng thái thất bại. Vui lòng thử lại.",
             "steps_updated":"Các bước đã được cập nhật thành công.",
             "update_steps_failed":"Cập nhật các bước thất bại. Vui lòng thử lại.",
-            "status_updated":"Trạng thái đã được cập nhật thành công."
+            "status_updated":"Trạng thái đã được cập nhật thành công.",
+            "remove_updated":"Chương trình đã được xóa thành công.",
+            "remove_failed":"Xóa chương trình thất bại. Vui lòng thử lại."
         },
         "select_steps_required":"Hãy chọn một bước để thực hiện trạng thái sang tiến hành",
         "step":"Bước",
@@ -390,8 +371,10 @@
             "status":"Trạng thái",
             "bonus":"Thưởng",
             "expires":"Hết hạn",
+            "updated":"Cập nhật lần cuối",
             "steps":"Các bước",
-            "actions":"Hành động"    
+            "actions":"Hành động",
+            "not_available":"Không khả dụng"    
         },
         "select_placeholder":"Chọn trạng thái",
         "not_initialized":"Chưa được cung cấp",
@@ -412,7 +395,8 @@
             "reject": "Từ chối",
             "ongoing": "Tiến hành",
             "mark_completed": "Đánh dấu hoàn thành",
-            "mark_rejected": "Đánh dấu chưa hoàn thành"
+            "mark_rejected": "Đánh dấu chưa hoàn thành",
+            "remove": "Xóa"
         }
        
     },

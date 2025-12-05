@@ -1,0 +1,106 @@
+:root {
+    --primary-dark-blue: #0A1029;
+    --primary-navy: #0B1430;
+    --primary-purple-banner: #7A5CFF;
+    --secondary-dark-gray: #1A1D24;
+    --secondary-blue-glow: #3A4BAE;
+    --secondary-magenta-glow: #A02C7A;
+    --accent-red: #E3342F;
+    --accent-yellow: #D6A84B;
+    --accent-cyan: #2CF4FF;
+    --accent-pink: #F04ECF;
+    --neutral-white: #FFFFFF;
+    --neutral-light-gray: #C9CEDA;
+    --neutral-soft-gray: #50545E;
+    --art-dark-armor: #1F1C29;
+    --art-red-energy: #D02442;
+    --art-magenta-crystal: #C53CE6;
+    --art-pink-glow: #FF71D2;
+    --art-fire-orange: #FF7130;
+    --art-fire-red: #FF2F2F;
+    --art-ice-blue: #41E3FF;
+    --art-ice-white: #DDFDFF;
+    --ui-bg-primary: #0A1029;
+    --ui-bg-secondary: #1A1D24;
+    --ui-highlight-purple: #7A5CFF;
+    --ui-accent-red: #E3342F;
+    --ui-accent-yellow: #D6A84B;
+    --ui-text-white: #FFFFFF;
+    --home-bg: var(--neutral-white);
+    --home-surface: var(--neutral-light-gray);
+    --home-section-surface: var(--neutral-white);
+    --home-muted: var(--neutral-light-gray);
+    --home-text: var(--neutral-soft-gray);
+    --home-accent: var(--ui-highlight-purple);
+    --brand-blue: #0070f3;
+    --brand-blue-rgb: 0,112,243;
+    --white-rgb: 255,255,255;
+    --black-rgb: 0,0,0;
+    --shadow-blue-rgb: 25,118,210;
+    --primary-dark-navy-orange: #0C0F25;
+    --primary-deep-blue-orange: #10203A;
+    --primary-orange-banner: #FF7A32;
+    --secondary-dark-gray-orange: #1E1F26;
+    --secondary-orange-glow: #FF9A4C;
+    --secondary-warm-magenta: #D4526A;
+    --accent-bright-orange: #FF5E00; 
+    --accent-flame-red: #FF3D2E;
+    --accent-gold: #F4C15D;
+    --accent-warm-yellow: #FFD26F;
+    --art-flame-orange: #FF7B2C;
+    --art-heat-red: #FF2A1B;
+    --art-lava-orange: #D54410;
+    --art-ash-glow: #FFA86C;
+    --art-warm-cyan: #4ED6E9;
+    --art-soft-ice: #DFFBFF;
+    --ui-orange-bg-primary: #0C0F25;
+    --ui-orange-bg-secondary: #1E1F26;
+    --ui-orange-highlight: #FF7A32;
+    --ui-orange-cta: #FF5E00;
+    --ui-orange-gold: #F4C15D;
+    --ui-orange-text-white: #FFFFFF;
+}
+
+.theme-xmas {
+    --home-orange: #ef4444;
+    --home-primary: #164e63;
+    --home-accent: #16a34a;
+    --home-text: #1f2937;
+    --pd-accent: #ef4444;
+    --pd-muted: #475569;
+    --pg-accent: #ef4444;
+    --ct-accent: #ef4444;
+    --short-primary: #164e63;
+    --short-accent: #16a34a;
+    --pd-shadow: 0 14px 40px rgba(239,68,68,0.15);
+    --pg-shadow: 0 14px 40px rgba(239,68,68,0.15);
+    background: linear-gradient(135deg,#ffffff 0%,#fff5f5 40%,#f0fdf4 100%);
+    position: relative;
+}
+
+.theme-xmas::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image: radial-gradient(#ffffff 1px, transparent 1px), radial-gradient(#ffffff 1px, transparent 1px);
+    background-size: 8px 8px, 12px 12px;
+    background-position: 0 0, 20px 20px;
+    animation: xmas-snow 12s linear infinite;
+    opacity: .18;
+}
+
+.theme-xmas::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(circle at 10% 10%, rgba(239,68,68,.08), transparent 50%), radial-gradient(circle at 80% 90%, rgba(22,163,74,.08), transparent 50%);
+}
+
+@keyframes xmas-snow {
+    0% { background-position: 0 0, 20px 20px; }
+    100% { background-position: 0 200px, 20px 220px; }
+}

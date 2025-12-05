@@ -1,11 +1,15 @@
 import React from "react";
-import Navbar from "../pages/NavBar";
+import "../colors/index.css";
+import Navbar from "../components/navbar/Navbar.jsx";
+import { Outlet } from "react-router-dom";
+import Footer from "../components/footer/Footer.jsx";
 
-export default function Layout({ children }) {
+export default function Layout() {
   return (
-    <>
+    <div className="theme-xmas">
       <Navbar />
-      {children}
-    </>
+      <Outlet />
+      <Footer />
+    </div>
   );
 }

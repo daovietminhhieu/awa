@@ -1,15 +1,14 @@
 import React from "react";
-import PrivateRoute from "./PrivateRoute";
-import Layout from "./Layout";
+import PrivateRoute from "./PrivateRoutes";
 
-import ReCandidatesSubmittion from "../pages/recruiter/CandidatesSubmittion";
-import ReProfile from "../pages/recruiter/Profile";
-import ReProgrammsView from "../pages/recruiter/ProgrammsView";
-import ProgrammsDetail from "../pages/recruiter/ProgrammsDetail";
+import CandidatesTracker from "../page/candidates_tracker/CandidatesTracker";
+import ReProfile from "../page/profile/Profile";
+import ReProgrammsView from "../page/programms/all/AllPrograms";
+import ProgrammsDetail from "../page/detail/program/Detail";
 
 export const recruiterRoutes = [
-  { path: "/recruiter/programmsview", element: <PrivateRoute role="recruiter"><Layout><ReProgrammsView /></Layout></PrivateRoute> },
-  { path: "/recruiter/candidates-submittion", element: <PrivateRoute role="recruiter"><Layout><ReCandidatesSubmittion /></Layout></PrivateRoute> },
-  { path: "/recruiter/profile", element: <PrivateRoute role="recruiter"><Layout><ReProfile /></Layout></PrivateRoute> },
-  { path: "/recruiter/programmsdetail/:slug", element: <PrivateRoute role="recruiter"><Layout><ProgrammsDetail /></Layout></PrivateRoute> },
+  { path: "/recruiter/programmsview", element: <PrivateRoute role="recruiter"><ReProgrammsView /></PrivateRoute> },
+  { path: "/recruiter/candidates-submittion", element: <PrivateRoute role="recruiter"><CandidatesTracker /></PrivateRoute> },
+  { path: "/recruiter/profile", element: <PrivateRoute role="recruiter"><ReProfile /></PrivateRoute> },
+  { path: "/recruiter/programmsdetail/:slug", element: <PrivateRoute role="recruiter"><ProgrammsDetail /></PrivateRoute> },
 ];

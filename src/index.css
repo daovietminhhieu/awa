@@ -1,38 +1,9 @@
-:root {
-  --font-family-base: "Inter", sans-serif;
-  font-family: var(--font-family-base);
-  height: 100%;
+@import "./colors/index.css";
+
+/* Global styles can go here. The variables from ./colors/index.css
+	are now available throughout the app (all component CSS files).
+*/
+
+html, body, * {
+  font-family: "Times New Roman", Times, serif !important;
 }
-
-* {
-  box-sizing: border-box;
-  font-family: var(--font-family-base);
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  position: static !important;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* Ẩn thanh Google Translate tự động của Chrome */
-body > .skiptranslate {
-  display: none !important;
-}
-
-/* === GOOGLE TRANSLATE CLEAN UI === */
-
-/* Ẩn thanh banner mặc định */
-.goog-te-banner-frame {
-  display: none !important;
-  visibility: hidden !important;
-}
-

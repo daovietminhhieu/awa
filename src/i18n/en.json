@@ -9,50 +9,22 @@
         "review_title": "Featured Review",
         "hide":"hide",
         "more":"more",
-        "topprogramme": "Top Programs",
+        "top_programs": {
+            "title":"Top Programs",
+            "reviews":"Reviews",
+            "no_reviews":"No reviews"
+        },
         "why": "Why Choose Us",
-        "suc": "Success Stories",
+        "suc": {
+            "title": "Success Stories"
+        },
+        "featured_news": {
+            "title": "Featured News"
+        },
         "tae": "Tips & Events",
         "prts": "Become Our Partner",
         "bop": "Recruiter",
-        "topprogramm": [
-            {
-                "title": "Leadership and Effective Management",
-                "image": "https://picsum.photos/seed/leadership/300/200",
-                "description":
-                "This program is designed for current and aspiring managers who want to develop strategic thinking, persuasive communication, and effective decision-making skills. The course combines real-world business scenarios, leadership simulations, and practical tools to help participants become confident, inspiring leaders capable of driving high-performing teams.",
-                "rate": 5,
-                "review":
-                "The course completely changed the way I think about leadership and management. The instructors are dedicated, and the case studies are highly relevant to real business contexts."
-            },
-            {
-                "title": "Innovation in the Digital Era",
-                "image": "https://picsum.photos/seed/innovation/300/200",
-                "description":
-                "This course helps learners understand the critical role of innovation in modern enterprises. It focuses on emerging technologies such as AI, Blockchain, and Cloud Computing — and how to apply them to create new value. Students will participate in group projects and hands-on sessions led by mentors from top tech companies.",
-                "rate": 4,
-                "review":
-                "Very satisfied with the content and delivery. The mentors provided detailed guidance and practical support throughout the projects."
-            },
-            {
-                "title": "Data Analytics and Decision Making",
-                "image": "https://picsum.photos/seed/dataanalytics/300/200",
-                "description":
-                "This program equips learners with both foundational and advanced knowledge of data science, statistics, and data visualization. You’ll learn to use Python, SQL, and tools like Power BI and Tableau to analyze and interpret data. After completing the course, you’ll be confident in making data-driven decisions in real business environments.",
-                "rate": 5,
-                "review":
-                "The course is highly practical and well-structured. The instructors’ explanations were clear and easy to apply directly to real company projects."
-            },
-            {
-                "title": "Communication and Personal Branding",
-                "image": "https://picsum.photos/seed/branding/300/200",
-                "description":
-                "This course focuses on communication skills, content creation, social media strategy, and building a professional personal brand. Participants learn how to define their positioning, tell their brand story, and build a strong online presence that reflects their expertise and values.",
-                "rate": 4,
-                "review":
-                "It helped me become more confident in sharing my expertise online and improved how I present myself in a professional context."
-            }
-        ],
+        
         "partner": {
             "title": "Partners"
         },
@@ -77,23 +49,7 @@
             }
             ]
         },
-        "stories": {
-            "title": "Success Stories",
-            "descriptions": [
-            {
-                "name": "Nguyễn Văn A",
-                "description": "Found my dream job through Alowork.com, developed skills and expanded my network."
-            },
-            {
-                "name": "Trần Thị B",
-                "description": "Thanks to Alowork.com, I had the opportunity to study abroad and intern overseas, broadening my horizons."
-            },
-            {
-                "name": "Lê Văn C",
-                "description": "Succeeded with the internship program at a big company, receiving high praise from the employer."
-            }
-            ]
-        },
+        
         "partners": {
             "title": "Become Our Partner",
             "become_collaborator_desc": "Collaborate with Alowork.com not just to increase your income. We offer you an ecosystem to develop your expertise, expand your network, and access exclusive opportunities",
@@ -119,42 +75,8 @@
         "events": "Upcoming Events",
         "event-location": "Location: ",
         "event-date": "Date: ",
-        "tips": [
-        {
-            "id": "tip-1",
-            "title": "How to Write an Outstanding CV",
-            "description": "A guide on how to present an impressive CV to attract recruiters.",
-            "image": "https://source.unsplash.com/300x200/?cv,resume"
-        },
-        {
-            "id": "tip-2",
-            "title": "Successful Interviewing",
-            "description": "Tips for answering interviews confidently and convincingly.",
-            "image": "https://source.unsplash.com/300x200/?interview,job"
-        },
-        {
-            "id": "tip-3",
-            "title": "Important Soft Skills",
-            "description": "Essential soft skills you need to develop your career.",
-            "image": "https://source.unsplash.com/300x200/?skills,communication"
-        }
-        ],
-        "events_data": [
-        {
-            "id": "event-1",
-            "title": "Career Orientation Seminar 2025",
-            "date": "10/20/2025",
-            "location": "Ho Chi Minh City",
-            "image": "https://source.unsplash.com/300x200/?career,event"
-        },
-        {
-            "id": "event-2",
-            "title": "Professional CV Writing Workshop",
-            "date": "11/10/2025",
-            "location": "Hanoi",
-            "image": "https://source.unsplash.com/300x200/?workshop,resume"
-        }
-        ],
+        
+        
         "become_collaborator": {
             "title": "Become Our Collaborator",
             "description": "Join us to expand your reach and grow your business effectively.",            
@@ -251,7 +173,7 @@
             "chart_title": "Monthly Program Applications"
         },
         "programms": {
-            "tabs": {"my":"All","saved":"Saved","shared":"Shared"},
+            "tabs": {"my":"All","saved":"Saved","shared":"Shared", "posts":"Posts"},
             "edit": {
                 "title": "Edit Program",
                 "add_title": "+ Add New Programm",
@@ -339,7 +261,7 @@
                     "previous": "Previous",
                     "next": "Next"
             },
-            "toolbar": {"add_new":"Add Program","filter":"Filter","search_placeholder":"Search by title or company..."},
+            "toolbar": {"add_new":"Add a new program","filter":"Filter","search_placeholder":"Search by title or company..."},
             "card": {
                 "duration_label":"Duration",
                 "deadline_label":"Deadline",
@@ -357,7 +279,13 @@
             },
             "messages": {
                 "added_success": "✅ Added successfully",
-                "added_failed": "❌ Failed to add program"
+                "added_failed": "❌ Failed to add program",
+                "delete_confirm":"Are you sure to delete this program?",
+                "delete_success":"Delete success",
+                "delete_failed":"Delete failed",
+                "shared_copied":"Shared copied",
+                "shared_request_sent":"Shared request sent",
+                "shared_failed":"Shared failed"
             },
             "alert": {"updated_success":"Updated successfully!"},
             "status_closed":"Closed",
@@ -371,7 +299,9 @@
                 "status_updated":"✅ Status updated to \"{{status}}\"",
                 "update_failed":"Failed to update status: {{error}}",
                 "steps_updated":"✅ Updated {{count}} step(s) to \"{{step}}\".",
-                "update_steps_failed":"Failed to update steps: {{error}}"
+                "update_steps_failed":"Failed to update steps: {{error}}",
+                "remove_updated":"✅ Program removed successfully.",
+                "remove_failed":"Failed to remove program: {{error}}"
             },
             "select_steps_required":"Please select at least one step to update.",
             "step_label":"Step {{n}}:",
@@ -384,8 +314,10 @@
                 "status":"Status",
                 "bonus":"Bonus",
                 "expires":"Expires",
+                "updated":"Updated",
                 "steps":"Steps",
-                "actions":"Actions"
+                "actions":"Actions",
+                "not_available":"Not available"
             },
             "select_placeholder":"-- Select --","not_initialized":"Not initialized",
              "group": {
@@ -406,7 +338,8 @@
                 "reject": "Rejected",
                 "ongoing": "Ongoing",
                 "mark_completed": "Mark as Completed",
-                "mark_rejected": "Mark as Not Completed"
+                "mark_rejected": "Mark as Not Completed",
+                "remove": "Remove"
             }
         },
         "post": {

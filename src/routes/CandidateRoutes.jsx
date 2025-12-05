@@ -1,13 +1,12 @@
 import React from "react";
-import PrivateRoute from "./PrivateRoute";
-import Layout from "./Layout";
+import PrivateRoute from "./PrivateRoutes";
 
-import CaHome from "../pages/candidates/Home";
-import CaJobsView from "../pages/candidates/JobsView";
-import CaProfile from "../pages/candidates/Profile";
+import CaHome from "../page/home/Home";
+import CaJobsView from "../page/programms/Programms";
+import CaProfile from "../page/profile/Profile";
 
 export const candidateRoutes = [
-  { path: "/candidate/home", element: <PrivateRoute role="candidate"><Layout><CaHome /></Layout></PrivateRoute> },
-  { path: "/candidate/jobs-view", element: <PrivateRoute role="candidate"><Layout><CaJobsView /></Layout></PrivateRoute> },
-  { path: "/candidate/profile", element: <PrivateRoute role="candidate"><Layout><CaProfile /></Layout></PrivateRoute> },
+  { path: "/candidate/home", element: <PrivateRoute role="candidate"><CaHome /></PrivateRoute> },
+  { path: "/candidate/jobs-view", element: <PrivateRoute role="candidate"><CaJobsView /></PrivateRoute> },
+  { path: "/candidate/profile", element: <PrivateRoute role="candidate"><CaProfile /></PrivateRoute> },
 ];
