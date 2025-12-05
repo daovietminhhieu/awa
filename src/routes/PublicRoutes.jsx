@@ -2,7 +2,7 @@ import React from "react";
 import HomePage from "../page/home/Home"; 
 import ProgrammsDetail from "../page/detail/program/Detail";
 import Login from "../page/login/Login";
-import SignUp from "../page/signup/SignUp";
+import SignUp from "../page/signup/Signup";
 import CandidateExternSystemApply from "../page/CandidatesExternSystemApply";
 import { PartnerDetail} from "../page/short/Short";
 import NewsDetail from "../page/detail/news/News";
