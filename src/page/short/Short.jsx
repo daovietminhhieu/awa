@@ -391,14 +391,14 @@ export function PartnersSlidesLogos() {
               )}
             </div>
           ))}
-          {items.map((it) => (
+          {/* {items.map((it) => (
             <div key={"b-" + it.name} className="logo-card">
               <img src={it.url} alt={it.name} className="logo-img" loading="lazy" />
               {user?.role === "admin" && (
                 <button className="logo-remove" onClick={() => onRemove(it.name)} title="Remove">×</button>
               )}
             </div>
-          ))}
+          ))} */}
           {user?.role === "admin" && <AddTile />}
         </div>
       </div>
