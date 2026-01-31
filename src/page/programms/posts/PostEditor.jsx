@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { upFileToStorage, getProgrammsList } from "../../../api";
+import { upFileToStorage, getProgramsList } from "../../../api";
 import "./PostEditor.css";
 import { useI18n } from "../../../i18n";
 import TranslatableText from "../../../i18n/TranslateableText";
@@ -93,8 +93,8 @@ const ProgramSelect = ({ programms, selectedProgram, onChange, t, lang }) => (
     <select value={selectedProgram} onChange={(e) => onChange(e.target.value)}>
       <option value=""><TranslatableText text={t('admin.post.add_form.programms_select')} lang={lang}/></option>
       {programms.map((p) => (
-        <option key={p._id} value={p._id}>
-          <TranslatableText text={p.title} lang={lang}/>
+        <option key={p.id} value={p.id}>
+          <TranslatableText text={p.name} lang={lang}/>
         </option>
       ))}
     </select>
@@ -123,7 +123,8 @@ export default function PostEditor({ onSave, onCancel }) {
   useEffect(() => {
     (async () => {
       try {
-        const res = await getProgrammsList();
+        const res = await getProgramsList();
+        console.log(res);
         setProgramms(res.data);
       } catch (err) {
         console.warn("⚠️ Lỗi tải chương trình:", err);
@@ -170,10 +171,10 @@ export default function PostEditor({ onSave, onCancel }) {
   
     const { type, title, thumbnail, selectedProgram, fileType, content, location, eventDate } = form;
   
-    if (!title || !thumbnail || !selectedProgram) {
-      alert("⚠️ Vui lòng nhập đủ thông tin và tải file!");
-      return;
-    }
+    // if (!title || !thumbnail || !selectedProgram) {
+    //   alert("⚠️ Vui lòng nhập đủ thông tin và tải file!");
+    //   return;
+    // }
   
     const postData = {
       type,

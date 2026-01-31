@@ -1,87 +1,107 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useI18n } from "../../i18n";
 
-export default function FilterSearch({ programms = [], onSelectProgramm, onFilterChange, onAddProgramm }) {
-  const [suggestions, setSuggestions] = useState([]);
-  const [filters, setFilters] = useState({ type_category: "", land: "", deadline: "", age: "", degrees: "" });
+const DEFAULT_FILTERS = {
+  land: "",
+  industry: "",
+  type_category: "",
+  degrees: "",
+  cost: "",
+  deadline: "",
+  salary: "",
+};
+
+export default function FilterSearch({
+  programms = [],
+  onFilterChange,
+  onAddProgram,
+}) {
   const { t } = useI18n();
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
-  const getUniqueValues = (arr, keyPath) => {
-    const keys = keyPath.split(".");
-    const values = arr.map((item) => keys.reduce((obj, k) => obj?.[k], item)).filter(Boolean);
-    return [...new Set(values)];
+  const getUnique = (key) =>
+    [...new Set(programms.map((p) => p?.[key]).filter(Boolean))];
+
+  const options = useMemo(
+    () => ({
+      land: getUnique("land"),
+      industry: getUnique("industry"),
+      degrees: getUnique("degrees"),
+      cost: getUnique("cost"),
+      salary: getUnique("salary"),
+      deadline: getUnique("deadline"),
+    }),
+    [programms]
+  );
+
+  const FILTER_CONFIG = [
+    { name: "land", label: t("filter.country_label") },
+    { name: "industry", label: "Ngành nghề" },
+    {
+      name: "type_category",
+      label: t("filter.type_label"),
+      options: [
+        { value: "job", label: t("admin.programms.edit.new.type_job") },
+        { value: "studium", label: t("admin.programms.edit.new.type_studium") },
+      ],
+    },
+    // { name: "degrees", label: "Yêu cầu" },
+    { name: "cost", label: "Chi phí" },
+    { name: "deadline", label: t("filter.deadline_label") },
+    { name: "salary", label: "Mức lương" },
+  ];
+
+  const handleChange = ({ target: { name, value } }) => {
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const uniqueLands = getUniqueValues(programms, "land");
-  const uniqueDegrees = getUniqueValues(programms, "degrees");
-
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    if (!value.trim()) return setSuggestions([]);
-    const lowerValue = value.toLowerCase();
-    const matched = programms.filter(
-      (p) => p.title?.toLowerCase().includes(lowerValue) || p.company?.toLowerCase().includes(lowerValue) || p.land?.toLowerCase().includes(lowerValue)
-    );
-    setSuggestions(matched.slice(0, 5));
+  const applyFilters = () => {
+    onFilterChange?.(filters);
+    setFilters(DEFAULT_FILTERS);
   };
-
-  const handleSelect = (p) => { setSearchTerm(""); setSuggestions([]); onSelectProgramm?.(p); };
-  const handleFilterChange = (e) => { const { name, value } = e.target; setFilters((prev) => ({ ...prev, [name]: value })); };
-  const handleUpdate = () => { onFilterChange?.(filters); setFilters({ type_category: "", land: "", deadline: "", age: "", degrees: "" }); };
 
   return (
     <div className="filter-and-search">
       <div className="filter">
         <div className="filter-first">
-          <div className="filter-item">
-            <label>{t('filter.type_label')}</label>
-            <select name="type_category" value={filters.type_category} onChange={handleFilterChange}>
-              <option value="">{t('filter.all')}</option>
-              <option value="job">{t('admin.programms.edit.new.type_job')}</option>
-              <option value="studium">{t('admin.programms.edit.new.type_studium')}</option>
-            </select>
-          </div>
-          <div className="filter-item">
-            <label>{t('filter.country_label')}</label>
-            <select name="land" value={filters.land} onChange={handleFilterChange}>
-              <option value="">{t('filter.all')}</option>
-              {uniqueLands.map((l) => <option key={l} value={l}>{l}</option>)}
-            </select>
-          </div>
-          <div className="filter-item">
-            <label>{t('filter.deadline_label')}</label>
-            <input type="date" name="deadline" value={filters.deadline} onChange={handleFilterChange} />
-          </div>
-          <div className="filter-item">
-            <label>{t('filter.degree_label')}</label>
-            <select name="degrees" value={filters.degrees} onChange={handleFilterChange}>
-              <option value="">{t('filter.all')}</option>
-              {uniqueDegrees.map((d) => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </div>
+          {FILTER_CONFIG.map(({ name, label, options: customOpts }) => (
+            <FilterItem key={name} label={label}>
+              <select name={name} value={filters[name]} onChange={handleChange}>
+                <option value="">{t("filter.all")}</option>
+
+                {(customOpts || options[name] || []).map((opt) =>
+                  typeof opt === "string" ? (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ) : (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  )
+                )}
+              </select>
+            </FilterItem>
+          ))}
         </div>
+
         <div className="filter-second">
-          <button className="update-btn" onClick={handleUpdate}>{t('filter.apply_filters')}</button>
-          {onAddProgramm && (
-            <button className="add-btn" onClick={onAddProgramm}>{t('admin.programms.toolbar.add_new')}</button>
+          <button className="update-btn" onClick={applyFilters}>
+            {t("filter.apply_filters")}
+          </button>
+
+          {onAddProgram && (
+            <button className="add-btn" onClick={onAddProgram}>
+              {t("admin.programms.toolbar.add_new")}
+            </button>
           )}
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/**<div className="search-wrapper">
-        <input type="search" placeholder={t('filter.search_placeholder')} className="search-field" value={searchTerm} onChange={handleSearchChange} />
-        {suggestions.length > 0 && (
-          <div className="suggestions-list">
-            {suggestions.map((p) => (
-              <div key={p._id} onClick={() => handleSelect(p)} className="suggestion-item">
-                <img src={p.logoL || p.logo} alt={p.title} style={{ width: 40, height: 40, borderRadius: 8 }} />
-                <span>{p.title}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div> */}
+function FilterItem({ label, children }) {
+  return (
+    <div className="filter-item">
+      <label>{label}</label>
+      {children}
     </div>
   );
 }

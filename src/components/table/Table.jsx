@@ -5,12 +5,12 @@ export function CandidateRow({ sub}) {
   return (
     <tr>
       <td data-label={t('admin.candidates.table.candidate') || 'Candidate'}>
-        {sub.candidate || sub.candidateInfo?.fullName || "-"}
+        {sub.candidateId || sub.candidateInfo?.fullName || "-"}
       </td>
       <td data-label={t('admin.candidates.table.programm') || 'Program'}>
-        {sub.programm?.title || "-"}
+        {sub.progId || "-"}
       </td>
-      <td data-label={t('admin.candidates.table.referrer') || 'Referrer'}>
+      <td data-label={t('admin.candidates.table.referrer') || 'Recruiter'}>
         {sub.ctv || "-"}
       </td>
       <td data-label={t('admin.candidates.table.email') || 'Email'}>
@@ -32,7 +32,10 @@ export function CandidateRow({ sub}) {
           "-"
         )}
       </td>
-      <td data-label="Bonus">{sub.bonus || "-"}</td>
+      <td data-label="Bonus">{sub.bonus}</td>
+      <td data-label={t('admin.candidates.table.finalized') || 'Finalized'}>
+        {sub.updatedAt ? new Date(sub.updatedAt).toLocaleString() : "-"}
+      </td>
     </tr>
 
   );
@@ -44,13 +47,13 @@ export function ArchivedRow({ sub }) {
   return (
     <tr>
       <td data-label={t('admin.candidates.table.candidate') || 'Candidate'}>
-        {sub.candidate || sub.candidateInfo?.fullName || "-"}
+        {sub.candidateId || "-"}
       </td>
       <td data-label={t('admin.candidates.table.programm') || 'Program'}>
-        {sub.job || sub.programm?.title || "-"}
+        {sub.progId || "-"}
       </td>
       <td data-label={t('admin.candidates.table.referrer_short') || 'CTV'}>
-        {sub.ctv || "-"}
+        {sub.recruiterId || "-"}
       </td>
       <td data-label={t('admin.candidates.table.email') || 'Email'}>
         {sub.email || sub.candidateInfo?.email || "-"}
@@ -75,7 +78,7 @@ export function ArchivedRow({ sub }) {
         ${sub.bonus || "0"}
       </td>
       <td data-label={t('admin.candidates.table.finalized') || 'Finalized'}>
-        {sub.finalizedAt ? new Date(sub.finalizedAt).toLocaleString() : "-"}
+        {sub.updatedAt ? new Date(sub.updatedAt).toLocaleString() : "-"}
       </td>
     </tr>
 
@@ -96,6 +99,7 @@ export function CandidateTable({ submissions, editedRows, onStatusChange, onBonu
           <th>{t('admin.candidates.table.phone') || 'Phone'}</th>
           <th>{t('admin.candidates.table.cv') || 'CV'}</th>
           <th>{t('admin.candidates.table.bonus') || 'Bonus'}</th>
+          <th>{t('admin.candidates.table.finalized') || 'Finalized'}</th>
         </tr>
       </thead>
       <tbody>
@@ -126,7 +130,7 @@ export function ArchivedTable({ archived }) {
         <tr>
           <th>{t('admin.candidates.table.candidate') || 'Candidate'}</th>
           <th>{t('admin.candidates.table.programm') || 'Programm'}</th>
-          <th>{t('admin.candidates.table.referrer') || 'CTV'}</th>
+          <th>{t('admin.candidates.table.referrer') || 'Recruiter'}</th>
           <th>{t('admin.candidates.table.email') || 'Email'}</th>
           <th>{t('admin.candidates.table.phone') || 'Phone'}</th>
           <th>{t('admin.candidates.table.cv') || 'CV'}</th>

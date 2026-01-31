@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { getProgrammBySlug } from "../../../api";
 import "./Detail.css";
@@ -6,15 +6,24 @@ import { useI18n } from "../../../i18n";
 import TranslateableText from "../../../i18n/TranslateableText.jsx";
 import ApplicationForm from "../../CandidatesExternSystemApply.jsx"
 import { useAuth } from "../../../context/AuthContext";
-import { sendProgrammReview, sendProgrammQA, getProgrammQAList, answerProgrammQA, getPostById, requestASharedLink, getProgrammCosts, addProgrammCost, updateProgrammCost, deleteProgrammCost, getProgrammDocuments, addProgrammDocument, updateProgrammDocument, deleteProgrammDocument, getProgrammSteps, addProgrammStep, updateProgrammStep, deleteProgrammStep } from "../../../api";
+import { getProgrammById, sendProgrammReview, sendProgrammQA, getProgrammQAList, answerProgrammQA, getPostById, requestASharedLink, getProgrammCosts, addProgrammCost, updateProgrammCost, deleteProgrammCost, getProgrammDocuments, addProgrammDocument, updateProgrammDocument, deleteProgrammDocument, getProgrammSteps, addProgrammStep, updateProgrammStep, deleteProgrammStep } from "../../../api";
 import { FaEdit, FaTrash, FaSave, FaTimes, FaPlus, FaCopy, FaExternalLinkAlt } from "react-icons/fa";
+import TranslatedHtml from "../../../i18n/TranslatedHtml.jsx";
 
 export default function ProgrammDetail({ role }) {
   const { slug } = useParams(); // Đổi từ id thành slug
+  const {state} = useLocation();
+
+  const programId = state?.programId;
+  const programFromState = state?.program;
+  
+  
   const [programm, setProgramm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { t } = useI18n();
+  const { user } = useAuth();
+  const referralId = new URLSearchParams(window.location.search).get("ref");
 
   useEffect(() => {
     async function fetchProgramm() {
@@ -22,12 +31,11 @@ export default function ProgrammDetail({ role }) {
         if (!slug) {
           throw new Error(t("programm.detail.slug_required"));
         }
-        
-        const res = await getProgrammBySlug(slug); // Sử dụng hàm mới
+        console.log(programId);
+        const res = await getProgrammById(programId); // Sử dụng hàm mới
         if (!res.success) throw new Error(t("programm.detail.not_found"));
         setProgramm(res.data);
       } catch (err) {
-        console.error("Error fetching programm:", err);
         setError(err.message || "Có lỗi xảy ra khi tải thông tin chương trình");
       } finally {
         setLoading(false);
@@ -46,7 +54,7 @@ export default function ProgrammDetail({ role }) {
   if (error)
     return (
       <div className="programm-loading" style={{ color: "red" }}>
-        ❌ {error}
+        ❌ {error} {console.log(programId)}
       </div>
     );
 
@@ -63,6 +71,10 @@ export default function ProgrammDetail({ role }) {
         {/* === CỘT TRÁI: Q&A + Reviews === */}
         <aside className="programm-left-panel">
           <ProgrammPartner programm={programm} currentUser={role}/>
+          
+        {!role  && (
+          <ApplicationForm progId={programm.id} referralId={referralId}/>
+          )}
         </aside>
 
         {/* === CỘT PHẢI: Thông tin chương trình === */}
@@ -80,10 +92,10 @@ export default function ProgrammDetail({ role }) {
 
 function ProgrammPartner({ programm }) {
   const { t, lang } = useI18n();
-  const id = programm?._id;
+  const id = programm?.id;
 
   const [reviews, setReviews] = useState(programm?.reviews || []);
-  const [qaList, setQaList] = useState(Array.isArray(programm?.qa) ? programm.qa : []);
+  const [qaList, setQaList] = useState(Array.isArray(programm?.questions) ? programm.questions : []);
   const [loading, setLoading] = useState(false);
   const {user} = useAuth();
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -98,27 +110,16 @@ function ProgrammPartner({ programm }) {
   const [answerQAFormId, setAnswerQAFormId] = useState(null);
   const [answerText, setAnswerText] = useState("");
 
-  // Fetch Q&A
-  useEffect(() => {
-    async function fetchQA() {
-      if (!id) return;
-      try {
-        const res = await getProgrammQAList(id);
-        if (res.success) setQaList(res.data);
-      } catch (err) {
-        console.error("fetchQA error:", err);
-      }
-    }
-    fetchQA();
-  }, [id]);
 
   // Submit review
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim()) return alert("Vui lòng nhập nội dung đánh giá!");
     setLoading(true);
+    console.log(id);
+    const userId = user? user._id:null;
     try {
-      const res = await sendProgrammReview(id, { rate: Number(rate), content });
+      const res = await sendProgrammReview(id, { userId, rate: Number(rate), content });
       if (res.success) {
         const newReview = res.data || { rate, content, createdAt: new Date() };
         setReviews((prev) => [newReview, ...prev]);
@@ -165,14 +166,22 @@ function ProgrammPartner({ programm }) {
   const handleAnswerSubmit = async (e) => {
     e.preventDefault();
     if (!answerText.trim()) return alert("Vui lòng nhập câu trả lời!");
+
     setLoading(true);
     try {
-      console.log("programmId:", id);
-      console.log("qaId:", answerQAFormId);
-      const res = await answerProgrammQA(id, answerQAFormId, { answer: answerText });
-      console.log("Response from API:", res); // Log API response
+      const payload = {
+        questionId: answerQAFormId,
+        answer: answerText,
+        userId: user?._id || null,
+        userName: user?.name || "Admin",
+      };
+
+      const res = await answerProgrammQA(id, payload);
+
       if (res.success) {
-        setQaList((prev) => prev.map((q) => (q._id === answerQAFormId ? res.data : q)));
+        setQaList(prev =>
+          prev.map(q => (q.id === answerQAFormId ? res.data : q))
+        );
         setAnswerQAFormId(null);
         setAnswerText("");
       } else {
@@ -185,7 +194,7 @@ function ProgrammPartner({ programm }) {
       setLoading(false);
     }
   };
-  
+
 
   const renderStars = (num) => "⭐".repeat(num);
   const handleShowAnswerForm = (qaId) => {
@@ -195,11 +204,11 @@ function ProgrammPartner({ programm }) {
 
   return (
     <div className="partner-programm-container">
-      <div className="partner-description">
+      {/* <div className="partner-description">
         <h4>{t("programm.detail.partner.intro_title")}</h4>
         <p>{programm?.partner_description}</p>
-      </div>
-
+      </div> */}
+      {console.log(programm.id)}
       {/* Accordion: Reviews */}
       <div className="accordion-section">
         <div className="accordion-header" onClick={() => setShowReviews(!showReviews)}>
@@ -215,7 +224,7 @@ function ProgrammPartner({ programm }) {
                     <div className="review-header">
                       <div className="review-avatar">🧑</div>
                       <div className="review-name">
-                          <TranslateableText text={rev.user?.name || "Người dùng ẩn danh"} lang={lang} />
+                          <TranslateableText text={rev.user || "Người dùng ẩn danh"} lang={lang} />
                         </div>
                       <div>
                       </div>
@@ -253,11 +262,13 @@ function ProgrammPartner({ programm }) {
           <div className="accordion-content">
             {qaList?.length > 0 ? (
               <ul className="qa-fb-list">
+              {console.log(qaList)}
               {qaList.map((q) => (
+                
                 <li key={q._id} className="qa-fb-item">
                   <div className="qa-header">
                     <div className="qa-avatar">🧑</div>
-                    <span className="qa-name">{q.user?.name || "Guest"}</span>
+                    <span className="qa-name">{q.user || "Guest"}</span>
                   </div>
                   <div className="qa-fb-body">
                     <div className="qa-fb-content">
@@ -272,7 +283,7 @@ function ProgrammPartner({ programm }) {
                         !q.answer && (
                           <button
                             className="qa-fb-reply"
-                            onClick={() => handleShowAnswerForm(q._id)}
+                            onClick={() => handleShowAnswerForm(q.id)}
                           >
                             {t('programm.detail.partner.qa.reply')}
                           </button>
@@ -285,12 +296,12 @@ function ProgrammPartner({ programm }) {
                         <div className="qa-fb-avatar reply">🏢</div>
                         <div className="qa-fb-body reply">
                           <div className="qa-fb-content reply">
-                            <span className="qa-fb-name">BizSolutions Group</span>
+                            <span className="qa-fb-name">{q.answeredByName}</span>
                             <p className="qa-fb-text">{q.answer}</p>
                           </div>
                           <div className="qa-fb-meta">
                             <span className="qa-fb-time">{t('programm.detail.partner.replied')}</span>
-                            <span>{new Date(q.createdAt).toLocaleDateString("vi-VN")}</span>
+                            <span>{new Date(q.answeredAt).toLocaleDateString("vi-VN")}</span>
                           </div>
                         </div>
                       </div>
@@ -504,7 +515,7 @@ function ProgrammHeader({ programm, role, t, lang }) {
   return (
     <div className="overview-header">
       <h1 className="programm-detail-title">
-        <TranslateableText text={programm.title} lang={lang} />
+        <TranslateableText text={programm.name} lang={lang} />
       </h1>
       <ProgrammTags tags={tags} lang={lang} />
       {specialTags.length > 0 && (
@@ -521,6 +532,7 @@ function ProgrammHeader({ programm, role, t, lang }) {
 }
 
 function ProgrammInfoBoxes({ programm, currentUser, t, lang }) {
+  const {user} = useAuth();
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [copiedLink, setCopiedLink] = useState("");
   const [isGeneratingLink, setIsGeneratingLink] = useState(false);
@@ -550,12 +562,14 @@ function ProgrammInfoBoxes({ programm, currentUser, t, lang }) {
   }
 
   const handleShareClick = async () => {
+    console.log(user);
+    console.log(programm);
     try {
       setShowSharePopup(true);
       setCopiedLink("");
       setIsGeneratingLink(true);
 
-      const res = await requestASharedLink(programm._id);
+      const res = await requestASharedLink(programm.id, user._id);
       let link = res.data.link;
 
       if (!/^https?:\/\//i.test(link)) {
@@ -603,14 +617,10 @@ function ProgrammInfoBoxes({ programm, currentUser, t, lang }) {
   return (
     <div className="programm-info-boxes">
       <div className="info-box">
-        <b>{t("programm.detail.overview.company")}:</b>
-        <p><TranslateableText text={programm.company} lang={lang}/></p>
+        <b>{t("programm.detail.overview.company")}:</b> {programm.company}
       </div>
       <div className="info-box">
-        <b>{t("programm.detail.overview.land")}:</b>
-        <p>
-          <TranslateableText text={programm.land} lang={lang} />
-        </p>
+        <b>{t("programm.detail.overview.land")}:</b> {programm.country}
       </div>
       {currentUser?.role === "recruiter" && (
         <div className="info-box" style={{ position: "relative" }}>
@@ -744,6 +754,16 @@ function ProgrammSection({ title, content }) {
   );
 }
 
+export const renderHTML = (html) => {
+  if (!html) return null;
+
+  return (
+    <div
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+};
+
 function ProgrammOverview({ programm, role, to }) {
   const { t, lang } = useI18n();
   const { user: currentUser } = useAuth();
@@ -802,88 +822,54 @@ function ProgrammOverview({ programm, role, to }) {
         <div className="overview-card">
           <h2>{t("programm.detail.overview.overview")}</h2>
           <div className="pre-line">
-            <TranslateableText
+            {/* <TranslateableText
               text={
-                programm.details?.overview ||
+                programm.overviews ||
                 t("programm.detail.no_description")
               }
               lang={lang}
-            />
+            /> */}
+          {/* {renderHTML(programm.overviews)} */}
+          <TranslatedHtml 
+              html={programm.overviews}
+              lang={lang}
+              isExpanded={true}
+              className="detail-content ql-editor"
+          />
           </div>
         </div>
 
         <div className="overview-card">
           <h2>{t("programm.detail.overview.requirements")}</h2>
-          <ul className="overview-list">
-            <li>
-              <p>🎂 {t("programm.detail.overview.age")}: <TranslateableText text={programm.requirement?.age} lang={lang} /></p>
-            </li>
-            <li>
-              <p>🎓 {t("programm.detail.overview.education")}: <span className="pre-line inline-block"><TranslateableText text={programm.requirement?.education} lang={lang} /></span></p>
-            </li>
-            <li>
-              <p>📜 {t("programm.detail.overview.certificate")}: <TranslateableText text={programm.requirement?.certificate} lang={lang} /></p>
-            </li>
-            <li>
-              <p>❤️ {t("programm.detail.overview.health")}: <TranslateableText text={programm.requirement?.health} lang={lang} /></p>
-            </li>
-          </ul>
+          <TranslatedHtml 
+              html={programm.requirements}
+              lang={lang}
+              isExpanded={true}
+              className="detail-content ql-editor"
+          />
+              
         </div>
 
         <div className="overview-card">
           <h2>{t("programm.detail.overview.benefit")}</h2>
           <div className="pre-line">
-            <TranslateableText text={programm.benefit} lang={lang} />
+          <TranslatedHtml 
+              html={programm.benefits}
+              lang={lang}
+              isExpanded={true}
+              className="detail-content ql-editor"
+          />
+          
           </div>
         </div>
 
         <div className="overview-card">
           <h2>{t("programm.detail.overview.other")}</h2>
-          {postTitles.length > 0 ? (
-            <div className="related-posts-list">
-              {postTitles.map((post, idx) => (
-                <div key={idx} className="related-post-card">
-                  {post.thumbnail && (
-                    <img
-                      src={post.thumbnail}
-                      alt={post.title}
-                      className="related-post-thumb"
-                    />
-                  )}
-
-                  <span className="related-post-type">{post.type_category}</span>
-
-                  <div className="related-post-card-content">
-                    <h4>{post.title}</h4>
-                    {post.excerpt && <p>{post.excerpt}</p>}
-                    <a
-                      href={
-                        post.type_category === "tip"
-                          ? `/tip-detail/${post.slug}`
-                          : post.type_category === "event"
-                          ? `/event-detail/${post.slug}`
-                          : post.type_category === "story"
-                          ? `/success-story-detail/${post.slug}`
-                          : post.type_category === "partner"
-                          ? `/collabor?id=${post._id}`
-                          : "#"
-                      }
-                    >
-                      {t("programm.detail.read_more") || "Read more →"}
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>{t("programm.detail.no_post_found")}</p>
-          )}
+          {programm.posts.map(p=>(
+            <span style={{marginLeft:20}}>{p}</span>
+          ))}
         </div>
       </div>
-
-      {role === "externeCandidate" && (
-        <ApplicationForm to={to} translator={t} />
-      )}
     </section>
   );
 }
@@ -907,145 +893,20 @@ function ProgrammJourney({ program }) {
   const width = useWindowWidth();
   const isMobile = width <= 600;
 
-  // Costs
-  const [costs, setCosts] = useState([]);
-  const [editingCost, setEditingCost] = useState(null);
-  const [newCost, setNewCost] = useState({ item: "", note: "" });
 
-  // Documents
-  const [documents, setDocuments] = useState([]);
-  const [editingDoc, setEditingDoc] = useState(null);
-  const [newDoc, setNewDoc] = useState({ name: "" });
 
-  // Steps
-  const [steps, setSteps] = useState([]);
-  const [editingStep, setEditingStep] = useState(null);
-  const [newStepName, setNewStepName] = useState("");
 
-  const loadData = useCallback(async (id) => {
-    try {
-      const cs = await getProgrammCosts(id);
-      const docs = await getProgrammDocuments(id);
-      const st = await getProgrammSteps(id);
-
-      setCosts(Array.isArray(cs) ? cs : []);
-      setDocuments(Array.isArray(docs) ? docs : []);
-      setSteps(Array.isArray(st) ? st : []);
-    } catch (error) {
-      console.error(t('programm.journey.alert.error_loading_programm'), error);
-    }
-  }, [t]);
-
-  useEffect(() => {
-    if (!program?._id) return;
-    const id = program._id;
-    const timer = setTimeout(() => { void loadData(id); }, 0);
-    return () => clearTimeout(timer);
-  }, [program?._id, loadData]);
-
-  // ===== COSTS CRUD =====
-  const onAddCost = async () => {
-    if (!newCost.item.trim()) return;
-    try {
-      const created = await addProgrammCost(program._id, newCost);
-      setCosts([...costs, created]);
-      setNewCost({ item: "", note: "" });
-    } catch (e) {
-      console.error(t('programm.journey.alert.add_cost_failed'), e);
-    }
-  };
-
-  const onUpdateCost = async () => {
-    try {
-      const updated = await updateProgrammCost(program._id, editingCost._id, editingCost);
-      setCosts(costs.map((c) => (c._id === updated._id ? updated : c)));
-      setEditingCost(null);
-    } catch (e) {
-      console.error(t('programm.journey.alert.update_cost_failed'), e);
-    }
-  };
-
-  const onDeleteCost = async (id) => {
-    try {
-      await deleteProgrammCost(program._id, id);
-      setCosts(costs.filter((c) => c._id !== id));
-    } catch (e) {
-      console.error(t('programm.journey.alert.delete_cost_failed'), e);
-    }
-  };
-
-  // ===== DOCUMENTS CRUD =====
-  const onAddDocument = async () => {
-    if (!newDoc.name.trim()) return;
-    try {
-      const created = await addProgrammDocument(program._id, newDoc);
-      setDocuments([...documents, created]);
-      setNewDoc({ name: "" });
-    } catch (e) {
-      console.error(t('programm.journey.alert.add_document_failed'), e);
-    }
-  };
-
-  const onUpdateDocument = async () => {
-    try {
-      const updated = await updateProgrammDocument(program._id, editingDoc._id, editingDoc);
-      setDocuments(documents.map((d) => (d._id === updated._id ? updated : d)));
-      setEditingDoc(null);
-    } catch (e) {
-      console.error(t('programm.journey.alert.update_document_failed'), e);
-    }
-  };
-
-  const onDeleteDocument = async (id) => {
-    try {
-      await deleteProgrammDocument(program._id, id);
-      setDocuments(documents.filter((d) => d._id !== id));
-    } catch (e) {
-      console.error(t('programm.journey.alert.delete_document_failed'), e);
-    }
-  };
-
-  // ===== STEP CRUD =====
-  const onAddStep = async () => {
-    if (!newStepName.trim()) return;
-    try {
-      const stepNumber = steps.length + 1;
-      const created = await addProgrammStep(program._id, { step: stepNumber, name: newStepName });
-      setSteps([...steps, created]);
-      setNewStepName("");
-    } catch (err) {
-      console.error(t('programm.journey.alert.add_step_failed'), err);
-    }
-  };
-
-  const onUpdateStep = async () => {
-    try {
-      const updated = await updateProgrammStep(program._id, editingStep._id, editingStep);
-      setSteps(steps.map((s) => (s._id === updated._id ? updated : s)));
-      setEditingStep(null);
-    } catch (err) {
-      console.error(t('programm.journey.alert.update_step_failed'), err);
-    }
-  };
-
-  const onDeleteStep = async (id) => {
-    try {
-      await deleteProgrammStep(program._id, id);
-      setSteps((prev) => prev.filter((s) => s._id !== id).map((s, i) => ({ ...s, step: i + 1 })));
-    } catch (err) {
-      console.error(t('programm.journey.alert.delete_step_failed'), err);
-    }
-  };
 
   // === INLINE STYLE ===
   const listItemStyle = {
-    flex: isMobile ? "1 1 100%" : "1 1 48%",
+    flex: "1 1 100%",
     borderRadius: "6px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     boxSizing: "border-box",
-    width: "450px"
+    width: "100%",
+    maxWidth: "100%",
   };
 
   const tableStyle = { width: "100%", borderCollapse: "collapse" };
@@ -1054,263 +915,62 @@ function ProgrammJourney({ program }) {
     border: "1px solid #ddd",
     padding: "8px",
     marginBottom: "12px",
-    display: "flex", justifyContent:"center",
+    display: "flex",
+    justifyContent:"center",
     flexDirection: "column",
     gap: "4px",
-    height:125
+    minWidth: 0,
+    width: "100%",
+    boxSizing: "border-box",
   };
 
   const addDiv = {
-    width:"440px",marginTop:20,
-    display:"flex",justifyContent:"space-between"
+    width:"100%",
+    marginTop:20,
+    display:"flex",
+    justifyContent:"space-between",
+    gap: 8,
+    boxSizing: "border-box",
   }
 
   return (
     <div className="programm-journey">
       {/* STEPS */}
       <section>
-        <h3>{t('programm.detail.journey.title')}</h3>
-        <div style={{height:10}}></div>
-        <ul style={{ display: "flex", flexDirection:"column", width:500, padding: 0, listStyleType: "disc" }}>
-          {steps.map((step) => (
-            <li key={step._id} style={listItemStyle}>
-              {editingStep?._id === step._id ? (
-                <input
-                  value={editingStep.name}
-                  onChange={(e) => setEditingStep({ ...editingStep, name: e.target.value })}
-                  style={{ flexGrow: 1 }}
-                />
-              ) : (
-                <>
-                  <span style={{ marginRight: 8 }}>•</span>
-                  <span style={{ flexGrow: 1 }}><TranslateableText text={step.name} lang={lang}/></span></>
-              )}
-              {user?.role === "admin" && (
-                <span className="actions" style={{ display: "flex", gap: "5px" }}>
-                  {editingStep?._id === step._id ? (
-                    <span className="icon-actions">
-                      <button className="icon-btn primary" title={t('programm.detail.journey.actions.save')} onClick={onUpdateStep}><FaSave /></button>
-                      <button className="icon-btn muted" title={t('programm.detail.journey.actions.cancel')} onClick={() => setEditingStep(null)}><FaTimes /></button>
-                    </span>
-                  ) : (
-                    <span className="icon-actions">
-                      <button className="icon-btn" title={t('programm.detail.journey.actions.edit')} onClick={() => setEditingStep(step)}><FaEdit /></button>
-                      <button className="icon-btn danger" title={t('programm.detail.journey.actions.delete')} onClick={() => onDeleteStep(step._id)}><FaTrash /></button>
-                    </span>
-                  )}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-        {user?.role === "admin" && !editingStep && (
-          <div style={addDiv}>
-            <input
-              placeholder={t('programm.detail.journey.enter_steps')}
-              value={newStepName}
-              onChange={(e) => setNewStepName(e.target.value)}
-              style={{ padding: "4px 6px", marginRight: "8px" }}
-            />
-            <button className="icon-btn primary" title={t('programm.detail.journey.actions.add')} onClick={onAddStep}><FaPlus /></button>
-          </div>
-        )}
+        <h2>Roadmaps: </h2>
+          <TranslatedHtml 
+              html={program.roadmaps}
+              lang={lang}
+              isExpanded={true}
+              className="detail-content ql-editor"
+          />
       </section>
 
       <div style={{ height: 30 }}></div>
 
       {/* DOCUMENTS */}
       <section>
-        <h3>{t('programm.detail.journey.documents_title')}</h3>
-        <div style={{height:10}}></div>
-        <ul style={{ display: "flex", flexDirection:"column", width:500, flexWrap: "wrap" }}>
-          {documents.map((doc) => (
-            <li key={doc._id} style={listItemStyle}>
-              {editingDoc?._id === doc._id ? (
-                <input
-                  value={editingDoc.name}
-                  onChange={(e) => setEditingDoc({ ...editingDoc, name: e.target.value })}
-                  style={{ flexGrow: 1 }}
-                />
-              ) : (
-                <><span style={{ marginRight: 8 }}>•</span>
-                <span style={{ flexGrow: 1 }}><TranslateableText text={doc.name} lang={lang}/></span></>
-              )}
-              {user?.role === "admin" && (
-                <span className="actions" style={{ display: "flex", gap: "5px" }}>
-                  {editingDoc?._id === doc._id ? (
-                    <span className="icon-actions">
-                      <button className="icon-btn primary" title={t('programm.detail.journey.actions.save')} onClick={onUpdateDocument}><FaSave /></button>
-                      <button className="icon-btn muted" title={t('programm.detail.journey.actions.cancel')} onClick={() => setEditingDoc(null)}><FaTimes /></button>
-                    </span>
-                  ) : (
-                    <span className="icon-actions">
-                      <button className="icon-btn" title={t('programm.detail.journey.actions.edit')} onClick={() => setEditingDoc(doc)}><FaEdit /></button>
-                      <button className="icon-btn danger" title={t('programm.detail.journey.actions.delete')} onClick={() => onDeleteDocument(doc._id)}><FaTrash /></button>
-                    </span>
-                  )}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        {user?.role === "admin" && !editingDoc && (
-          <div style={addDiv}>
-            <input
-              placeholder={t('programm.detail.journey.documents.enter_name')}
-              value={newDoc.name}
-              onChange={(e) => setNewDoc({ ...newDoc, name: e.target.value })}
-              style={{ padding: "4px 6px", marginRight: "8px" }}
-            />
-            <button className="icon-btn primary" title={t('programm.detail.journey.actions.add')} onClick={onAddDocument}><FaPlus /></button>
-          </div>
-        )}
+        <h2>Documents</h2>
+          <TranslatedHtml 
+              html={program.documents}
+              lang={lang}
+              isExpanded={true}
+              className="detail-content ql-editor"
+          />
       </section>
 
       <div style={{ height: 30 }}></div>
 
       {/* COST TABLE */}
       <section>
-        <h3>{t('programm.detail.journey.cost_table_title')}</h3>
-        <div style={{height:10}}></div>
-        {!isMobile ? (
-          <table style={tableStyle}>
-            <thead>
-              <tr>
-                <th style={thTdStyle}>{t('programm.detail.journey.costs.header_item')}</th>
-                <th style={thTdStyle}>{t('programm.detail.journey.costs.header_note')}</th>
-                {user?.role === "admin" && <th style={thTdStyle}>{t('programm.detail.journey.actions.title')}</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {costs.map((row) => (
-                <tr key={row._id}>
-                  <td style={thTdStyle}>
-                    {editingCost?._id === row._id ? (
-                      <input
-                        value={editingCost.item}
-                        onChange={(e) => setEditingCost({ ...editingCost, item: e.target.value })}
-                      />
-                    ) : (
-                      <TranslateableText text={row.item} lang={lang}/>
-                    )}
-                  </td>
-                  <td style={thTdStyle}>
-                    {editingCost?._id === row._id ? (
-                      <input
-                        value={editingCost.note}
-                        onChange={(e) => setEditingCost({ ...editingCost, note: e.target.value })}
-                      />
-                    ) : (
-                      <TranslateableText text={row.note} lang={lang}/>
-                    )}
-                  </td>
-                  {user?.role === "admin" && (
-                    <td style={{...thTdStyle, gap:5, display:"flex"}} >
-                      {editingCost?._id === row._id ? (
-                        <span className="icon-actions">
-                          <button className="icon-btn primary" title={t('programm.detail.journey.actions.save')} onClick={onUpdateCost}><FaSave /></button>
-                          <button className="icon-btn muted" title={t('programm.detail.journey.actions.cancel')} onClick={() => setEditingCost(null)}><FaTimes /></button>
-                        </span>
-                      ) : (
-                        <span className="icon-actions">
-                          <button className="icon-btn" title={t('programm.detail.journey.actions.edit')} onClick={() => setEditingCost(row)}><FaEdit /></button>
-                          <button className="icon-btn danger" title={t('programm.detail.journey.actions.delete')} onClick={() => onDeleteCost(row._id)}><FaTrash /></button>
-                        </span>
-                      )}
-                    </td>
-                  )}
-                </tr>
-              ))}
-
-              {/* Add Row */}
-              {user?.role === "admin" && (
-                <tr>
-                  <td style={thTdStyle}>
-                    <input
-                      placeholder={t('programm.detail.journey.costs.enter_item')}
-                      value={newCost.item}
-                      onChange={(e) => setNewCost({ ...newCost, item: e.target.value })}
-                    />
-                  </td>
-                  <td style={thTdStyle}>
-                    <input
-                      placeholder={t('programm.detail.journey.costs.enter_item')}
-                      value={newCost.note}
-                      onChange={(e) => setNewCost({ ...newCost, note: e.target.value })}
-                    />
-                  </td>
-                  <td style={thTdStyle}>
-                    <button className="icon-btn primary" title={t('programm.detail.journey.actions.add')} onClick={onAddCost}><FaPlus /></button>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        ) : (
-          <div>
-            {costs.map((row) => (
-              <div key={row._id} style={mobileCostRowStyle}>
-                <div>
-                  <strong>{t('programm.detail.journey.costs.header_item')}</strong> {editingCost?._id === row._id ? (
-                    <input
-                      value={editingCost.item}
-                      onChange={(e) => setEditingCost({ ...editingCost, item: e.target.value })}
-                      style={{border:"2px solid black", width:"50%"}}
-                    />
-                  ) : (
-                    row.item
-                  )}
-                </div>
-                <div>
-                  <strong>{t('programm.detail.journey.costs.header_note')}</strong> {editingCost?._id === row._id ? (
-                    <input
-                      value={editingCost.note}
-                      onChange={(e) => setEditingCost({ ...editingCost, note: e.target.value })}
-                      style={{border:"2px solid black", width:"50%"}}
-                    />
-                  ) : (
-                    row.note
-                  )}
-                </div>
-                {user?.role === "admin" && (
-                  <div style={{display:"flex", gap:5,}}>
-                    {editingCost?._id === row._id ? (
-                      <span className="icon-actions">
-                        <button className="icon-btn primary" title={t('programm.detail.journey.actions.save')} onClick={onUpdateCost}><FaSave /></button>
-                        <button className="icon-btn muted" title={t('programm.detail.journey.actions.cancel')} onClick={() => setEditingCost(null)}><FaTimes /></button>
-                      </span>
-                    ) : (
-                      <span className="icon-actions">
-                        <button className="icon-btn" title={t('programm.detail.journey.actions.edit')} onClick={() => setEditingCost(row)}><FaEdit /></button>
-                        <button className="icon-btn danger" title={t('programm.detail.journey.actions.delete')} onClick={() => onDeleteCost(row._id)}><FaTrash /></button>
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* Add row */}
-            {user?.role === "admin" && (
-              <div style={{ ...mobileCostRowStyle }}>
-                <input
-                  placeholder={t('programm.detail.journey.costs.enter_item')}
-                  value={newCost.item}
-                  onChange={(e) => setNewCost({ ...newCost, item: e.target.value })}
-                  style={{width:"50%"}}
-                />
-                <input
-                  placeholder={t('programm.detail.journey.costs.enter_note')}
-                  value={newCost.note}
-                  onChange={(e) => setNewCost({ ...newCost, note: e.target.value })}
-                  style={{width:"50%"}}
-                />
-                <button className="icon-btn primary" style={{ marginTop:5}} title={t('programm.detail.journey.actions.add')} onClick={onAddCost}><FaPlus /></button>
-              </div>
-            )}
-          </div>
-        )}
+        <h2>Costs</h2>
+        <TranslatedHtml 
+            html={program.costs}
+            lang={lang}
+            isExpanded={true}
+            className="detail-content ql-editor"
+        />
+        
       </section>
 
      

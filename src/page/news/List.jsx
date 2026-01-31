@@ -15,7 +15,8 @@ export default function NewsList() {
     const fetchNews = async () => {
       try {
         const news_list = await getPostsList();
-        if (!ignore) setNewsList(news_list);
+        console.log(news_list);
+        if (!ignore) setNewsList(news_list.data);
       } catch (error) {
         console.error("Error loading news list:", error);
       }

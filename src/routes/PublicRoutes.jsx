@@ -10,7 +10,7 @@ import NewsList from "../page/news/List";
 
 export const publicRoutes = [
   { path: "/home", element: <HomePage /> },
-  { path: "/programm/:slug", element: <ProgrammsDetail /> },
+  { path: "/program/:slug", element: <ProgrammsDetail /> },
   { path: "/login", element: <Login /> },
   { path: "/signup", element: <SignUp /> },
   { path: "/programm-view/candidate-apply/:slug", element: <CandidateExternSystemApply /> },

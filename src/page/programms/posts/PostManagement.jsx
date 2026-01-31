@@ -1,23 +1,39 @@
 // ⚡️ src/pages/admin/programms/PostManagement.jsx
-// import "./quillConfig";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  memo,
+} from "react";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
 import {
-  getPostsList,
-  createPost,
-  updatePost,
-  removePost,
-  getProgrammsList,
+  getPostsListL,
+  createPostL,
+  updatePostL,
+  removePostL,
+  getProgramsList,
   upFileToStorage,
 } from "../../../api";
 
-import PostEditor from "./PostEditor";
 import TranslatableText from "../../../i18n/TranslateableText";
 import { useI18n } from "../../../i18n";
 import { useNavigate } from "react-router-dom";
 import "./PostManagement.css";
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+const normalizeArray = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+
+const stripHTML = (html) => {
+  if (!html) return "";
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
 
 /* =========================================================
    MAIN COMPONENT
@@ -25,25 +41,20 @@ import "./PostManagement.css";
 export default function PostManagement() {
   const { t, lang } = useI18n();
   const navigate = useNavigate();
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showAddPost, setShowAddPost] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
 
-  const stripHTML = (html) => {
-    if (!html) return "";
-    const tmp = document.createElement("div");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-  };
+  // null = list | {} = add | post = edit
+  const [formPost, setFormPost] = useState(null);
 
   const loadPosts = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await getPostsList();
+      const res = await getPostsListL();
       setPosts(Array.isArray(res) ? res : res.data || []);
     } catch (err) {
-      console.error("❌ Lỗi tải bài viết:", err);
+      console.error("❌ Load posts error:", err);
     } finally {
       setLoading(false);
     }
@@ -56,9 +67,9 @@ export default function PostManagement() {
   const handleDeletePost = async (id) => {
     if (!window.confirm(t("admin.post.confirm_delete"))) return;
     try {
-      await removePost(id);
-      setPosts((prev) => prev.filter((p) => p._id !== id));
+      await removePostL(id);
       alert("✅ " + t("admin.post.deleted"));
+      loadPosts();
     } catch {
       alert("❌ " + t("admin.post.delete_error"));
     }
@@ -66,47 +77,32 @@ export default function PostManagement() {
 
   return (
     <div className="post-management-section">
+      {/* TOOLBAR */}
       <div className="post-toolbar">
         <button
-          className={`toggle-btn ${showAddPost ? "active" : ""}`}
-          onClick={() => {
-            setEditingPost(null);
-            setShowAddPost((prev) => !prev);
-          }}
+          className={`toggle-btn ${formPost ? "active" : ""}`}
+          onClick={() => setFormPost(formPost ? null : {})}
         >
-          {showAddPost ? (
-            <TranslatableText text={t("admin.post.show_post_list")} lang={lang} />
-          ) : (
-            <TranslatableText text={t("admin.post.create_post")} lang={lang} />
-          )}
+          {formPost
+            ? t("admin.post.show_post_list")
+            : t("admin.post.create_post")}
         </button>
       </div>
 
-      {showAddPost && !editingPost && (
-        <PostEditor
-          onSave={async (post) => {
-            try {
-              const res = await createPost(post);
-              setPosts((prev) => [res.data, ...prev]);
-              alert("✅ " + t("admin.post.saved"));
-              setShowAddPost(false);
-            } catch {
-              alert("❌ " + t("admin.post.create_error"));
-            }
+      {/* FORM (ADD / EDIT) */}
+      {formPost && (
+        <PostForm
+          post={formPost.id ? formPost : null}
+          onClose={() => setFormPost(null)}
+          onSaved={() => {
+            loadPosts();
+            setFormPost(null);
           }}
-          onCancel={() => setShowAddPost(false)}
         />
       )}
 
-      {editingPost && (
-        <EditPostForm
-          post={editingPost}
-          onClose={() => setEditingPost(null)}
-          onSaved={loadPosts}
-        />
-      )}
-
-      {!showAddPost && !editingPost && (
+      {/* LIST */}
+      {!formPost && (
         <div className="post-list-container">
           <h3 style={{ marginBottom: 40 }}>
             <TranslatableText text={t("admin.post.title")} lang={lang} />
@@ -120,14 +116,16 @@ export default function PostManagement() {
             <div className="post-list">
               {posts.map((p) => (
                 <PostCard
-                  key={p._id}
+                  key={p.id}
                   post={p}
-                  onEdit={() => setEditingPost(p)}
-                  onDelete={() => handleDeletePost(p._id)}
+                  onEdit={() => setFormPost(p)}
+                  onDelete={() => handleDeletePost(p.id)}
                   navigate={navigate}
                   t={t}
                   lang={lang}
-                  excerpt={stripHTML(p.excerpt || p.content).slice(0, 140) + "…"}
+                  excerpt={
+                    stripHTML(p.excerpt || p.content).slice(0, 140) + "…"
+                  }
                 />
               ))}
             </div>
@@ -139,359 +137,380 @@ export default function PostManagement() {
 }
 
 /* =========================================================
-   SUB COMPONENTS — Post Card
+   POST CARD
    ========================================================= */
+const PostCard = memo(
+  ({ post, onEdit, onDelete, navigate, t, lang, excerpt }) => (
+    <article
+      className="pm-card"
+      onClick={() => {
+        if (post.slug) navigate(`/news/${post.slug}`);
+      }}
+    >
+      <div className="pm-thumb">
+        {post.thumbnail_url ? (
+          <img src={post.thumbnail_url} className="pm-media" alt="" />
+        ) : (
+          <div className="pm-no-media">{t("admin.post.nomedia")}</div>
+        )}
+      </div>
 
-const PostCard = React.memo(({ post, onEdit, onDelete, navigate, t, lang, excerpt }) => (
-  <article
-    className="pm-card"
-    onClick={() => {
-      const routeMap = {
-        success_story: `/success-story-detail/${post.slug}`,
-        career_tip: `/tip-detail/${post.slug}`,
-        upcoming_event: `/event-detail/${post.slug}`,
-      };
-      const route = routeMap[post.type];
-      if (route && post.slug) navigate(route);
-    }}
-  >
-    <div className="pm-thumb">
-      {post.thumbnail_url?.match(/\.(mp4|webm|ogg)$/i) ? (
-        <video controls className="pm-media">
-          <source src={post.thumbnail_url} type="video/mp4" />
-        </video>
-      ) : post.thumbnail_url ? (
-        <img src={post.thumbnail_url} alt={post.title} className="pm-media" />
-      ) : (
-        <div className="pm-no-media">{t("admin.post.nomedia")}</div>
-      )}
-    </div>
+      <div className="pm-content">
+        <span className={`pm-type ${post.type}`}>
+          {t(`admin.post.edit_form.category.${post.type}`)}
+        </span>
 
-    <div className="pm-content">
-      <span className={`pm-type ${post.type}`}>
-        {t(`admin.post.edit_form.category.${post.type}`)}
-      </span>
-      <h3 className="pm-title"><TranslatableText text={post.title} lang={lang} /></h3>
-      {post.eventDate && (
-        <div className="pm-meta">
-          🗓 {new Date(post.eventDate.date).toLocaleDateString("vi-VN")} · 🕒 {post.eventDate.startTime || "??:??"}–{post.eventDate.endTime || "??:??"}
-        </div>
-      )}
-      {post.location && (
-        <div className="pm-meta">📍 <TranslatableText text={post.location} lang={lang} /></div>
-      )}
-      {excerpt && <p className="pm-excerpt">{excerpt}</p>}
-    </div>
+        <h3 className="pm-title">
+          <TranslatableText text={post.title} lang={lang} />
+        </h3>
 
-    <div className="pm-actions">
-      <button
-        onClick={(e) => { e.stopPropagation(); onEdit(); }}
-        className="pm-edit"
-        title={t("admin.post.edit")}
-      >
-        ✏️
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); onDelete(); }}
-        className="pm-delete"
-        title={t("admin.post.delete")}
-      >
-        🗑️
-      </button>
-    </div>
-  </article>
-));
+        {post.eventDate && (
+          <div className="pm-meta">
+            🗓{" "}
+            {new Date(post.eventDate.date).toLocaleDateString("vi-VN")} · 🕒{" "}
+            {post.eventDate.startTime || "??:??"}–
+            {post.eventDate.endTime || "??:??"}
+          </div>
+        )}
+
+        {post.location && (
+          <div className="pm-meta">
+            📍 <TranslatableText text={post.location} lang={lang} />
+          </div>
+        )}
+
+        {excerpt && <p className="pm-excerpt">{excerpt}</p>}
+      </div>
+
+      <div className="pm-actions">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit();
+          }}
+          title={t("admin.post.edit")}
+        >
+          ✏️
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          title={t("admin.post.delete")}
+        >
+          🗑️
+        </button>
+      </div>
+    </article>
+  )
+);
 
 /* =========================================================
-   EDIT POST FORM — WITH EVENT FIELDS
+   SHARED FORM — ADD + EDIT (FULL FIELD)
    ========================================================= */
+function PostForm({ post, onClose, onSaved }) {
+  const { t } = useI18n();
+  const quillRef = useRef(null);
 
-/* =========================================================
-   EDIT POST FORM — WITH EVENT FIELDS
-   ========================================================= */
+  const isEdit = !!post?.id;
 
-   export function EditPostForm({ post, onClose, onSaved }) {
-    const { t, lang } = useI18n();
-    const quillRef = useRef(null);
-  
-    const [title, setTitle] = useState(post?.title || "");
-    const [content, setContent] = useState(post?.content || "");
-    const [thumbnail, setThumbnail] = useState(post?.thumbnail_url || "");
-    const [fileType, setFileType] = useState(post?.file_type || "");
-    const [uploading, setUploading] = useState(false);
-    const [programms, setProgramms] = useState([]);
-    const [selectedProgram, setSelectedProgram] = useState(post?.progId || "");
-    const [selectedType, setSelectedType] = useState(post?.type || "success_story");
-  
-    // ⭐ Event data
-    const [eventDate, setEventDate] = useState({
-      date: post?.eventDate?.date || "",
-      startTime: post?.eventDate?.startTime || "",
-      endTime: post?.eventDate?.endTime || "",
-    });
-  
-    const [location, setLocation] = useState(post?.location || "");
-  
-    useEffect(() => {
-      getProgrammsList()
-        .then(res => setProgramms(res.data || []))
-        .catch(() => {});
-    }, []);
-  
-    /* --- Handler upload video trong editor --- */
-    const handleVideoUpload = useCallback(async () => {
-      const quill = quillRef.current?.getEditor();
-      if (!quill) return;
-  
-      const range = quill.getSelection(true);
-      
-      const choice = window.prompt(
-        "🎥 Dán link YouTube hoặc bấm Cancel để tải video từ máy:"
+  /* BASIC */
+  const [title, setTitle] = useState(post?.title || "");
+  const [content, setContent] = useState(post?.content || "");
+  const [thumbnail, setThumbnail] = useState(post?.thumbnail_url || "");
+  const [fileType, setFileType] = useState(post?.file_type || "");
+  const [uploading, setUploading] = useState(false);
+  const [type, setType] = useState(post?.type || "success_story");
+
+  /* PROGRAM MULTI */
+  const [programms, setProgramms] = useState([]);
+  const [programSearch, setProgramSearch] = useState("");
+  const [selectedPrograms, setSelectedPrograms] = useState(() =>
+    normalizeArray(post?.progId)
+  );
+
+  useEffect(() => {
+    getProgramsList()
+      .then((res) => setProgramms(res.data || []))
+      .catch(() => {});
+  }, []);
+
+  const filteredPrograms = programms.filter((p) =>
+    p.name?.toLowerCase().includes(programSearch.toLowerCase())
+  );
+
+  const handleProgramChange = (e) => {
+    const values = Array.from(e.target.selectedOptions).map((o) => o.value);
+    setSelectedPrograms(values);
+  };
+
+  const handleSelectAllPrograms = () => {
+    setSelectedPrograms(filteredPrograms.map((p) => p.id));
+  };
+
+  const handleClearAllPrograms = () => {
+    setSelectedPrograms([]);
+  };
+
+  /* EVENT */
+  const [eventDate, setEventDate] = useState({
+    date: post?.eventDate?.date || "",
+    startTime: post?.eventDate?.startTime || "",
+    endTime: post?.eventDate?.endTime || "",
+  });
+  const [location, setLocation] = useState(post?.location || "");
+
+  /* FILE UPLOAD */
+  const handleFileChange = async (file, type) => {
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await upFileToStorage(file);
+      setThumbnail(url);
+      setFileType(type);
+      alert("✅ " + t("admin.post.upload_success"));
+    } catch {
+      alert("❌ " + t("admin.post.upload_error"));
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  /* VIDEO UPLOAD */
+  const handleVideoUpload = useCallback(async () => {
+    const quill = quillRef.current?.getEditor();
+    if (!quill) return;
+
+    const range = quill.getSelection(true);
+    const choice = window.prompt(
+      "🎥 Dán link YouTube hoặc bấm Cancel để tải video từ máy:"
+    );
+
+    if (choice && choice.startsWith("http")) {
+      const match = choice.match(
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/
       );
-  
-      if (choice && choice.startsWith("http")) {
-        // ✅ Nhúng YouTube
-        const youtubeMatch = choice.match(
-          /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/
+      if (match) {
+        quill.insertEmbed(
+          range.index,
+          "video",
+          `https://www.youtube.com/embed/${match[1]}`
         );
-        if (youtubeMatch) {
-          const embedUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
-          quill.insertEmbed(range.index, "video", embedUrl);
-        } else {
-          alert("⚠️ Link không hợp lệ. Hãy nhập đúng link YouTube!");
-        }
-        return;
       }
-  
-      // 🟢 Upload video từ máy
-      const fileInput = document.createElement("input");
-      fileInput.setAttribute("type", "file");
-      fileInput.setAttribute("accept", "video/*");
-      fileInput.click();
-  
-      fileInput.onchange = async () => {
-        const file = fileInput.files[0];
-        if (!file) return;
-  
-        quill.insertText(range.index, "⏳ Đang tải video...", "italic", true);
-        try {
-          const url = await upFileToStorage(file);
-          quill.deleteText(range.index, "⏳ Đang tải video...".length);
-          quill.insertEmbed(range.index, "video", url);
-          alert("✅ Video đã tải lên thành công!");
-        } catch (err) {
-          console.error(err);
-          alert("❌ Lỗi tải video!");
-          quill.deleteText(range.index, "⏳ Đang tải video...".length);
-        }
-      };
-    }, []);
-  
-    /* --- Cấu hình ReactQuill đầy đủ --- */
-const quillModules = {
-  toolbar: {
-    container: [
-      [{ 'header': [1, 2, 3, false] }],
-      [{ 'font': [] }],
-      [{ 'size': ['12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px'] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      [{ 'align': [] }],
-      ['blockquote', 'code-block'],
-      ['link', 'image', 'video'],
-      ['clean']
-    ],
-    handlers: {
-      video: handleVideoUpload
+      return;
     }
-  },
-  clipboard: {
-    matchVisual: false,
-  },
-  keyboard: {
-    bindings: {
-      // ✅ IMPROVED FIX: Remove confusing video bindings - let Quill handle it natively
-      // This was preventing cursor movement after videos loaded from backend
-    }
-  }
-};
-  
-    const quillFormats = [
-      'header', 'font', 'size',
-      'bold', 'italic', 'underline', 'strike',
-      'color', 'background',
-      'script',
-      'list', 'bullet', 'indent',
-      'align', 'direction',
-      'blockquote', 'code-block',
-      'link', 'image', 'video'
-    ];
-  
-    const handleFileChange = async (file, type) => {
-      setUploading(true);
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "video/*";
+    input.click();
+
+    input.onchange = async () => {
+      const file = input.files[0];
+      if (!file) return;
+      quill.insertText(range.index, "⏳ Đang tải video...", "italic", true);
       try {
         const url = await upFileToStorage(file);
-        setThumbnail(url);
-        setFileType(type);
-        alert("✅ " + t("admin.post.upload_success"));
+        quill.deleteText(range.index, 18);
+        quill.insertEmbed(range.index, "video", url);
       } catch {
-        alert("❌ " + t("admin.post.upload_error"));
-      } finally {
-        setUploading(false);
+        quill.deleteText(range.index, 18);
       }
     };
-  
-    // Thêm useEffect để debug content
-    useEffect(() => {
-      console.log("Content updated:", content);
-    }, [content]);
-  
-    /* =========================================================
-       SAVE POST
-       ========================================================= */
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      if (!title || !thumbnail || !selectedProgram) {
-        alert("⚠️ " + t("admin.post.missing_fields"));
-        return;
-      }
-  
-      const payload = {
-        title,
-        thumbnail_url: thumbnail,
-        file_type: fileType,
-        content,
-        progId: selectedProgram,
-        type: selectedType,
-  
-        // ⭐ Add event info when type = upcoming_event
-        eventDate: selectedType === "upcoming_event" ? eventDate : null,
-        location: selectedType === "upcoming_event" ? location : "",
-      };
-  
-      console.log("Saving payload:", payload);
-  
-      try {
-        await updatePost(post._id, payload);
+  }, []);
+
+  const quillModules = {
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, false] }],
+        [{ font: [] }],
+        [{ size: ["12px", "14px", "16px", "18px", "20px", "24px", "32px"] }],
+        ["bold", "italic", "underline", "strike"],
+        [{ color: [] }, { background: [] }],
+        [{ list: "ordered" }, { list: "bullet" }],
+        [{ align: [] }],
+        ["blockquote", "code-block"],
+        ["link", "image", "video"],
+        ["clean"],
+      ],
+      handlers: { video: handleVideoUpload },
+    },
+    clipboard: { matchVisual: false },
+  };
+
+  const quillFormats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "color",
+    "background",
+    "list",
+    "bullet",
+    "align",
+    "blockquote",
+    "code-block",
+    "link",
+    "image",
+    "video",
+  ];
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      title,
+      content,
+      thumbnail_url: thumbnail,
+      file_type: fileType,
+      progId: selectedPrograms,
+      type,
+      eventDate: type === "upcoming_event" ? eventDate : null,
+      location: type === "upcoming_event" ? location : "",
+    };
+
+    try {
+      if (isEdit) {
+        await updatePostL(post.id, payload);
         alert("✅ " + t("admin.post.edit_form.update_success"));
-        onSaved?.();
-        onClose?.();
-      } catch (err) {
-        console.error(err);
-        alert("❌ " + t("admin.post.edit_form.update_error"));
+      } else {
+        await createPostL(payload);
+        alert("✅ " + t("admin.post.saved"));
       }
-    };
-  
-    return (
-      <div className="editor-container">
-        <div className="editor-header">
-          <h2>✏️ {t("admin.post.edit_form.title")}</h2>
-          <button className="cancel-btn-top" onClick={onClose}>
-            ← {t("admin.post.edit_form.back")}
+      onSaved();
+    } catch (err) {
+      console.error(err);
+      alert("❌ " + t("admin.post.edit_form.update_error"));
+    }
+  };
+
+  return (
+    <div className="editor-container">
+      <div className="editor-header">
+        <h2>{isEdit ? "✏️ Edit Post" : "➕ Create Post"}</h2>
+        <button onClick={onClose}>
+          ← {t("admin.post.edit_form.back")}
+        </button>
+      </div>
+
+      <form className="post-editor" onSubmit={handleSubmit}>
+        <label>{t("admin.post.edit_form.category_label")}</label>
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="success_story">
+            {t("admin.post.edit_form.category.success_story")}
+          </option>
+          <option value="career_tip">
+            {t("admin.post.edit_form.category.career_tip")}
+          </option>
+          <option value="upcoming_event">
+            {t("admin.post.edit_form.category.upcoming_event")}
+          </option>
+        </select>
+
+        <label>{t("admin.post.edit_form.title_label")}</label>
+        <input value={title} onChange={(e) => setTitle(e.target.value)} />
+
+        <label>{t("admin.post.edit_form.program")}</label>
+        <input
+          placeholder="🔍 Search program..."
+          value={programSearch}
+          onChange={(e) => setProgramSearch(e.target.value)}
+        />
+
+        <select
+          multiple
+          value={selectedPrograms}
+          onChange={handleProgramChange}
+          style={{ minHeight: 140 }}
+        >
+          {filteredPrograms.map((p) => (
+            <option key={p.id} value={p.id}>
+              {selectedPrograms.includes(p.id) ? "✓ " : ""}
+              {p.name}
+            </option>
+          ))}
+        </select>
+
+        <div style={{ display: "flex", gap: 8 }}>
+          <button type="button" onClick={handleSelectAllPrograms}>
+            Select all
+          </button>
+          <button type="button" onClick={handleClearAllPrograms}>
+            Clear all
+          </button>
+          <span style={{ marginLeft: "auto", opacity: 0.6 }}>
+            {selectedPrograms.length}/{filteredPrograms.length}
+          </span>
+        </div>
+
+        <label>{t("admin.post.edit_form.thumbnail")}</label>
+        <input
+          type="file"
+          onChange={(e) => handleFileChange(e.target.files[0], "image")}
+        />
+        {uploading && <p>{t("admin.post.uploading")}</p>}
+        {thumbnail && <img src={thumbnail} width={220} alt="" />}
+
+        {type === "upcoming_event" && (
+          <>
+            <label>{t("admin.post.edit_form.event_date")}</label>
+            <input
+              type="date"
+              value={eventDate.date}
+              onChange={(e) =>
+                setEventDate((p) => ({ ...p, date: e.target.value }))
+              }
+            />
+
+            <label>{t("admin.post.edit_form.start_time")}</label>
+            <input
+              type="time"
+              value={eventDate.startTime}
+              onChange={(e) =>
+                setEventDate((p) => ({ ...p, startTime: e.target.value }))
+              }
+            />
+
+            <label>{t("admin.post.edit_form.end_time")}</label>
+            <input
+              type="time"
+              value={eventDate.endTime}
+              onChange={(e) =>
+                setEventDate((p) => ({ ...p, endTime: e.target.value }))
+              }
+            />
+
+            <label>{t("admin.post.edit_form.location")}</label>
+            <input
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </>
+        )}
+
+        <label>{t("admin.post.edit_form.content")}</label>
+        <ReactQuill
+          ref={quillRef}
+          value={content}
+          onChange={setContent}
+          modules={quillModules}
+          formats={quillFormats}
+          style={{ height: 400, marginBottom: 50 }}
+        />
+
+        <div className="editor-actions">
+          <button type="submit">
+            💾 {t("admin.post.edit_form.save")}
+          </button>
+          <button type="button" onClick={onClose}>
+            ❌ {t("admin.post.edit_form.cancel")}
           </button>
         </div>
-  
-        <form className="post-editor" onSubmit={handleSubmit}>
-          {/* Loại bài viết */}
-          <label>{t("admin.post.edit_form.category_label")}</label>
-          <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
-            <option value="success_story">{t("admin.post.edit_form.category.success_story")}</option>
-            <option value="career_tip">{t("admin.post.edit_form.category.career_tip")}</option>
-            <option value="upcoming_event">{t("admin.post.edit_form.category.upcoming_event")}</option>
-          </select>
-  
-          {/* Tiêu đề */}
-          <label>{t("admin.post.edit_form.title_label")}</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-  
-          {/* Chọn chương trình */}
-          <label>{t("admin.post.edit_form.program")}</label>
-          <select value={selectedProgram} onChange={(e) => setSelectedProgram(e.target.value)}>
-            <option value="">{t("admin.post.edit_form.select_program")}</option>
-            {programms.map((prog) => (
-              <option key={prog._id} value={prog._id}>
-                <TranslatableText text={prog.title} lang={lang} />
-              </option>
-            ))}
-          </select>
-  
-          {/* Ảnh */}
-          <label>{t("admin.post.edit_form.thumbnail")}</label>
-          <input type="file" onChange={(e) => handleFileChange(e.target.files[0], "image")} />
-          {uploading && <p>{t("admin.post.uploading")}</p>}
-          {thumbnail && (
-            <img src={thumbnail} alt="thumbnail" width="220" style={{ borderRadius: 8 }} />
-          )}
-  
-          {/* ⭐ EVENT FIELDS — only if type is event */}
-          {selectedType === "upcoming_event" && (
-            <>
-              <label>{t("admin.post.edit_form.event_date")}</label>
-              <input
-                type="date"
-                value={eventDate.date}
-                onChange={(e) =>
-                  setEventDate((prev) => ({ ...prev, date: e.target.value }))
-                }
-              />
-  
-              <label>{t("admin.post.edit_form.start_time")}</label>
-              <input
-                type="time"
-                value={eventDate.startTime}
-                onChange={(e) =>
-                  setEventDate((prev) => ({ ...prev, startTime: e.target.value }))
-                }
-              />
-  
-              <label>{t("admin.post.edit_form.end_time")}</label>
-              <input
-                type="time"
-                value={eventDate.endTime}
-                onChange={(e) =>
-                  setEventDate((prev) => ({ ...prev, endTime: e.target.value }))
-                }
-              />
-  
-              <label>{t("admin.post.edit_form.location")}</label>
-              <input
-                type="text"
-                placeholder={t("admin.post.edit_form.enter_location")}
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </>
-          )}
-  
-          {/* Nội dung */}
-          <label>{t("admin.post.edit_form.content")}</label>
-          <div className="quill-container">
-            <ReactQuill
-              ref={quillRef}
-              theme="snow"
-              value={content}
-              onChange={setContent}
-              modules={quillModules}
-              formats={quillFormats}
-              style={{ height: '400px', marginBottom: '50px' }}
-            />
-          </div>
-  
-          <div className="editor-actions">
-            <button type="submit" className="save-btn">
-              💾 {t("admin.post.edit_form.save")}
-            </button>
-            <button type="button" onClick={onClose} className="cancel-btn">
-              ❌ {t("admin.post.edit_form.cancel")}
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-
-  // quill config moved to separate file via `import "./quillConfig";`
+      </form>
+    </div>
+  );
+}

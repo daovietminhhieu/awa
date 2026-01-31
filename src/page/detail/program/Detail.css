@@ -1,4 +1,4 @@
-:root {
+   :root {
   --pd-accent: #3b82f6;
   --pd-accent-dark: #2563eb;
   --pd-border: #e2e8f0;
@@ -7,8 +7,8 @@
   --pd-shadow: 0 14px 40px rgba(59,130,246,0.15);
 }
 
-.programm-map-layout { display: grid; grid-template-columns: 340px 1fr; gap: 24px; width: 100%; box-sizing: border-box; background: transparent; max-width: var(--site-container-width); padding: 0 16px; margin: 0 auto; }
-.programm-left-panel { display: grid; gap: 16px; position: sticky; top: 96px; height: fit-content; }
+.programm-map-layout { display: grid; grid-template-columns: 3fr 7fr; gap: 24px; width: 100%; box-sizing: border-box; background: transparent; padding: 0 var(--site-gutter, clamp(16px,6vw,80px)); margin: 0; }
+.programm-left-panel { display: grid; gap: 16px; position: static; top: auto; height: fit-content;}
 .programm-right-panel { display: grid; gap: 18px; align-items: start; }
 .programm-right-panel, .programm-left-panel { min-width: 0; }
 
@@ -38,7 +38,7 @@
 .programm-info-boxes { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
 .programm-info-boxes .info-box { background: var(--pd-card); border: 1px solid var(--pd-border); border-radius: 12px; padding: 12px; position: relative; }
 
-.partner-programm-container { background: var(--pd-card); border: 1px solid var(--pd-border); border-radius: 16px; box-shadow: var(--pd-shadow); padding: 16px; display: grid; gap: 14px; }
+.partner-programm-container { background: var(--pd-card); border: 1px solid var(--pd-border); border-radius: 16px; box-shadow: var(--pd-shadow); padding: 16px; display: grid; gap: 14px; margin-top: 20px;}
 .partner-programm-container h4 { margin: 0 0 8px; color: #1455e2; font-weight: 700; }
 .partner-programm-container .partner-description { background: #f9fbff; border: 1px dashed var(--pd-border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
 .partner-programm-container .footer-btn { width: 100%; text-align: center; }
@@ -204,15 +204,13 @@
   .partner-programm-container { width: 100%; margin: 0 auto;}
 }
 
-@media (min-width: 1024px) {
-  .qa-fb-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+
 
 @media (min-width: 501px) and (max-width: 768px) {
-  .programm-map-layout { grid-template-columns: 1fr; padding: 10px; gap: 12px; width: 100%;}
+  .programm-map-layout { grid-template-columns: 1fr; padding: 0; margin: 0; gap: 12px; width: 100%; }
   .programm-left-panel { position: static; top: auto; width: 100%;}
   .programm-right-panel { gap: 14px; }
-  .programm-detail-header, .programm-main, .programm-journey { width: 100%; }
+  .programm-detail-header, .programm-main, .programm-journey { width: 100%; margin: 0; }
   .programm-detail-title { font-size: 1.5rem; line-height: 1.25; margin-bottom: 8px; }
   .programm-tags-slider { padding: 6px 0; gap: 6px; }
   .programm-tags-slider .tag { padding: 5px 8px; border-radius: 8px; font-size: .92rem; }
@@ -234,7 +232,7 @@
 }
 
 @media (max-width: 500px) {
-  .programm-map-layout { grid-template-columns: 1fr; gap: 12px; width: 100%;}
+  .programm-map-layout { grid-template-columns: 1fr; gap: 12px; width: 100%; padding: 0; margin: 0;}
   .programm-left-panel { position: static; top: auto; width: 100%;}
   .programm-right-panel { gap: 14px; }
   .programm-detail-title { font-size: 1.3rem; }
@@ -242,13 +240,12 @@
   .related-post-thumb { height: 140px; }
   .programm-main h2 { font-size: 1rem; }
   .programm-main section { padding: 12px; }
-  .programm-detail-header, .programm-main, .programm-journey { width: 100%; }
-  .partner-programm-container { width: 100%;}
+  .programm-detail-header, .programm-main, .programm-journey { width: 100%; margin: 0; }
+  .partner-programm-container { width: 100%; margin: 0; }
   .programm-overview { width: 100%; margin: 0; padding: 12px; }
-  .programm-journey { margin: 0; padding: 12px; }
-
+  .programm-journey { width: 100%; margin: 0; padding: 12px; }
 }
-.programm-overview { background: var(--pd-card); border: 1px solid var(--pd-border); border-radius: 16px; box-shadow: var(--pd-shadow); padding: 16px; display: grid; gap: 16px; width: 100%; max-width: var(--site-container-width); margin: 20px auto; }
+.programm-overview { background: var(--pd-card); border: 1px solid var(--pd-border); border-radius: 16px; box-shadow: var(--pd-shadow); padding: 16px; display: grid; gap: 16px; width: 100%; margin: 20px 0; }
 .overview-header { display: grid; gap: 8px; }
 .overview-section { display: grid; gap: 8px; }
 .overview-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -257,17 +254,43 @@
 .overview-list li { display: grid; gap: 4px; color: #1f2937; }
 
 /* layout luôn dạng danh sách dọc; không cần thay đổi theo breakpoint */
-
-/* Overrides placed AFTER base .programm-overview rule to ensure they win on cascade */
-@media (max-width: 500px) {
-  .programm-overview { width: 87%; margin: 0; padding: 12px; }
-  .programm-journey { width: 87%; margin: 0; padding: 12px; }
-}
-
-@media (min-width: 501px) and (max-width: 768px) {
-  .programm-overview, .programm-journey { width: 87%; margin: 0; }
-}
 @keyframes tagsMarquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+.theme-xmas .programm-detail-header {
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f5 50%, #ffffff 100%);
+  border-color: rgba(22,163,74,.25);
+  position: relative;
+}
+.theme-xmas .programm-detail-header::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #ef4444, #16a34a);
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+.theme-xmas .programm-detail-title {
+  color: var(--pd-accent);
+}
+.theme-xmas .programm-main section {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-color: rgba(239,68,68,.18);
+}
+.theme-xmas .programm-tags-slider .tag {
+  border-color: rgba(22,163,74,.25);
+}
+.theme-xmas .programm-tags-slider .tag:nth-child(odd) {
+  background: #fdf2f2;
+}
+.theme-xmas .programm-tags-slider .tag:nth-child(even) {
+  background: #f0fdf4;
+}
+.theme-xmas .related-post-type {
+  background: var(--pd-accent);
 }

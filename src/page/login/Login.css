@@ -1,6 +1,6 @@
 :root {
-  --auth-primary: #1455e2;
-  --auth-accent: #3b82f6;
+  --auth-primary: #dc2626;
+  --auth-accent: #dc2626;
   --auth-orange: #f97316;
   --auth-text: #2d3748;
   --auth-text-light: #718096;
@@ -62,7 +62,7 @@
 
 .form-options { margin-top: 18px; display: flex; gap: 12px; }
 .form-options button { flex: 1; padding: 14px 20px; border: none; border-radius: 12px; cursor: pointer; background: var(--auth-accent); color: #fff; font-weight: 800; font-size: 1.02rem; transition: var(--auth-transition); box-shadow: 0 12px 28px var(--auth-shadow); }
-.form-options button:hover { background: #2563eb; box-shadow: 0 14px 30px var(--auth-shadow-hover); transform: translateY(-2px); }
+.form-options button:hover { background: #dc2626; box-shadow: 0 14px 30px var(--auth-shadow-hover); transform: translateY(-2px); }
 .form-options button:disabled { opacity: .85; cursor: not-allowed; }
 
 .remember-me { margin-top: 12px; display: flex; align-items: center; gap: 8px; color: var(--auth-text-light); font-size: 0.95rem; }

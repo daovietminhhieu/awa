@@ -40,3 +40,15 @@
 .editor-actions { display: flex; gap: 10px; justify-content: flex-end; }
 .save-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #1455e2; background: #1455e2; color: #fff; cursor: pointer; }
 .cancel-btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #e2e8f0; background: #fff; color: #0f172a; cursor: pointer; }
+/* ===== PROGRAM MULTI SELECT ===== */
+.post-editor select[multiple] {
+  line-height: 1.6;
+}
+
+.post-editor button[type="button"] {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+}

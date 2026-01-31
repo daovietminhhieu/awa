@@ -3,9 +3,8 @@ import { CandidateTable, ArchivedTable } from "../../components/table/Table";
 // import Divider from '../../../../components/Divider';
 import { useI18n } from "../../i18n";
 import { useAuth } from "../../context/AuthContext";
-import { getPotentialsList } from "../../api";
+import { getReferralsList } from "../../api";
 import "./CandidatesTracker.css";
-import Footer from "../../components/footer/Footer";
 
 export default function CandidatesTracker() {
   const { t } = useI18n();
@@ -26,10 +25,12 @@ export default function CandidatesTracker() {
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
-        const res = await getPotentialsList(isAdmin);
+        const res = await getReferralsList(isAdmin);
         const list = res?.data || [];
-        const active = list.filter(c => c.referral?.status === "completed" && !c.archived);
-        const done = list.filter(c => c.referral?.status === "rejected" || c.archived);
+        // console.log("List:", list)
+        const active = list.filter(r => r.status === "approve" && !r.archived);
+        const done = list.filter(r => r.status === "reject" || r.archived);
+        // console.log("Active:", active); console.log("Done:", done);
         setSubmissions(active);
         setArchived(done);
       } catch (err) {
@@ -99,7 +100,7 @@ export default function CandidatesTracker() {
         <div className="ct-header">
           <div className="ct-tabs">
             <button className={`ct-tab ${activeTab === 'active' ? 'active' : ''}`} onClick={() => setActiveTab('active')}>
-              Active ({submissions.length})
+              Approved ({submissions.length})
             </button>
             <button className={`ct-tab ${activeTab === 'archived' ? 'active' : ''}`} onClick={() => setActiveTab('archived')}>
               Archived ({archived.length})
@@ -117,6 +118,7 @@ export default function CandidatesTracker() {
 
         {activeTab === 'active' && (
         <div className="ct-card">
+          <h3 className="ct-subtitle">{t('admin.candidates.completed_title') || 'Completed (Hired / Rejected)'}</h3>
           <CandidateTable
             submissions={currentSubmissions}
             editedRows={editedRows}

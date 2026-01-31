@@ -17,17 +17,19 @@ export default function Footer() {
 
       <div style={styles.container}>
         {/* Logo / Brand */}
-        <div style={styles.column}>
-          <h2 style={styles.logo}>AloWork</h2>
-          <p>{t("footer.subtitle")}</p>
-        </div>
+        <div style={{display:"flex"}}>
+           <div style={styles.column}>
+            <h2 style={styles.logo}>AloWork</h2>
+            <p>{t("footer.subtitle")}</p>
+          </div>
 
-        {/* Contact */}
-        <div style={styles.column}>
-          <h4>{t("footer.address")}</h4>
-          <p><FaMapMarkerAlt /> {t("footer.street")}</p>
-          <p><FaPhone /> +84817777000</p>
-          <p><FaEnvelope /> alowork.com@gmail.com</p>
+          {/* Contact */}
+          <div style={styles.column}>
+            <h4>{t("footer.address")}</h4>
+            <p><FaMapMarkerAlt /> {t("footer.street")}</p>
+            <p><FaPhone /> +84817777000</p>
+            <p><FaEnvelope /> alowork.com@gmail.com</p>
+          </div>
         </div>
 
         {/* Connect */}
@@ -81,6 +83,7 @@ const styles = {
 
   container: {
     display: "flex",
+    flexDirection:"column",
     justifyContent: "space-between",
     flexWrap: "wrap",
     gap: "20px",

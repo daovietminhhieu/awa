@@ -1,11 +1,12 @@
 /* Short.css - Màu sắc dịu nhẹ cho các components */
 :root {
-  --short-primary: #1e4a76;
+  --short-primary: #1A4D57;
+  --short-secondary: #F25C44;
   --short-accent: #1565c0;
   --short-orange: #e65c00;
-  --short-text: #2d3748;
+  --short-text: #4A5568;
   --short-text-light: #718096;
-  --short-bg: #fefefe;
+  --short-bg: #F4F9FA;
   --short-surface: #f7fafc;
   --short-border: #e2e8f0;
   --short-shadow: rgba(0, 0, 0, 0.06);
@@ -505,7 +506,8 @@
 /* Partner Section */
 .partner-section {
   width: 100%;
-  background: linear-gradient(135deg, #e8f2fc 0%, #f9fbff 100%);
+  /* background: var(--short-bg); */
+  background: transparent;
   padding: 80px 40px;
 }
 
@@ -532,7 +534,7 @@
 
 .partner-cta-btn {
   padding: 16px 40px;
-  background: var(--short-orange);
+  background: var(--short-secondary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -544,22 +546,88 @@
 }
 
 .partner-cta-btn:hover {
-  background: #d35400;
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(230, 92, 0, 0.4);
 }
 
-/* Partner Logos Slider */
-.partner-logos-wrapper { max-width: 1100px; margin: 24px auto; padding: 12px; }
-.partner-logos-swiper { padding: 12px 0 40px !important; }
-.logo-card { position: relative; background: #fff; border: 1px solid var(--short-border); border-radius: 12px; box-shadow: 0 4px 12px var(--short-shadow); height: 120px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.logo-img { width: 90%; height: 90%; object-fit: contain; }
-.logo-remove { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; background: #ef4444; color: #fff; border: none; font-size: 18px; line-height: 28px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-.logo-remove:hover { background: #dc2626; }
-.add-tile { cursor: pointer; border: 1px dashed var(--short-border); background: #f9fafb; color: var(--short-text-light); flex-direction: column; gap: 6px; }
-.add-tile .plus { font-size: 32px; font-weight: 700; color: var(--short-accent); }
-.add-tile .add-text { font-size: 0.9rem; }
-.hidden-file { display: none; }
+
+.slider {
+  margin: 20px 0;
+  padding: 20px 0;
+  width: 100%;
+  border-radius: 15px;
+
+    /* background: var(--short-bg); */
+
+  border: 5px solid transparent;
+}
+/* Container chính - Đảm bảo tràn hết chiều ngang */
+.logo-slider-container {
+  overflow: hidden;
+  /* padding: 30px 0; */
+  background: transparent;
+  position: relative;
+  width: 100%; /* Sát mép element cha */
+  display: flex;
+}
+
+/* Track chứa các logo */
+.logo-slider-track {
+  display: flex;
+  width: max-content; /* Tự động giãn theo số lượng logo */
+  animation: scroll 20s linear infinite; /* Tăng giây lên để chạy mượt hơn, 2s là quá nhanh */
+  will-change: transform;
+}
+
+/* Từng khung logo */
+.logo-item {
+  width: 200px; 
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Đã bỏ padding hoàn toàn */
+  margin: 0;  /* Đảm bảo không có margin */
+  flex-shrink: 0;
+}
+
+.logo-item img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 1;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+.logo-item img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* SỬA LẠI ANIMATION TẠI ĐÂY */
+@keyframes scroll {
+  0% {
+    transform: translateX(-20%); /* Bắt đầu từ vị trí hiện tại (sát phải nếu bạn nhân bản đủ) */
+  }
+  100% {
+    /* Chạy sang trái một khoảng bằng đúng 1/2 độ dài track (vì ta nhân bản mảng 2 lần) */
+    transform: translateX(20%); 
+  }
+}
+
+/* Giữ Overlay nếu bạn muốn hiệu ứng mờ sát biên trắng */
+.slider-overlay-left, .slider-overlay-right {
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+/* .slider-overlay-left { left: 0; background: linear-gradient(to right, white, transparent); } */
+/* .slider-overlay-right { right: 0; background: linear-gradient(to left, white, transparent); } */
+
 
 /* Marquee version to match programm tags */
 .partner-logos-marquee { overflow: hidden; }

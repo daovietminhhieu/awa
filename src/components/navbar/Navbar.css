@@ -11,9 +11,9 @@
 .navbar {
   background: linear-gradient(90deg, var(--home-orange) 0%, #f97316 50%, var(--home-orange) 100%);
   color: white;
-  border-radius: 15px 0 0 15px;
+  /* border-radius: 15px 0 0 15px; */
   width: 100%;
-  height: 80px;
+  height: 100px;
   display: flex;
   justify-content: center;
 }
@@ -27,14 +27,11 @@
   gap: 12px;
   margin-left: 40px;
 }
-.translate-button {
-  border: 1px inset white;
-}
+
 .navbar-left .logo {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 1000;
   color: #ffffff; /* màu chữ trắng */
-  -webkit-text-stroke: 1px rgb(249, 115, 22); /* viền cam */
   cursor: pointer;
   letter-spacing: 0.6px;
 }
@@ -55,13 +52,14 @@
 .nav-loggedIn {
   display: flex;
   margin-right: 10px;
-  gap: 20px;
+  gap: 30px;
 }
 
 .profile-icon {
   cursor: pointer;
   color: white;
   transition: all 0.25s ease;
+  font-size: 1.5rem;
 }
 
 .profile-icon:hover {
@@ -78,8 +76,8 @@
   background: none;
   border: none;
   color: white;
-  font-size: 1rem;
-  margin-left: 15px;
+  font-size: 1.5rem;
+  margin-left: 30px;
   cursor: pointer;
   transition: color 0.3s;
 }
@@ -99,6 +97,24 @@
   .search-input:focus { width: 190px; }
 }
 
+.home-translator-btn {
+  border: 2px solid white;
+  border-radius: 15px;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.home-translate-button {
+  font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
 /* === Search === */
 .search-container {
   position: relative;
@@ -107,6 +123,7 @@
 .search-icon {
   cursor: pointer;
   color: #fff;
+  font-size: 1.5rem; margin-right: 10px;
 }
 
 .search-input {

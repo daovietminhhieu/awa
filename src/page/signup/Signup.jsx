@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaPhoneAlt } from "react-icons/fa";
 import "../login/Login.css";
-import { registerUser } from "../../api";
+import { signupL } from "../../api";
 import { useI18n } from "../../i18n";
 
 export default function SignUp() {
@@ -58,7 +58,7 @@ export default function SignUp() {
     if (Object.keys(newErrors).length === 0) {
       try {
         setLoading(true);
-        const result = await registerUser({
+        const result = await signupL({
           name: form.name,
           phone: form.phone,
           email: form.email,

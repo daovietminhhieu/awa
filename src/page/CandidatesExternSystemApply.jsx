@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import { useI18n } from "../i18n";
 import { sendFilledInformationsForm } from "../api";
+import "./CandidatesExternSystemApply.css";
 
-export default function ApplicationForm({ to, translator }) {
+function generateRandomId() {
+  return crypto.randomUUID();
+}
+
+export default function ApplicationForm({ progId, referralId }) {
   const { t } = useI18n();
+
   const [form, setForm] = useState({
-    fullName: "",
+    name: "",
     email: "",
     phone: "",
-    coverLetter: "",
-    resumeFile: "",
-    otherDocs: [],
   });
 
   const handleChange = (e) => {
@@ -20,39 +23,44 @@ export default function ApplicationForm({ to, translator }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const result = await sendFilledInformationsForm(to, form);
+      const payload = {
+        ...form,
+        referralId: referralId || undefined,
+      };
+
+      const result = await sendFilledInformationsForm(progId, payload);
+
       if (result.success) {
-        alert(t('applyform.alert.success'));
-        setForm({
-          fullName: "",
-          email: "",
-          phone: "",
-          coverLetter: "",
-          resumeFile: "",
-          otherDocs: [],
-        });
+        alert(t("applyform.alert.success"));
+        setForm({ name: "", email: "", phone: "" });
       } else {
-        alert(t('applyform.failed') + (result.message || t('applyform.unknown')));
+        alert(
+          t("applyform.failed") +
+            (result.message || t("applyform.unknown"))
+        );
       }
     } catch (error) {
       console.error("Submit error:", error);
-      alert(t('applyform.error'));
+      alert(t("applyform.error"));
     }
   };
 
   return (
     <div className="programm-sidebar">
-      <h2>{translator("applyform.title")}</h2>
+      <h2>{t("applyform.title")}</h2>
+
       <form className="apply-form" onSubmit={handleSubmit}>
-        <label>{translator("applyform.name")}</label>
+        <label>{t("applyform.name")}</label>
         <input
           type="text"
-          name="fullName"
+          name="name"
           required
-          value={form.fullName}
+          value={form.name}
           onChange={handleChange}
         />
+
         <label>Email</label>
         <input
           type="email"
@@ -61,7 +69,8 @@ export default function ApplicationForm({ to, translator }) {
           value={form.email}
           onChange={handleChange}
         />
-        <label>{translator("applyform.phone")}</label>
+
+        <label>{t("applyform.phone")}</label>
         <input
           type="tel"
           name="phone"
@@ -69,24 +78,11 @@ export default function ApplicationForm({ to, translator }) {
           value={form.phone}
           onChange={handleChange}
         />
-        <label>{translator("applyform.cover")}</label>
-        <textarea
-          name="coverLetter"
-          rows={4}
-          value={form.coverLetter}
-          onChange={handleChange}
-        />
-        <label>{translator("applyform.resume")}</label>
-        <input
-          type="text"
-          name="resumeFile"
-          placeholder={translator("applyform.enter_resume")}
-          value={form.resumeFile}
-          onChange={handleChange}
-        />
-        <button type="submit">{translator("applyform.submit")}</button>
+
+        <button type="submit">
+          {t("applyform.submit")}
+        </button>
       </form>
     </div>
   );
 }
-

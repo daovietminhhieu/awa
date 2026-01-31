@@ -4,7 +4,7 @@ import {
   FaEnvelope, FaFacebook, FaLinkedin
 } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
-import { API_BASE, loginUser } from "../../api";
+import { API_BASE, loginL } from "../../api";
 import "./Login.css";
 import { useI18n } from "../../i18n";
 
@@ -73,12 +73,13 @@ export default function Login() {
 
     setLoading(true);
 
-  // Login example
     try {
-      const result = await loginUser({ email: username, password: pw });
+      const result = await loginL({ email: username, password: pw });
+      console.log(result);
       if (result?.success) {
         if (rememberMe) localStorage.setItem('alowork_last_email', username);
-        login(result.data, result.token);
+        login(result.user, result.token);
+        // alert("Đăng nhập thành công!");
       } else {
         setServerMessage(result?.message || 'Login failed');
       }

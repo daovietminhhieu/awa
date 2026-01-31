@@ -11,11 +11,9 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import TranslatableText from "../../i18n/TranslateableText.jsx";
 import TranslatedHtml from "../../i18n/TranslatedHtml.jsx";
-import { getPostsByType, getPostsList } from "../../api";
+import { getPostsByTypeL, getPostsListL } from "../../api";
 import { supabase } from "../../supabase/client";
 import { useAuth } from "../../context/AuthContext.jsx";
-
-
 
 export function SuccessStories() {
   const navigate = useNavigate();
@@ -29,7 +27,7 @@ export function SuccessStories() {
   useEffect(() => {
     (async () => {
       try {
-        const result = await getPostsByType("success_story");
+        const result = await getPostsByTypeL("success_storyL");
         setStories(result.data.map((s) => ({ ...s, expanded: false })));
       } catch (err) {
         setError(err.message);
@@ -53,10 +51,7 @@ export function SuccessStories() {
 
   return (
     <div className="success-stories-container">
-      <h2 className="success-stories-title">
-           🎓 {t("short.suc.title")}
-
-      </h2>
+      <h2 className="success-stories-title">🎓 {t("short.suc.title")}</h2>
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={30}
@@ -65,7 +60,7 @@ export function SuccessStories() {
           0: { slidesPerView: 1, spaceBetween: 16 },
           640: { slidesPerView: 1, spaceBetween: 20 },
           768: { slidesPerView: 2, spaceBetween: 24 },
-          1024: { slidesPerView: 3, spaceBetween: 30 }
+          1024: { slidesPerView: 3, spaceBetween: 30 },
         }}
         pagination={{ clickable: true }}
         navigation
@@ -112,9 +107,7 @@ export function SuccessStories() {
                 <div className="story-right">
                   <h3
                     className="story-title"
-                    onClick={() =>
-                      navigate(`/news/${story.slug}`)
-                    }
+                    onClick={() => navigate(`/news/${story.slug}`)}
                   >
                     <TranslatableText text={story.title} lang={lang} />
                   </h3>
@@ -133,7 +126,6 @@ export function SuccessStories() {
 
                     {story.content.length > 400 && (
                       <div className="read-more-ctner">
-
                         <button
                           className="reads-more-btn"
                           onClick={(e) => {
@@ -166,24 +158,24 @@ export function FeaturedNews() {
   useEffect(() => {
     (async () => {
       try {
-        const result = await getPostsList();
-        const list = Array.isArray(result) ? result : (result?.data || []);
+        const result = await getPostsListL();
+        const list = Array.isArray(result) ? result : result?.data || [];
         setPosts(list);
       } catch (err) {
         console.error("Error fetching featured news:", err);
       }
     })();
   }, []);
-  const r="/news-list";
+  const r = "/news-list";
   if (!posts || posts.length === 0) return null;
 
-  const mainPost = posts[0];        // Bài lớn
+  const mainPost = posts[0]; // Bài lớn
   const smallPosts = posts.slice(1, 4); // 3 bài nhỏ
 
   return (
     <div className="featured-news-wrapper">
       <h2 className="featured-title">📰 {t("short.featured_news.title")}</h2>
-      {console.log(mainPost)}
+      {/* {console.log(mainPost)} */}
       <div className="featured-grid">
         {/* BÀI LỚN TRÁI */}
         <div
@@ -203,7 +195,14 @@ export function FeaturedNews() {
           </h3>
 
           <p className="main-desc">
-            <TranslatedHtml html={mainPost.content} lang={lang} isExpanded={false} maxLength={250} translateCollapsed={false} showProgress={false} />
+            <TranslatedHtml
+              html={mainPost.content}
+              lang={lang}
+              isExpanded={false}
+              maxLength={250}
+              translateCollapsed={false}
+              showProgress={false}
+            />
           </p>
         </div>
 
@@ -215,13 +214,26 @@ export function FeaturedNews() {
               className="side-item"
               onClick={() => navigate(`/news/${p.slug}`)}
             >
-              <img src={p.thumbnail_url} className="side-thumb" loading="lazy" decoding="async" alt={p.title} />
+              <img
+                src={p.thumbnail_url}
+                className="side-thumb"
+                loading="lazy"
+                decoding="async"
+                alt={p.title}
+              />
               <div className="side-content">
                 <h4 className="side-title">
                   <TranslatableText text={p.title} lang={lang} />
                 </h4>
                 <div className="side-desc">
-                  <TranslatedHtml html={p.content} lang={lang} isExpanded={false} maxLength={180} translateCollapsed={false} showProgress={false} />
+                  <TranslatedHtml
+                    html={p.content}
+                    lang={lang}
+                    isExpanded={false}
+                    maxLength={180}
+                    translateCollapsed={false}
+                    showProgress={false}
+                  />
                 </div>
               </div>
             </div>
@@ -231,17 +243,13 @@ export function FeaturedNews() {
 
       {/* NÚT XEM THÊM */}
       <div className="featured-btn-box">
-        <button
-          className="featured-btn"
-          onClick={() => navigate(r)}
-        >
+        <button className="featured-btn" onClick={() => navigate(r)}>
           {t("short.button.more")}
         </button>
       </div>
     </div>
   );
 }
-
 
 export function WhyChoose() {
   const { t } = useI18n();
@@ -297,114 +305,53 @@ export function Partner() {
   );
 }
 
+// Import file CSS của bạn ở đây
 export function PartnersSlidesLogos() {
-  const [items, setItems] = useState([]);
+  const [programs, setPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const bucket = "alowork-partner";
 
-  const {user} = useAuth();
+  const fetchPrograms = async () => {
+    try {
+      const response = await getProgramsList();
+      if (response.success) {
+        setPrograms(response.data || []);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      const { data, error } = await supabase.storage.from(bucket).list("", {
-        limit: 100,
-        sortBy: { column: "name", order: "asc" },
-      });
-      if (error) {
-        console.warn("Load logos error:", error.message);
-        setItems([]);
-      } else {
-        const mapped = (data || []).map((f) => ({
-          name: f.name,
-          url: supabase.storage.from(bucket).getPublicUrl(f.name).data.publicUrl,
-        }));
-        setItems(mapped);
-      }
-      setLoading(false);
-    })();
+    fetchPrograms();
   }, []);
 
-  const onAdd = async (file) => {
-    if (!file) return;
-    setUploading(true);
-    try {
-      const key = `${Date.now()}_${file.name}`;
-      const { error } = await supabase.storage.from(bucket).upload(key, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-      if (error) throw error;
-      const url = supabase.storage.from(bucket).getPublicUrl(key).data.publicUrl;
-      setItems((prev) => [...prev, { name: key, url }]);
-    } catch (e) {
-      alert("Upload failed: " + (e?.message || e));
-    } finally {
-      setUploading(false);
-    }
-  };
+  if (loading || programs.length === 0) return null;
 
-  const onRemove = async (name) => {
-    const ok = window.confirm("Remove this logo?");
-    if (!ok) return;
-    const { error } = await supabase.storage.from(bucket).remove([name]);
-    if (error) {
-      alert("Remove failed: " + error.message);
-      return;
-    }
-    setItems((prev) => prev.filter((i) => i.name !== name));
-  };
-
-  const AddTile = () => (
-    <label className="logo-card add-tile" title="Add logo">
-      <input
-        type="file"
-        accept="image/*"
-        className="hidden-file"
-        onChange={(e) => onAdd(e.target.files?.[0])}
-        disabled={uploading}
-      />
-      <span className="plus">+</span>
-      <span className="add-text">Add logo</span>
-    </label>
-  );
-
-  if (loading) return <div className="partner-logos-wrapper">Loading...</div>;
-
-  if (!items.length) {
-    return (
-      <div className="partner-logos-wrapper empty">
-        <AddTile />
-      </div>
-    );
-  }
+  // NHÂN BẢN: Để chạy vô tận từ phải sang trái, 
+  // ta cần danh sách đủ dài để không thấy khoảng trắng ở cuối.
+  const logoList = [...programs, ...programs];
 
   return (
-    <div className="partner-logos-wrapper">
-      <div className="partner-logos-marquee" style={{ "--partner-speed": "10s" }}>
-        <div className="logos-track">
-          {items.map((it) => (
-            <div key={"a-" + it.name} className="logo-card">
-              <img src={it.url} alt={it.name} className="logo-img" loading="lazy" />
-              {user?.role === "admin" && (
-                <button className="logo-remove" onClick={() => onRemove(it.name)} title="Remove">×</button>
-              )}
-            </div>
-          ))}
-          {/* {items.map((it) => (
-            <div key={"b-" + it.name} className="logo-card">
-              <img src={it.url} alt={it.name} className="logo-img" loading="lazy" />
-              {user?.role === "admin" && (
-                <button className="logo-remove" onClick={() => onRemove(it.name)} title="Remove">×</button>
-              )}
-            </div>
-          ))} */}
-          {user?.role === "admin" && <AddTile />}
-        </div>
+    <div className="slider">
+      <h1 style={{textAlign:"center",margin:"20px 40px",marginBottom:40, color:"#164e63"}}>Partners</h1>
+    <div className="logo-slider-container">
+      <div className="logo-slider-track">
+        {logoList.map((p, i) => (
+          <div className="logo-item" key={i}>
+            <img src={p.progLogo} alt="Partner" loading="lazy" />
+          </div>
+        ))}
       </div>
-    </div>
+      
+      {/* Overlay mờ ở 2 cạnh giúp logo xuất hiện/biến mất tinh tế hơn */}
+      <div className="slider-overlay-left"></div>
+      <div className="slider-overlay-right"></div>
+    </div></div>
   );
 }
+
 
 export function PartnerDetail() {
   const { t } = useI18n();
@@ -421,14 +368,23 @@ export function PartnerDetail() {
           <div className="partner-detail-content">
             <div className="partner-info">
               <div className="info-item">
-                <div><b>{t("short.partners.detail.address_label")}</b>: {t("short.partners.detail.address")}</div>
-               
+                <div>
+                  <b>{t("short.partners.detail.address_label")}</b>:{" "}
+                  {t("short.partners.detail.address")}
+                </div>
               </div>
               <div className="info-item">
-                <div><b>{t("short.partners.detail.email_label")}:</b> {t("short.partners.detail.email")}</div>
+                <div>
+                  <b>{t("short.partners.detail.email_label")}:</b>{" "}
+                  {t("short.partners.detail.email")}
+                </div>
               </div>
               <div className="info-item">
-               <div> <b>{t("short.partners.detail.phone_label")}</b>: {t("short.partners.detail.phone")}</div>
+                <div>
+                  {" "}
+                  <b>{t("short.partners.detail.phone_label")}</b>:{" "}
+                  {t("short.partners.detail.phone")}
+                </div>
               </div>
             </div>
 
@@ -440,7 +396,6 @@ export function PartnerDetail() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
@@ -462,35 +417,14 @@ export function BecomeCollaborator() {
   };
 
   return (
-    <div
-      className="become-collaborator-container"
-      style={{
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-        textAlign: "center",
-        background: "linear-gradient(135deg, #e3f2fd, #f9fbff)",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-      }}
-    >
+    <div className="become-collaborator-container">
       <h2 className="section-becomecollab-title">
         {t("short.become_collaborator.title")}
       </h2>
 
       <p>{t("short.become_collaborator.description")}</p>
 
-      <button
-        onClick={handleRegisterClick}
-        style={{
-          padding: "10px 20px",
-          margin: "20px 20px",
-          fontSize: "16px",
-          cursor: "pointer",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          backgroundColor: "rgb(249, 115, 22)",
-        }}
-      >
+      <button onClick={handleRegisterClick}>
         {t("short.become_collaborator.register_now")}
       </button>
 
@@ -591,76 +525,82 @@ export function BecomeCollaborator() {
   📖 DETAIL PAGE (Restyled)
 ================================= */
 
-
-
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/autoplay';
-import { getProgrammsList } from '../../api.js';
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
+import { getProgramsList } from "../../api.js";
 
 export function TopProgramsSlider() {
   const [expandedIndex] = useState(null);
   const [programs, setPrograms] = useState([]);
   const navigate = useNavigate();
-  const { t,lang } = useI18n();
+  const { t, lang } = useI18n();
 
   const getShortDesc = (text, maxLength = 250) => {
-    if (!text) return '';
-    return text.length <= maxLength ? text : text.slice(0, maxLength) + '...';
+    if (!text) return "";
+    return text.length <= maxLength ? text : text.slice(0, maxLength) + "...";
   };
 
   // 🔹 Chọn review hiển thị: lượt đánh giá cao -> mới nhất
   const getTopReview = (reviews) => {
     if (!reviews?.length) return null;
     return [...reviews].sort((a, b) => {
-      if (b.count === a.count) return new Date(b.createdAt) - new Date(a.createdAt);
+      if (b.count === a.count)
+        return new Date(b.createdAt) - new Date(a.createdAt);
       return b.count - a.count;
     })[0];
   };
 
   // 🔹 Tính toán avgRate, latestReviewDate, totalCount cho mỗi program
   const processPrograms = (programs) => {
-    return programs.map((p) => {
-      const reviews = p.reviews || [];
-      const avgRate = reviews.length
-        ? reviews.reduce((sum, r) => sum + r.rate, 0) / reviews.length
-        : 0;
-      const latestReviewDate = reviews.length
-        ? Math.max(...reviews.map((r) => new Date(r.createdAt).getTime()))
-        : 0;
-      const totalCount = reviews.length
-        ? reviews.reduce((sum, r) => sum + r.count, 0)
-        : 0;
-      return { ...p, avgRate, latestReviewDate, totalCount };
-    }).sort((a, b) => {
-      if (b.avgRate !== a.avgRate) return b.avgRate - a.avgRate;
-      if (b.latestReviewDate !== a.latestReviewDate) return b.latestReviewDate - a.latestReviewDate;
-      return b.totalCount - a.totalCount;
-    });
+    return programs
+      .map((p) => {
+        const reviews = p.reviews || [];
+        const avgRate = reviews.length
+          ? reviews.reduce((sum, r) => sum + r.rate, 0) / reviews.length
+          : 0;
+        const latestReviewDate = reviews.length
+          ? Math.max(...reviews.map((r) => new Date(r.createdAt).getTime()))
+          : 0;
+        const totalCount = reviews.length
+          ? reviews.reduce((sum, r) => sum + r.count, 0)
+          : 0;
+        return { ...p, avgRate, latestReviewDate, totalCount };
+      })
+      .sort((a, b) => {
+        if (b.avgRate !== a.avgRate) return b.avgRate - a.avgRate;
+        if (b.latestReviewDate !== a.latestReviewDate)
+          return b.latestReviewDate - a.latestReviewDate;
+        return b.totalCount - a.totalCount;
+      });
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getProgrammsList();
+        const res = await getProgramsList();
         const procs = processPrograms(res.data || []);
         setPrograms(procs);
       } catch (err) {
-        console.error('❌ Lỗi khi fetch:', err);
+        console.error("❌ Lỗi khi fetch:", err);
       }
     };
     fetchData();
   }, []);
 
-
   const handleClickProgram = (program) => {
-    navigate(`/programm/${program.slug}`, { state: { program } });
+    navigate(`/program/${program.slug}`, { state: { 
+      programId: program.id,
+      program } 
+    });
   };
 
   return (
     <div className="top-programme-container">
-      <h2 className="highlight-title">🎓 {t('short.top_programs.title') || 'Top Programs'}</h2>
+      <h2 className="highlight-title">
+        🎓 {t("short.top_programs.title") || "Top Programs"}
+      </h2>
       <Swiper
         modules={[Autoplay, Navigation]}
         slidesPerView={3}
@@ -669,7 +609,7 @@ export function TopProgramsSlider() {
           0: { slidesPerView: 1, spaceBetween: 16 },
           640: { slidesPerView: 1, spaceBetween: 20 },
           768: { slidesPerView: 2, spaceBetween: 24 },
-          1024: { slidesPerView: 3, spaceBetween: 30 }
+          1024: { slidesPerView: 3, spaceBetween: 30 },
         }}
         loop
         autoplay={{ delay: 10000, disableOnInteraction: false }}
@@ -684,39 +624,61 @@ export function TopProgramsSlider() {
               <article
                 className="featured-card"
                 onClick={() => handleClickProgram(item)}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
-                  <img className="top-programs-logo" src={item.logoL} alt={item.title} loading="lazy" />
-                  <div className="content-right">
-                    <div className="title-star-row">
-                      <h3 className="program-title"><TranslatableText text={item.title} lang={lang}/></h3>
-                    
-                    </div>
-
-                    <p className="description">
-                      {expandedIndex === idx
-                        ? item.details?.overview
-                        : <TranslatableText text={getShortDesc(item.details?.overview)} lang={lang}/> }
-                    </p>
-
-                    
-                    <div className="stars" aria-label={`Rating ${roundedRate} stars`}>
-                        <span className="star-icons">
-                          {'★'.repeat(roundedRate)}
-                          {'☆'.repeat(5 - roundedRate)}
-                        </span>
-                        <span className="review-count">
-                          ({item.reviews.length} {t('short.top_programs.reviews') || 'đánh giá'})
-                        </span>
-                      </div>
+                <img
+                  className="top-programs-logo"
+                  src={item.progLogo}
+                  alt={item.name}
+                  loading="lazy"
+                />
+                <div className="content-right">
+                  <div className="title-star-row">
+                    <h3 className="program-title">
+                      <TranslatableText text={item.name} lang={lang} />
+                    </h3>
                   </div>
 
-                  <footer className="top-review">
-                    <h4>🌟 {t('short.review_title') || 'Featured Review'}</h4>
-                    {topReview?.content? <blockquote>"<TranslatableText text={topReview.content} lang={lang}/>"</blockquote>
-                    : <p>{t('short.top_programs.no_reviews') || 'No reviews available.'}</p>}
-                    </footer>
-                
+                  <p className="description">
+                    {expandedIndex === idx ? (
+                      item.overviews
+                    ) : (
+                      <TranslatedHtml
+                        text={getShortDesc(item.overviews)}
+                        lang={lang}
+                      />
+                    )}
+                  </p>
+
+                  <div
+                    className="stars"
+                    aria-label={`Rating ${roundedRate} stars`}
+                  >
+                    <span className="star-icons">
+                      {"★".repeat(roundedRate)}
+                      {"☆".repeat(5 - roundedRate)}
+                    </span>
+                    <span className="review-count">
+                      ({item.reviews.length}{" "}
+                      {t("short.top_programs.reviews") || "đánh giá"})
+                    </span>
+                  </div>
+                </div>
+
+                <footer className="top-review">
+                  <h4>🌟 {t("short.review_title") || "Featured Review"}</h4>
+                  {topReview?.content ? (
+                    <blockquote>
+                      "<TranslatableText text={topReview.content} lang={lang} />
+                      "
+                    </blockquote>
+                  ) : (
+                    <p>
+                      {t("short.top_programs.no_reviews") ||
+                        "No reviews available."}
+                    </p>
+                  )}
+                </footer>
               </article>
             </SwiperSlide>
           );
@@ -725,4 +687,3 @@ export function TopProgramsSlider() {
     </div>
   );
 }
-

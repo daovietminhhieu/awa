@@ -1,170 +1,158 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import "./Home.css";
-// import { AutoSlider } from "../components/Slides";
-// import Divider from "../components/Divider";
-// import Footer from "../components/Footer";
-// import partners from "../mocks/logo";
-// import TopProgramme from "../components/TopProgramme";
 import {
   SuccessStories,
   WhyChoose,
   Partner,
   BecomeCollaborator,
-  TopProgramsSlider, FeaturedNews, PartnersSlidesLogos
+  TopProgramsSlider,
+  FeaturedNews,
+  PartnersSlidesLogos,
 } from "../short/Short";
-import { useI18n } from "../../i18n/";
 
 export default function HomePage() {
-//   const [showSidebar, setShowSidebar] = useState(false);
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { t } = useI18n();
   const [isMobile, setIsMobile] = useState(false);
 
+  /* ===============================
+     ❄️ Snowfall (desktop only)
+  ================================ */
   const Snowfall = () => {
     const ref = useRef(null);
+
     useEffect(() => {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (window.innerWidth <= 768 || prefersReducedMotion) return;
+
       const c = ref.current;
       if (!c) return;
       const ctx = c.getContext("2d");
+
       let w = window.innerWidth;
       let h = window.innerHeight;
       c.width = w;
       c.height = h;
-      const flakes = Array.from({ length: 120 }, () => ({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 3 + 1, d: Math.random() * 0.8 + 0.5 }));
+
+      const flakes = Array.from({ length: 100 }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 3 + 1,
+        d: Math.random() * 0.8 + 0.5,
+      }));
+
       let run = true;
+
       const draw = () => {
         ctx.clearRect(0, 0, w, h);
         ctx.fillStyle = "rgba(255,255,255,0.9)";
         ctx.beginPath();
-        for (const p of flakes) { ctx.moveTo(p.x, p.y); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); }
+
+        for (const p of flakes) {
+          ctx.moveTo(p.x, p.y);
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        }
         ctx.fill();
-        for (const p of flakes) { p.y += p.d * 1.5; p.x += Math.sin(p.y * 0.01) * 0.3; if (p.y > h) { p.y = -5; p.x = Math.random() * w; } }
+
+        for (const p of flakes) {
+          p.y += p.d * 1.5;
+          if (p.y > h) {
+            p.y = -5;
+            p.x = Math.random() * w;
+          }
+        }
+
         if (run) requestAnimationFrame(draw);
       };
+
+      const handleVisibility = () => {
+        if (document.hidden) {
+          run = false;
+        } else {
+          run = true;
+          requestAnimationFrame(draw);
+        }
+      };
+
       draw();
-      const onResize = () => { w = window.innerWidth; h = window.innerHeight; c.width = w; c.height = h; };
-      window.addEventListener("resize", onResize);
-      return () => { run = false; window.removeEventListener("resize", onResize); };
+      document.addEventListener("visibilitychange", handleVisibility);
+      return () => {
+        run = false;
+        document.removeEventListener("visibilitychange", handleVisibility);
+      };
     }, []);
-    return <canvas ref={ref} className="snow-canvas" aria-hidden="true" />;
+
+    return <canvas ref={ref} className="snow-canvas" aria-hidden />;
   };
 
-  const ChristmasLights = () => (
-    <div className="christmas-lights" aria-label={t('short.hello') || 'Hello'}>
-      {Array.from({ length: 24 }).map((_, i) => (
-        <span key={i} className={`bulb b${(i % 6) + 1}`} />
-      ))}
-    </div>
-  );
-
-  const GiftStackSvg = () => null;
-
+  /* ===============================
+     📱 Detect mobile
+  ================================ */
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
-  useEffect(() => {
-    const els = Array.from(document.querySelectorAll('.fade-section'));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.06, rootMargin: '0px 0px -8% 0px' });
-    els.forEach((el, idx) => {
-      const d = el.getAttribute('data-fade-delay');
-      const delay = d ? d : `${Math.min(idx * 0.12, 0.6)}s`;
-      el.style.setProperty('--home-fade-delay', delay);
-      io.observe(el);
-    });
-    return () => io.disconnect();
-  }, []);
-  //   useEffect(() => {
-//     const handleScroll = () => {
-//       const bannerHeight = document.querySelector(".home-banner")?.offsetHeight || 0;
-//       setShowSidebar(window.scrollY > bannerHeight);
-//     };
 
-//     window.addEventListener("scroll", handleScroll);
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
+  /* ===============================
+     ✨ Fade-in observer (DESKTOP)
+  ================================ */
+  useEffect(() => {
+    if (isMobile) return; // 🔥 mobile: hiện luôn
+
+    const sections = document.querySelectorAll(".fade-section");
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, [isMobile]);
 
   return (
-    <div 
-      className="home-wrapper"
-      
-    >
-      <Snowfall />
-      {!isMobile && <ChristmasLights />}
-      {/* gift removed */}
-      {/* Submenu removed */}
+    <div className="home-wrapper">
+      {!isMobile && <Snowfall />}
 
-      {/* Banner */}
-
-      {/* Nút mở sidebar
-      {showSidebar && (
-        <button
-          className="home-sidebar-toggle-btn"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? "✕ " : "☰ "}
-        </button>
-      )} */}
-
-      {/* Sidebar
-      <aside className={`home-sidebar ${sidebarOpen ? "show" : ""}`}>
-        <div>{t('short.hello')}</div>
-        {/* <Divider /> */}
-        {/* <ul>
-          <li><a href="#top-programme">{t('short.topprogramme')}</a></li>
-          <li><a href="#why-choose">{t('short.why')}</a></li>
-          <li><a href="#success-stories">{t('short.suc')}</a></li>
-          <li><a href="#tips-events">{t('short.tae')}</a></li>
-          <li><a href="#partners">{t('short.prts')}</a></li>
-          <li><a href="#become-collaborator">{t('short.bop')}</a></li>
-        </ul>
-      </aside>  */}
-
-      {/* Nội dung trang */}
-      <div 
-        className="home-page-container"
-      >
-        
+      <div className="home-page-container">
         <main>
-          <section id="top-programme" className="fade-section">
-            <TopProgramsSlider /> 
-          </section>
+          <div className="home-inner">
+            <section className="fade-section">
+              <TopProgramsSlider />
+            </section>
 
-          <section id="why-choose" className="fade-section">
-            <WhyChoose />
-          </section>
+            <section className="fade-section">
+              <WhyChoose />
+            </section>
 
-            
+            <section className="fade-section">
+              <SuccessStories />
+            </section>
 
-          <section id="success-stories" className="fade-section">
-            <SuccessStories /> 
-          </section>
+            <section className="fade-section">
+              <FeaturedNews />
+            </section>
 
+            <section>
+              <PartnersSlidesLogos />
+            </section>
 
-          <section className="fade-section">
-            <FeaturedNews />
-          </section>
-
-          <section id="partners" className="fade-section">
-            <Partner />
-            {/* <AutoSlider logos={partners} />  */}
-          </section>
-
-          <section>
-            <PartnersSlidesLogos />
-          </section>
-
-          <section id="become-collaborator" className="fade-section">
-            <BecomeCollaborator /> 
-          </section>
+            <section className="fade-section">
+              <Partner />
+            </section>
+            {/* <section className="fade-section">
+              <BecomeCollaborator />
+            </section> */}
+          </div>
         </main>
       </div>
-
     </div>
   );
 }

@@ -17,9 +17,8 @@
 /* Hộp form chính */
 .edit-form {
   background: #ffffff;
-  width: 90%;
-  max-width: 600px;
-  max-height: 85vh;
+  width: 75rem;
+  height: 50rem;
   overflow-y: auto;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);

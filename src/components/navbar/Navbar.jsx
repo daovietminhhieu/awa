@@ -19,7 +19,7 @@ import { AiFillHome } from "react-icons/ai";
 import { HiOutlineBriefcase } from "react-icons/hi";
 import { BiBarChart } from "react-icons/bi";
 
-import { getProgrammsList } from "../../api"; // API để load danh sách programms
+import { getProgramsList } from "../../api"; // API để load danh sách programms
 import ColorSelector from "../selector/colorsSelector";
 
 function LoggedInIcons({ user, onLogout, t }) {
@@ -168,7 +168,7 @@ export default function Navbar() {
 
 
   useEffect(() => {
-    getProgrammsList()
+    getProgramsList()
       .then((data) => setProgramms(data.data || [])) // <- data.data nếu API trả về object. Dung de tim chuong trinh
       .catch(console.error);
   }, []);
@@ -205,7 +205,12 @@ export default function Navbar() {
   };
 
   const handleSelect = (program) => {
-    navigate(`/programm/${program._id}`);
+    navigate(`/program/${program.slug}`, {
+      state: {
+        programId: program.id,
+        program
+      }
+    });
     setSearchText("");
     setSuggestions([]);
     setShowSearch(false);
@@ -284,11 +289,11 @@ export default function Navbar() {
                   onClick={() => handleSelect(p)}
                 >
                   <img
-                    src={p.logoL || p.logo}
-                    alt={p.title}
+                    src={p.progLogo || p.logo}
+                    alt={p.name}
                     style={{ width: 40, height: 40, borderRadius: 8 }}
                   />
-                  <span>{p.title}</span>
+                  <span>{p.name}</span>
                 </div>
               ))}
             </div>
