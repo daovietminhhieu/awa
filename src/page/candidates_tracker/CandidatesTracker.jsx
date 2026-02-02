@@ -178,7 +178,7 @@ export default function CandidatesTracker() {
               className={`ct-tab ${activeTab === "archived" ? "active" : ""}`}
               onClick={() => setActiveTab("archived")}
             >
-              Archived ({filteredArchived.length})
+              Rejected ({filteredArchived.length})
             </button>
           </div>
 
