@@ -289,7 +289,7 @@ export default function SharedPrograms() {
                       </>
                     ) : (
                       <option value="get_link">
-                        {t("admin.shared.option.get_link")}
+                        {t("admin.shared.option.get_link")|| "Get Referral Link"}
                       </option>
                     )}
                   </select>
