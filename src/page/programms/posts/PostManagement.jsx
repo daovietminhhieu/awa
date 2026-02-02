@@ -65,13 +65,13 @@ export default function PostManagement() {
   }, [loadPosts]);
 
   const handleDeletePost = async (id) => {
-    if (!window.confirm(t("admin.post.confirm_delete"))) return;
+    if (!window.confirm(t("admin.post.confirm_delete") || "Are you sure you want to delete this post?")) return;
     try {
       await removePostL(id);
-      alert("✅ " + t("admin.post.deleted"));
+      alert("✅ " + (t("admin.post.deleted") || "Post deleted"));
       loadPosts();
-    } catch {
-      alert("❌ " + t("admin.post.delete_error"));
+    } catch (err) {
+      alert("❌ " + (t("admin.post.delete_error") || "Error deleting post"));
     }
   };
 
@@ -269,9 +269,9 @@ function PostForm({ post, onClose, onSaved }) {
       const url = await upFileToStorage(file);
       setThumbnail(url);
       setFileType(type);
-      alert("✅ " + t("admin.post.upload_success"));
-    } catch {
-      alert("❌ " + t("admin.post.upload_error"));
+      alert("✅ " + (t("admin.post.upload_success") || "Upload successful"));
+    } catch (err) {
+      alert("❌ " + (t("admin.post.upload_error") || "Error uploading file"));
     } finally {
       setUploading(false);
     }
