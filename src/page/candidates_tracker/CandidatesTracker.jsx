@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { CandidateTable, ArchivedTable } from "../../components/table/Table";
-// import Divider from '../../../../components/Divider';
 import { useI18n } from "../../i18n";
 import { useAuth } from "../../context/AuthContext";
-import { getReferralsList } from "../../api";
+import {
+  getReferralsList,
+  getProgrammById,
+  getMyProfile
+} from "../../api";
 import "./CandidatesTracker.css";
 
+/* =======================
+   HELPERS
+======================= */
+function extractIds(list = [], key) {
+  return [...new Set(
+    list.map(item => item?.[key]).filter(Boolean)
+  )];
+}
+
+/* =======================
+   COMPONENT
+======================= */
 export default function CandidatesTracker() {
   const { t } = useI18n();
   const { user } = useAuth();
@@ -13,145 +28,186 @@ export default function CandidatesTracker() {
 
   const [submissions, setSubmissions] = useState([]);
   const [archived, setArchived] = useState([]);
+
   const [activeTab, setActiveTab] = useState("active");
   const [search, setSearch] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
   const [archivedPage, setArchivedPage] = useState(1);
   const archivedPerPage = 10;
-  const [editedRows, setEditedRows] = useState({});
-  const [loadingRow, setLoadingRow] = useState(null);
 
+  const [programMap, setProgramMap] = useState({});
+  const [userMap, setUserMap] = useState({});
+
+  /* =======================
+     1. LOAD REFERRALS
+  ======================= */
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
         const res = await getReferralsList(isAdmin);
         const list = res?.data || [];
-        // console.log("List:", list)
-        const active = list.filter(r => r.status === "approve" && !r.archived);
-        const done = list.filter(r => r.status === "reject" || r.archived);
-        // console.log("Active:", active); console.log("Done:", done);
+
+        const active = list.filter(
+          r => r.status === "approve" && !r.archived
+        );
+        const done = list.filter(
+          r => r.status === "reject" || r.archived
+        );
+
         setSubmissions(active);
         setArchived(done);
       } catch (err) {
-        console.error("Failed to load potentials:", err);
+        console.error("Failed to load candidates:", err);
       }
     };
+
     fetchCandidates();
   }, [isAdmin]);
 
-  const filteredActive = submissions.filter((c) => {
+  /* =======================
+     2. FETCH PROGRAM + USER
+     (GIỐNG SharedPrograms)
+  ======================= */
+  useEffect(() => {
+    if (!submissions.length && !archived.length) return;
+
+    const all = [...submissions, ...archived];
+
+    const progIds = extractIds(all, "progId");
+    const userIds = [
+      ...extractIds(all, "candidateId"),
+      ...extractIds(all, "recruiterId"),
+    ];
+
+    const fetchExtraData = async () => {
+      /* PROGRAMS */
+      const programResults = await Promise.all(
+        progIds.map(id =>
+          getProgrammById(id)
+            .then(res => [id, res.data])
+            .catch(() => [id, null])
+        )
+      );
+      setProgramMap(Object.fromEntries(programResults));
+
+      /* USERS */
+      const userResults = await Promise.all(
+        userIds.map(id =>
+          getMyProfile(id)
+            .then(res => [id, res.data])
+            .catch(() => [id, null])
+        )
+      );
+      setUserMap(Object.fromEntries(userResults));
+    };
+
+    fetchExtraData();
+  }, [submissions.length, archived.length]);
+
+  /* =======================
+     3. ENRICH DATA
+  ======================= */
+  useEffect(() => {
+    if (!Object.keys(programMap).length || !Object.keys(userMap).length) return;
+
+    setSubmissions(prev =>
+      prev.map(r => ({
+        ...r,
+        program: programMap[r.progId] || null,
+        candidate: userMap[r.candidateId] || null,
+        recruiter: userMap[r.recruiterId] || null,
+      }))
+    );
+
+    setArchived(prev =>
+      prev.map(r => ({
+        ...r,
+        program: programMap[r.progId] || null,
+        candidate: userMap[r.candidateId] || null,
+        recruiter: userMap[r.recruiterId] || null,
+      }))
+    );
+  }, [programMap, userMap]);
+
+  /* =======================
+     FILTER + PAGINATION
+  ======================= */
+  const filterFn = (c) => {
     const q = search.trim().toLowerCase();
     if (!q) return true;
-    return (
-      (c.candidate && c.candidate.toLowerCase().includes(q)) ||
-      (c.company && c.company.toLowerCase().includes(q)) ||
-      (c.email && c.email.toLowerCase().includes(q))
-    );
-  });
 
-  const totalPages = Math.ceil(filteredActive.length / itemsPerPage);
+    return (
+      c.candidate?.name?.toLowerCase().includes(q) ||
+      c.candidate?.email?.toLowerCase().includes(q) ||
+      c.program?.name?.toLowerCase().includes(q)
+    );
+  };
+
+  const filteredActive = submissions.filter(filterFn);
+  const filteredArchived = archived.filter(filterFn);
+
   const currentSubmissions = filteredActive.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const filteredArchived = archived.filter((c) => {
-    const q = search.trim().toLowerCase();
-    if (!q) return true;
-    return (
-      (c.candidate && c.candidate.toLowerCase().includes(q)) ||
-      (c.company && c.company.toLowerCase().includes(q)) ||
-      (c.email && c.email.toLowerCase().includes(q))
-    );
-  });
-
-  const archivedTotalPages = Math.ceil(filteredArchived.length / archivedPerPage);
   const currentArchived = filteredArchived.slice(
     (archivedPage - 1) * archivedPerPage,
     archivedPage * archivedPerPage
   );
 
-  const handlePageChange = (page) => { if (page >= 1 && page <= totalPages) setCurrentPage(page); };
-  const handleArchivedPageChange = (page) => { if (page >= 1 && page <= archivedTotalPages) setArchivedPage(page); };
-
-  const handleStatusChange = (id, newStatus) => setEditedRows((prev) => ({ ...prev, [id]: { ...prev[id], status: newStatus } }));
-  const handleBonusChange = (id, newBonus) => setEditedRows((prev) => ({ ...prev, [id]: { ...prev[id], bonus: newBonus } }));
-
-  const handleSave = (sub) => {
-    setLoadingRow(sub.id);
-    setTimeout(() => {
-      alert(t('admin.candidates.updated_alert', { name: sub.candidate }) || `Updated ${sub.candidate}`);
-      setEditedRows((prev) => { const n = { ...prev }; delete n[sub.id]; return n; });
-      setLoadingRow(null);
-    }, 500);
-  };
-
-  const handleRemove = (sub) => {
-    if (!window.confirm(t('admin.candidates.remove_confirm', { name: sub.candidate }) || `Remove ${sub.candidate}?`)) return;
-    setSubmissions((prev) => prev.filter((c) => c.id !== sub.id));
-    alert(t('admin.candidates.removed_alert', { name: sub.candidate }) || `Removed ${sub.candidate}`);
-  };
-
+  /* =======================
+     RENDER
+  ======================= */
   return (
     <div className="ct-page">
       <div className="ct-container">
-        <h2 className="ct-title">{t('admin.candidates.title') || 'Candidate Management'}</h2>
         <div className="ct-header">
           <div className="ct-tabs">
-            <button className={`ct-tab ${activeTab === 'active' ? 'active' : ''}`} onClick={() => setActiveTab('active')}>
-              Approved ({submissions.length})
+            <button
+              className={`ct-tab ${activeTab === "active" ? "active" : ""}`}
+              onClick={() => setActiveTab("active")}
+            >
+              Approved ({filteredActive.length})
             </button>
-            <button className={`ct-tab ${activeTab === 'archived' ? 'active' : ''}`} onClick={() => setActiveTab('archived')}>
-              Archived ({archived.length})
+
+            <button
+              className={`ct-tab ${activeTab === "archived" ? "active" : ""}`}
+              onClick={() => setActiveTab("archived")}
+            >
+              Archived ({filteredArchived.length})
             </button>
           </div>
+
           <div className="ct-search">
             <input
               type="text"
-              placeholder={t('search') || 'Search by name, company, email'}
+              placeholder={t("search") || "Search..."}
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); setArchivedPage(1); }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setCurrentPage(1);
+                setArchivedPage(1);
+              }}
             />
           </div>
         </div>
 
-        {activeTab === 'active' && (
-        <div className="ct-card">
-          <h3 className="ct-subtitle">{t('admin.candidates.completed_title') || 'Completed (Hired / Rejected)'}</h3>
-          <CandidateTable
-            submissions={currentSubmissions}
-            editedRows={editedRows}
-            onStatusChange={handleStatusChange}
-            onBonusChange={handleBonusChange}
-            onSave={handleSave}
-            onRemove={handleRemove}
-            loadingRow={loadingRow}
-          />
-
-          <div className="ct-pagination">
-            <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>Prev</button>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i} className={currentPage === i + 1 ? "active" : ""} onClick={() => handlePageChange(i + 1)}>{i + 1}</button>
-            ))}
-            <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>Next</button>
+        {activeTab === "active" && (
+          <div className="ct-card">
+            <CandidateTable submissions={currentSubmissions} />
           </div>
-        </div>)}
+        )}
 
-        {activeTab === 'archived' && (
-        <div className="ct-card">
-          <h3 className="ct-subtitle">{t('admin.candidates.completed_title') || 'Completed (Hired / Rejected)'}</h3>
-          <ArchivedTable archived={currentArchived} />
-          <div className="ct-pagination">
-            <button onClick={() => handleArchivedPageChange(archivedPage - 1)} disabled={archivedPage === 1}>Prev</button>
-            {Array.from({ length: archivedTotalPages }, (_, i) => (
-              <button key={i} className={archivedPage === i + 1 ? "active" : ""} onClick={() => handleArchivedPageChange(i + 1)}>{i + 1}</button>
-            ))}
-            <button onClick={() => handleArchivedPageChange(archivedPage + 1)} disabled={archivedPage === archivedTotalPages}>Next</button>
+        {activeTab === "archived" && (
+          <div className="ct-card">
+            <ArchivedTable archived={currentArchived} />
           </div>
-        </div>)}
+        )}
       </div>
-    
     </div>
   );
 }

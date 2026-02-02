@@ -13,7 +13,7 @@ import FilterSearch from "../../../components/filtersearch/FilterSearch";
 import PostManagement from "../posts/PostManagement.jsx";
 import SharedPrograms from "../shared/SharedPrograms.jsx";
 import AddProgramForm from "../../../components/addprograms/Form.jsx";
-
+import { FaEdit, FaTrash, FaSave, FaTimes, FaPlus, FaCopy, FaExternalLinkAlt } from "react-icons/fa";
 import "./AllPrograms.css";
 import Pagination from "../../../components/pagination/Pagination.jsx";
 
@@ -34,6 +34,10 @@ export default function AllPrograms() {
   const [formMode, setFormMode] = useState("add"); // "add" | "edit"
   const [editProgram, setEditProgram] = useState(null);
 
+
+const [sharingProgramId, setSharingProgramId] = useState(null);
+const [copiedLink, setCopiedLink] = useState("");
+const [isGeneratingLink, setIsGeneratingLink] = useState(false);
   const PAGE_SIZE = 9;
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +53,6 @@ export default function AllPrograms() {
     try {
       const res = await getProgramsList();
       const list = res.data || [];
-      console.log(list);
       setPrograms(list);
       setFilteredPrograms([...list].reverse());
     } catch (err) {
@@ -74,26 +77,75 @@ export default function AllPrograms() {
     setTimeout(() => setMessage(""), 2500);
   };
 
-  const handleShareProgram = async (programId) => {
-    console.log(user);
-    console.log("Recruiter Id: ", user._id);
-    try {
-      const res = await requestASharedLink(programId, user._id);
-      console.log(res);
-      let link = res?.data?.link || "";
-      if (link && !/^https?:\/\//i.test(link)) link = `${window.location.origin}${link}`;
-      if (link) {
-        await navigator.clipboard.writeText(link);
-        setMessage(t("recruiter.programms.link_copied"));
-      } else {
-        setMessage(res?.message || t("admin.programms.messages.shared_request_sent"));
-      }
-    } catch (err) {
-      setMessage(err.message || t("admin.programms.messages.shared_failed"));
+
+    async function robustCopy(text) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (e) { void e; }
     }
-    setTimeout(() => setMessage(""), 2500);
+
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      ta.style.top = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) { void e; }
+
+    return false;
+  }
+  const handleShareClick = async (programm) => {
+    try {
+      setSharingProgramId(programm.id); // 👈 quan trọng
+      setCopiedLink("");
+      setIsGeneratingLink(true);
+
+      const res = await requestASharedLink(programm.id, user._id);
+      let link = res.data.link;
+
+      if (!/^https?:\/\//i.test(link)) {
+        link = `${window.location.origin}${link}`;
+      }
+
+      setCopiedLink(link);
+      setIsGeneratingLink(false);
+
+      await robustCopy(link);
+    } catch (err) {
+      console.error(err);
+      setSharingProgramId(null);
+      setIsGeneratingLink(false);
+      alert("Không thể tạo liên kết chia sẻ!");
+    }
   };
 
+  const handleManualCopy = async (link) => {
+    const success = await robustCopy(link);
+    if (success) {
+      alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
+    } else {
+      alert(t("recruiter.programms.copy_failed", "Không thể sao chép. Vui lòng thử lại."));
+    }
+  };
+
+  const handleInputCopy = (e) => {
+    e.stopPropagation();
+  
+    /** @type {HTMLInputElement} */
+    const input = e.target;
+  
+    input.select();
+    document.execCommand("copy");
+    alert(t("recruiter.programms.link_copied", "Liên kết đã được sao chép!"));
+  };
+  
   const handleAddProgram = async (formData) => {
     try {
       await addNewProgramm(formData);
@@ -243,7 +295,7 @@ export default function AllPrograms() {
                 {/* <p>Slug: {p.slug}</p> */}
                 
               </div>
-              <div className="card-actions">
+              <div className="card-actions" style={{ position: "relative" }}>
                 
                 <button className="view-btn" onClick={() => {
                   handleSelectProgram(p)
@@ -259,7 +311,64 @@ export default function AllPrograms() {
                   </>
                 )}
                 {!isAdmin && (
-                  <button className="share-btn" onClick={() => handleShareProgram(p.id)}>Share</button>
+              <>
+               {/* <button className="share-btn" onClick={() => handleShareProgram(p.id)}>Share</button> */}
+                
+                  <button
+                  style={{ textDecoration: "underline", cursor: "pointer", color: "#007bff" }}
+                  onClick={() => handleShareClick(p)}
+                >
+                  {t("programm.detail.overview.share_action") || "Bấm để chia sẻ"}
+                </button>
+                  {sharingProgramId === p.id && (
+                    <div
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      className="popup-link"
+                    >
+                      {isGeneratingLink ? (
+                        <p className="popup-init">⏳ Đang tạo liên kết...</p>
+                      ) : (
+                        <>
+                          <p className="popup-init">✅ Liên kết đã sẵn sàng</p>
+
+                          <input
+                            type="text"
+                            value={copiedLink}
+                            readOnly
+                            onClick={handleInputCopy}
+                            style={{ width: "175px" }}
+                          />
+
+                          <div style={{ display: "flex", justifyContent:"flex-end", gap: "10px", marginTop: "10px" }}>
+                            <button onClick={() => handleManualCopy(copiedLink)}>
+                              <FaCopy />
+                            </button>
+
+                            <a 
+                                href={copiedLink} 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                onClick={(e) => e.stopPropagation()} 
+                                className="icon-btn" 
+                                title={t("recruiter.programms.open", "Mở")} 
+                                style={{ }} 
+                              > 
+                                <FaExternalLinkAlt /> 
+                              </a>
+
+                              <button onClick={() => setSharingProgramId(null)}>
+                                <FaTimes />
+                              </button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+
+                </>    
                 )}
               </div>
             </article>

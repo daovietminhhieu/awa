@@ -3,10 +3,6 @@ import { useI18n } from "../i18n";
 import { sendFilledInformationsForm } from "../api";
 import "./CandidatesExternSystemApply.css";
 
-function generateRandomId() {
-  return crypto.randomUUID();
-}
-
 export default function ApplicationForm({ progId, referralId }) {
   const { t } = useI18n();
 
@@ -14,27 +10,49 @@ export default function ApplicationForm({ progId, referralId }) {
     name: "",
     email: "",
     phone: "",
+    cv: null, // ✅ FILE
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = e.target;
+
+    if (name === "cv") {
+      setForm((prev) => ({
+        ...prev,
+        cv: files[0], // ✅ File object
+      }));
+    } else {
+      setForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const payload = {
-        ...form,
-        referralId: referralId || undefined,
-      };
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("phone", form.phone);
 
-      const result = await sendFilledInformationsForm(progId, payload);
+      if (form.cv) {
+        formData.append("cv", form.cv); // ✅ gửi file
+      }
+
+      if (referralId) {
+        formData.append("referralId", referralId);
+      }
+
+      console.log("Submitting FormData...");
+
+      const result = await sendFilledInformationsForm(progId, formData);
 
       if (result.success) {
         alert(t("applyform.alert.success"));
-        setForm({ name: "", email: "", phone: "" });
+        setForm({ name: "", email: "", phone: "", cv: null });
       } else {
         alert(
           t("applyform.failed") +
@@ -78,6 +96,16 @@ export default function ApplicationForm({ progId, referralId }) {
           value={form.phone}
           onChange={handleChange}
         />
+
+        <label>File CV</label>
+        <input
+          type="file"
+          name="cv"
+          accept=".pdf,.doc,.docx"
+          onChange={handleChange}
+        />
+
+        <div style={{ height: 20 }} />
 
         <button type="submit">
           {t("applyform.submit")}

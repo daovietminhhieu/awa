@@ -1,24 +1,42 @@
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import { useI18n } from "../../i18n";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import './Footer.css';
+import { use } from "react";
 
 export default function Footer() {
   const { t } = useI18n();
   const navigate = useNavigate();
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+
   const handleRegisterClick = () => {
     navigate("/signup");
   };
 
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 480);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+
+
   return (
+     <>
     <footer style={styles.footer}>
       <div style={styles.waveTop} />
       <div style={styles.overlay}></div>
 
-      <div style={styles.container}>
+      <div style={styles.container} className="footer-container">
         {/* Logo / Brand */}
-        <div style={{display:"flex"}}>
-           <div style={styles.column}>
+        <div style={{display:"flex", flexDirection:isMobile?"column":"row", gap:"20px"}}>
+          <div style={styles.column}>
             <h2 style={styles.logo}>AloWork</h2>
             <p>{t("footer.subtitle")}</p>
           </div>
@@ -45,8 +63,12 @@ export default function Footer() {
         {t("footer.right")}
       </div>
     </footer>
+     </>
   );
 }
+
+
+const homeOrange = "--home-orange: #ef4444;";
 
 const styles = {
   footer: {
@@ -79,6 +101,7 @@ const styles = {
     inset: 0,
     background: "rgba(0,0,0,0.7)",
     zIndex: 0,
+    borderRadius: "15px",
   },
 
   container: {
@@ -102,12 +125,12 @@ const styles = {
     fontSize: "26px",
     fontWeight: "bold",
     marginBottom: "10px",
-    color: "rgb(249, 115, 22)",
+    color: "linear-gradient(90deg, #ef4444 0%, #f97316 50%, #ef4444 100%)",
   },
-
+  
   signupBtn: {
     marginTop: "8px",
-    backgroundColor: "#f97316",
+    background: "linear-gradient(90deg, #ef4444 0%, #f97316 50%, #ef4444 100%)",
     color: "#fff",
     padding: "10px 20px",
     border: "none",

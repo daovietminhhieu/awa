@@ -1,89 +1,52 @@
+import { useEffect } from "react";
+import { getMyProfile } from "../../api";
 import { useI18n } from "../../i18n";
+import { useState } from "react";
 
-export function CandidateRow({ sub}) {
-  const { t } = useI18n();
+
+export function CandidateRow({ sub }) {
   return (
+    <>
+    {/* {console.log("Sub:", sub)} */}
     <tr>
-      <td data-label={t('admin.candidates.table.candidate') || 'Candidate'}>
-        {sub.candidateId || sub.candidateInfo?.fullName || "-"}
+      <td>{sub.candidate?.name || "-"}</td>
+      <td>{sub.program?.name || "-"}</td>
+      <td>{sub.recruiter?.name || "-"}</td>
+      <td>{sub.candidate?.email || "-"}</td>
+      <td>{sub.candidate?.phone || "-"}</td>
+      <td>
+        {sub.candidate?.cv ? (
+          <a href={sub.candidate.cv} target="_blank" rel="noreferrer">view</a>
+        ) : "-"}
       </td>
-      <td data-label={t('admin.candidates.table.programm') || 'Program'}>
-        {sub.progId || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.referrer') || 'Recruiter'}>
-        {sub.ctv || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.email') || 'Email'}>
-        {sub.email || sub.candidateInfo?.email || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.phone') || 'Phone'}>
-        {sub.phone || sub.candidateInfo?.phone || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.cv') || 'CV'}>
-        {sub.cvUrl || sub.candidateInfo?.resumeFile ? (
-          <a
-            href={sub.cvUrl || sub.candidateInfo?.resumeFile}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CV
-          </a>
-        ) : (
-          "-"
-        )}
-      </td>
-      <td data-label="Bonus">{sub.bonus}</td>
-      <td data-label={t('admin.candidates.table.finalized') || 'Finalized'}>
-        {sub.updatedAt ? new Date(sub.updatedAt).toLocaleString() : "-"}
-      </td>
+      <td>{sub.bonus}</td>
+      <td>{new Date(sub.updatedAt).toLocaleString()}</td>
     </tr>
-
+    </>
   );
 }
 
 export function ArchivedRow({ sub }) {
-  const { t } = useI18n();
-
   return (
+    <>
+    {/* {console.log("Archived Sub:", sub)} */}
     <tr>
-      <td data-label={t('admin.candidates.table.candidate') || 'Candidate'}>
-        {sub.candidateId || "-"}
+      <td>{sub.candidate?.name || "-"}</td>
+      <td>{sub.program?.name || "-"}</td>
+      <td>{sub.recruiter?.name || "-"}</td>
+      <td>{sub.candidate?.email || "-"}</td>
+      <td>{sub.candidate?.phone || "-"}</td>
+      <td>
+        {sub.candidate?.cv ? (
+          <a href={sub.candidate.cv} target="_blank" rel="noreferrer">CV</a>
+        ) : "-"}
       </td>
-      <td data-label={t('admin.candidates.table.programm') || 'Program'}>
-        {sub.progId || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.referrer_short') || 'CTV'}>
-        {sub.recruiterId || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.email') || 'Email'}>
-        {sub.email || sub.candidateInfo?.email || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.phone') || 'Phone'}>
-        {sub.phone || sub.candidateInfo?.phone || "-"}
-      </td>
-      <td data-label={t('admin.candidates.table.cv') || 'CV'}>
-        {sub.cvUrl || sub.candidateInfo?.resumeFile ? (
-          <a
-            href={sub.cvUrl || sub.candidateInfo?.resumeFile}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            CV
-          </a>
-        ) : (
-          "-"
-        )}
-      </td>
-      <td data-label={t('admin.candidates.table.bonus') || 'Bonus'}>
-        ${sub.bonus || "0"}
-      </td>
-      <td data-label={t('admin.candidates.table.finalized') || 'Finalized'}>
-        {sub.updatedAt ? new Date(sub.updatedAt).toLocaleString() : "-"}
-      </td>
-    </tr>
-
+      <td>${sub.bonus}</td>
+      <td>{new Date(sub.updatedAt).toLocaleString()}</td>
+    </tr></>
   );
 }
+
 
 
 export function CandidateTable({ submissions, editedRows, onStatusChange, onBonusChange, onSave, onRemove, loadingRow }) {
@@ -104,16 +67,7 @@ export function CandidateTable({ submissions, editedRows, onStatusChange, onBonu
       </thead>
       <tbody>
         {submissions.map((sub) => (
-          <CandidateRow
-            key={sub.id}
-            sub={sub}
-            edited={editedRows[sub.id] || {}}
-            onStatusChange={onStatusChange}
-            onBonusChange={onBonusChange}
-            onSave={onSave}
-            onRemove={onRemove}
-            isLoading={loadingRow === sub.id}
-          />
+          <CandidateRow key={sub.id} sub={sub} />
         ))}
       </tbody>
     </table>

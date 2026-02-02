@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { getProgrammBySlug } from "../../../api";
 import "./Detail.css";
@@ -6,9 +6,16 @@ import { useI18n } from "../../../i18n";
 import TranslateableText from "../../../i18n/TranslateableText.jsx";
 import ApplicationForm from "../../CandidatesExternSystemApply.jsx"
 import { useAuth } from "../../../context/AuthContext";
-import { getProgrammById, sendProgrammReview, sendProgrammQA, getProgrammQAList, answerProgrammQA, getPostById, requestASharedLink, getProgrammCosts, addProgrammCost, updateProgrammCost, deleteProgrammCost, getProgrammDocuments, addProgrammDocument, updateProgrammDocument, deleteProgrammDocument, getProgrammSteps, addProgrammStep, updateProgrammStep, deleteProgrammStep } from "../../../api";
+import { getProgrammById, sendProgrammReview, sendProgrammQA, getProgrammQAList, answerProgrammQA, getPostById, requestASharedLink, getMyProfile} from "../../../api";
 import { FaEdit, FaTrash, FaSave, FaTimes, FaPlus, FaCopy, FaExternalLinkAlt } from "react-icons/fa";
 import TranslatedHtml from "../../../i18n/TranslatedHtml.jsx";
+import TranslateText from "../../../i18n/TranslateableText.jsx";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/autoplay";
 
 export default function ProgrammDetail({ role }) {
   const { slug } = useParams(); // Đổi từ id thành slug
@@ -17,13 +24,19 @@ export default function ProgrammDetail({ role }) {
   const programId = state?.programId;
   const programFromState = state?.program;
   
+  const [showReviews, setShowReviews] = useState(false);
+  const [showQA, setShowQA] = useState(false);
+  const { search } = useLocation();
+
+  const params = new URLSearchParams(search);
+  const ref = params.get("ref");
+  const p = params.get("p");
   
   const [programm, setProgramm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { t } = useI18n();
   const { user } = useAuth();
-  const referralId = new URLSearchParams(window.location.search).get("ref");
 
   useEffect(() => {
     async function fetchProgramm() {
@@ -31,8 +44,7 @@ export default function ProgrammDetail({ role }) {
         if (!slug) {
           throw new Error(t("programm.detail.slug_required"));
         }
-        console.log(programId);
-        const res = await getProgrammById(programId); // Sử dụng hàm mới
+        const res = await getProgrammById(p || programId); // Sử dụng hàm mới
         if (!res.success) throw new Error(t("programm.detail.not_found"));
         setProgramm(res.data);
       } catch (err) {
@@ -70,27 +82,56 @@ export default function ProgrammDetail({ role }) {
       <div className="programm-map-layout">
         {/* === CỘT TRÁI: Q&A + Reviews === */}
         <aside className="programm-left-panel">
-          <ProgrammPartner programm={programm} currentUser={role}/>
+
           
         {!role  && (
-          <ApplicationForm progId={programm.id} referralId={referralId}/>
+          <ApplicationForm progId={programm.id} referralId={ref}/>
           )}
         </aside>
-
+        <div className="mobile-actions">
+          <button className="mobile-btn" onClick={() => setShowReviews(true)}>
+            ⭐Reviews
+          </button>
+          <button className="mobile-btn" onClick={() => setShowQA(true)}>
+            💬 Questions/Answer
+          </button>
+        </div> 
         {/* === CỘT PHẢI: Thông tin chương trình === */}
         <main className="programm-right-panel">
-          <ProgrammOverview programm={programm} role={role} />
-          <ProgrammJourney program={programm} />
+          <div style={{height:3}}></div>
+          <ProgrammOverview
+            programm={programm}
+            role={role}
+            openReviews={() => setShowReviews(true)}
+            openQA={() => setShowQA(true)}
+          />
+
+
+          {/* <ProgrammJourney program={programm} /> */}
         </main>
-        
+   
+    
       </div>
+          <ProgrammPartner
+            programm={programm}
+            currentUser={role}
+            showReviews={showReviews}
+            setShowReviews={setShowReviews}
+            showQA={showQA}
+            setShowQA={setShowQA}
+          />
     </div>
+    
   );
+
 }
-
- 
-
-function ProgrammPartner({ programm }) {
+function ProgrammPartner({
+  programm,
+  showReviews,
+  setShowReviews,
+  showQA,
+  setShowQA
+}) {
   const { t, lang } = useI18n();
   const id = programm?.id;
 
@@ -100,8 +141,6 @@ function ProgrammPartner({ programm }) {
   const {user} = useAuth();
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showQAForm, setShowQAForm] = useState(false);
-  const [showReviews, setShowReviews] = useState(false);
-  const [showQA, setShowQA] = useState(false);
 
   const [rate, setRate] = useState(5);
   const [content, setContent] = useState("");
@@ -110,6 +149,57 @@ function ProgrammPartner({ programm }) {
   const [answerQAFormId, setAnswerQAFormId] = useState(null);
   const [answerText, setAnswerText] = useState("");
 
+  const [userMap, setUserMap] = useState({});
+
+  const collectUserIds = (reviews = [], qaList = []) => {
+    const ids = new Set();
+
+    reviews.forEach(r => {
+      if (r.userId) ids.add(r.userId);
+      else if (r.user) ids.add(r.user);
+    });
+
+    qaList.forEach(q => {
+      if (q.user) ids.add(q.user);
+      if (q.answeredBy) ids.add(q.answeredBy);
+    });
+
+    return Array.from(ids);
+  };
+
+useEffect(() => {
+  const loadUsers = async () => {
+    const ids = collectUserIds(reviews, qaList);
+    const missing = ids.filter(id => !userMap[id]);
+
+    if (missing.length === 0) return;
+
+    try {
+      const responses = await Promise.all(
+        missing.map(id => getMyProfile(id))
+      );
+
+      const nextMap = {};
+      responses.forEach(res => {
+        const u = res?.data;
+        if (u?._id) {
+          nextMap[String(u._id)] = u;
+        }
+      });
+
+      setUserMap(prev => ({ ...prev, ...nextMap }));
+    } catch (e) {
+      console.error("Load users failed", e);
+    }
+  };
+
+  loadUsers();
+}, [reviews, qaList]);
+
+const getUserName = (userId) => {
+  if (!userId) return "Ẩn danh";
+  return userMap[userId]?.name || "Đang tải...";
+};
 
   // Submit review
   const handleReviewSubmit = async (e) => {
@@ -208,119 +298,142 @@ function ProgrammPartner({ programm }) {
         <h4>{t("programm.detail.partner.intro_title")}</h4>
         <p>{programm?.partner_description}</p>
       </div> */}
-      {console.log(programm.id)}
       {/* Accordion: Reviews */}
-      <div className="accordion-section">
-        <div className="accordion-header" onClick={() => setShowReviews(!showReviews)}>
-          <h2>{t("programm.detail.partner.review.title")}</h2>
-          <span>{showReviews ? "▲" : "▼"}</span>
-        </div>
-        {showReviews && (
-          <div className="accordion-content">
-            {reviews?.length > 0 ? (
-              <ul className="review-list">
-                {reviews.map((rev, idx) => (
-                  <li key={idx} className="review-item">
-                    <div className="review-header">
-                      <div className="review-avatar">🧑</div>
-                      <div className="review-name">
-                          <TranslateableText text={rev.user || "Người dùng ẩn danh"} lang={lang} />
-                        </div>
-                      <div>
-                      </div>
-                    </div>
-                    <p className="review-content">
-                      <TranslateableText text={rev.content} lang={lang} />
-                    </p>
-                    <div className="review-stars">{renderStars(rev.rate)}</div>
-                        {rev.createdAt && (
-                          <small className="review-date">
-                            {new Date(rev.createdAt).toLocaleDateString("vi-VN")}
-                          </small>
-                        )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>{t("programm.detail.partner.review.no_review") || "Chưa có đánh giá nào."}</p>
-            )}
-            <button className="footer-btn" onClick={() => setShowReviewForm(true)}>
-              ➕ {t("programm.detail.partner.review.write")}
-            </button>
+      {showReviews && (
+        <div className="modal-overlay" onClick={() => setShowReviews(false)}>
+          <div className="sidebar-panel" onClick={e => e.stopPropagation()}>
+            {/* Reviews accordion content */}
+            <div className="accordion-section">
+              <div className="accordion-header" onClick={() => setShowReviews(!showReviews)}>
+                <h2>{t("programm.detail.partner.review.title")}</h2>
+                {/* <span className="accordition-items" >{showReviews ? "▲" : "▼"}</span> */}
+              </div>
+              {showReviews && (
+                <div className="accordion-content">
+                  {reviews?.length > 0 ? (
+                    <ul className="review-list">
+                      {reviews.map((rev, idx) => (
+                        <li key={idx} className="review-item">
+                          <div className="review-header">
+                            {/* <div className="review-avatar">🧑</div> */}
+                            <div className="review-name">
+                                <TranslateableText
+                                  text={getUserName(rev.userId || rev.user)}
+                                  lang={lang}
+                                />:
+                              </div>
+                            <div>
+                            </div>
+                            
+                          </div>
+                          <p className="review-content">
+                            <TranslateableText text={rev.content} lang={lang} />.
+                            </p>
+                          <div className="review-foot">
+                            <div className="review-stars">{renderStars(rev.rate)}:</div>
+                                {rev.createdAt && (
+                                  <small className="review-date">
+                                    {new Date(rev.createdAt).toLocaleDateString("vi-VN")}
+                                  </small>
+                                )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{t("programm.detail.partner.review.no_review") || "Chưa có đánh giá nào."}</p>
+                  )}
+                  <button className="footer-btn" onClick={() => setShowReviewForm(true)}>
+                    ➕ {t("programm.detail.partner.review.write")}
+                  </button>
+                </div>
+              )}
+            </div>
+          
           </div>
-        )}
-      </div>
-
-      {/* Accordion: Q&A */}
-      <div className="accordion-section">
-        <div className="accordion-header" onClick={() => setShowQA(!showQA)}>
-          <h2>{t("programm.detail.partner.qa.title")}</h2>
-          <span>{showQA ? "▲" : "▼"}</span>
         </div>
+      )}
+      
+      {showQA && (
+        <div className="modal-overlay" onClick={() => setShowQA(false)}>
+          <div className="sidebar-panel" onClick={e => e.stopPropagation()}>
+            {/* Accordion: Q&A */}
+            <div className="accordion-section">
+              <div className="accordion-header" onClick={() => setShowQA(!showQA)}>
+                <h2>{t("programm.detail.partner.qa.title")}</h2>
+                {/* <span className="accordition-items">{showQA ? "▲" : "▼"}</span> */}
+              </div>
 
-        {showQA && (
-          <div className="accordion-content">
-            {qaList?.length > 0 ? (
-              <ul className="qa-fb-list">
-              {console.log(qaList)}
-              {qaList.map((q) => (
-                
-                <li key={q._id} className="qa-fb-item">
-                  <div className="qa-header">
-                    <div className="qa-avatar">🧑</div>
-                    <span className="qa-name">{q.user || "Guest"}</span>
-                  </div>
-                  <div className="qa-fb-body">
-                    <div className="qa-fb-content">
-                      <p className="qa-fb-text">{q.question}</p>
-                    </div>
-                    <div className="qa-fb-meta">
-                      <span className="qa-fb-time">
-                        {new Date(q.createdAt).toLocaleDateString("vi-VN")}
-                      </span>
-                      {user?.role &&
-                        ["admin", "recruiter"].includes(user.role) &&
-                        !q.answer && (
-                          <button
-                            className="qa-fb-reply"
-                            onClick={() => handleShowAnswerForm(q.id)}
-                          >
-                            {t('programm.detail.partner.qa.reply')}
-                          </button>
-                        )}
-                    </div>
-            
-                    {/* Nếu có câu trả lời */}
-                    {q.answer && (
-                      <div className="qa-fb-reply-thread">
-                        <div className="qa-fb-avatar reply">🏢</div>
-                        <div className="qa-fb-body reply">
-                          <div className="qa-fb-content reply">
-                            <span className="qa-fb-name">{q.answeredByName}</span>
-                            <p className="qa-fb-text">{q.answer}</p>
+              {showQA && (
+                <div className="accordion-content">
+                  {qaList?.length > 0 ? (
+                    <ul className="qa-fb-list">
+                    {console.log(qaList)}{qaList.map((q) => (
+                      
+                      <li key={q.id} className="qa-fb-item">
+                        <div className="qa-header">
+
+                        </div>
+                        <div className="qa-fb-body">
+                          <span className="qa-name">
+                            {getUserName(q.user)}:
+                          </span>
+                          <div className="qa-fb-content">
+                            <p className="qa-fb-text">{q.question}</p>
                           </div>
                           <div className="qa-fb-meta">
-                            <span className="qa-fb-time">{t('programm.detail.partner.replied')}</span>
-                            <span>{new Date(q.answeredAt).toLocaleDateString("vi-VN")}</span>
+                            <span className="qa-fb-time">
+                              {new Date(q.createdAt).toLocaleDateString("vi-VN")}
+                            </span>
+                            {user?.role &&
+                              ["admin", "recruiter"].includes(user.role) &&
+                              !q.answer && (
+                                <button
+                                  className="qa-fb-reply"
+                                  onClick={() => handleShowAnswerForm(q.id)}
+                                >
+                                  {t('programm.detail.partner.qa.reply')}
+                                </button>
+                              )}
                           </div>
+                  
+                          {/* Nếu có câu trả lời */}
+                          {q.answer && (
+                            <div className="qa-fb-reply-thread">
+                              <div className="qa-fb-body-answer">
+                                <div className="qa-fb-content-reply">
+                                  <span className="qa-fb-name-answer">{getUserName(q.answeredBy)}:</span>
+                                  <p className="qa-fb-text-answer">{q.answer}</p>
+                                </div>
+                                <div className="qa-fb-meta-answer">
+                                  <span className="qa-fb-time-answer">{t('programm.detail.partner.replied')}</span>
+                                  <span>{new Date(q.answeredAt).toLocaleDateString("vi-VN")}</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-            
-            
-            ) : (
-              <p>{t("programm.detail.partner.qa.no_answer") || "Chưa có câu hỏi nào."}</p>
-            )}
-            <button className="footer-btn" onClick={() => setShowQAForm(true)}>
-              💬 {t("programm.detail.partner.qa.button")}
-            </button>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  
+                  ) : (
+                    <p>{t("programm.detail.partner.qa.no_answer") || "Chưa có câu hỏi nào."}</p>
+                  )}
+                  <button className="footer-btn" onClick={() => setShowQAForm(true)}>
+                    💬 {t("programm.detail.partner.qa.button")}
+                  </button>
+                </div>
+              )}
+            </div>        
+        
+        
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+
 
       {/* Modal hỏi & đánh giá giữ nguyên */}
       {showReviewForm && (
@@ -428,8 +541,6 @@ function ProgrammPartner({ programm }) {
   );
 }
  
-
-
 function ProgrammTags({ tags, lang }) {
   const renderTags = (list) => (
     list.map((tag, idx) => (
@@ -623,7 +734,7 @@ function ProgrammInfoBoxes({ programm, currentUser, t, lang }) {
         <b>{t("programm.detail.overview.land")}:</b> {programm.country}
       </div>
       {currentUser?.role === "recruiter" && (
-        <div className="info-box" style={{ position: "relative" }}>
+        <div className="info-box" style={{ position: "relative", display:"flex", gap:10}}>
           <b>{t("programm.detail.overview.share_title") || "Chia sẻ chương trình"}:</b>
           <p
             style={{ textDecoration: "underline", cursor: "pointer", color: "#007bff" }}
@@ -738,22 +849,6 @@ function ProgrammInfoBoxes({ programm, currentUser, t, lang }) {
   );
 }
 
-function ProgrammSection({ title, content }) {
-  const safeContent = Array.isArray(content) ? content : [content];
-  return (
-    <section>
-      <h2>{title}</h2>
-      <ul>
-        {safeContent.filter(Boolean).map((line, idx) => (
-          <li key={idx}>
-            <p>{line}</p>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 export const renderHTML = (html) => {
   if (!html) return null;
 
@@ -764,11 +859,12 @@ export const renderHTML = (html) => {
   );
 };
 
-function ProgrammOverview({ programm, role, to }) {
+function ProgrammOverview({ programm, role, openReviews, openQA }) {
   const { t, lang } = useI18n();
   const { user: currentUser } = useAuth();
   const [postTitles, setPostTitles] = useState([]);
-
+  
+  const navigate = useNavigate();
   const stripHTML = (html) => {
     if (!html) return "";
     const tmp = document.createElement("div");
@@ -777,39 +873,41 @@ function ProgrammOverview({ programm, role, to }) {
   };
 
   useEffect(() => {
-    const fetchPostTitles = async () => {
-      try {
-        if (programm.details?.other?.length > 0) {
-          const postIds = programm.details.other;
-          const postPromises = postIds.map((postId) => getPostById(postId));
-          const responses = await Promise.all(postPromises);
+    if (!programm || !Array.isArray(programm.posts)) {
+      console.log("Programm chưa sẵn sàng", programm);
+      return;
+    }
 
-          const titles = responses
-            .filter((response) => response.success && response.data)
-            .map((response) => ({
-              _id: response.data._id,
-              title: response.data.title,
-              excerpt:
-                stripHTML(
-                  response.data.excerpt || response.data.content
-                ).slice(0, 100) + "...",
-              thumbnail: response.data.thumbnail || response.data.coverImage || null,
-              type_category: response.data.type_category || "tip",
-            }));
-
-          setPostTitles(titles);
-        }
-      } catch (err) {
-        console.error("Error fetching posts:", err);
+  const fetchPostTitles = async () => {
+    try {
+      if (!Array.isArray(programm.posts) || programm.posts.length === 0) {
+        return [];
       }
-    };
+      const relatedPosts = await Promise.all(
+        programm.posts.map((postId) => getPostById(postId))
+      );
+      // nếu API trả về { data }
+      const posts = relatedPosts.map(res => res.data);
+      setPostTitles(posts);
+      // return posts;
+    } catch (err) {
+      console.error("❌ Fetch post titles error:", err);
+    }
+  };
 
     fetchPostTitles();
   }, [programm]);
 
+  const handleClickPost = (s) => {
+    navigate(`/news/${s}`);
+  };
+
   return (
     <section className="programm-overview">
-      <ProgrammHeader programm={programm} role={role} t={t} lang={lang} />
+      <div className="overview-head">  
+        <ProgrammHeader programm={programm} role={role} t={t} lang={lang} />
+
+      </div>
 
       <ProgrammInfoBoxes
         programm={programm}
@@ -819,119 +917,114 @@ function ProgrammOverview({ programm, role, to }) {
       />
 
       <div className="overview-grid">
-        <div className="overview-card">
-          <h2>{t("programm.detail.overview.overview")}</h2>
-          <div className="pre-line">
-            {/* <TranslateableText
-              text={
-                programm.overviews ||
-                t("programm.detail.no_description")
-              }
-              lang={lang}
-            /> */}
-          {/* {renderHTML(programm.overviews)} */}
-          <TranslatedHtml 
-              html={programm.overviews}
-              lang={lang}
-              isExpanded={true}
-              className="detail-content ql-editor"
-          />
+        <div className="programm-journey">
+
+          <div className="overview-card">
+            <h2>{t("programm.detail.overview.overview")}</h2>
+            <div className="pre-line">
+              {/* <TranslateableText
+                text={
+                  programm.overviews ||
+                  t("programm.detail.no_description")
+                }
+                lang={lang}
+              /> */}
+            {/* {renderHTML(programm.overviews)} */}
+            <TranslatedHtml 
+                html={programm.overviews}
+                lang={lang}
+                isExpanded={true}
+                className="detail-content ql-editor"
+            />
+            </div>
+          </div>
+
+          <div className="overview-card">
+            <h2>{t("programm.detail.overview.requirements")}</h2>
+            <TranslatedHtml 
+                html={programm.requirements}
+                lang={lang}
+                isExpanded={true}
+                className="detail-content ql-editor"
+            />
+                
+          </div>
+
+          <div className="overview-card">
+            <h2>{t("programm.detail.overview.benefit")}</h2>
+            <div className="pre-line">
+            <TranslatedHtml 
+                html={programm.benefits}
+                lang={lang}
+                isExpanded={true}
+                className="detail-content ql-editor"
+            />
+            
+            </div>
           </div>
         </div>
 
-        <div className="overview-card">
-          <h2>{t("programm.detail.overview.requirements")}</h2>
-          <TranslatedHtml 
-              html={programm.requirements}
-              lang={lang}
-              isExpanded={true}
-              className="detail-content ql-editor"
-          />
-              
-        </div>
 
-        <div className="overview-card">
-          <h2>{t("programm.detail.overview.benefit")}</h2>
-          <div className="pre-line">
-          <TranslatedHtml 
-              html={programm.benefits}
-              lang={lang}
-              isExpanded={true}
-              className="detail-content ql-editor"
-          />
-          
+        <ProgrammJourney program={programm} lang={lang}/>
+
+        <div className="programm-journey">
+          <div className="overview-card">
+            <h2>{t("programm.detail.overview.other")}</h2>
+            <div className="top-programme-container">
+              <Swiper
+                modules={[Autoplay, Navigation]}
+                slidesPerView={3}
+                spaceBetween={-150}
+                breakpoints={{
+                  0: { slidesPerView: 1, spaceBetween: 16 },
+                  640: { slidesPerView: 1, spaceBetween: 20 },
+                  768: { slidesPerView: 2, spaceBetween: 24 },
+                  1024: { slidesPerView: 3, spaceBetween: 30 },
+                }}
+                loop
+                autoplay={{ delay: 10000, disableOnInteraction: false }}
+                navigation={false}
+              >
+                {postTitles.map((p, idx) => {
+                  return (
+                    <SwiperSlide key={idx}>
+                      <article
+                        className="featured-card"
+                        onClick={() => handleClickPost(p.slug)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {p.title}
+                        <div style={{width: "100%", height:1, marginTop:10, marginBottom: 20, background:"black"}}></div>
+                        <TranslatedHtml 
+                          html={p.content} 
+                          lang={lang} 
+                          isExpanded={true} 
+                          maxLength={1000}
+                          className={`story-text ${
+                            p.content.expanded ? "expanded ql-editor" : "collapsed"
+                          }`}  
+                        />
+                      </article>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
           </div>
         </div>
 
-        <div className="overview-card">
-          <h2>{t("programm.detail.overview.other")}</h2>
-          {programm.posts.map(p=>(
-            <span style={{marginLeft:20}}>{p}</span>
-          ))}
-        </div>
       </div>
+    
+      
+
+
+    
+    
     </section>
   );
 }
  
-
-// Hook để theo dõi chiều rộng màn hình
-function useWindowWidth() {
-  const [width, setWidth] = useState(window.innerWidth);
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return width;
-}
-
-function ProgrammJourney({ program }) {
-  const { t,lang } = useI18n();
-  const { user } = useAuth();
-
-  const width = useWindowWidth();
-  const isMobile = width <= 600;
-
-
-
-
-
-  // === INLINE STYLE ===
-  const listItemStyle = {
-    flex: "1 1 100%",
-    borderRadius: "6px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    boxSizing: "border-box",
-    width: "100%",
-    maxWidth: "100%",
-  };
-
-  const tableStyle = { width: "100%", borderCollapse: "collapse" };
-  const thTdStyle = { border: "1px solid #ddd", padding: "8px", textAlign: "left" };
-  const mobileCostRowStyle = {
-    border: "1px solid #ddd",
-    padding: "8px",
-    marginBottom: "12px",
-    display: "flex",
-    justifyContent:"center",
-    flexDirection: "column",
-    gap: "4px",
-    minWidth: 0,
-    width: "100%",
-    boxSizing: "border-box",
-  };
-
-  const addDiv = {
-    width:"100%",
-    marginTop:20,
-    display:"flex",
-    justifyContent:"space-between",
-    gap: 8,
-    boxSizing: "border-box",
-  }
+function ProgrammJourney({ program, lang }) {
 
   return (
     <div className="programm-journey">
@@ -970,10 +1063,7 @@ function ProgrammJourney({ program }) {
             isExpanded={true}
             className="detail-content ql-editor"
         />
-        
-      </section>
-
-     
+      </section> 
     </div>
   );
 }

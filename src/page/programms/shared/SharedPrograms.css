@@ -30,92 +30,65 @@
   margin: 0;
 }
 
-.shared-step-item {
-  margin-bottom: 8px;
-}
+/* =====================
+   STEPS (MOBILE FIRST)
+===================== */
 
-.step-name {
+.steps-cell {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  flex-wrap: wrap;
-  line-height: 1.4;
-}
-
-.step-name b {
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.step-name span {
-  flex: 1;
-  min-width: 120px;
-}
-
-.steps-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 6px;
-  gap: 10px;
-}
-
-.step-status {
-  font-style: italic;
-  font-size: 0.9em;
-  color: #666;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .steps-wrapper {
-  position: relative;
-  max-height: 120px;
+  max-height: 64px;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.25s ease;
 }
 
 .steps-wrapper.expanded {
-  max-height: 2000px !important;
+  max-height: 1000px;
 }
 
-.steps-wrapper::after {
-  display: none;
+.shared-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.steps-wrapper.expanded::after {
-  display: none;
+.shared-steps li {
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 6px;
 }
 
-
-/* --- Toggle button always visible --- */
+/* TOGGLE BUTTON – MOBILE FIRST */
 .toggle-steps-btn {
-  display: block;
-  margin: 6px auto 0;
-  background: none;
-  border: none;
-  color: #007bff;
-  font-size: 22px;
+  align-self: flex-end;
+  background: #f1f5ff;
+  border: 1px solid #d6e0ff;
+  border-radius: 6px;
+  color: linear-gradient(90deg, var(--home-orange) 0%, #f97316 50%, var(--home-orange) 100%);
+  font-size: 13px;
+  padding: 6px 10px;
   cursor: pointer;
-  position: relative;
-  z-index: 2;
 }
 
 .toggle-steps-btn:hover {
-  color: #0056b3;
+  background: #e6edff;
+}
+@media (min-width: 769px) {
+  .shared-steps li {
+    font-size: 14px;
+  }
+
+  .toggle-steps-btn {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
 }
 
-/* --- Status badge --- */
-.status-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: capitalize;
-  letter-spacing: 0.3px;
-}
 
-.step-name {
-}
 /* ===== Responsive: Mobile view ===== */
 @media (max-width: 900px) {
   .shared-table,
@@ -163,30 +136,97 @@
     margin-top: 8px;
   }
 
-  /* Mobile version collapse works the same */
+
+
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  .shared-container {
+    padding: 12px;
+  }
+
+  .shared-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border-spacing: 0;
+  }
+
+  .shared-table thead {
+    display: none; /* Ẩn header trên mobile */
+  }
+
+  .shared-table tbody,
+  .shared-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .shared-table tr {
+    margin-bottom: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  .shared-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 6px 0;
+    font-size: 14px;
+    border: none;
+  }
+
+  .shared-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #666;
+    padding-right: 8px;
+    white-space: nowrap;
+  }
+
+  /* STATUS */
+  .status-badge {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  /* STEPS */
   .steps-wrapper {
-    max-height: 100px;
+    max-height: 60px;
+    display: flex;
+    flex-direction: column;
   }
 
   .steps-wrapper.expanded {
-    max-height: 2000px;
+    max-height: 800px;
+  }
+
+  .shared-steps {
+    padding-left: 0;
+    margin: 0;
+  }
+
+  .shared-steps li {
+    font-size: 13px;
+    margin-bottom: 6px;
   }
 
   .toggle-steps-btn {
-    position: static;
-    margin-top: 8px;
-    font-size: 20px;
+    font-size: 12px;
+    margin-top: 4px;
   }
-  .step-status {
-    margin-bottom: 15px;
 
-  }
-  .step-name {
-    display: flex;
-    justify-content: space-between;
-  }
-  .stepStep {
-    width: 100px;
-    text-align: left;
+  /* ACTION SELECT */
+  .shared-table select {
+    width: 100%;
+    padding: 6px;
+    font-size: 14px;
   }
 }

@@ -181,7 +181,7 @@ export default function Navbar() {
     user?.role === "admin"
       ? "/admin/overview"
       : user?.role === "recruiter"
-      ? "/recruiter/jobsview"
+      ? "/recruiter/programmsview"
       : user?.role === "candidate"
       ? "/candidate/home"
       : "/home";

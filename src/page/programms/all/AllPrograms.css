@@ -34,8 +34,8 @@
   padding: 8px 20px;
   border-radius: 6px;
   border: none;
-  background: transparent;
-  color: var(--text-muted);
+  background: linear-gradient(90deg, var(--home-orange) 0%, #f97316 50%, var(--home-orange) 100%);
+  color: white;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -113,6 +113,11 @@
 .badge { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--pg-border); color: var(--pg-muted); background: #fff; font-size: .85rem; }
 .deadline { color: var(--pg-muted); font-size: .85rem; }
 
+.popup-link { position: absolute;top: -45px;right: 10px;background: #fff;border: 1px solid #ccc;border-radius: 8px;padding: 12px;z-index: 30;box-shadow: 0 4px 12px rgba(0,0,0,0.15);}
+@media (max-width: 480px) {
+  .popup-link { width:200px;}
+  .popup-init {  }
+}
 .card-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; border-top: 1px dashed var(--pg-border); margin-top: auto; }
 .view-btn, .save-btn, .edit-btn { flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--pg-border); cursor: pointer; }
 .view-btn { background: #fff; }

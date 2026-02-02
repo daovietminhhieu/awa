@@ -336,7 +336,7 @@
 
 .reads-more-btn {
   padding: 8px 20px;
-  background: var(--short-accent);
+  background: linear-gradient(90deg, var(--home-orange) 0%, #f97316 50%, var(--home-orange) 100%);
   color: white;
   border: none;
   border-radius: 6px;
@@ -486,7 +486,7 @@
 
 .featured-btn {
   padding: 14px 36px;
-  background: var(--short-accent);
+  background: linear-gradient(90deg, var(--home-orange) 0%, #f97316 50%, var(--home-orange) 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -534,7 +534,7 @@
 
 .partner-cta-btn {
   padding: 16px 40px;
-  background: var(--short-secondary);
+  background: linear-gradient(90deg, var(--home-orange) 0%, #f97316 50%, var(--home-orange) 100%);
   color: white;
   border: none;
   border-radius: 8px;

@@ -1,1 +1,22 @@
-thieu field slug trong program,
+Them truong du lieu luu file cv cho user model. Gan xong
+Hien thi popup sau khi chia se mot chuong trinh thanh cong tren trang hien thi programs cua recruiter. Xong
+Hien thi data thay vi id (trong reviews, qas, referral, candidate_tracker). Xong.
+Kiem tra mot lan cac component su dung rest requests.
+    add new post chua cap nhat id trong programs data. Post da luu program Id. Xong.
+    anh sau khi update, va add trong post khong hien thi duoc.
+    sua he thong upload files tren supabase noi chung.
+    share program chua luu referralId trong programs data. Referral da luu programId. Xong.
+    share program chua xoa referralId trong programs data. Xong.
+Them placeholder cho tat ca cac muc can dien cho de hieu hon.
+Cap nhat toan bo dich thuat.
+    trang detail
+        nut hien thi reviews/qas.
+    trang profile
+        nut cap nhat thong tin va cac truong thong tin
+    all programs
+        toan bo filter search
+    shared programs
+        actions
+    candidate tracker
+        ten bang
+    cac thong bao

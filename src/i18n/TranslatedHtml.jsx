@@ -7,7 +7,7 @@ export function TranslatedHtml({
   className = "",
   isExpanded = false,
   maxLength = 400,
-  showProgress = true, // Thêm prop để hiển thị tiến trình
+  showProgress = false, // Thêm prop để hiển thị tiến trình
   translateCollapsed = false,
 }) {
   const [displayHtml, setDisplayHtml] = useState(html || "");

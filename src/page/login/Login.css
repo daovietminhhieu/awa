@@ -90,4 +90,7 @@
 @media (max-width: 480px) {
   .form { padding: 22px; }
   .form.form--wide { max-width: 100%; }
+  .auth-container {
+    height: 100vh;
+  }
 }

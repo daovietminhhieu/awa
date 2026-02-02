@@ -220,16 +220,19 @@ export async function loadProgrammForCandidateExternSystemById(id) {
   return data;
 }
 
-export async function sendFilledInformationsForm(progId, form) {
-  const res = await fetch(`${API_BASE}/local/user/apply-form/${progId}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(form),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data?.message || "Failed to submit form");
-  return data;
-}
+import axios from "axios";
+
+export const sendFilledInformationsForm = (progId, data) => {
+  return axios
+    .put(`${API_BASE}/local/user/apply-form/${progId}`, data)
+    .then(res => res.data);
+};
+
+/**
+ * ⚠️ KHÔNG set headers Content-Type
+ * Axios sẽ tự set multipart/form-data
+ */
+
 
 // ====================== SAVED PROGRAMMS ======================
 export async function getSavedProgramms() {
@@ -296,6 +299,21 @@ export async function updateBasicInfo(userId, data) {
   }
 }
 
+export const getUsersByIds = async (ids = []) => {
+  return Promise.all(
+    ids.map(id =>
+      getMyProfile(id).catch(() => null)
+    )
+  ).then(r => r.filter(Boolean));
+};
+
+export const getProgramsByIds = async (ids = []) => {
+  return Promise.all(
+    ids.map(id =>
+      getProgrammById(id).catch(() => null)
+    )
+  ).then(r => r.filter(Boolean));
+};
 
 export async function getMyProfile(id) {
   try {
@@ -408,7 +426,7 @@ export async function createPost(data) {
 // Assuming you have an API_BASE constant defined somewhere in your code that points to the server base URL.
 export async function getPostById(id) {
   try {
-    const res = await fetch(`${API_BASE}/user/post/${id}`, {
+    const res = await fetch(`${API_BASE}/local/post/${id}`, {
       method: "GET", // Method type, GET is used to fetch data
       headers: {
         "Content-Type": "application/json", // Content type as JSON
@@ -901,7 +919,21 @@ export async function getReferralBySlug(slug) {
     throw err;
   }
 }
-
+export async function getReferralById(id) {
+  try {
+    const res = await fetch(`${API_BASE}/local/referral/${id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to fetch referral by id");
+    return data;
+  }
+  catch (err) {
+    console.error("getReferralById error:", err);
+    throw err;
+  }
+}
 export async function deleteSharedProgramsById(id) {
   try {
     const res = await fetch(`${API_BASE}/local/referral/delete/${id}`, {
@@ -917,4 +949,18 @@ export async function deleteSharedProgramsById(id) {
     throw err;
   }
 }
+export async function getReferralLinkById(id) {
+  try {
+    const res = await fetch(`${API_BASE}/local/referral/link/${id}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json", ...authHeaders() },
+    });
 
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Failed to get referral link");
+    return data.link;
+  } catch (err) {
+    console.error("getReferralLinkById error:", err);
+    throw err;
+  }
+}

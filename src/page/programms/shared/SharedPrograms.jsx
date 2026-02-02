@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import {
   getReferralsList,
   getReferralsListForUserById,
+  getReferralById,
   updateReferralStatus,
   updateReferralSteps,
-  deleteSharedProgramsById
+  deleteSharedProgramsById,
+  getProgrammById,
+  getMyProfile // 👈 dùng đúng API theo ID
 } from "../../../api";
+
 import "./SharedPrograms.css";
 import { useI18n } from "../../../i18n";
 import TranslatableText from "../../../i18n/TranslateableText";
@@ -14,7 +18,6 @@ import { useAuth } from "../../../context/AuthContext";
 /* =====================
    HELPERS
 ===================== */
-
 function formatDateTime(dateStr) {
   if (!dateStr) return "-";
   const d = new Date(dateStr);
@@ -27,39 +30,33 @@ function formatDateTime(dateStr) {
   )}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
 
-const STATUS_OPTIONS = ["approve", "reject", "ongoing"];
-const STEP_OPTIONS = ["completed", "rejected"];
-
 /* =====================
    COMPONENT
 ===================== */
-
 export default function SharedPrograms() {
   const { t, lang } = useI18n();
   const { user } = useAuth();
 
   const [sharedProgramms, setSharedProgramms] = useState([]);
+  const [programMap, setProgramMap] = useState({});
+  const [userMap, setUserMap] = useState({});
+
   const [checkedSteps, setCheckedSteps] = useState({});
   const [expandedRows, setExpandedRows] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
- 
-
   /* =====================
      TRANSLATE STATUS
   ===================== */
   const translateStatus = (status) => {
-    if (!status) return t("admin.shared.status_values.unknown") || "Unknown";
-    const key = status.toLowerCase();
-    const translated = t(`admin.shared.status_values.${key}`);
-    return translated && translated !== `admin.shared.status_values.${key}`
-      ? translated
-      : status;
+    if (!status) return "Unknown";
+    const translated = t(`admin.shared.status_values.${status}`);
+    return translated || status;
   };
 
   /* =====================
-     LOAD DATA
+     LOAD SHARED PROGRAMS
   ===================== */
   const loadSharedProgramms = async () => {
     setLoading(true);
@@ -89,12 +86,55 @@ export default function SharedPrograms() {
   }, []);
 
   /* =====================
+     FETCH PROGRAM + USER
+     (SIMPLE & CLEAR)
+  ===================== */
+  useEffect(() => {
+    if (!sharedProgramms.length) return;
+
+    const fetchExtraData = async () => {
+      /* PROGRAM IDS */
+      const progIds = [...new Set(sharedProgramms.map(p => p.progId))];
+
+      /* USER IDS */
+      const userIds = [
+        ...new Set(
+          sharedProgramms
+            .flatMap(p => [p.recruiterId, p.candidateId])
+            .filter(Boolean)
+        )
+      ];
+
+      /* FETCH PROGRAMS */
+      const programResults = await Promise.all(
+        progIds.map(id =>
+          getProgrammById(id)
+            .then(res => [id, res.data])
+            .catch(() => [id, null])
+        )
+      );
+      setProgramMap(Object.fromEntries(programResults));
+
+      /* FETCH USERS */
+      const userResults = await Promise.all(
+        userIds.map(id =>
+          getMyProfile(id)
+            .then(res => [id, res.data])
+            .catch(() => [id, null])
+        )
+      );
+      setUserMap(Object.fromEntries(userResults));
+    };
+
+    fetchExtraData();
+  }, [sharedProgramms]);
+
+  /* =====================
      ACTION HANDLERS
   ===================== */
-
   const handleUpdateStatus = async (id, status) => {
     await updateReferralStatus(id, status);
-    await loadSharedProgramms();
+    loadSharedProgramms();
   };
 
   const handleUpdateSteps = async (id, status) => {
@@ -105,18 +145,23 @@ export default function SharedPrograms() {
     }
 
     await Promise.all(
-      steps.map(step =>
-        updateReferralSteps(id, status, step)
-      )
+      steps.map(step => updateReferralSteps(id, status, step))
     );
 
     setCheckedSteps(prev => ({ ...prev, [id]: [] }));
-    await loadSharedProgramms();
+    loadSharedProgramms();
   };
 
   const handleRemoveSharedProgramm = async (id) => {
     await deleteSharedProgramsById(id);
-    await loadSharedProgramms();
+    loadSharedProgramms();
+  };
+
+  const handleGetReferralLink = async (id) => {
+    const res = await getReferralById(id);
+    const referralLink = `${window.location.origin}${res.data.link}`;
+    navigator.clipboard.writeText(referralLink);
+    alert("Referral link copied!");
   };
 
   const handleCheckBoxChange = (refId, step, checked) => {
@@ -135,8 +180,7 @@ export default function SharedPrograms() {
   /* =====================
      RENDER
   ===================== */
-
-  if (loading) return <p>{t("common.loading") || "Loading..."}</p>;
+  if (loading) return <p>Loading...</p>;
   if (error) return <p className="error-text">{error}</p>;
 
   return (
@@ -144,9 +188,7 @@ export default function SharedPrograms() {
       <h3>{t("admin.shared.title")}</h3>
 
       {sharedProgramms.length === 0 && (
-        <p style={{ margin: "20px auto" }}>
-          {t("admin.shared.table.no_items")}
-        </p>
+        <p>{t("admin.shared.table.no_items")}</p>
       )}
 
       {sharedProgramms.length > 0 && (
@@ -170,9 +212,10 @@ export default function SharedPrograms() {
             {sharedProgramms.map(prog => (
               <tr key={prog.id}>
                 <td>{prog.id}</td>
-                <td>{prog.progId}</td>
-                <td>{prog.recruiterId || "N/A"}</td>
-                <td>{prog.candidateId || "N/A"}</td>
+                {console.log("userMap:", userMap)}
+                <td>{programMap[prog.progId]?.name || "—"}</td>
+                <td>{userMap[prog.recruiterId]?.name || "N/A"}</td>
+                <td>{userMap[prog.candidateId]?.name || "N/A"}</td>
 
                 <td className={`status-badge ${prog.status}`}>
                   {translateStatus(prog.status)}
@@ -185,47 +228,36 @@ export default function SharedPrograms() {
                 {/* STEPS */}
                 <td>
                   {prog.steps?.length ? (
-                    <div className={`steps-wrapper ${expandedRows[prog.id] ? "expanded" : ""}`}>
-                      <ul className="shared-steps">
-                        {prog.steps.map(step => (
-                          <li key={step.step}>
-                            <div>
+                    <div className="steps-cell">
+                      <div
+                        className={`steps-wrapper ${
+                          expandedRows[prog.id] ? "expanded" : ""
+                        }`}
+                      >
+                        <ul className="shared-steps">
+                          {prog.steps.map(step => (
+                            <li key={step.step}>
                               <b>Step {step.step}:</b>{" "}
                               <TranslatableText text={step.name} lang={lang} />
-                            </div>
-                            <div className="steps-footer">
-                              <span className={`step-status ${step.status}`}>
-                                {translateStatus(step.status)}
-                              </span>
-                              <input
-                                type="checkbox"
-                                checked={checkedSteps[prog.id]?.includes(step.step) || false}
-                                onChange={e =>
-                                  handleCheckBoxChange(
-                                    prog.id,
-                                    step.step,
-                                    e.target.checked
-                                  )
-                                }
-                              />
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {prog.steps.length > 2 && (
+                        <button
+                          className="toggle-steps-btn"
+                          onClick={() => toggleRowExpansion(prog.id)}
+                        >
+                          {expandedRows[prog.id] ? "Thu gọn ▲" : "Xem thêm ▼"}
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <i>{t("admin.shared.not_init")}</i>
                   )}
-
-                  {prog.steps?.length > 2 && (
-                    <button
-                      className="toggle-steps-btn"
-                      onClick={() => toggleRowExpansion(prog.id)}
-                    >
-                      {expandedRows[prog.id] ? "." : "..."}
-                    </button>
-                  )}
                 </td>
+
 
                 {/* ACTIONS */}
                 <td>
@@ -234,41 +266,31 @@ export default function SharedPrograms() {
                       const v = e.target.value;
                       if (!v) return;
 
-                      if (STATUS_OPTIONS.includes(v)) {
+                      if (["approve", "reject", "ongoing"].includes(v)) {
                         handleUpdateStatus(prog.id, v);
-                      } else if (STEP_OPTIONS.includes(v)) {
+                      } else if (["completed", "rejected"].includes(v)) {
                         handleUpdateSteps(prog.id, v);
                       } else if (v === "remove") {
                         handleRemoveSharedProgramm(prog.id);
+                      } else if (v === "get_link") {
+                        handleGetReferralLink(prog.id);
                       }
+
                       e.target.value = "";
                     }}
                   >
-                    <option value="">
-                      {t("admin.shared.option.select")}
-                    </option>
-
-                    {user?.role === "admin" && (
+                    <option value="">{t("admin.shared.option.select")}</option>
+                    {user?.role === "admin" ? (
                       <>
-                        <optgroup label={t("admin.shared.group.status")}>
-                          <option value="approve">{translateStatus("approve")}</option>
-                          <option value="reject">{translateStatus("reject")}</option>
-                          <option value="ongoing">{translateStatus("ongoing")}</option>
-                        </optgroup>
-
-                        <optgroup label={t("admin.shared.group.steps")}>
-                          <option value="completed">
-                            {t("admin.shared.option.mark_completed")}
-                          </option>
-                          <option value="rejected">
-                            {t("admin.shared.option.mark_rejected")}
-                          </option>
-                        </optgroup>
-
-                        <option value="remove">
-                          {t("admin.shared.option.remove")}
-                        </option>
+                        <option value="approve">{translateStatus("approve")}</option>
+                        <option value="reject">{translateStatus("reject")}</option>
+                        <option value="ongoing">{translateStatus("ongoing")}</option>
+                        <option value="remove">{t("admin.shared.option.remove")}</option>
                       </>
+                    ) : (
+                      <option value="get_link">
+                        {t("admin.shared.option.get_link")}
+                      </option>
                     )}
                   </select>
                 </td>
