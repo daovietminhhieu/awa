@@ -212,7 +212,6 @@ export default function SharedPrograms() {
             {sharedProgramms.map(prog => (
               <tr key={prog.id}>
                 <td>{prog.id}</td>
-                {console.log("userMap:", userMap)}
                 <td>{programMap[prog.progId]?.name || "—"}</td>
                 <td>{userMap[prog.recruiterId]?.name || "N/A"}</td>
                 <td>{userMap[prog.candidateId]?.name || "N/A"}</td>
