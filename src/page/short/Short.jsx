@@ -183,15 +183,15 @@ export function FeaturedNews() {
           onClick={() => navigate(`/news/${mainPost.slug}`)}
         >
           <img
-            src={mainPost.thumbnail_url}
-            alt={mainPost.title}
+            src={mainPost.progLogo}
+            alt={mainPost.name}
             className="featured-main-img"
             loading="lazy"
             decoding="async"
           />
 
           <h3 className="main-title">
-            <TranslatableText text={mainPost.title} lang={lang} />
+            <TranslatableText text={mainPost.name} lang={lang} />
           </h3>
 
           <p className="main-desc">
@@ -210,20 +210,20 @@ export function FeaturedNews() {
         <div className="featured-side-list">
           {smallPosts.map((p) => (
             <div
-              key={p._id}
+              key={p.id}
               className="side-item"
               onClick={() => navigate(`/news/${p.slug}`)}
             >
               <img
-                src={p.thumbnail_url}
+                src={p.progLogo}
                 className="side-thumb"
                 loading="lazy"
                 decoding="async"
-                alt={p.title}
+                alt={p.name}
               />
               <div className="side-content">
                 <h4 className="side-title">
-                  <TranslatableText text={p.title} lang={lang} />
+                  <TranslatableText text={p.name} lang={lang} />
                 </h4>
                 <div className="side-desc">
                   <TranslatedHtml
