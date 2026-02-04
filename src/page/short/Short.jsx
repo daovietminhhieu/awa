@@ -160,6 +160,7 @@ export function FeaturedNews() {
       try {
         const result = await getPostsListL();
         const list = Array.isArray(result) ? result : result?.data || [];
+        console.log("Fetched featured news:", list);
         setPosts(list);
       } catch (err) {
         console.error("Error fetching featured news:", err);
@@ -183,15 +184,15 @@ export function FeaturedNews() {
           onClick={() => navigate(`/news/${mainPost.slug}`)}
         >
           <img
-            src={mainPost.progLogo}
-            alt={mainPost.name}
+            src={mainPost.thumbnail_url}
+            alt={mainPost.title}
             className="featured-main-img"
             loading="lazy"
             decoding="async"
           />
 
           <h3 className="main-title">
-            <TranslatableText text={mainPost.name} lang={lang} />
+            <TranslatableText text={mainPost.title} lang={lang} />
           </h3>
 
           <p className="main-desc">
@@ -215,15 +216,15 @@ export function FeaturedNews() {
               onClick={() => navigate(`/news/${p.slug}`)}
             >
               <img
-                src={p.progLogo}
+                src={p.thumbnail_url}
                 className="side-thumb"
                 loading="lazy"
                 decoding="async"
-                alt={p.name}
+                alt={p.title}
               />
               <div className="side-content">
                 <h4 className="side-title">
-                  <TranslatableText text={p.name} lang={lang} />
+                  <TranslatableText text={p.title} lang={lang} />
                 </h4>
                 <div className="side-desc">
                   <TranslatedHtml
