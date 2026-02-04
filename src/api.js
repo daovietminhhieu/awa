@@ -545,6 +545,7 @@ export async function getPostBySlug(slug) {
  */
 export async function upFileToStorage(file) {
   if (!file) throw new Error("No file provided");
+  console.log("API_BASE =", API_BASE);
 
   // FormData chứa file
   const formData = new FormData();
