@@ -722,7 +722,75 @@
         "signup":"Sign Up"
     },
 
-    "admin_jobs": {"placeholders":{"cost_per_candidate":"USD / Candidate","cost_per_interview":"+USD / Interview"},"badges":{"cost_per_candidate":"USD 0 / Candidate","cost_per_interview":"+USD 0 / Interview"},"add":"Add job","edit":"Edit job","details_title":"Job Details"}
+    "admin_jobs": {"placeholders":{"cost_per_candidate":"USD / Candidate","cost_per_interview":"+USD / Interview"},"badges":{"cost_per_candidate":"USD 0 / Candidate","cost_per_interview":"+USD 0 / Interview"},"add":"Add job","edit":"Edit job","details_title":"Job Details"},
+
+    "affiliate": {
+        "dashboard": {
+            "title": "Affiliate Dashboard",
+            "welcome": "Hello, {{name}}",
+            "loading": "Loading...",
+            "select_program": "Please select a program",
+            "link_created": "Link created successfully!",
+            "total_clicks": "Total Clicks",
+            "total_leads": "Total Leads",
+            "total_approved": "Approved",
+            "total_earnings": "Total Earnings",
+            "analytics": "Analytics",
+            "conversion_funnel": "Conversion Funnel",
+            "program_performance": "Program Performance",
+            "status_distribution": "Status Distribution",
+            "conversion_rate": "Conversion Rate",
+            "create_link": "+ Create New Link",
+            "create_referral_link": "Create Referral Link",
+            "create_form_desc": "Select a program to create a referral link",
+            "program_search": "Search programs...",
+            "create": "Create",
+            "cancel": "Cancel",
+            "my_links": "My Referral Links",
+            "no_links": "You have no links yet. Create your first link now!",
+            "program": "Program",
+            "clicks": "Clicks",
+            "leads": "Leads",
+            "status": "Status",
+            "bonus": "Commission",
+            "link": "Link",
+            "copy": "Copy",
+            "resources": "Promotion Resources",
+            "resources_desc": "Use the resources below to promote the program:",
+            "visit": "Visit",
+            "join": "Join",
+            "payment": "Payment Information",
+            "payment_desc": "Update your bank account information to receive commissions",
+            "update_payment": "Update Bank Information"
+        },
+        "signup": {
+            "title": "Become an Affiliate",
+            "subtitle": "Share programs and earn up to 30% commission for each successful candidate",
+            "name": "Full Name",
+            "name_placeholder": "Enter your full name",
+            "email": "Email",
+            "email_placeholder": "Enter your email",
+            "password": "Password",
+            "password_placeholder": "At least 6 characters",
+            "password_confirm": "Confirm Password",
+            "password_confirm_placeholder": "Re-enter your password",
+            "register": "Sign Up",
+            "registering": "Registering...",
+            "required_fields": "Please fill in all fields",
+            "password_mismatch": "Passwords do not match",
+            "password_min": "Password must be at least 6 characters",
+            "success_message": "Registration successful! Admin will approve your account within 24-48 hours.",
+            "error": "Registration failed",
+            "have_account": "Already have an account?",
+            "login": "Login",
+            "benefits": "Benefits",
+            "benefit_1": "High commissions up to 30%",
+            "benefit_2": "Manage links from your personal dashboard",
+            "benefit_3": "Real-time tracking (clicks, leads, conversions)",
+            "benefit_4": "Withdraw money directly to your bank account",
+            "benefit_5": "24/7 support from Alowork team"
+        }
+    }
 }
 
 

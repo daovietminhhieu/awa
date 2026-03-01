@@ -82,12 +82,12 @@ export default function FilterSearch({
         </div>
 
         <div className="filter-second">
-          <button className="update-btn" onClick={applyFilters}>
+          <button className="btn btn-primary update-btn" onClick={applyFilters}>
             {t("filter.apply_filters")}
           </button>
 
           {onAddProgram && (
-            <button className="add-btn" onClick={onAddProgram}>
+            <button className="btn btn-secondary add-btn" onClick={onAddProgram}>
               {t("admin.programms.toolbar.add_new")}
             </button>
           )}

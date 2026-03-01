@@ -202,8 +202,8 @@ export default function AddProgramForm({ title, onSubmit, onClose, defaultValues
           )}
 
           <div className="form-buttons">
-            <button type="submit" disabled={uploading}>{uploading ? "Uploading..." : "Save"}</button>
-            <button type="button" onClick={onClose}>Cancel</button>
+            <button type="submit" className="btn btn-primary" disabled={uploading}>{uploading ? "Uploading..." : "Save"}</button>
+            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
           </div>
 
           

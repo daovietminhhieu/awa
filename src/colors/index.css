@@ -1,64 +1,27 @@
 :root {
-    --primary-dark-blue: #0A1029;
-    --primary-navy: #0B1430;
-    --primary-purple-banner: #7A5CFF;
-    --secondary-dark-gray: #1A1D24;
-    --secondary-blue-glow: #3A4BAE;
-    --secondary-magenta-glow: #A02C7A;
-    --accent-red: #E3342F;
-    --accent-yellow: #D6A84B;
-    --accent-cyan: #2CF4FF;
-    --accent-pink: #F04ECF;
-    --neutral-white: #FFFFFF;
-    --neutral-light-gray: #C9CEDA;
-    --neutral-soft-gray: #50545E;
-    --art-dark-armor: #1F1C29;
-    --art-red-energy: #D02442;
-    --art-magenta-crystal: #C53CE6;
-    --art-pink-glow: #FF71D2;
-    --art-fire-orange: #FF7130;
-    --art-fire-red: #FF2F2F;
-    --art-ice-blue: #41E3FF;
-    --art-ice-white: #DDFDFF;
-    --ui-bg-primary: #0A1029;
-    --ui-bg-secondary: #1A1D24;
-    --ui-highlight-purple: #7A5CFF;
-    --ui-accent-red: #E3342F;
-    --ui-accent-yellow: #D6A84B;
-    --ui-text-white: #FFFFFF;
-    --home-bg: var(--neutral-white);
-    --home-surface: var(--neutral-light-gray);
-    --home-section-surface: var(--neutral-white);
-    --home-muted: var(--neutral-light-gray);
-    --home-text: var(--neutral-soft-gray);
-    --home-accent: var(--ui-highlight-purple);
-    --brand-blue: #0070f3;
-    --brand-blue-rgb: 0,112,243;
-    --white-rgb: 255,255,255;
-    --black-rgb: 0,0,0;
-    --shadow-blue-rgb: 25,118,210;
-    --primary-dark-navy-orange: #0C0F25;
-    --primary-deep-blue-orange: #10203A;
-    --primary-orange-banner: #FF7A32;
-    --secondary-dark-gray-orange: #1E1F26;
-    --secondary-orange-glow: #FF9A4C;
-    --secondary-warm-magenta: #D4526A;
-    --accent-bright-orange: #FF5E00; 
-    --accent-flame-red: #FF3D2E;
-    --accent-gold: #F4C15D;
-    --accent-warm-yellow: #FFD26F;
-    --art-flame-orange: #FF7B2C;
-    --art-heat-red: #FF2A1B;
-    --art-lava-orange: #D54410;
-    --art-ash-glow: #FFA86C;
-    --art-warm-cyan: #4ED6E9;
-    --art-soft-ice: #DFFBFF;
-    --ui-orange-bg-primary: #0C0F25;
-    --ui-orange-bg-secondary: #1E1F26;
-    --ui-orange-highlight: #FF7A32;
-    --ui-orange-cta: #FF5E00;
-    --ui-orange-gold: #F4C15D;
-    --ui-orange-text-white: #FFFFFF;
+    /* Bright light theme design tokens - increased saturation and contrast */
+    --home-primary: #0b66ff; /* vivid blue */
+    --home-primary-2: #0958e6;
+    --home-accent: #ff5e00; /* vivid orange CTA */
+    --home-accent-2: #ff8a3d;
+    --neutral-50: #ffffff;
+    --neutral-100: #fbfcfe;
+    --neutral-150: #f7fbff;
+    --neutral-200: #f2f8ff;
+    --neutral-300: #e6f0ff;
+    --neutral-400: #dbe8ff;
+    --neutral-500: #cfe0ff;
+    --text-primary: #041226; /* darker for high contrast */
+    --text-muted: #556176;
+    --home-bg: var(--neutral-100);
+    --home-surface: var(--neutral-50);
+    --home-section-surface: var(--neutral-200);
+    --home-text: var(--text-primary);
+    --home-muted: var(--text-muted);
+    --cta-color: var(--home-accent);
+    --cta-color-2: var(--home-accent-2);
+    --shadow-strong: 0 16px 40px rgba(11,102,255,0.12);
+    --site-container-width: 1200px;
 }
 
 .theme-xmas {

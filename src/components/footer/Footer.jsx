@@ -30,8 +30,8 @@ export default function Footer() {
   return (
      <>
     <footer style={styles.footer}>
-      <div style={styles.waveTop} />
-      <div style={styles.overlay}></div>
+      {/* <div style={styles.waveTop} /> */}
+      {/* <div style={styles.overlay}></div> */}
 
       <div style={styles.container} className="footer-container">
         {/* Logo / Brand */}
@@ -51,9 +51,9 @@ export default function Footer() {
         </div>
 
         {/* Connect */}
-        <div style={styles.column}>
+          <div style={styles.column}>
           <h4>{t("footer.becomecollab")}</h4>
-          <button onClick={handleRegisterClick} style={styles.signupBtn}>
+          <button onClick={handleRegisterClick} style={styles.signupBtn} className="btn btn-primary">
             {t("footer.signup")}
           </button>
         </div>
@@ -73,35 +73,12 @@ const homeOrange = "--home-orange: #ef4444;";
 const styles = {
   footer: {
     position: "relative",
-    color: "#ffffff",
-    padding: "60px 20px 30px",
+    color: "white",
+    padding: "48px 20px 28px",
     fontFamily: "Inter, sans-serif",
     width: "100%",
-    backgroundImage: "url('/footer_style6.svg')",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "top center",
+    background: "var(--text-primary)",
     borderRadius: "5px",
-  },
-
-  waveTop: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: "80px",
-    background:
-      "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'><path d='M0,0 C150,80 350,0 600,60 C850,120 1050,40 1200,90 L1200,0 L0,0 Z' fill='%23fefefe'/></svg>\") top / 100% 100% no-repeat",
-    zIndex: 2,
-    pointerEvents: "none",
-  },
-
-  overlay: {
-    position: "absolute",
-    inset: 0,
-    background: "rgba(0,0,0,0.7)",
-    zIndex: 0,
-    borderRadius: "15px",
   },
 
   container: {
@@ -123,29 +100,29 @@ const styles = {
 
   logo: {
     fontSize: "26px",
-    fontWeight: "bold",
+    fontWeight: "700",
     marginBottom: "10px",
-    color: "linear-gradient(90deg, #ef4444 0%, #f97316 50%, #ef4444 100%)",
+    color: "white",
+    textShadow: "0 6px 18px rgba(11,102,255,0.06)",
   },
   
   signupBtn: {
     marginTop: "8px",
-    background: "linear-gradient(90deg, #ef4444 0%, #f97316 50%, #ef4444 100%)",
-    color: "#fff",
     padding: "10px 20px",
+    background: "linear-gradient(90deg, #ef4444 0%, #f97316 50%, #ef4444 100%)",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "8px",
     fontSize: "15px",
     cursor: "pointer",
-    transition: "0.25s",
+    transition: "0.18s",
   },
 
   bottom: {
     textAlign: "center",
     paddingTop: "24px",
     fontSize: "13px",
-    color: "#ffffff",
-    borderTop: "1px solid rgba(255,255,255,0.25)",
+    color: "white",
+    borderTop: "1px solid var(--neutral-300)",
     marginTop: "30px",
     position: "relative",
     zIndex: 1,

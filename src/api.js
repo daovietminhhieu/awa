@@ -212,6 +212,17 @@ export async function getLinkFromReferralById(id) {
   return await res.json();
 }
 
+export async function trackReferralClick(id) {
+  if (!id) return null;
+  try {
+    const res = await fetch(`${API_BASE}/local/referral/click/${id}`);
+    return await res.json();
+  } catch (err) {
+    console.error("trackReferralClick error:", err);
+    return null;
+  }
+}
+
 // ====================== CANDIDATE ======================
 export async function loadProgrammForCandidateExternSystemById(id) {
   const res = await fetch(`${API_BASE}/db/programm/c/${id}`);

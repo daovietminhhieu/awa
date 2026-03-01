@@ -7,6 +7,7 @@ import CandidateExternSystemApply from "../page/CandidatesExternSystemApply";
 import { PartnerDetail} from "../page/short/Short";
 import NewsDetail from "../page/detail/news/News";
 import NewsList from "../page/news/List";
+import AffiliateSignup from "../page/affiliate/AffiliateSignup";
 
 export const publicRoutes = [
   { path: "/home", element: <HomePage /> },
@@ -17,5 +18,6 @@ export const publicRoutes = [
   { path: "/collabor", element: <PartnerDetail /> },
   { path: "/news/:slug", element: <NewsDetail /> },
   { path: "/news-list", element: <NewsList /> },
+  { path: "/affiliate/signup", element: <AffiliateSignup /> },
 ];
 

@@ -7,14 +7,14 @@
   --ct-shadow: 0 14px 40px rgba(59,130,246,0.15);
 }
 
-.ct-page { background: linear-gradient(135deg,#ffffff 0%,#eef6ff 45%,#e6f0ff 100%); padding: 28px 16px; min-height: 700px;}
+.ct-page { height: 100vh;background: linear-gradient(135deg,#ffffff 0%,#eef6ff 45%,#e6f0ff 100%); padding: 28px 16px; min-height: 700px;}
 .ct-title { text-align: center; font-weight: 800; color: #1455e2; margin: 26px 0; }
 .ct-subtitle { margin: 0 0 12px; color: #1455e2; }
 
 .ct-header { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; margin-bottom: 12px; }
 .ct-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
 .ct-tab { border: 1px solid var(--ct-border); background: #fff; padding: 8px 12px; border-radius: 999px; color: var(--ct-muted); cursor: pointer; box-shadow: 0 8px 18px rgba(59,130,246,.12); }
-.ct-tab.active { background: var(--ct-accent); color: #fff; border-color: var(--ct-accent); }
+.ct-tab.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
 .ct-search input { width: 240px; max-width: 100%; border: 1px solid var(--ct-border); border-radius: 10px; padding: 10px 12px; }
 
 .ct-card { background: var(--ct-card); border: 1px solid var(--ct-border); border-radius: 16px; box-shadow: var(--ct-shadow); padding: 14px; margin-bottom: 18px; }

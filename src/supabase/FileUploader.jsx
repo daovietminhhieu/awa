@@ -34,7 +34,7 @@ export default function FileUploader() {
   return (
     <div>
       <input type="file" onChange={e => setFile(e.target.files[0])} />
-      <button onClick={handleUpload} disabled={!file}>
+      <button className="btn btn-primary" onClick={handleUpload} disabled={!file}>
         Upload
       </button>
     </div>

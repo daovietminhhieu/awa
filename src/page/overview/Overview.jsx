@@ -1,8 +1,10 @@
+import AffiliateDashboard from "../affiliate/AffiliateDashboard";
+
 const Overview = () => {
     return (
-        <div style={{ minHeight: "700px", maxWidth: "1200px", margin: "0 auto",display:"flex",justifyContent:"center",alignItems:"center" }}>
+        <div>
             {/* Nội dung của trang Overview */}
-            <h1>Coming soon</h1>
+            <AffiliateDashboard/>
         </div>
     );
 }

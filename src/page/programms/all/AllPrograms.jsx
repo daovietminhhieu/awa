@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useI18n } from "../../../i18n";
@@ -16,6 +16,7 @@ import AddProgramForm from "../../../components/addprograms/Form.jsx";
 import { FaEdit, FaTrash, FaSave, FaTimes, FaPlus, FaCopy, FaExternalLinkAlt } from "react-icons/fa";
 import "./AllPrograms.css";
 import Pagination from "../../../components/pagination/Pagination.jsx";
+import { staggerChildren, fadeIn } from "../../../utils/animations.js";
 
 export default function AllPrograms() {
   const navigate = useNavigate();
@@ -34,13 +35,16 @@ export default function AllPrograms() {
   const [formMode, setFormMode] = useState("add"); // "add" | "edit"
   const [editProgram, setEditProgram] = useState(null);
 
-
-const [sharingProgramId, setSharingProgramId] = useState(null);
-const [copiedLink, setCopiedLink] = useState("");
-const [isGeneratingLink, setIsGeneratingLink] = useState(false);
+  const [sharingProgramId, setSharingProgramId] = useState(null);
+  const [copiedLink, setCopiedLink] = useState("");
+  const [isGeneratingLink, setIsGeneratingLink] = useState(false);
   const PAGE_SIZE = 9;
 
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Animation refs
+  const gridRef = useRef(null);
+  const headerRef = useRef(null);
 
   // ------------------ LOAD DATA ------------------
   useEffect(() => {
@@ -61,6 +65,19 @@ const [isGeneratingLink, setIsGeneratingLink] = useState(false);
       setLoading(false);
     }
   };
+  
+  // Animate on data load
+  useEffect(() => {
+    if (!loading && gridRef.current) {
+      // Stagger animate all grid items
+      staggerChildren(gridRef.current, {
+        each: 0.05,
+        duration: 0.5,
+        delay: 0.1,
+      });
+    }
+  }, [loading, filteredPrograms]);
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [filteredPrograms]);
@@ -267,7 +284,7 @@ const [isGeneratingLink, setIsGeneratingLink] = useState(false);
       )}
 
       {!loading && !error && activeTab !== "posts" && activeTab !== "shared" && (
-        <div className="programs-grid">
+        <div className="programs-grid" ref={gridRef}>
           {displayedPrograms.map((p) => (
             <article key={p.id} className="program-card">
               <div className="card-header">

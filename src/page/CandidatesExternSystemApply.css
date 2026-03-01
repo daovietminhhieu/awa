@@ -4,7 +4,7 @@
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  width: 516px;
+  width: 100%; height: fit-content;
   margin: 20px auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -65,7 +65,7 @@
 
 /* Nút Submit */
 .apply-form button[type="submit"] {
-  background-color: #007bff;
+  background-color: var(--text-primary);
   color: white;
   padding: 14px;
   border: none;

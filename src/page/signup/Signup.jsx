@@ -205,7 +205,7 @@ export default function SignUp() {
 
           {/* Submit */}
           <div className="form-options">
-            <button type="submit" disabled={loading}>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? <span style={spinnerStyle}></span> : t('auth.signup.register')}
             </button>
           </div>

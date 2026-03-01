@@ -101,6 +101,16 @@ function LoggedInIcons({ user, onLogout, t }) {
               title={t("nav.profile")}
             />
           </Link>
+          <Link
+            to="/recruiter/affiliate-dashboard"
+            className={`profile-icon ${
+              activeIcon === "affiliate-dashboard" ? "active" : ""
+            }`}
+            onClick={() => handleClick("affiliate-dashboard")}
+            title={t("nav.affiliate_dashboard")}
+          >
+            <BiBarChart /> {t("nav.affiliate_dashboard")}
+          </Link>
           <Link to="/recruiter/programmsview">
             <HiOutlineBriefcase
               className={`profile-icon ${
@@ -403,6 +413,12 @@ export default function Navbar() {
                     onClick={() => setMenuOpen(false)}
                   >
                     <FaUser /> {t("nav.profile")}
+                  </Link>
+                  <Link
+                    to="/recruiter/affiliate-dashboard"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <BiBarChart /> {t("nav.affiliate_dashboard")}asd
                   </Link>
                   <Link
                     to="/recruiter/programmsview"

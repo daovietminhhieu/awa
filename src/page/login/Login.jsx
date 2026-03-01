@@ -154,7 +154,7 @@ export default function Login() {
                 {loading ? <span style={spinnerStyle}></span> : t('auth.login.login_button')}
               </button>
             </div>
-            <div className="remember-me">
+            {/* <div className="remember-me">
                 <input
                   type="checkbox"
                   id="remember"
@@ -163,18 +163,18 @@ export default function Login() {
                   style={{marginTop:3}}
                 />
                 <label htmlFor="remember">{t('auth.login.remember')}</label>
-              </div>
-            <div style={{ marginTop: "12px", textAlign: "right" }}>
+              </div> */}
+            {/* <div style={{ marginTop: "12px", textAlign: "right" }}>
               <span
                 style={{ cursor: "pointer", color: "#007bff", textDecoration: "underline" }}
                 onClick={() => setShowReset(true)}
               >
                 {t('auth.login.forgot_password')}
               </span>
-            </div>
+            </div> */}
 
             {/* Modal Forgot Password */}
-            {showReset && (
+            {/* {showReset && (
               <div className="modal-overlay">
                 <div className="modal">
                   <h3>{t('auth.login.reset_title')}</h3>
@@ -214,7 +214,7 @@ export default function Login() {
                   {resetMessage && <p style={{ marginTop: "10px", color: "#555" }}>{resetMessage}</p>}
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Server message */}
             {serverMessage && (

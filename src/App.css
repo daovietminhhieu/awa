@@ -1,0 +1,48 @@
+/* Global UI components: buttons, cards, forms */
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 10px 16px;
+	border-radius: 8px;
+	border: none;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.btn-primary {
+	background: linear-gradient(90deg, var(--cta-color), var(--cta-color-2));
+	color: #fff;
+	box-shadow: 0 12px 34px rgba(11,102,255,0.16), 0 6px 20px rgba(0,0,0,0.06);
+	border: 0;
+	transform: translateZ(0);
+}
+
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 44px rgba(11,102,255,0.18); }
+
+.btn-secondary {
+	background: transparent;
+	color: var(--home-text);
+	border: 1px solid var(--neutral-400);
+}
+
+.card {
+	background: var(--home-surface);
+	border-radius: 12px;
+	padding: 16px;
+	box-shadow: 0 8px 24px rgba(12,44,88,0.06);
+}
+
+.form-control {
+	padding: 10px 12px;
+	border: 1px solid var(--neutral-400);
+	border-radius: 8px;
+	background: #fff;
+}
+
+.text-muted { color: var(--home-muted); }
+
+/* small helper */
+.rounded { border-radius: 12px; }

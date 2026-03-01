@@ -127,7 +127,7 @@ export function SuccessStories() {
                     {story.content.length > 400 && (
                       <div className="read-more-ctner">
                         <button
-                          className="reads-more-btn"
+                          className="btn btn-secondary reads-more-btn"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigate(`/news/${story.slug}`);
@@ -244,7 +244,7 @@ export function FeaturedNews() {
 
       {/* NÚT XEM THÊM */}
       <div className="featured-btn-box">
-        <button className="featured-btn" onClick={() => navigate(r)}>
+        <button className="btn btn-primary featured-btn" onClick={() => navigate(r)}>
           {t("short.button.more")}
         </button>
       </div>
@@ -298,7 +298,7 @@ export function Partner() {
           {t("short.partners.become_collaborator_desc")}
         </p>
 
-        <button onClick={handleContactClick} className="partner-cta-btn">
+        <button onClick={handleContactClick} className="btn btn-primary partner-cta-btn">
           {t("short.partners.contact_now") || "Contact now"}
         </button>
       </div>
@@ -425,7 +425,7 @@ export function BecomeCollaborator() {
 
       <p>{t("short.become_collaborator.description")}</p>
 
-      <button onClick={handleRegisterClick}>
+      <button onClick={handleRegisterClick} className="btn btn-primary">
         {t("short.become_collaborator.register_now")}
       </button>
 
@@ -489,29 +489,15 @@ export function BecomeCollaborator() {
 
             <button
               onClick={handleRegisterClick}
-              style={{
-                marginTop: "15px",
-                color: "white",
-                border: "none",
-                padding: "10px 18px",
-                background: "#0d3c61",
-                borderRadius: "6px",
-                cursor: "pointer",
-                marginRight: "10px",
-              }}
+              className="btn btn-primary"
+              style={{ marginRight: "10px" }}
             >
               {t("short.become_collaborator.register_now")}
             </button>
 
             <button
               onClick={() => setShowPopup(false)}
-              style={{
-                marginTop: "15px",
-                border: "1px solid #ccc",
-                padding: "10px 18px",
-                borderRadius: "6px",
-                cursor: "pointer",
-              }}
+              className="btn btn-secondary"
             >
               {t("short.become_collaborator.close")}
             </button>

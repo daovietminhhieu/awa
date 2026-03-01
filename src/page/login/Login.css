@@ -39,7 +39,7 @@
   max-width: 100%;
 }
 
-.login-title { text-align: center; font-size: 2rem; font-weight: 800; color: var(--auth-primary); }
+.login-title { text-align: center; font-size: 2rem; font-weight: 800; color: var(--text-primary); }
 .form-auth-body { margin-top: 22px; }
 
 .input-group { margin-bottom: 16px; }

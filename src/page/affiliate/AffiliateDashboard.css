@@ -1,0 +1,542 @@
+/* Affiliate Dashboard */
+.affiliate-dashboard {
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  background: var(--text-primary);
+  color: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+}
+
+.dashboard-header p {
+  margin: 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.alert {
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.alert-error {
+  background: #fee;
+  color: #c00;
+  border: 1px solid #fcc;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+/* Dashboard Actions */
+.dashboard-actions {
+  margin-bottom: 30px;
+  text-align: right;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--text-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-success {
+  background: #28a745;
+  color: white;
+  margin-right: 10px;
+}
+
+.btn-success:hover {
+  background: #218838;
+}
+
+.btn-cancel {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background: #5a6268;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.btn-copy {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-copy:hover {
+  background: #138496;
+}
+
+/* New Link Form */
+.new-link-form {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.new-link-form h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.new-link-form p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.new-link-form form {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.new-link-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.new-link-form input {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.new-link-form input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+@media (max-width: 768px) {
+  .new-link-form form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Referral Links Section */
+.referral-links-section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.referral-links-section h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  padding: 40px 0;
+}
+
+.links-table-container {
+  overflow-x: auto;
+}
+
+.links-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.links-table thead {
+  background: #f8f9fa;
+}
+
+.links-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.links-table td {
+  padding: 15px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.links-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-approved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-reject {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-ongoing {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+/* Resources Section */
+.resources-section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.resources-section h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.resources-section > p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.resource-card {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.resource-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.resource-card h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.resource-card p {
+  margin: 0 0 15px 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.resource-card a {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #667eea;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.resource-card a:hover {
+  background: #764ba2;
+}
+
+/* Payment Section */
+.payment-section {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.payment-section h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.payment-section > p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.affiliate-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .affiliate-dashboard {
+    padding: 20px 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .links-table {
+    font-size: 0.85rem;
+  }
+
+  .links-table th,
+  .links-table td {
+    padding: 10px;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Charts Section */
+.charts-section {
+  margin-top: 50px;
+  padding: 0;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.chart-card h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #667eea;
+  padding-bottom: 10px;
+}
+
+.chart-card:hover {
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Funnel Chart Styling */
+.funnel-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px 0;
+}
+
+.funnel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.funnel-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.funnel-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+.funnel-label {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.funnel-bar:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive Charts */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card {
+    padding: 20px;
+  }
+
+  .chart-card h3 {
+    font-size: 1rem;
+  }
+
+  .funnel-bar {
+    height: 45px;
+    font-size: 0.85rem;
+  }
+}

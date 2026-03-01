@@ -209,15 +209,7 @@ const quillModules = {
             />
 
           </div>
-  
-          {/* <div className="editor-actions">
-            <button type="submit" className="save-btn">
-              💾 {t("admin.post.edit_form.save")}
-            </button>
-            <button type="button" onClick={onClose} className="cancel-btn">
-              ❌ {t("admin.post.edit_form.cancel")}
-            </button>
-          </div> */}
+   
         </form>
       </div>
     );
